@@ -1,0 +1,278 @@
+﻿@using WEBPCTSV.Models.bean;
+@model QUANTRI
+
+
+@{
+    ViewBag.Title = "Cập nhật tư vấn viên";
+    ViewBag.Active = "ThanhVien";
+    Layout = "~/Views/Shared/AdminMaster.cshtml";
+}
+
+
+<script type="text/javascript">
+    $(document)
+            .ready(
+                    function () {
+                        //Check validate username
+                        $.validator.addMethod("username", function (value,
+                                element, regexpr) {
+                            return regexpr.test(value);
+                        }, "Tên đăng nhập không đúng định dạng");
+
+                        $("#fThemNhanSu")
+                                .validate(
+                                        {
+                                            rules: {
+                                                TenDangNhap: {
+                                                    required: true,
+                                                    username: /^(?=[_a-zA-Z]+)[a-zA-Z0-9_]{4,50}$/
+                                                },
+                                                HoTen: {
+                                                    required: true,
+                                                },
+                                                LinhVuc: {
+                                                    required: "Chưa nhập lĩnh vực tư vấn",
+                                                },
+                                                DienThoai: {
+                                                    required: true,
+                                                    digits: true,
+                                                    maxlength: 11
+                                                },
+                                                Email: {
+                                                    required: true,
+                                                    email: true
+                                                }
+                                            },
+                                            messages: {
+                                                TenDangNhap: {
+                                                    required: "Chưa nhập tên tài khoản",
+                                                    username: "Tên đăng nhập không đúng định dạng<br>Bắt đầu bằng _ hoặc chữ cái<br>Có tối thiểu 4 kí tự."
+                                                },
+                                                HoTen: {
+                                                    required: "Chưa nhập họ tên",
+                                                },
+                                                ChucVu: {
+                                                    required: "Chưa nhập chức vụ",
+                                                },
+                                                DienThoai: {
+                                                    required: "Chưa nhập số điện thoại",
+                                                    digits: "Nhập sai định dạng số điện thoại",
+                                                    maxlength: "Số điện thoại không được dài quá 11 kí tự"
+                                                },
+                                                Email: {
+                                                    required: "Chưa nhập địa chỉ email",
+                                                    email: "Nhập sai định dạng email"
+                                                }
+                                            },
+                                            submitHandler: function (form) {
+                                                form.submit();
+                                            }
+                                        });
+                    });
+</script>
+<style type="text/css">
+    label.error {
+        color: #FF0000;
+    }
+
+    input.error {
+        border: 2px solid #FF0000;
+        color: #0000FF;
+        border-style: ridge;
+    }
+</style>
+
+<ol class="breadcrumb box-shadow">
+    <li><a href="TrangChu">Trang chủ</a></li>
+    <li><a href="~/Admin/ListTuVanVien?page=1&x=2">Quản lý tư vấn viên</a></li>
+    <li class="active">Cập nhật</li>
+</ol>
+
+<div class="main-content">
+    <div class="col-xs-12 col-sm-12">
+        <div class="main-form">
+            @using (Html.BeginForm("CapNhatTuVanVien", "Admin", FormMethod.Post, new { @id = "fThemNhanSu" }))
+            {
+                <div class="form-group">
+                    <label>ID CBVC</label>
+                    <input type="text" class="form-control" readonly value="@Model.TenDangNhap" name="TenDangNhap">
+                </div>
+                <div class="form-group">
+                    <label>Họ tên</label>
+                    <input type="text" class="form-control" value="@Model.HoTen" name="HoTen">
+                </div>
+                <input type="hidden" name="ChucVu" value="Tư vấn viên">
+                <div class="form-group">
+                    <label>Điện thoại</label>
+                    <input type="text" class="form-control" value="@Model.DienThoai" name="DienThoai">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" class="form-control" value="@Model.Email" name="Email">
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Lĩnh vực tư vấn</label>
+                    <div class="col-md-9">
+                        <select name="LinhVuc" class="form-control">
+                            @if (Model.LinhVuc.Equals("Khoa Công nghệ Thông tin"))
+                            {
+                                <option value="Khoa Công nghệ Thông tin" selected>Khoa Công nghệ Thông tin</option>
+                            }
+                            else
+                            {
+                                <option value="Khoa Công nghệ Thông tin">Khoa Công nghệ Thông tin</option>
+                            }
+                            @if (Model.LinhVuc.Equals("Khoa Điện tử – Viễn thông"))
+                            {
+                                <option value="Khoa Điện tử – Viễn thông" selected>Khoa Điện tử – Viễn thông</option>
+                            }
+                            else
+                            {
+                                <option value="Khoa Điện tử – Viễn thông">Khoa Điện tử – Viễn thông</option>
+                            }
+                            @if (Model.LinhVuc.Equals("Khoa Xây dựng Cầu - Đường"))
+                            {
+                                <option value="Khoa Xây dựng Cầu - Đường" selected>Khoa Xây dựng Cầu - Đường</option>
+                            }
+                            else
+                            {
+                                <option value="Khoa Xây dựng Cầu - Đường">Khoa Xây dựng Cầu - Đường</option>
+                            }
+                            @if (Model.LinhVuc.Equals("Khoa Xây dựng Thủy lợi - Thủy điện"))
+                            {
+                                <option value="Khoa Xây dựng Thủy lợi - Thủy điện" selected>Khoa Xây dựng Thủy lợi - Thủy điện</option>
+                            }
+                            else
+                            {
+                                <option value="Khoa Xây dựng Thủy lợi - Thủy điện">Khoa Xây dựng Thủy lợi - Thủy điện</option>
+                            }
+                            @if (Model.LinhVuc.Equals("Khoa Xây dựng Dân dụng và Công nghiệp"))
+                            {
+                                <option selected value="Khoa Xây dựng Dân dụng và Công nghiệp">Khoa Xây dựng Dân dụng và Công nghiệp</option>
+                            }
+                            else
+                            {
+                                <option value="Khoa Xây dựng Dân dụng và Công nghiệp">Khoa Xây dựng Dân dụng và Công nghiệp</option>
+                            }
+                            @if (Model.LinhVuc.Equals("Khoa Hóa"))
+                            {
+                                <option selected value="Khoa Hóa">Khoa Hóa</option>
+                            }
+                            else
+                            {
+                                <option value="Khoa Hóa">Khoa Hóa</option>
+                            }
+                            @if (Model.LinhVuc.Equals("Khoa Điện"))
+                            {
+                                <option selected value="Khoa Điện">Khoa Điện</option>
+                            }
+                            else
+                            {
+                                <option value="Khoa Điện">Khoa Điện</option>
+                            }
+                            @if (Model.LinhVuc.Equals("Khoa Cơ khí"))
+                            {
+                                <option selected value="Khoa Cơ khí">Khoa Cơ khí</option>
+                            }
+                            else
+                            {
+                                <option value="Khoa Cơ khí">Khoa Cơ khí</option>
+                            }
+                            @if (Model.LinhVuc.Equals("Khoa Kiến trúc"))
+                            {
+                                <option selected value="Khoa Kiến trúc">Khoa Kiến trúc</option>
+                            }
+                            else
+                            {
+                                <option value="Khoa Kiến trúc">Khoa Kiến trúc</option>
+                            }
+                            @if (Model.LinhVuc.Equals("Khoa Môi trường"))
+                            {
+                                <option selected value="Khoa Môi trường">Khoa Môi trường</option>
+                            }
+                            else
+                            {
+                                <option value="Khoa Môi trường">Khoa Môi trường</option>
+                            }
+                            @if (Model.LinhVuc.Equals("Khoa Quản lý Dự án"))
+                            {
+                                <option selected value="Khoa Quản lý Dự án">Khoa Quản lý Dự án</option>
+                            }
+                            else
+                            {
+                                <option value="Khoa Quản lý Dự án">Khoa Quản lý Dự án</option>
+                            }
+                            @if (Model.LinhVuc.Equals("Khoa Nhiệt - Điện lạnh"))
+                            {
+                                <option selected value="Khoa Nhiệt - Điện lạnh">Khoa Nhiệt - Điện lạnh</option>
+                            }
+                            else
+                            {
+                                <option value="Khoa Nhiệt - Điện lạnh">Khoa Nhiệt - Điện lạnh</option>
+                            }
+                            @if (Model.LinhVuc.Equals("Khoa Cơ khí Giao thông"))
+                            {
+                                <option selected value="Khoa Cơ khí Giao thông">Khoa Cơ khí Giao thông</option>
+                            }
+                            else
+                            {
+                                <option value="Khoa Cơ khí Giao thông">Khoa Cơ khí Giao thông</option>
+                            }
+                            @if (Model.LinhVuc.Equals("Khoa Sư phạm Kỹ thuật"))
+                            {
+                                <option selected value="Khoa Sư phạm Kỹ thuật">Khoa Sư phạm Kỹ thuật</option>
+                            }
+                            else
+                            {
+                                <option value="Khoa Sư phạm Kỹ thuật">Khoa Sư phạm Kỹ thuật</option>
+                            }
+                            @if (Model.LinhVuc.Equals("Cấp phát các loại giấy tờ - Hồ sơ Sinh viên"))
+                            {
+                                <option selected value="Cấp phát các loại giấy tờ - Hồ sơ Sinh viên">Cấp phát các loại giấy tờ - Hồ sơ Sinh viên</option>
+                            }
+                            else
+                            {
+                                <option value="Cấp phát các loại giấy tờ - Hồ sơ Sinh viên">Cấp phát các loại giấy tờ - Hồ sơ Sinh viên</option>
+                            }
+                            @if (Model.LinhVuc.Equals("Tạm dừng; Học lại; Học phí; Kỷ luật; Khen thưởng"))
+                            {
+                                <option selected value="Tạm dừng; Học lại; Học phí; Kỷ luật; Khen thưởng"> Tạm dừng; Học lại; Học phí; Kỷ luật; Khen thưởng</option>
+                            }
+                            else
+                            {
+                                <option value="Tạm dừng; Học lại; Học phí; Kỷ luật; Khen thưởng"> Tạm dừng; Học lại; Học phí; Kỷ luật; Khen thưởng</option>
+                            }
+                            @if (Model.LinhVuc.Equals("Chế độ chính sách; Học bổng; Phục vụ Sư phạm"))
+                            {
+                                <option value="Chế độ chính sách; Học bổng; Phục vụ Sư phạm">Chế độ chính sách; Học bổng; Phục vụ Sư phạm</option>
+                            }
+                            else
+                            {
+                                <option value="Chế độ chính sách; Học bổng; Phục vụ Sư phạm">Chế độ chính sách; Học bổng; Phục vụ Sư phạm</option>
+                            }
+                            @if (Model.LinhVuc.Equals("Điểm rèn luyện; Hoạt động cộng đồng; Đoàn - Hội"))
+                            {
+                                <option selected value="Điểm rèn luyện; Hoạt động cộng đồng; Đoàn - Hội">Điểm rèn luyện; Hoạt động cộng đồng; Đoàn - Hội</option>
+                            }
+                            else
+                            {
+                                <option value="Điểm rèn luyện; Hoạt động cộng đồng; Đoàn - Hội">Điểm rèn luyện; Hoạt động cộng đồng; Đoàn - Hội</option>
+                            }
+                            @if (Model.LinhVuc.Equals("Tư vấn hướng nghiệp - Tuyển sinh"))
+                            {
+                                <option selected value="Tư vấn hướng nghiệp - Tuyển sinh">Tư vấn hướng nghiệp - Tuyển sinh</option>
+                            }
+                            else
+                            {
+                                <option value="Tư vấn hướng nghiệp - Tuyển sinh">Tư vấn hướng nghiệp - Tuyển sinh</option>
+                            }    
+                        </select>
+                    </div>
+                </div>
+
+                <input class="btn btn-danger" type="submit" value="Cập nhật" />
+                <input class="btn btn-warning" type="reset" value="Reset" />
+            }
+        </div>
+    </div>
+</div>

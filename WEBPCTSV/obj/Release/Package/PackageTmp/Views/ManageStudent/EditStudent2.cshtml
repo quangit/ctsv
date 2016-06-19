@@ -1,0 +1,267 @@
+﻿@using WEBPCTSV.Models.bean;
+
+@{
+    Layout = "~/Views/Shared/_LayoutManager.cshtml";
+    ViewBag.Title = "EditStudent2";
+}
+@using WEBPCTSV.Models.Support;
+
+<br />
+@{
+    Student student = ViewBag.student;
+}
+<div class="container-layoutmanager" ng-controller="editStudent2">
+    <ul class="nav nav-tabs">
+        <li><a href="/ManageStudent/EditStudent?idStudent=@student.IdStudent">Thông tin cơ bản</a></li>
+        <li class="active"><a href="#">Thông tin lý lich</a></li>
+        <li><a href="/ManageStudent/EditStudent3?idStudent=@student.IdStudent">Sức khỏe</a></li>
+        <li><a href="/ManageStudent/EditStudent4?idStudent=@student.IdStudent">Bổ sung</a></li>
+        <li><a href="/ManageStudent/EditStudentRelative?idStudent=@student.IdStudent">Gia đình</a></li>
+        <li><a href="/ManageStudent/EditStudentSocialActivity?idStudent=@student.IdStudent">Hoạt động xã hội</a></li>
+        <li><a href="/ManageStudent/EditStudentAcademicAchievement?idStudent=@student.IdStudent">Thành tích học tập</a></li>
+    </ul>
+    <form class="form-horizontal" action="/ManageStudent/ProcessEditStudent2?idStudent=@student.IdStudent" method="post">
+        <br />
+        <strong>Thông tin chỗ ở :</strong>
+        <br />
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="selectState">Quốc tịch:</label>
+            <div class="col-sm-6">
+                <select name="selectState" id="selectState" class="form-control">
+                    @foreach (State state in ViewBag.listState)
+                    {
+                        <option value="@state.IdState">@state.StateName</option>
+                    }
+                </select>
+            </div>
+            <script>
+                $('#selectState option[value=@student.idState]').prop('selected', true);
+            </script>
+        </div>
+
+        <hr />
+
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="identityCardNumber">Số CMND:</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" name="identityCardNumber" id="identityCardNumber" value="@student.IdentityCard" placeholder="vd: 12345678532 ">
+            </div>
+            <label class="control-label col-sm-2" for="identityCardDate">Ngày cấp:</label>
+            <div class="col-sm-2">
+                <input type="date" class="form-control" name="identityCardDate" id="identityCardDate" value='@if(student.DateOfIssuanceIdentityCard!=null){@student.DateOfIssuanceIdentityCard.Value.ToString("yyyy-MM-dd")}' placeholder=" dd/MM/yyyy ">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="identityCardPlace">Nơi Cấp:</label>
+            <div class="col-sm-6">
+                <select name="identityCardPlace" id="identityCardPlace" class="form-control">
+                    <option value="">Chọn tỉnh nơi cấp </option>
+                    @foreach (Province province in ViewBag.listProvince)
+                    {
+                        string selected = "selected";
+                        <option @if (student.IdProvinceIdentityCard == province.IdProvince) { @selected     } value="@province.IdProvince">@province.ProvinceName</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <hr />
+
+        @{
+            SelectPlaceSP place = new SelectPlaceSP("Permanent", "Nơi thường trú", student.WardPermanentResidence);
+        }
+        @Html.Partial("_SelectPlace", place)
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="additionalPermanentplace">Bổ sung nơi thường trú:</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="additionalPermanentplace" id="additionalPermanentplace" value="@student.AdditionalPermanentResidence" placeholder=" ghi chi tiết về nơi thường trú">
+            </div>
+        </div>
+
+        <hr />
+
+        <!-- Ngoai trú hay noi trú-->
+        <div class="form-group">
+            <label class="control-label col-sm-3">Chỗ  ở tạm trú:</label>
+            <div class="col-sm-6">
+                <label class="radio-inline">
+                    <input type="radio" name="boardingRadio" value="true" @if (student.BoardingAddress == true) { @: checked
+                                                                                                         }>Nội trú
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="boardingRadio" value="false" @if (student.BoardingAddress != true) { @: checked
+                                                                                                                                                         }>Ngoại trú
+                </label>
+            </div>
+        </div>
+
+        @{
+            SelectPlaceSP placeExternAddress = new SelectPlaceSP("ExternAddress", " Ngoại trú", student.WardExternAddress);
+        }
+        @Html.Partial("_SelectPlace", placeExternAddress)
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="additionalExternAddress">Bổ sung địa chỉ ngoại trú:</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="additionalExternAddress" id="additionalExternAddress" value="@student.AdditionalExternAddress" placeholder=" ghi chi tiết về địa chỉ ngoại trú">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="PhoneNumberHouseholder">Số điện thoại chủ trọ</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="PhoneNumberHouseholder" id="PhoneNumberHouseholder" value="@student.PhoneNumberHouseholder" placeholder="SĐT:01663676453">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="RegistrationTemporaryResidenceTime">Thời gian đăng kí tạm trú:</label>
+            <div class="col-sm-2">
+                <input type="date" class="form-control" name="RegistrationTemporaryResidenceTime" id="RegistrationTemporaryResidenceTime" value='@if(student.RegistrationTemporaryResidenceTime!=null){@student.RegistrationTemporaryResidenceTime.Value.ToString("yyyy-MM-dd")}' placeholder=" dd/MM/yyyy ">
+            </div>
+            <label class="control-label col-sm-2" for="identityCardDate">Số sổ đăng ký:</label>
+            <div class="col-sm-2">
+                <input type="number" class="form-control" name="TemporaryResidenceNotebookNumber" id="TemporaryResidenceNotebookNumber" value='@student.TemporaryResidenceNotebookNumber' placeholder=" 13123 ">
+            </div>
+        </div>
+
+
+        <hr />
+
+        @{
+            SelectPlaceSP placeNativeLand = new SelectPlaceSP("NativeLand", "Quê quán", student.WardNativeLand);
+        }
+        @Html.Partial("_SelectPlace", placeNativeLand)
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="additionalNativeLand">Bổ sung quê quán:</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="additionalNativeLand" id="additionalNativeLand" value="@student.AdditionalNativeLand" placeholder=" ghi chi tiết về quê quán">
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="Religion">Tôn giáo:</label>
+            <div class="col-sm-6">
+                <select name="Religion" id="Religion" class="form-control">
+                    <option value="">Chọn Tôn giáo </option>
+                    @foreach (Religion religion in ViewBag.religion)
+                    {
+                        string selected = "selected";
+                        <option @if (student.IdReligion == religion.IdReligion) { @selected     } value="@religion.IdReligion">@religion.ReligionName</option>
+                    }
+                </select>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="Ethnic">Dân tộc:</label>
+            <div class="col-sm-6">
+                <select name="Ethnic" id="Ethnic" class="form-control">
+                    <option value="">Chọn dân tộc </option>
+                    @foreach (Ethnic ethnic in ViewBag.listEthnic)
+                    {
+                        <option @if (student.IdEthnic == ethnic.IdEthnic) { @: selected
+                                                                                         } value="@ethnic.IdEthnic">
+                            @ethnic.EthnicName
+                        </option>
+                    }
+                </select>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="Ethnic">Khu vực:</label>
+            <div class="col-sm-6">
+                <select name="Area" id="Area" class="form-control">
+                    <option value="">Chọn Khu vực </option>
+                    @foreach (Area area in ViewBag.listArea)
+                    {
+                        <option @if (student.IdArea == area.IdArea) { @: selected
+                                                                                                                                                     } value="@area.IdArea">
+                            @area.AreaName
+                        </option>
+                    }
+                </select>
+            </div>
+
+        </div>
+
+        <hr />
+
+        @{
+            SelectPlaceSP birthPlace = new SelectPlaceSP("BirthPlace", "Nơi sinh", student.WardBirthPlace);
+
+        }
+        @Html.Partial("_SelectPlace", birthPlace)
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="additionalBirthPlace">Bổ sung nơi sinh:</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="additionalBirthPlace" id="additionalBirthPlace" value="@student.AdditionalBirthplace" placeholder=" ghi chi tiết về nơi sinh">
+            </div>
+        </div>
+
+        <hr />
+
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="hightSchoolName">Tên trường trung học phổ thông :</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="hightSchoolName" id="hightSchoolName" value="@student.HightSchoolName" placeholder="tên trường trung học phổ thông mà bạn tốt nghiệp">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="selectPlaceSchoolProvince">Nơi học trung học phổ thông:</label>
+            <div class="col-sm-2">
+                <select name="selectPlaceSchoolProvince" id="selectPlaceSchoolProvince" ng-init="selectPlaceSchoolProvince='@(student.IdDistrictHightSchoolName!=null?student.DistrictHightSchoolName.IdProvince:"")'" ng-model="selectPlaceSchoolProvince" ng-change="ChangeSelectProvince()" class="form-control">
+                    <option value="">Chọn tỉnh </option>
+                    @foreach (Province province in ViewBag.listProvince)
+                    {
+                        <option @if ((student.IdDistrictHightSchoolName != null) && (student.DistrictHightSchoolName.Province.IdProvince == province.IdProvince)) { @: selected
+                                                                                                                                                         } value="@province.IdProvince">
+                            @province.ProvinceName
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-sm-2">
+                <select name="selectPlaceSchoolDistrict" id="selectPlaceSchoolDistrict" class="form-control">
+                    <option value="">Chọn huyện </option>
+                    @if (student.IdDistrictHightSchoolName != null)
+                    {
+                        Province province = student.DistrictHightSchoolName.Province;
+                        foreach (District district in province.Districts)
+                        {
+                            <option @if (student.IdDistrictHightSchoolName == district.IdDistrict) { @: selected
+                                                                                                                                    } value="@district.IdDistrict">
+                                @district.DistrictName
+                            </option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <br />
+        <div class="form-group">
+            <label class="control-label col-sm-3">
+                <input type="submit" value="Lưu lại" class="btn btn-success control-label" />
+            </label>
+        </div>
+
+
+
+
+    </form>
+</div>

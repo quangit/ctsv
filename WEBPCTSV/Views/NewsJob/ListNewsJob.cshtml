@@ -1,0 +1,96 @@
+﻿@using WEBPCTSV.Models.bean;
+@using PagedList.Mvc;
+@using WEBPCTSV.Helpers.Common;
+@model PagedList.IPagedList<NewsJob>
+
+@{
+    ViewBag.Title = "Tin tuyển dụng Phòng Công Tác Sinh Viên trường Đại Học Bách Khoa - Đại Học Đà Nẵng";
+    Layout = "~/Views/Shared/ClientMaster.cshtml";
+}
+
+<div id="maincontent">
+    <div id="maincontent-section1">
+        <div class="maincontent-main listbox listbox-main">
+            <ol class="breadcrumb box-shadow">
+                <li><a href="~/">Trang chủ</a></li>
+                <li class="active">Tuyển dụng</li>
+            </ol>
+            <div class="listbox-content">
+                @foreach (var x in Model)
+                {
+                    <div class="blog-item2 gdl-divider sixteen columns">
+                        <div class="blog-date-wrapper">
+                            <div class="blog-date-value">
+                                @x.News.CreatedDate.Day
+                            </div>
+                            <div class="blog-month-value">
+                                @x.News.CreatedDate.ToString("MMM").ToUpper()
+                            </div>
+                            <div class="blog-year-value">
+                                @x.News.CreatedDate.Year
+                            </div>
+                        </div>
+                        <div class="blog-item-inside">
+                            @if (!StringExtension.IsNullOrWhiteSpace(x.News.Image) && !x.News.Image.Equals("/images/Tuyendung.jpg"))
+                            {
+                                <div class="blog-thumbnail-image">
+                                    <a href="../TuyenDung/ChiTiet?id=@x.IdNewsJob">
+                                        <img src="@(x.News.Image)" />
+                                    </a>
+                                </div>
+                            }
+                            <h2 class="blog-thumbnail-title post-title-color gdl-title">
+                                <a href="../TuyenDung/ChiTiet?id=@x.IdNewsJob" title="@x.News.Title">@StringExtension.GetLimitSubString(x.News.Title, 20)</a>
+                            </h2><div class="blog-thumbnail-info post-info-color gdl-divider">
+                                <div class="blog-thumbnail-author">
+                                </div>
+                                <div class="clear">
+                                </div>
+                            </div>
+                            <div class="blog-thumbnail-context">
+                                <div class="blog-thumbnail-content">
+                                    @StringExtension.GetLimitSubString(x.News.Description, 40);
+                                </div>
+                                <span><a style="font-style: italic;" href="../TuyenDung/ChiTiet?id=@x.IdNewsJob">Xem tiếp →</a></span>
+                            </div>
+                        </div>
+                        <div class="clear">
+                        </div>
+                    </div>
+
+                    @*<div class="listbox-content-item-sub">
+                            <div class="col-xs-2">
+                            </div>
+                            <div class="col-xs-10">
+                                <div class="listbox-content-item-sub-title">
+                                    <a href="../TuyenDung/ChiTiet?id=@x.IdNewsJob" title="@x.News.Title">@StringExtension.GetLimitSubString(x.News.Title, 20)</a>
+                                </div>
+                                @if (x.News.IsPinned.Value)
+                                {
+                                    <div class="listbox-content-item-moreinfo-comment date">
+                                        <span class="label label-danger">
+                                            <i class="fa fa-thumb-tack" aria-hidden="true"></i> Quan trọng
+                                        </span>
+                                    </div>
+                                }
+                                <div class="listbox-content-item-moreinfo">
+                                    <span class="listbox-content-item-moreinfo-comment date"><i class="fa fa-calendar"></i> @x.News.CreatedDate.Value.Day/@x.News.CreatedDate.Value.Month/@x.News.CreatedDate.Value.Year</span>
+                                </div>
+                                <p>
+                                    <span><a href="../TuyenDung/ChiTiet?id=@x.IdNewsJob">Xem tiếp</a></span>
+                                <p>
+                            </div>
+                        </div>*@
+                }
+                <br />
+                <div class="menuTrang">
+                    @Html.PagedListPager(Model, page => Url.Action("../TuyenDung", new { page = page }))
+                </div>
+            </div>
+        </div>
+
+        <div id="sidebar">
+            @Html.Action("TopNewsEvent", "NewsEvent", new { count = 3 })
+        </div>
+    </div>
+</div>

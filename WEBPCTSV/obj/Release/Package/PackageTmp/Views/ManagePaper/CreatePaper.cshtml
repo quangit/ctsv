@@ -1,0 +1,167 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutManager.cshtml";
+    ViewBag.Title = "CreatePaper";
+}
+<script src="~/Content/ckeditor2/ckeditor.js"></script>
+
+<h3 class="header-paper"> Thêm giấy tờ </h3>
+
+<div align="center">
+    <form action="/ManagePaper/AddPaper" method="post">
+        <div class="input-group namepaper ">
+            <span class="input-group-addon">Tên giấy tờ :</span>
+            <input name="namePaper" type="text" class="form-control" required placeholder="nhập tên giấy tờ vào">
+        </div>
+        <br />
+        <textarea name="notePaper" class="form-control" rows="4" placeholder="Nhập ghi chú" style="width:800px;"></textarea>
+        <br />
+        
+
+        <textarea name="editor1" id="editor1"></textarea>
+        <br />
+        <div class="form-horizontal">
+
+            <div class="form-group col-sm-6">
+                <label class="control-label col-sm-7" for="priceUrgency">Giá tiền khẩn cấp:</label>
+                <div class="input-group col-sm-5">
+                    <input class="form-control" id="priceUrgency" required value="0" name="priceUrgency" type="text" />
+                    <span class="input-group-addon"> VND </span>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="control-label col-sm-5" for="waittingPeriod">Thời gian chờ khẩn cấp:</label>
+                <div class="input-group col-sm-3">
+                    <input class="form-control" id="waittingPeriodUrgency" name="waittingPeriodUrgency" required value="0" type="text" />
+                    <span class="input-group-addon"> Ngày </span>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+                <label class="control-label col-sm-7" for="priceNormal">Giá tiền bình thường:</label>
+                <div class="input-group col-sm-5">
+                    <input class="form-control" id="priceNormal" name="priceNormal" required value="0" type="text" />
+                    <span class="input-group-addon"> VND </span>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="control-label col-sm-5" for="waittingPeriodNormal">Thời gian chờ bình thường:</label>
+                <div class="input-group col-sm-3">
+                    <input class="form-control" id="waittingPeriodNormal" name="waittingPeriodNormal" required value="0" type="text" />
+                    <span class="input-group-addon"> Ngày </span>
+                </div>
+            </div>
+
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary" style="max-width:800px"><span class="glyphicon glyphicon-floppy-save"></span> Lưu lại</button>
+        <button style="margin-left:10px" type="button" class="btn btn-primary" data-toggle="modal" data-target="#KeyWord"><i class="fa fa-wordpress" aria-hidden="true"></i> Từ khóa </button>
+
+        <!-- Modal -->
+        <div id="KeyWord" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Gửi tin nhắn </h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <td>Từ khóa</td>
+                                    <td>Giải thích</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#hovaten</td>
+                                    <td>Họ và tên sinh viên</td>
+                                </tr>
+                                <tr>
+                                    <td>#lop</td>
+                                    <td>Lớp sinh viên đang học</td>
+                                </tr>
+                                <tr>
+                                    <td>#khoa</td>
+                                    <td>Khoa sinh viên đang học</td>
+                                </tr>
+                                <tr>
+                                    <td>#khoahoc</td>
+                                    <td>Sinh viên khóa bao nhiêu</td>
+                                </tr>
+                                <tr>
+                                    <td>#nganh</td>
+                                    <td>Chuyên ngành sinh viên</td>
+                                </tr>
+                                <tr>
+                                    <td>#ngaysinh</td>
+                                    <td>Ngày sinh của sinh viên</td>
+                                </tr>
+                                <tr>
+                                    <td>#gioitinh</td>
+                                    <td>Giới tính của sinh viên</td>
+                                </tr>
+                                <tr>
+                                    <td>#loaihinhdaotao</td>
+                                    <td>Loại hình đào tạo</td>
+                                </tr>
+                                <tr>
+                                    <td>#trinhdodaotao</td>
+                                    <td>Trình độ đào tạo</td>
+                                </tr>
+                                <tr>
+                                    <td>#sothesinhvien</td>
+                                    <td>Mã số sinh viên</td>
+                                </tr>
+                                <tr>
+                                    <td>#ngaynhaphoc</td>
+                                    <td>Ngày nhập học</td>
+                                </tr>
+                                <tr>
+                                    <td>#ngayratruong</td>
+                                    <td>Ngày ra trường</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    CKEDITOR.on('dialogDefinition', function (ev) {
+        var dialogName = ev.data.name;
+        var dialogDefinition = ev.data.definition;
+
+        if (dialogName == 'table') {
+            var info = dialogDefinition.getContents('info');
+
+            info.get('txtWidth')['default'] = '100%';       // Set default width to 100%
+            info.get('txtBorder')['default'] = '0';         // Set default border to 0
+        }
+    });
+    CKEDITOR.replace('editor1');
+    CKEDITOR.config.extraPlugins = 'tableresize,divarea,lineheight';
+    //CKEDITOR.config.extraPlugins = 'divarea';
+    //CKEDITOR.config.extraPlugins = 'lineheight';
+    CKEDITOR.config.enterMode = CKEDITOR.ENTER_DIV;
+    CKEDITOR.config.width = 800;
+   // CKEDITOR.config.contentsCss = 'fontckeditor.css';
+    //the next line add the new font to the combobox in CKEditor
+   // CKEDITOR.config.font_names = 'Time new Roman edit' + CKEDITOR.config.font_names;
+    
+    $('#btnget').click(function () {
+        var data = CKEDITOR.instances.editor1.getData();
+        $('#showedit').html(data);
+    });
+</script>
+

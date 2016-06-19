@@ -1,0 +1,69 @@
+﻿@using WEBPCTSV.Models.bean;
+@using PagedList.Mvc;
+@using WEBPCTSV.Helpers.Common;
+
+@model PagedList.IPagedList<News>
+
+@{
+    ViewBag.Title = "Trang đánh giá kết quả rèn luyện - Đại Học Bách Khoa - Đại học Đà Nẵng";
+    Layout = "~/Views/Shared/ClientMaster.cshtml";
+}
+
+<div id="maincontent">
+    <div id="maincontent-section1">
+        <div class="conduct-menu">
+            <ul class="nav navbar-nav side-nav">
+                @Html.Partial("~/Views/Conduct/PartialViews/SideBarShared.cshtml")
+                @Html.Partial("~/Views/Conduct/PartialViews/SideBarConduct.cshtml")
+            </ul>
+        </div>
+        <div class="maincontent-main conduct-page" id="maincontent">
+            <ol class="breadcrumb box-shadow">
+                <li><a href="~/DanhGiaRenLuyen">Đánh giá rèn luyện</a></li>
+                <li class="active">Thông báo</li>
+            </ol>
+            @{
+                List<ConductSchedule> currentSchedule = ViewBag.currentSchedule;
+                Semester currentSemester = ViewBag.currentSemester;
+
+            }
+            <div class="listbox-content">
+                @if (ViewBag.error != null)
+                {
+                    <div class="alert alert-danger">@ViewBag.error</div>
+                }
+                else
+                {
+                    <h3>ĐÁNH GIÁ KẾT QUẢ RÈN LUYỆN KỲ @currentSemester.SemesterYear.SemesterYearName NĂM HỌC @currentSemester.Year.YearName</h3>
+                    <div class="conduct-event">
+
+                    </div>
+                    <div class="conduct-schedule">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <td>Đối tượng</td>
+                                    <td>Ngày bắt đầu</td>
+                                    <td>Ngày kết thúc</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (ConductSchedule conductSchedule in currentSchedule.OrderBy(s => s.BeginDateEvaluate))
+                                {
+                                    <tr class="@((DateTime.Now >= conductSchedule.BeginDateEvaluate && DateTime.Now <= conductSchedule.EndDateEvaluate) ? "active":"")">
+                                        <td>@conductSchedule.DecentralizationGroup.DecentralizationGroupName</td>
+                                        <td>@conductSchedule.BeginDateEvaluate.ToString("HH:mm dd/MM/yyyy")</td>
+                                        <td>@conductSchedule.EndDateEvaluate.ToString("HH:mm dd/MM/yyyy")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div id="resultRegister" style="display:none;">
+
+</div>

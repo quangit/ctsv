@@ -1,0 +1,162 @@
+﻿@using WEBPCTSV.Models.bean;
+@using PagedList.Mvc;
+@using WEBPCTSV.Helpers.Common;
+
+@model PagedList.IPagedList<News>
+
+@{
+    ViewBag.Title = "Trang đánh giá kết quả rèn luyện - Đại Học Bách Khoa - Đại học Đà Nẵng";
+    Layout = "~/Views/Shared/ClientMaster.cshtml";
+}
+@{
+    AccountSession accountSession = (AccountSession)Session["AccountSession"];
+}
+<div id="maincontent">
+    <div id="maincontent-section1">
+        <div class="conduct-menu">
+            <ul class="nav navbar-nav side-nav">
+                @Html.Partial("~/Views/Conduct/PartialViews/SideBarShared.cshtml")
+                @Html.Partial("~/Views/Conduct/PartialViews/SideBarConduct.cshtml")
+            </ul>
+        </div>
+        <div class="maincontent-main conduct-page" id="maincontent">
+            <ol class="breadcrumb box-shadow">
+                <li><a href="~/">Trang chủ</a></li>
+                <li class="active">Trang đánh giá kết quả rèn luyện</li>
+            </ol>
+            <div class="listbox-content">
+                <br />
+                <div class="listbox-content">
+                    @if (ViewBag.error != null)
+                    {
+                        <div class="alert alert-danger">
+                            @ViewBag.error
+                        </div>
+                    }
+                    else
+                    {
+                        Semester currentSemester = ViewBag.currentSemester;
+                        Student student = ViewBag.student;
+                        List<ConductItem> itemsByForm = ViewBag.itemsByForm;
+                        Dictionary<string, string> pointStudent = ViewBag.pointStudent;
+                        Dictionary<string, string> pointLecturer = ViewBag.pointLecturer;
+                        Dictionary<string, string> pointDSA = ViewBag.pointDSA;
+
+                        <div class="conduct-evaluate">
+                            <div class="conduct-evaluate-title">
+                                <h3>KẾT QUẢ ĐÁNH GIÁ RÈN LUYỆN KỲ @currentSemester.SemesterYear.SemesterYearName NĂM HỌC @currentSemester.Year.YearName</h3>
+                            </div>
+                            <div class="conduct-evaluate-student">
+                                <p class="row">
+                                    <span class="col-xs-12 col-md-7"><strong>Họ và tên: </strong>@(student.LastNameStudent + " " + student.FirstNameStudent)</span><span class="col-xs-12 col-md-5"><strong>Mã sinh viên: </strong>@student.StudentNumber</span>
+                                </p>
+                                <p class="info-box-description-student row">
+                                    <span class="col-xs-12 col-md-3"><strong>Lớp: </strong>@student.Class.ClassName</span><span class="col-xs-12 col-md-4"><strong>Khóa: </strong>@student.Class.Course.CouseName</span><span class="col-xs-12 col-md-4"><strong>Khoa: </strong>@student.Class.Faculty.FacultyName</span>
+                                </p>
+                            </div>
+                            <div class="conduct-evaluate-items">
+                                <div id="conduct-result">
+                                    <input type="hidden" name="isApproved" id="isApproved" />
+                                    <table class="table table-triped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <td class="col-md-8 col-xs-8">Nội dung</td>
+                                                <td class="col-md-1 col-xs-1">Tối đa</td>
+                                                <td class="col-md-1 col-xs-1">Điểm (Sinh viên)</td>
+                                                <td class="col-md-1 col-xs-1">Điểm (Tập thể lớp)</td>
+                                                <td class="col-md-1 col-xs-1">Tổng kết</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (ConductItem conductItem in itemsByForm)
+                                            {
+                                                if (conductItem.ConductItemGroup.ConductItemGroupRoles.SingleOrDefault(role => role.IdDecentralizationGroup == accountSession.IdDecentralizationGroup) != null)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @if (@conductItem.ItemIndex.Length == 2 || @conductItem.ItemIndex.Length == 4)
+                                                            {
+                                                                <strong>@(StringExtension.GetListNumbering(conductItem.ItemIndex)) @conductItem.ItemName</strong>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p>@(StringExtension.GetListNumbering(conductItem.ItemIndex)) @(conductItem.ItemName)</p>
+                                                            }
+                                                        </td>
+                                                        <td><span class="P@(conductItem.IdConductItems)">@conductItem.MaxPoints</span></td>
+                                                        <td>
+                                                            @if (@conductItem.ItemIndex.Length == 4)
+                                                            {
+                                                                <span class="point-student"> @(pointStudent!=null && pointStudent.Count != 0 && pointStudent.ContainsKey(conductItem.IdConductItems.ToString()) ? pointStudent[conductItem.IdConductItems.ToString()] : "0")</span>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @if (@conductItem.ItemIndex.Length == 4)
+                                                            {
+                                                                <span class="point-lecturer"> @(pointLecturer != null && pointLecturer.Count != 0 && pointLecturer.ContainsKey(conductItem.IdConductItems.ToString()) ? pointLecturer[conductItem.IdConductItems.ToString()] : "0")</span>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @if (@conductItem.ItemIndex.Length == 4)
+                                                            {
+                                                                <span class="point-dsa"> @(pointDSA != null && pointDSA.Count != 0 && pointDSA.ContainsKey(conductItem.IdConductItems.ToString()) ? pointDSA[conductItem.IdConductItems.ToString()] : "0")</span>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            <tr>
+                                                <td colspan="2" class="text-right">
+                                                    <strong>Điểm tổng kết</strong>
+                                                </td>
+                                                <td><strong class="conduct-total-student">0</strong></td>
+                                                <td><strong class="conduct-total-lecturer">0</strong></td>
+                                                <td><strong class="conduct-total-dsa">0</strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="conduct-evaluate-summary">
+                                        Xếp loại: 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/assets/js/conduct-grade.js"></script>
+<script type="text/javascript">
+    function refreshSummaryPoint() {
+        total = 0;
+        student = 0;
+        lecturer = 0;
+        dsa = 0;
+        $('.conduct-evaluate-items tr').each(function (e) {
+            pointStudent = $(this).children('td').children('.point-student').text();
+            pointLecturer = $(this).children('td').children('.point-lecturer').text()
+            pointDSA = $(this).children('td').children('.point-dsa').text();
+            if (pointStudent.length != 0) {
+                student = student + parseInt(pointStudent);
+            }
+            if (pointLecturer.length != 0) {
+                lecturer = lecturer + parseInt(pointLecturer);
+            }
+            if (pointDSA.length != 0) {
+                dsa = dsa + parseInt(pointDSA);
+            }
+        });
+        $('.conduct-total-student').html(student);
+        $('.conduct-total-lecturer').html(lecturer);
+        $('.conduct-total-dsa').html(dsa);
+        $('.conduct-evaluate-summary').html('Xếp loại: <strong>' + GetGradeEvaluated(dsa) + '</strong>');
+    }
+    $(document)
+            .ready(
+                    function () {
+                        refreshSummaryPoint();
+                    });
+
+</script>

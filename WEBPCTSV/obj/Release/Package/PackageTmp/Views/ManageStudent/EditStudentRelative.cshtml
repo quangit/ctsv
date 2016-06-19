@@ -1,0 +1,132 @@
+﻿@using WEBPCTSV.Models.bean;
+
+@{
+    Layout = "~/Views/Shared/_LayoutManager.cshtml";
+    ViewBag.Title = "EditStudentRelative";
+}
+@using WEBPCTSV.Models.Support;
+
+<br />
+@{
+    Student student = ViewBag.student;
+}
+<div class="container-layoutmanager">
+    <ul class="nav nav-tabs">
+        <li><a href="/ManageStudent/EditStudent?idStudent=@student.IdStudent">Thông tin cơ bản</a></li>
+        <li><a href="/ManageStudent/EditStudent2?idStudent=@student.IdStudent">Lý lich</a></li>
+        <li><a href="/ManageStudent/EditStudent3?idStudent=@student.IdStudent">Sức khỏe</a></li>
+        <li><a href="/ManageStudent/EditStudent4?idStudent=@student.IdStudent">Bổ sung</a></li>
+        <li class="active"><a href="/ManageStudent/EditStudentRelative?idStudent=@student.IdStudent">Gia đình</a></li>
+        <li><a href="/ManageStudent/EditStudentSocialActivity?idStudent=@student.IdStudent">Hoạt động xã hội</a></li>
+        <li><a href="/ManageStudent/EditStudentAcademicAchievement?idStudent=@student.IdStudent">Thành tích học tập</a></li>
+    </ul>
+    <br />
+    <form class="form-horizontal" action="/ManageStudent/ProcessEditStudentRelative?idStudent=@student.IdStudent" method="post">
+        <div class="form-group">
+            <label class="control-label col-lg-3">Thành phần gia đình</label>
+            <div class="col-lg-6">
+                <select class="form-control" id="idFamilyComposition" name="idFamilyComposition">
+                    <option value=""> Chọn thành phần gia đình</option>
+                    @foreach (FamilyComposition familyComposition in ViewBag.FamilyComposition)
+                    {
+                        <option @if (familyComposition.IdFamilyComposition == student.IdFamilyComposition) { @: selected
+                                                        } value="@familyComposition.IdFamilyComposition">
+                            @familyComposition.FamilyCompositioncolName
+                                                    </option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        @foreach (Relative relative in student.Relatives)
+        {
+            <div class="form-group">
+                <label class="control-label col-lg-3">@relative.relativeName</label>
+                <div class="col-lg-6">
+                    <p style="margin-top:10px"><span class="glyphicon glyphicon-user"></span> @(relative.RelativesLastName+""+relative.RelativeFirstName)</p>
+                    <p style="margin-top:10px"><span class="glyphicon glyphicon-home"></span> @relative.Ward.WardName , @relative.Ward.District.DistrictName , @relative.Ward.District.Province.ProvinceName</p>
+                    <p style="margin-top:10px"><span class="glyphicon glyphicon-map-marker"></span> @relative.AddtionalRelativesAddress</p>
+                    <p style="margin-top:10px"><span class="glyphicon glyphicon-phone"></span> @relative.CellphoneNumberRelatives  /  <span class="glyphicon glyphicon-phone-alt"></span>  @relative.LandlineNumberRelatives</p>
+                </div>
+            </div>
+        }
+
+        
+
+        <div class="form-group">
+            <label class="control-label col-lg-3"></label>
+            <div class="col-lg-6">
+
+                <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modalRelative"><span class="glyphicon glyphicon-plus"></span> Nhập thông tin người thân</button>
+
+                <!-- Modal -->
+                <div id="modalRelative" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Nhập thông tin người thân</h4>
+                            </div>
+                            <div class="modal-body">
+                                <!-- body-->
+                                <div class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="email">Tên người thân:</label>
+                                        <div class="col-sm-5">
+                                            <input name="lastNameRelative" class="form-control" type="text" placeholder="Họ và tên đệm" />
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input name="firstNameRelative" class="form-control" type="text" placeholder="Tên" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="email">Quan hệ :</label>
+                                        <div class="col-sm-9">
+                                            <input name="relativeName" class="form-control" type="text" placeholder="VD: bố ,mẹ, anh chị..." />
+                                        </div>
+                                    </div>
+
+                                    @{
+                                        SelectPlaceSP place = new SelectPlaceSP("RelativeAddress", "Địa chỉ người thân", null);
+                                    }
+                                    @Html.Partial("_SelectPlace",place)
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="addtionalRelativesAddress">Bổ sung địa chỉ người thân:</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" name="addtionalRelativesAddress" id="addtionalRelativesAddress"  placeholder=" ghi chi tiết về địa chỉ của người thân">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="email">Số điện thoại:</label>
+                                        <div class="col-sm-5">
+                                            <input name="cellPhoneRelative" class="form-control" type="text" placeholder=" Di động" />
+                                            <br />
+                                            <input name="landlineRelative" class="form-control" type="text" placeholder=" Cố định" />
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-plus"></span> Thêm </button>
+                                <button type="button" class="btn btn-default" onclick="window.location.reload();" data-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <button type="submit" class="btn btn-primary">Lưu thông tin</button>
+    </form>
+</div>
+

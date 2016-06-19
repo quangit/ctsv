@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="DSAContext-Web.config Connection String" description="DSAContext Connection String used in web.config by the application to access the database." defaultValue="data source=.;initial catalog=dut_database;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\somedayiws\\OneDrive\\BAO\ CAO\ TOT\ NGHIEP\\SourceCode\\Final\\WEBPCTSV\\WEBPCTSV\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DSAContext']/@connectionString" />
+  </parameter>
+</parameters>

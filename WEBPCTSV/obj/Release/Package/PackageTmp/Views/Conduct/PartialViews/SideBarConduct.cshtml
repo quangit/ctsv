@@ -1,0 +1,49 @@
+﻿@{
+    WEBPCTSV.Models.bean.AccountSession accountSession = (WEBPCTSV.Models.bean.AccountSession)Session["AccountSession"];
+}
+
+@if (accountSession.TypeAccount.Equals("SV") && accountSession.IdDecentralizationGroup == 2)
+{
+    <li>
+        <a href="~/DanhGiaRenLuyen/DanhGiaCaNhan"><i class="fa fa-user" aria-hidden="true"></i> Đánh giá rèn luyện cá nhân</a>
+    </li>
+    <li>
+        <a href="~/DanhGiaRenLuyen/BangDiem"><i class="fa fa-list-alt" aria-hidden="true"></i> Bảng điểm tổng kết</a>
+    </li>
+}
+else if (accountSession.TypeAccount.Equals("SV") && accountSession.IdDecentralizationGroup == 3)
+{
+    <li>
+        <a href="~/DanhGiaRenLuyen/DanhGiaCaNhan"><i class="fa fa-user" aria-hidden="true"></i> Đánh giá rèn luyện cá nhân</a>
+    </li>
+    <li>
+        <a href="~/DanhGiaRenLuyen/DanhGiaLop"><i class="fa fa-users" aria-hidden="true"></i> Đánh giá rèn luyện tập thể</a>
+    </li>
+    <li>
+        <a href="~/DanhGiaRenLuyen/BangDiem"><i class="fa fa-list-alt" aria-hidden="true"></i> Bảng điểm tổng kết</a>
+    </li>
+}
+else if (accountSession.TypeAccount.Equals("GV"))
+{
+    <li>
+        <a href="~/DanhGiaRenLuyen/DanhSachLop"><i class="fa fa-users" aria-hidden="true"></i> Đánh giá rèn luyện lớp</a>
+    </li>
+    @*<li>
+        <a href="~/DanhGiaRenLuyen/BangDiem"><i class="fa fa-list-alt" aria-hidden="true"></i> Bảng điểm tổng kết lớp</a>
+    </li>*@
+}
+else if (accountSession.TypeAccount.Equals("NV"))
+{
+    if (accountSession.IdDecentralizationGroup == 1)
+    {
+        <li>
+            <a href="~/QuanLy/QuanLyRenLuyen"><i class="fa fa-list-alt" aria-hidden="true"></i> Quản lý điểm rèn luyện</a>
+        </li>
+    }
+    else
+    {
+        <li>
+            <a href="~/DanhGiaRenLuyen/DanhSachKhoa"><i class="fa fa-university" aria-hidden="true"></i> Đánh giá rèn luyện khoa</a>
+        </li>
+    }
+}

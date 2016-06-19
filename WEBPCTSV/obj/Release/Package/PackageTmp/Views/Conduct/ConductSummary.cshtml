@@ -1,0 +1,97 @@
+﻿@using WEBPCTSV.Models.bean;
+@using PagedList.Mvc;
+@using WEBPCTSV.Helpers.Common;
+
+@model PagedList.IPagedList<News>
+
+@{
+    ViewBag.Title = "Bảng điểm tổng kết kết quả rèn luyện";
+    Layout = "~/Views/Shared/ClientMaster.cshtml";
+}
+@{
+    AccountSession accountSession = (AccountSession)Session["AccountSession"];
+}
+<div id="maincontent">
+    <div id="maincontent-section1">
+        <div class="conduct-menu">
+            <ul class="nav navbar-nav side-nav">
+                @Html.Partial("~/Views/Conduct/PartialViews/SideBarShared.cshtml")
+                @Html.Partial("~/Views/Conduct/PartialViews/SideBarConduct.cshtml")
+            </ul>
+        </div>
+        <div class="maincontent-main conduct-page" id="maincontent">
+            <ol class="breadcrumb box-shadow">
+                <li><a href="~/DanhGiaRenLuyen">Đánh giá rèn luyện</a></li>
+                <li class="active">Điểm tổng kết</li>
+            </ol>
+            @{
+                List<ConductResultSemester> listResult = ViewBag.listResult;
+                int index = 0;
+            }
+            <div class="listbox-content">
+                <h3>BẢNG ĐIỂM TỔNG KẾT KẾT QUẢ RÈN LUYỆN</h3>
+                <div class="conduct-schedule">
+                    <table class="table table-triped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <td width="80px">Học kỳ</td>
+                                <td>Năm học</td>
+                                <td class="col-xs-1 col-md-2">Điểm rèn luyện</td>
+                                <td>Xếp loại</td>
+                                <td width="100px"></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (ConductResultSemester conductResultSemester in listResult)
+                            {
+                                <tr>
+                                    <td>@(++index)</td>
+                                    <td>HK@(conductResultSemester.SemesterName)/@(conductResultSemester.SemesterYear)</td>
+                                    <td class="point">@conductResultSemester.Point</td>
+                                    <td>@DataExtension.GetGradeEvaluated(conductResultSemester.Point)</td>
+                                    <td><span class="label label-info label-link" onclick="detail(@conductResultSemester.IdSemester)">Chi tiết</span></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="col-xs-12" style="text-align: right;">
+                        <div>
+                            <span>Điểm trung bình: </span> <strong class="average-point"></strong>
+                        </div>
+                        <div>
+                            <span>Xếp loại:</span> <strong class="conduct-grade"></strong>
+                        </div>
+                    </div>
+                    <div class="color-danger">Lưu ý: Điểm rèn luyện có thể thay đổi tùy thuộc vào các giai đoạn đánh giá điểm rèn luyện.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/assets/js/conduct-grade.js"></script>
+<script>
+
+    function detail(idSemester) {
+        location.href = '/DanhGiaRenLuyen/KetQuaDanhGia?idSemester=' + idSemester;
+    }
+
+    $(document)
+            .ready(
+                    function () {
+                        total = 0;
+                        count = 0;
+                        $('.point').each(function () {
+                            console.log(total);
+                            total += parseInt($(this).text().trim());
+                            count++;
+                        });
+                        result = parseFloat(total / count, 3).toFixed(2);
+                        if (isNaN(result)) {
+                            $('.average-point').text('0');
+                            $('.conduct-grade').text(GetGradeEvaluated($('.average-point').text()));
+                        } else {
+                            $('.average-point').text(result);
+                            $('.conduct-grade').text(GetGradeEvaluated($('.average-point').text()));
+                        }
+                    });
+</script>

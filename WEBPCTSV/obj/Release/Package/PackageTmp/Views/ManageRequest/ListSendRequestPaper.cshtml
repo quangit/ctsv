@@ -1,0 +1,40 @@
+﻿@using WEBPCTSV.Models.bean;
+@{
+    Layout = "~/Views/Shared/_LayoutManager.cshtml";
+    ViewBag.Title = "ListSendRequest";
+}
+
+
+
+<h3 class="header-paper">Quản lý yêu cầu</h3>
+@{
+    List<RequestPaper> listRequest = ViewBag.listRequest;
+    WEBPCTSV.Models.Support.PageNumber pageNumber = ViewBag.pageNumber;
+}
+<div class="container-layoutmanager" ng-controller="ListSendRequestPaper" >
+    <div align="center">
+        <select id="selectPaper" class="form-control" style="max-width:500px" ng-init="selectPaper = '' " ng-model="selectPaper" ng-change="ChangeSelectPaper()">
+            <option value="">Chọn loại giấy tờ :</option>
+            @foreach (Paper paper in ViewBag.listPaper)
+            {
+                <option value="@paper.IdPaper">@paper.PaperName</option>
+            }
+        </select>
+    </div>
+    
+    <p style="page-break-before:always"></p>
+
+    <hr />
+    
+    @Html.Partial("_ListRequest", listRequest)
+    @Html.Partial("~/Views/PartialShared/_PageNumber.cshtml", pageNumber)
+</div>
+<script>
+    $('#selectPaper').change(function () {
+        if ($('#selectPaper').val() != "")
+        {
+            window.location.href = '/ManagePaper/DetailPaper?id=' + $('#selectPaper').val();
+        }      
+    })
+</script>
+

@@ -1,0 +1,20 @@
+﻿@using WEBPCTSV.Models.bean;
+
+@{
+    ViewBag.Title = "Hoạt động giảng viên chủ nhiệm trường Đại Học Bách Khoa - Đại Học Đà Nẵng";
+    Layout = "~/Views/Shared/ClientMaster.cshtml";
+}
+
+<div id="maincontent">
+    <div id="maincontent-section1" class="maincontent-main" style="width:100%;">
+        <ol class="breadcrumb box-shadow">
+            <li><a href="~/">Trang chủ</a></li>
+            <li><a href="#">Công tác giảng viên chủ nhiệm</a></li>
+            <li class="active">Hoạt động Giảng Viên Chủ Nhiệm</li>
+        </ol>
+        <h4 class="mucChon">Hoạt động Giảng Viên Chủ Nhiệm</h4>
+        <div class="resource-content">
+            @(Html.Action("Resource", "Resource", new { acronym = "HoatDongGVCN" }))
+        </div>
+    </div>
+</div>

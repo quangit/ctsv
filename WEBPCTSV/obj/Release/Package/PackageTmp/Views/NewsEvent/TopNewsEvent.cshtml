@@ -1,0 +1,42 @@
+﻿@using WEBPCTSV.Models.bean;
+
+@{
+    Layout = null;
+}
+
+<div class="listbox listbox-sidebar event-box">
+    <div class="listbox-title">
+        <a href="SuKien">
+            <h4><i class="fa fa-flag"></i> SỰ KIỆN</h4>
+        </a>
+        <i class="fa fa-arrow-right"></i>
+    </div>
+    <div class="listbox-content">
+        @foreach (NewsEvent newsEvent in (List<NewsEvent>)@ViewBag.topNewsEvent)
+        {
+            <div class="listbox-content-item">
+                <div class="col-xs-2">
+                    <div class="icon-date">
+                        <p class="icon-date-year">
+                            @newsEvent.BeginDate.Value.Year
+                        </p>
+                        <p class="icon-date-date">
+                           @newsEvent.BeginDate.Value.Day/@newsEvent.BeginDate.Value.Month
+                        </p>
+                    </div>
+                </div>
+                <div class="col-xs-10">
+                    <div class="listbox-content-item-title">
+                        <a id="title" href="~/SuKien/ChiTiet?id=@newsEvent.IdNewsEvent" title="@newsEvent.News.Title">
+                            <p>@(WEBPCTSV.Helpers.Common.StringExtension.GetLimitSubString(newsEvent.News.Title, 10))</p>
+                        </a>
+
+                    </div>
+                    <div class="listbox-content-item-moreinfo">
+                        <span class="listbox-content-item-moreinfo-comment date"><i class="fa fa-clock-o"></i> @newsEvent.EventTime </span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,50 @@
+﻿@using WEBPCTSV.Models.bean;
+@model List<Staff>
+
+@{
+    ViewBag.Title = "Phân công nhiệm vụ Phòng Công Tác Sinh Viên trường Đại Học Bách Khoa - Đại Học Đà Nẵng";
+    Layout = "~/Views/Shared/ClientMaster.cshtml";
+}
+
+<div id="maincontent">
+    <div id="maincontent-section1" class="maincontent-main" style="width:100%;">
+        <ol class="breadcrumb box-shadow">
+            <li><a href="~/">Trang chủ</a></li>
+            <li><a href="#">Giới thiệu</a></li>
+            <li class="active">Danh sách cán bộ viên chức</li>
+        </ol>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-xs-2"></th>
+                        <th class="col-xs-3">Cán Bộ Viên Chức</th>
+                        <th class="col-xs-2">Chức Vụ</th>
+                        <th class="col-xs-5">Nhiệm Vụ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cb in Model)
+                    {
+                        <tr>
+                            <td><img style="width: 100px;" src=@cb.Image></td>
+                            <td>
+                                <div>
+                                    <p><strong>@cb.Name</strong></p>
+                                    <p>Mobile: @cb.PhoneNumber</p>
+                                    <p>Email: @cb.Email</p>
+                                </div>
+                            </td>
+                            <td>
+                                <p><strong>@cb.Position</strong></p>
+                            </td>
+                            <td>
+                                <p>@Html.Raw(HttpUtility.HtmlDecode(cb.Field))</p>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

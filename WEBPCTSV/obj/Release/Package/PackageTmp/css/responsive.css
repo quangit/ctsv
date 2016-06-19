@@ -1,0 +1,686 @@
+﻿@charset "UTF-8";
+
+@media only screen and (max-width: 1169px) {
+    /* Section style for screen width 970px */
+    #headercontent #mainnav #navigation .btn-toggle {
+        display: none;
+    }
+
+    #headercontent #mainnav #navigation .brand-uni {
+        display: none;
+    }
+    /* Section style for header */
+    #top_header_inner {
+        width: 970px;
+        margin: 0px auto;
+    }
+
+    #navigation {
+        width: 970px;
+    }
+
+
+    /* Section style for slide */
+    #slide {
+        width: 970px;
+    }
+
+        #slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    #wrapper-slide {
+        background: #d7d7d7;
+        top: 130px;
+        position: relative;
+        height: 450px;
+    }
+
+    .nivoSlider {
+        position: relative;
+        width: 100%;
+        height: 450px;
+        overflow: hidden;
+    }
+    /* Section style for main content */
+    #wrapper {
+        width: 970px;
+        box-shadow: none;
+    }
+
+    /* Section style for box */
+    .thongbao img#tbanh {
+        width: 70px;
+        height: 70px;
+    }
+
+    .list-tile .thongbao {
+        width: 46%;
+        margin: 7px;
+    }
+    /* Section style for footer */
+    #footer {
+        width: 970px;
+    }
+
+        #footer .col-child {
+            width: 30%;
+        }
+
+        #footer .footer-contact {
+            width: 35%;
+        }
+
+    #bot-footer #info {
+        width: 970px;
+    }
+
+    /* Section style for search bar lecturer */
+    a.btn.btn-success.btn-search-more {
+        padding: 6px 8px;
+    }
+    .search-config-label::before {
+        content: "Tùy chọn";
+    }
+}
+
+@media only screen and (max-width: 969px) {
+    /*Style 960px*/
+    #top_header_inner {
+        width: 900px;
+    }
+
+    #headercontent #top_header #logo img {
+        height: 70px;
+    }
+
+    #navigation {
+        width: 900px;
+    }
+
+    /* Section style for slide */
+    #slide {
+        width: 900px;
+    }
+
+        #slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    #wrapper-slide {
+        top: 120px;
+        height: 400px;
+    }
+
+    .nivoSlider {
+        height: 400px;
+    }
+    /* Section style for main content */
+    #wrapper {
+        width: 900px;
+    }
+    /* Section style for box */
+    .list-tile .thongbao {
+        margin: 6px;
+    }
+    /* Section style for footer */
+    #footer {
+        width: 900px;
+    }
+
+        #footer .col-child {
+            width: 30%;
+        }
+
+        #footer .footer-contact {
+            width: 35%;
+        }
+
+    #bot-footer #info {
+        width: 900px;
+    }
+
+    /* Section style for search bar lecturer */
+    .search-box {
+        width: 84%; 
+    }
+}
+
+@media only screen and (max-width: 899px) {
+    /* Section style for tablet width 768px 800px */
+    #headercontent #mainnav #navigation li {
+        display: none;
+    }
+
+    #headercontent #mainnav #navigation .brand-uni {
+        display: block;
+        font-weight: bold;
+    }
+
+        #headercontent #mainnav #navigation .brand-uni span::after {
+            content: "PHÒNG CÔNG TÁC SINH VIÊN - ĐH BÁCH KHOA ĐÀ NẴNG";
+        }
+
+    #headercontent #mainnav #navigation .btn-toggle {
+        display: block;
+    }
+
+    #top_header_inner {
+        width: 768px;
+    }
+
+    #headercontent #top_header {
+        height: 0px;
+    }
+
+    #navigation {
+        width: 768px;
+    }
+
+    /* Section style for slide */
+    #slide {
+        width: 768px;
+    }
+
+        #slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    #wrapper-slide {
+        top: 40px;
+        height: 350px;
+    }
+
+    .nivoSlider {
+        height: 350px;
+    }
+
+    .nivo-controlNav {
+        display: none;
+    }
+    /* Section style for main content */
+    #wrapper {
+        width: 768px;
+        top: 20px;
+    }
+
+    /* Section style for size of box */
+    #mainContent {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    #tbxemthem {
+        width: 100%;
+    }
+
+    #tbnoidung {
+        margin-right: 3px;
+    }
+
+    #sidebar {
+        float: left;
+        width: 100%;
+        padding-top: 0px;
+        padding-right: 0px;
+        padding-left: 0px;
+        margin-left: 0px;
+    }
+
+    #lienket {
+        display: none;
+    }
+
+    .list-tile .thongbao {
+        margin: 8px;
+    }
+    /* Section style for footer */
+    #footer {
+        width: 768px;
+    }
+
+        #footer .col-child {
+            width: 30%;
+        }
+
+        #footer .footer-contact {
+            width: 34%;
+        }
+
+    #bot-footer #info {
+        width: 768px;
+    }
+
+    /* Section style for search bar lecturer */
+    a.btn.btn-success.btn-search-more {
+        padding: 6px 12px;
+    }
+    .search-box {
+        width: 86%; 
+    }
+}
+
+
+@media only screen and (max-width: 767px) {
+    #top_header_inner {
+        width: 720px;
+    }
+
+    #navigation {
+        width: 720px;
+    }
+
+    /* Section style for slide */
+
+    #wrapper-slide {
+        display: none;
+    }
+
+    /* Section style for main content */
+    #wrapper {
+        top: 20px;
+        width: 720px;
+    }
+
+    /* Section style for size of box */
+    .list-tile .thongbao {
+        margin: 6px;
+    }
+
+    /* Section style for footer */
+    #footer {
+        width: 720px;
+    }
+
+        #footer .col-child {
+            width: 30%;
+        }
+
+        #footer .footer-contact {
+            width: 34%;
+        }
+
+    #bot-footer #info {
+        width: 720px;
+    }
+
+    /* Section style for search bar lecturer */
+    a.btn.btn-success.btn-search-more {
+        padding: 6px 8px;
+    }
+}
+
+@media only screen and (max-width: 719px) {
+    /* Main content */
+    #top_header_inner {
+        width: 640px;
+    }
+
+    #navigation {
+        width: 640px;
+    }
+
+    /* Section style for slide */
+    #slide {
+        width: 640px;
+    }
+
+    #wrapper-slide {
+        height: 300px;
+    }
+
+    .nivoSlider {
+        height: 300px;
+    }
+    /* Section style for main content */
+    #wrapper {
+        width: 640px;
+    }
+
+    /* Section style for size of box */
+    #hoatdong, #vanban, #tuyendung, #hocbong {
+        width: 99%;
+        float: left;
+        margin: 0px;
+    }
+
+    .main_item .img-group-main {
+        height: 320px;
+    }
+
+    .thongbao img#tbanh {
+        width: 60px;
+        height: 60px;
+    }
+    /* Section style for footer */
+    #footer {
+        width: 640px;
+    }
+
+        #footer .col-child {
+            width: 30%;
+        }
+
+        #footer .footer-contact {
+            width: 33%;
+        }
+
+    #bot-footer #info {
+        width: 640px;
+    }
+
+    /* Section style for search bar lecturer */
+    a.btn.btn-success.btn-search-more {
+        padding: 6px 8px;
+    }
+    .search-box {
+        width: 84%; 
+    }
+}
+
+@media only screen and (max-width: 639px) {
+    #headercontent #mainnav #navigation .brand-uni span::after {
+        content: "PHÒNG CÔNG TÁC SINH VIÊN";
+    }
+
+    #top_header_inner {
+        width: 600px;
+    }
+
+    #navigation {
+        width: 600px;
+    }
+
+    /* Section style for slide */
+    #wrapper-slide {
+        display: none;
+    }
+
+    /* Section style for main content */
+    #wrapper {
+        width: 600px;
+    }
+
+    /* Section style for size of box */
+    .thongbao #tcontent {
+        width: 80%;
+    }
+
+    .thongbao img#tbanh {
+        width: 100px;
+        height: 100px;
+    }
+
+    .list-tile .thongbao {
+        margin: 5px 0px;
+        width: 96%;
+    }
+    /* Section style for footer */
+    #footer {
+        width: 600px;
+    }
+
+        #footer .col-child {
+            width: 28%;
+        }
+
+        #footer .footer-contact {
+            width: 35%;
+        }
+
+    #bot-footer #info {
+        width: 640px;
+    }
+
+    /* Section style for search bar lecturer */
+    .search-box {
+        width: 83%; 
+    }
+}
+
+@media only screen and (max-width: 599px) {
+    #top_header_inner {
+        width: 568px;
+    }
+
+    #navigation {
+        width: 568px;
+    }
+
+    /* Section style for main content */
+    #wrapper {
+        width: 568px;
+    }
+
+    /* Section style for size of box */
+    .thongbao #tcontent {
+        width: 78%;
+    }
+    /* Section style for footer */
+    #footer {
+        width: 568px;
+    }
+
+        #footer .col-child {
+            width: 28%;
+        }
+
+        #footer .footer-contact {
+            width: 34%;
+        }
+
+    #bot-footer #info {
+        width: 568px;
+    }
+}
+
+@media only screen and (max-width: 567px) {
+    #top_header_inner {
+        width: 480px;
+    }
+
+    #navigation {
+        width: 480px;
+    }
+    /* Section style for slide left */
+    .list-block ul > li a {
+        padding-left: 5px;
+    }
+    /* Section style for main content */
+    #wrapper {
+        width: 480px;
+    }
+
+    /* Section style for size of box */
+    .main_item .img-group-main {
+        height: 280px;
+    }
+
+    #thongbao {
+        display: none;
+    }
+
+    .thongbao #tcontent {
+        width: 76%;
+    }
+    /* Section style for footer */
+    #footer {
+        width: 480px;
+    }
+
+        #footer .col-child {
+            width: 28%;
+        }
+
+        #footer .footer-contact {
+            width: 34%;
+        }
+
+    #bot-footer #info {
+        width: 480px;
+    }
+    /* Section style for search bar lecturer */
+    a.btn.btn-success.btn-search-more {
+        padding: 6px 8px;
+    }
+    .search-box {
+        width: 79%; 
+    }
+}
+
+@media only screen and (max-width: 479px) {
+    #top_header_inner {
+        width: 320px;
+    }
+
+    #headercontent #mainnav #navigation .brand-uni {
+        display: none;
+    }
+
+    #navigation {
+        width: 320px;
+    }
+
+    /* Section style for main content */
+    #wrapper {
+        width: 320px;
+    }
+
+    /* Section style for size of box */
+    .main_item .img-group-main {
+        height: 200px;
+    }
+
+    .thongbao #tcontent {
+        width: 78%;
+    }
+
+    .thongbao img#tbanh {
+        width: 50px;
+        height: 50px;
+    }
+
+    .thongbao #tcontent .tbmota {
+        display: none;
+    }
+    /* Section style for footer */
+    #footer {
+        text-align: center;
+        width: 320px;
+    }
+
+        #footer .col-child {
+            width: 100%;
+        }
+
+        #footer .footer-contact {
+            width: 100%;
+        }
+
+    #bot-footer #info #design {
+        display: none;
+    }
+
+    #bot-footer #info #site a {
+        float: none;
+    }
+
+    #bot-footer #info {
+        text-align: center;
+        width: 320px;
+    }
+    /* Section style for search bar lecturer */
+    a.btn.btn-success.btn-search-more {
+        padding: 6px 10px;
+    }
+    .search-box {
+        width: 86%; 
+    }
+    input#search-bar-box {
+        width: 76%;
+    }
+    .search-config-label::before {
+        content: "";
+    }
+}
+
+@media only screen and (min-width: 1170px) {
+    /*Create by somedayiws*/
+    /* Các CSS này dành cho toàn bộ website và desktop */
+    #headercontent #mainnav #navigation .btn-toggle {
+        display: none;
+    }
+
+    #headercontent #mainnav #navigation .brand-uni {
+        display: none;
+    }
+
+    /* Section style for header */
+    #top_header_inner {
+        width: 1170px;
+        margin: 0px auto;
+    }
+
+    #navigation {
+        width: 1170px;
+    }
+
+
+    /* Section style for slide */
+    #slide {
+        width: 1170px;
+    }
+
+        #slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    #wrapper-slide {
+        background: #d7d7d7;
+        top: 130px;
+        position: relative;
+        height: 450px;
+    }
+
+    .nivoSlider {
+        position: relative;
+        width: 100%;
+        height: 450px;
+        overflow: hidden;
+    }
+    /* Section style for main content */
+    #wrapper {
+        width: 1170px;
+        box-shadow: none;
+    }
+
+    /* Section style for footer */
+    #footer {
+        width: 1170px;
+    }
+
+        #footer .col-child {
+            width: 30%;
+        }
+
+        #footer .footer-contact {
+            width: 35%;
+        }
+
+    #bot-footer #info {
+        width: 1170px;
+    }
+
+    /* Section style of search bar lecturer */
+    .search-config-label::before {
+        content: "Tùy chọn";
+    }
+}

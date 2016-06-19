@@ -1,0 +1,25 @@
+﻿body {
+}
+
+
+.font-backgroud {
+    position:fixed;
+    height:100%;
+    width:100%;
+    top:0%;
+    left:0%;
+    background-color:#000000;
+    opacity:0.8;
+    z-index:1001;
+    display:none;
+}
+
+.edit-Account {
+    position:fixed;
+    height:60%;
+    width:40%;
+    top:20%;
+    left:30%;
+    z-index:1002;
+    display:none;
+}

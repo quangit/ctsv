@@ -1,0 +1,203 @@
+﻿@using WEBPCTSV.Models.bean;
+@{
+    ViewBag.Title = "Thêm giảng viên chủ nhiệm";
+    ViewBag.Active = "AddLecturer";
+    Layout = "~/Views/Shared/_LayoutManager.cshtml";
+}
+
+<script src="~/js/jquery.validate.js" type="text/javascript"></script>
+<script type="text/javascript">
+        $(document)
+                .ready(
+                        function () {
+                            $("#fAddLecturer")
+                                    .validate(
+                                            {
+                                                rules: {
+                                                    FirstName: {
+                                                        required: true,
+                                                    },
+                                                    LastName: {
+                                                        required: true,
+                                                    },
+                                                    LecturerNumber: {
+                                                        required: true,
+                                                    },
+                                                    PhoneNumber: {
+                                                        digits: true,
+                                                    },
+                                                    Email: {
+                                                        email: true
+                                                    },
+                                                    Faculty: {
+                                                        required: true,
+                                                    }
+                                                },
+                                                messages: {
+                                                    FirstName: {
+                                                        required: "Chưa nhập tên giảng viên!",
+                                                    },
+                                                    LastName: {
+                                                        required: "Chưa nhập họ giảng viên!",
+                                                    },
+                                                    LecturerNumber: {
+                                                        required: "Chưa nhập mã số giảng viên!",
+                                                    },
+                                                    PhoneNumber: {
+                                                        digits: "Nhập sai định dạng số điện thoại!",
+                                                    },
+                                                    Email: {
+                                                        email: "Nhập sai định dạng email!"
+                                                    },
+                                                    Faculty: {
+                                                        required: "Chưa chọn khoa!",
+                                                    }
+                                                },
+                                                submitHandler: function (form) {
+                                                    addLecturer();
+                                                }
+                                            });
+                        });
+    </script>
+<style type="text/css">
+    label.error {
+        color: #FF0000;
+    }
+
+    input.error {
+        border: 2px solid #FF0000;
+        color: #0000FF;
+        border-style: ridge;
+    }
+</style>
+
+<ol class="breadcrumb box-shadow">
+    <li><a href="TrangChu">Trang chủ</a></li>
+    <li><a href="~/QuanLy/QuanLyGVCN">Công tác giảng viên chủ nhiệm</a></li>
+    <li class="active">Thêm mới</li>
+</ol>
+
+<div class="main-content">
+    <div class="col-xs-12 col-sm-12">
+        <div class="main-form">
+            @using (Html.BeginForm("Them", "QuanLy/QuanLyGVCN", FormMethod.Post, new { @id = "fAddLecturer", @class = "form-horizontal" }))
+            {
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Mã giảng viên</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" placeholder="Mã số giảng viên" id="lecturernumber" name="LecturerNumber">
+                    </div>
+                    <label class="control-label col-sm-2">Mã ngạch</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" name="Type">
+                            <option value="GV">Giảng viên</option>
+                            <option value="GVC">Giảng viên chính</option>
+                            <option value="GVCC">Giảng viên cao cấp</option>
+                            <option value="CBPV">Cán bộ phục vụ</option>
+                            <option value="Trợ giảng">Trợ giảng</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Họ và tên đệm</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" placeholder="Họ và tên đệm" name="LastName">
+                    </div>
+                    <label class="control-label col-sm-2">Tên</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" placeholder="Tên" name="FirstName">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Học hàm</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" name="AcademicTitle">
+                            <option value="">Chọn học hàm</option>
+                            <option value="PGS">Phó giáo sư</option>
+                            <option value="GS">Giáo sư</option>
+                        </select>
+                    </div>
+                    <label class="control-label col-sm-2">Học vị</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" name="Degree">
+                            <option value="">Chọn học vị</option>
+                            <option value="CN">Cử nhân</option>
+                            <option value="KS">Kỹ sư</option>
+                            <option value="ThS">Thạc sĩ</option>
+                            <option value="TS">Tiến sĩ</option>
+                            <option value="TSKH">Tiến sĩ khoa học</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Chức vụ</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" name="Position">
+                    </div>
+                    <label class="control-label col-sm-2">Khoa</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" name="Faculty">
+                            <option value="">Chọn khoa</option>
+                            @foreach (Faculty faculty in ViewBag.faculty)
+                            {
+                                <option value="@faculty.IdFaculty">@faculty.FacultyName</option>
+                            }
+                        </select>
+                        <div class="hide faculty-acronym">
+                            @foreach (Faculty faculty in ViewBag.faculty)
+                            {
+                                <span class="F@(faculty.IdFaculty)">@faculty.NumberFaculty</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Email</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" placeholder="Địa chỉ email" name="Email">
+                    </div>
+                    <label class="control-label col-sm-2">Điện thoại</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" placeholder="Số điện thoại" name="PhoneNumber">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Địa chỉ</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="Địa chỉ" name="Address">
+                    </div>
+                </div>
+                <br />
+                <div class="group-btn text-center">
+                    <button type="submit" class="btn btn-success" >Thêm mới</button>
+                    <input class="btn btn-warning" type="reset" value="Reset" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script>
+    function changeFaculty() {
+        //alert(($('#lecturernumber').val()));
+        if ($('#lecturernumber').val().length > 3) {
+            username = $('#lecturernumber').val().substr(3);
+            $('#lecturernumber').val($('.faculty-acronym .F' + $('.Faculty').val()).text() + username);
+        }
+    }
+    function addLecturer() {
+        $.ajax({
+            type: 'POST',
+            data: $('#fAddLecturer').serialize(),
+            url: '/QuanLy/QuanLyGVCN/Them',
+            success: function (response) {
+                if (response.success == true) {
+                    document.location.href = "/QuanLy/QuanLyGVCN/CapNhat?idLecturer=" + response.idLecturer;
+                }
+            },
+
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+</script>

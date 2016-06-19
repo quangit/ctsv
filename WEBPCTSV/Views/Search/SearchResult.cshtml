@@ -1,0 +1,180 @@
+﻿@using WEBPCTSV.Models.bean;
+@using WEBPCTSV.Helpers.Common;
+@{
+    ViewBag.Title = "Kết quả tìm kiếm thông tin";
+    Layout = "~/Views/Shared/ClientMaster.cshtml";
+}
+
+<div id="maincontent">
+    <div id="maincontent-section1">
+        <div class="maincontent-main listbox listbox-main">
+            <ol class="breadcrumb box-shadow">
+                <li><a href="~/">Trang chủ</a></li>
+                <li class="active">Kết quả tìm kiếm</li>
+            </ol>
+            <div class="listbox-content">
+                <h4>Kết quả tìm kiếm cho từ khóa: @ViewBag.searchString</h4>
+
+                @if (ViewBag.resultAnnoucements.Count != 0)
+                {
+                    <p class="categoryResult">Danh sách thông báo</p>
+                    foreach (News x in ViewBag.resultAnnoucements)
+                    {
+                        <div class="listbox-content-item-sub">
+                            <div class="col-xs-2">
+                                <img id="tbanh" src="@(StringExtension.IsNullOrWhiteSpace(x.Image) ? "/Images/logo.jpg" : x.Image)" />
+                            </div>
+                            <div class="col-xs-10">
+                                <div class="listbox-content-item-sub-title">
+                                    <a href="../ThongBao/ChiTiet?id=@x.IdNews" title="@x.Title">@(StringExtension.GetLimitSubString(x.Title, 20))</a>
+                                </div>
+                                <div class="listbox-content-item-moreinfo">
+                                    <span class="listbox-content-item-moreinfo-comment date"><i class="fa fa-calendar"></i> @x.CreatedDate.Day/@x.CreatedDate.Month/@x.CreatedDate.Year</span>
+                                </div>
+                                <p>
+                                    <span><a href="../ThongBao/ChiTiet?id=@x.IdNews">Xem tiếp</a></span>
+                                <p>
+                            </div>
+                        </div>
+                    }
+                }
+                @if (ViewBag.resultNewsScholarships.Count != 0)
+                {
+                    <p class="categoryResult">Danh sách tin học bổng</p>
+                    foreach (NewsScholarship x in ViewBag.resultNewsScholarships)
+                    {
+                        <div class="listbox-content-item-sub">
+                            <div class="col-xs-2">
+                                <img src="@(StringExtension.IsNullOrWhiteSpace(x.News.Image) ? "/Images/logo.jpg" : x.News.Image)" />
+                            </div>
+                            <div class="col-xs-10">
+                                <div class="listbox-content-item-sub-title">
+                                    <a href="../HocBong/ChiTiet?id=@x.IdNewsScholarship" title="@x.News.Title">@StringExtension.GetLimitSubString(x.News.Title, 20)</a>
+                                </div>
+
+                                <div class="listbox-content-item-moreinfo">
+                                    <span class="listbox-content-item-moreinfo-comment date"><i class="fa fa-calendar"></i> @x.News.CreatedDate.Day/@x.News.CreatedDate.Month/@x.News.CreatedDate.Year</span>
+                                    <span class="listbox-content-item-moreinfo-comment date"><i class="fa fa-mortar-board"></i> @x.Sponsor</span>
+                                </div>
+                                <p>
+                                    <span><a href="../HocBong/ChiTiet?id=@x.IdNewsScholarship">Xem tiếp</a></span>
+                                <p>
+                            </div>
+                        </div>
+                    }
+                }
+
+                @if (ViewBag.resultNewsJobs.Count != 0)
+                {
+                    <p class="categoryResult">Danh sách tuyển dụng</p>
+                    foreach (NewsJob x in ViewBag.resultNewsJobs)
+                    {
+                        <div class="listbox-content-item-sub">
+                            <div class="col-xs-2">
+                                <img src="@(StringExtension.IsNullOrWhiteSpace(x.News.Image)? "/Images/logo.jpg" : x.News.Image)" />
+                            </div>
+                            <div class="col-xs-10">
+                                <div class="listbox-content-item-sub-title">
+                                    <a href="../TuyenDung/ChiTiet?id=@x.IdNewsJob" title="@x.News.Title">@StringExtension.GetLimitSubString(x.News.Title, 20)</a>
+                                </div>
+
+                                <div class="listbox-content-item-moreinfo">
+                                    <span class="listbox-content-item-moreinfo-comment date"><i class="fa fa-calendar"></i> @x.News.CreatedDate.Day/@x.News.CreatedDate.Month/@x.News.CreatedDate.Year</span>
+                                </div>
+                                <p>
+                                    <span><a href="../TuyenDung/ChiTiet?id=@x.IdNewsJob">Xem tiếp</a></span>
+                                <p>
+                            </div>
+                        </div>
+                    }
+                }
+                @if (ViewBag.resultNewsEvents.Count != 0)
+                {
+                    <p class="categoryResult">Danh sách tin sự kiện</p>
+                    foreach (NewsEvent x in ViewBag.resultNewsEvents)
+                    {
+                        <div class="listbox-content-item">
+                            <div class="col-xs-2 event-item">
+                                <div class="icon-date">
+                                    <p class="icon-date-year">
+                                        @x.BeginDate.Value.Year
+                                    </p>
+                                    <p class="icon-date-date">
+                                        @x.BeginDate.Value.Day/@x.BeginDate.Value.Month
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-10">
+                                <div class="listbox-content-item-sub-title">
+                                    <a id="title" href="~/SuKien/ChiTiet?id=@x.IdNewsEvent" title="@x.News.Title">
+                                        <p>@StringExtension.GetLimitSubString(x.News.Title, 20)</p>
+                                    </a>
+
+                                </div>
+                                <div class="listbox-content-item-moreinfo">
+                                    <span class="listbox-content-item-moreinfo-comment date"><i class="fa fa-clock-o"></i> @x.EventTime </span>
+                                    <span class="listbox-content-item-moreinfo-comment date"><i class="fa fa-map-marker "></i> @x.EventVenue </span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                @if (ViewBag.documents.Count != 0)
+                {
+                    <p class="categoryResult">Danh sách văn bản - biểu mẫu</p>
+                    foreach (Document x in ViewBag.documents)
+                    {
+                        <div class="listbox-content-item-sub">
+                            <div class="col-xs-2">
+                                <img id="tbanh" src="~/assets/images/icon/PlaceholderDocument.png" />
+                            </div>
+                            <div class="col-xs-10">
+                                <div class="listbox-content-item-sub-title">
+                                    <a href="~/VanBanBieuMau/ChiTiet?id=@x.IdDocument" title="@x.News.Title">@StringExtension.GetLimitSubString(x.News.Title, 20)</a>
+                                </div>
+                                <div class="listbox-content-item-moreinfo">
+                                    @if (!string.IsNullOrEmpty(x.DocumentNumber))
+                                    {
+                                        <p class="listbox-content-item-moreinfo-comment date">
+                                            <span class="label label-default">@x.DocumentNumber</span>
+                                        </p>
+                                    }
+                                    <span class="listbox-content-item-moreinfo-comment date">
+                                        <i class="fa fa-calendar"></i> @x.News.CreatedDate.Day/@x.News.CreatedDate.Month/@x.News.CreatedDate.Year | @WEBPCTSV.Helpers.Define.typeDocument[x.News.Type]
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                @if (ViewBag.questions.Count != 0)
+                {
+                    <p class="categoryResult">Các câu hỏi tư vấn tìm thấy</p>
+                    foreach (Question x in ViewBag.questions)
+                    {
+                        <div class="listbox-content-item-sub">
+                            <div class="col-xs-2">
+                                <img id="tbanh" src="~/assets/images/icon/HelpIcon.png" />
+                            </div>
+                            <div class="col-xs-10">
+                                <div class="listbox-content-item-sub-title">
+                                    <a href="../TuVan/DanhSachCauHoi/ChiTiet?id=@x.IdQuestion" title="@x.Title">@StringExtension.GetLimitSubString(x.Title, 20)</a>
+                                </div>
+                                <div class="listbox-content-item-moreinfo">
+                                    <span class="listbox-content-item-moreinfo-comment date">@x.Field</span>
+                                </div>
+                                <p>
+                                    <span><a href="../TuVan/DanhSachCauHoi/ChiTiet?id=@x.IdQuestion">Xem tiếp</a></span>
+                                <p>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="maincontent-sidebar">
+            @Html.Action("TopNewsEvent", "NewsEvent", new { count = 5 })
+        </div>
+    </div>
+</div>

@@ -1,0 +1,163 @@
+﻿@using WEBPCTSV.Models.bean;
+@{
+    Layout = "~/Views/Shared/_LayoutManager.cshtml";
+    ViewBag.Title = "AddStudent";
+}
+
+<h3 class="header-paper">Thêm sinh viên</h3>
+
+<div class="container-layoutmanager">
+    <form class="form-horizontal" action="/ManageStudent/AddNewStudent" method="post">
+        <strong>Thông tin cơ bản:</strong>
+        <br />
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="lastname">Họ tên sinh viên:</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Họ và tên lót">
+            </div>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Tên">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="studentNumber">Mã số sinh viên:</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="studentNumber" id="studentNumber" placeholder="mã sinh viên gồm chữ số">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3">Giới tính:</label>
+            <div class="col-sm-6">
+                <label class="radio-inline"><input type="radio" name="sexRadio" value="Nam">Nam</label>
+                <label class="radio-inline"><input type="radio" name="sexRadio" value="Nữ">Nữ</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3">Chọn Khoa:</label>
+            <div class="col-sm-6">
+                <select name="selectFaculty" id="selectFaculty" onchange="ChangeSelectFaculty()" class="form-control">
+                    @foreach (Faculty faculty in ViewBag.listFaculty)
+                    {
+                        <option value="@faculty.IdFaculty">@faculty.FacultyName</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3">Chọn Khóa:</label>
+            <div class="col-sm-6">
+                <select name="selectCourse" id="selectCourse" onchange="ChangeSelectCourse()" class="form-control">
+                    @foreach (Course course in ViewBag.listCourse)
+                    {
+                        <option value="@course.IdCourse">@course.CouseName</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3">Chọn Lớp:</label>
+            <div id="divClass" class="col-sm-6">
+            </div>
+        </div>
+
+
+        <hr />
+
+        <strong>Thông tin bổ sung:</strong>
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="studentNumber">Số điện thoại:</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="mobilePhoneNumber" id="mobilePhoneNumber" placeholder=" Di dộng ">
+                <br />
+                <input type="text" class="form-control" name="landlinePhoneNumber" id="landlinePhoneNumber" placeholder=" Cố định ">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="email">Email:</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="email" id="email" placeholder="vd: abc@xyz.com ">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="state">Quốc tịch:</label>
+            <div class="col-sm-6">
+                <select name="selectState" class="form-control">
+                    @foreach (State state in ViewBag.listState)
+                    {
+                        <option value="@state.IdState">@state.StateName</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="identityCardNumber">Số CMND:</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" name="identityCardNumber" id="identityCardNumber" placeholder="vd: 12345678532 ">
+            </div>
+            <label class="control-label col-sm-2" for="identityCardDate">Ngày cấp:</label>
+            <div class="col-sm-2">
+                <input type="date" class="form-control" name="identityCardDate" id="identityCardDate"  placeholder=" dd/MM/yyyy ">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="identityCardPlace">Nơi Cấp:</label>
+            <div class="col-sm-6">
+                <select name="identityCardPlace" class="form-control">
+                    <option value="">Chọn tỉnh nơi cấp </option>
+                    @foreach (Province province in ViewBag.listProvince)
+                    {
+                        <option value="@province.IdProvince">@province.ProvinceName</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <br />
+        <div class="form-group">
+            <label class="control-label col-sm-3">
+                <input type="submit" value="Thêm sinh viên" class="btn btn-success control-label" />
+            </label>
+            <div class="col-sm-6" style="padding-top:7px">
+                <input type="reset" value="reset" class="btn btn-warning" />
+            </div>
+        </div>
+
+    </form>
+</div>
+<script>
+    function ChangeSelectFaculty() {
+        var idFaculty = $("#selectFaculty").val();
+        var idCourst = $("#selectCourse").val();
+        $.ajax({
+            url: "/ManageStudent/GetListClass",
+            type: "post",
+            data: { 'idFaculty': idFaculty, 'idCourse': idCourst },
+            success: function (result) {
+                $("#divClass").html(result);
+            }
+        });
+    }
+
+    function ChangeSelectCourse() {
+        var idFaculty = $("#selectFaculty").val();
+        var idCourst = $("#selectCourse").val();
+        $.ajax({
+            url: "/ManageStudent/GetListClass",
+            type: "post",
+            data: { 'idFaculty': idFaculty, 'idCourse': idCourst },
+            success: function (result) {
+                $("#divClass").html(result);
+            }
+        });
+    }
+</script>

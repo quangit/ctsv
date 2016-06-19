@@ -1,0 +1,136 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutManager.cshtml";
+    ViewBag.Title = "ImportStudent";
+}
+<link rel="stylesheet" href="~/css/circle.css">
+<h3 class="header-paper">Thêm dữ liệu sinh viên</h3>
+<div align="center">
+    <div>
+        <div id="importFile" class="btn btn-default image-preview-input ">
+            <span class="glyphicon glyphicon-open"></span>
+            <span class="image-preview-input-title">Import file Excel</span>
+            <input id="fileInput" type="file" accept="" onchange="UploadFile('fileInput', 'progressBar', 'progressBarNumber')" name="input-file-preview" /> <!-- rename it -->
+        </div>
+
+        <div id="progress" style="width:120px;margin-top:20px;visibility:hidden">
+            <div id="progressBar" class="c100 p0 green">
+                <span id="progressBarNumber">0%</span>
+                <div class="slice">
+                    <div class="bar"></div>
+                    <div class="fill"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="loaddingProgress" style="margin-top:150px;width:300px;visibility:hidden">
+            <div class="animation-3">
+                <div class="cube">
+                    <div class="face face1"></div>
+                    <div class="face face2"></div>
+                    <div class="face face3"></div>
+                    <div class="face face4"></div>
+                    <div class="face face5"></div>
+                    <div class="face face6"></div>
+                </div>
+            </div>
+            <strong id="noteProgress"> Đang upload! </strong>
+        </div>
+
+        <button id="buttonComplete" onclick="ResetPercentProgress()" style="visibility:hidden" class="btn btn-success"> Hoàn thành !</button>
+
+
+
+
+        <hr style="clear:both" />
+    </div>
+</div>
+<div id="info-xuly"></div>
+<script>
+
+    function ResetPercentProgress() {
+        $.ajax({
+            url: "/ManageStudent/ResetPercentProgress",
+            type: "post",
+            success: function (result) {
+                location.reload();
+            }
+        });
+    }
+
+    var oldclass = "p0";
+    function UploadFile(elementfile, proccessBar, progressBarNumber) {
+        document.getElementById("importFile").style.visibility = "hidden";
+        document.getElementById("progress").style.visibility = "visible";
+        document.getElementById("loaddingProgress").style.visibility = "visible";
+
+        
+        var percentValue = "0%";
+        var fileInput = document.getElementById(elementfile);
+        var proccess = document.getElementById(proccessBar);
+        proccess.classList.remove("green");
+        var proccessNumber = document.getElementById(progressBarNumber);
+        var formdata = new FormData();
+        for (i = 0; i < fileInput.files.length; i++) {
+            formdata.append(fileInput.files[i].name, fileInput.files[i]);
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/File/UploadExcel');
+        xhr.upload.onprogress = function (e) {
+            if (e.lengthComputable) {
+                var percentValue = parseInt(e.loaded / e.total * 100);
+                //proccess.innerHTML = percentValue;
+                proccessNumber.innerHTML = percentValue + "%";
+                proccess.classList.remove(oldclass);
+                oldclass = "p" + percentValue;
+
+                proccess.classList.add(oldclass);
+                if (percentValue == 100) {
+                    proccess.classList.add("green");
+                }
+                //bar.setAttribute('style', 'width: ' + percentValue);
+            }
+        };
+        xhr.onload = function () {
+            if (this.status == 200) {
+            };
+        };
+        xhr.send(formdata);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                
+            }
+        }
+        return false;
+    }
+
+
+
+    if (typeof (Worker) !== "undefined") {
+        // Trình duyệt hỗ trợ Web worker!
+        // Viết tiếp các mã javascript
+        var worker = new Worker("/js/ProgressWebworker.js");
+        worker.onmessage = function (event) {
+            document.getElementById("info-xuly").innerHTML = event.data;
+            if (event.data == 100) {
+                document.getElementById("buttonComplete").style.visibility = "visible";
+                document.getElementById("progress").style.visibility = "hidden";
+                document.getElementById("loaddingProgress").style.visibility = "hidden";
+            }
+            else
+            if (event.data != 0) {
+                document.getElementById("importFile").style.visibility = "hidden";
+                document.getElementById("progress").style.visibility = "visible";
+                document.getElementById("loaddingProgress").style.visibility = "visible";
+                document.getElementById("noteProgress").innerHTML = "Đang xữ lý !";  
+                document.getElementById("progressBarNumber").innerHTML = event.data + "%";
+                document.getElementById("progressBar").classList.remove(oldclass);
+                oldclass = "p" + event.data;
+                document.getElementById("progressBar").classList.add(oldclass);
+            }
+        };
+    } else {
+        // Rất tiếc! Trình duyệt không hỗ trợ Web Worker..
+    }
+</script>
+

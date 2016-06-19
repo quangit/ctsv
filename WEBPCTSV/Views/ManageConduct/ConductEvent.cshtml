@@ -1,0 +1,112 @@
+﻿@using WEBPCTSV.Models.bean;
+
+@{
+    Layout = "~/Views/Shared/_LayoutManager.cshtml";
+}
+<ol class="breadcrumb box-shadow">
+    <li><a href="TrangChu">Trang chủ</a></li>
+    <li><a href="/QuanLy/QuanLyRenLuyen">Quản lý điểm rèn luyện</a></li>
+    <li class="active">Đợt đánh giá</li>
+</ol>
+<div class="main-content">
+    <div class="funtion-block">
+        <a class="btn btn-md btn-success" href="/QuanLy/QuanLyRenLuyen/DotXetRenLuyen/Them">
+            <i class="fa fa-plus-square"></i> Thêm mới
+        </a>
+    </div>
+    <hr />
+    <div class="alert-result">
+        @if (TempData["success"] != null)
+        {
+            <div class="alert alert-success">
+                @((string)TempData["success"])
+            </div>
+        }
+        @if (TempData["error"] != null)
+        {
+            <div class="alert alert-danger">
+                @((string)TempData["error"])
+            </div>
+        }
+    </div>
+    <div id="tbnoidung">
+        <table class="table table-hover">
+            <thead class="thead-default">
+                <tr>
+                    <th class="table-index">
+                        STT
+                    </th>
+                    <th>
+                        Đợt đánh giá
+                    </th>
+                    <th>
+                        Học kỳ
+                    </th>
+                    <th>
+                        Năm học
+                    </th>
+                    <th>
+                        Mẫu xét
+                    </th>
+                    <th width="90px">
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{int index = 0;}
+                @foreach (ConductEvent conductEvent in ViewBag.conductEvents)
+                {
+                    <tr>
+                        <td>@(++index)</td>
+                        <td>Đánh giá rèn luyện năm @conductEvent.Semester.Year.YearName</td>
+                        <td>@conductEvent.Semester.SemesterYear.SemesterYearName</td>
+                        <td>@conductEvent.Semester.Year.YearName</td>
+                        <td>@conductEvent.ConductForm.Name</td>
+                        <td>
+                            <a href="DotXetRenLuyen/CapNhat?id=@conductEvent.IdConductEvent" data-tooltip="true" title="Chỉnh sửa" class="btn btn-warning btn-sm">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                            <div onclick="confirmDeleteEvent(@conductEvent.IdConductEvent)" title="Xóa" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@* This is section of scripts *@
+<script>
+    function confirmDeleteEvent(id) {
+        content = '<p>Việc xóa đợt xét kết quả rèn luyện sẽ làm mất thông tin kết quả sinh viên đã đánh giá trong đợt đánh giá!<br />'
+                    + 'Bạn có chắc muốn xóa đợt đánh giá  này không ?</p>';
+        $('#modal-announcement .modal-dialog .modal-content .modal-footer').html('<button type="button" onclick="deleteEvent('+id+')" class="btn btn-danger">Xác nhận</button>  <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
+        $('.modal-announcement-message').html(content);
+        $('#modal-announcement').appendTo('body').modal("show");
+    }
+
+    function deleteEvent(id) {
+        $.ajax({
+            type: 'POST',
+            data: {
+                idConductEvent: id
+            },
+            url: '/QuanLy/QuanLyRenLuyen/DotXetRenLuyen/Xoa',
+            success: function(response) {
+                if (response.success == true) {
+                    location.reload();
+                } else {
+                    oldHtml = $('.modal-announcement-message').html();
+                    $('.modal-announcement-message').html('<div class="alert alert-danger">' + response.responseText + '</div>' + oldHtml);
+                    $('.modal-announcement-message').fadeIn();
+                }
+            },
+            error: function (response) {
+                oldHtml = $('.modal-announcement-message').html();
+                $('.modal-announcement-message').html('<div class="alert alert-danger">Lỗi cập nhật dữ liệu!</div>' + oldHtml);
+                $('.modal-announcement-message').fadeIn();
+            }
+        });
+    }
+</script>

@@ -1,0 +1,539 @@
+﻿@using WEBPCTSV.Models.bean;
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/assets/css/normalize.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
+    <link href="/assets/css/jquery.mmenu.all.css" type="text/css" rel="stylesheet" />
+    <script src="/assets/js/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-77162536-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    @{
+        AccountSession account = (AccountSession)Session["AccountSession"];
+    }
+    <div id="page">
+        <div id="wrapper-header">
+            <div id="header" class="container">
+                <div id="header-logo">
+                    <a href="/">
+                        <div id="header-logo-img">
+                        </div>
+                        <div id="header-logo-infologo">
+                            <h3>PHÒNG CÔNG TÁC SINH VIÊN</h3>
+                            <p>Department of Student Affairs</p>
+                        </div>
+                    </a>
+                </div>
+                <div id="header-nav">
+                    <div id="header-nav-sub">
+                        <span class="label label-primary label-link" onclick="doConduct(@(account !=null?"true":"false"))">Đánh giá rèn luyện</span>
+                        @*<a href="http://dut.udn.vn/index.php?option=com_content&amp;view=article&amp;id=1259&amp;Itemid=269">Đảng ủy</a>*@
+                        <a href="http://congdoan.dut.udn.vn/">Công đoàn</a>
+                        <a href="http://ktx.dut.udn.vn:8080">Ký túc xá</a>
+                        @if (account != null)
+                        {
+                            <span class="dropdown">
+                                <span class="dropdown-toggle label-link" data-toggle="dropdown" aria-expanded="false">
+                                    @(account.FullName)(@account.UserName)
+                                    <span class="caret"></span>
+                                </span>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/QuanLy/ThongTin">Trang quản lý</a></li>
+                                    <li><a href="/Logout">Đăng xuất</a></li>
+                                </ul>
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="label-link label-hover" id="header-nav-sub-login">Đăng nhập</span>
+                        }
+                        <i id="header-nav-sub-search" class="label-link fa fa-search"></i>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div id="header-nav-main">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown">GIỚI THIỆU</a>
+                                <ul class="dropdown-menu menumarchil">
+                                    <li><a href="/GioiThieu/ChucNangNhiemVu">Chức năng nhiệm vụ</a></li>
+                                    <li><a href="/GioiThieu/PhanCongNhiemVu">Danh sách cán bộ</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown">THÔNG TIN</a>
+                                <ul class="dropdown-menu menumarchil">
+                                    <li><a href="/ThongBao">Thông báo</a></li>
+                                    <li><a href="/SuKien">Sự kiện</a></li>
+                                    <li><a href="/HocBong">Học bổng</a></li>
+                                    <li><a href="/TuyenDung">Tuyển dụng</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown">VĂN BẢN BIỂU MẪU</a>
+                                <ul class="dropdown-menu menumarchil">
+                                    <li><a href="~/VanBanBieuMau?type=VanBan">Văn bản</a></li>
+                                    <li><a href="~/VanBanBieuMau?type=BieuMau">Biểu mẫu</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown">SINH VIÊN</a>
+                                <ul class="dropdown-menu menumarchil">
+                                    <li><a href="~/DanhGiaRenLuyen">Đánh giá rèn luyện</a></li>
+                                    <li><a href="~/TuVan/DanhSachCauHoi">Hỏi đáp</a></li>
+                                    <li><a href="~/GiaoDucPhapLuat">Giáo dục pháp luật</a></li>
+                                    <li><a href="~/YTeHocDuong">Y tế học đường</a></li>
+                                    <li><a href="~/HTSV-QHDN">HTSV & QHDN</a></li>
+                                    <li><a href="http://dut.udn.vn/index.php?option=com_content&view=article&id=1446&Itemid=269">Cựu sinh viên</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown">CÔNG TÁC GVCN</a>
+                                <ul class="dropdown-menu menumarchil">
+                                    <li><a href="~/CongTac/DanhSachGVCN">Danh sách giảng viên chủ nhiệm</a></li>
+                                    <li><a href="~/CongTac/HoatDongGVCN">Hoạt động giảng viên chủ nhiệm</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @RenderBody()
+
+        <div id="footer">
+            <div id="footer-content">
+                <div class="container">
+                    <div id="footer-content-nav">
+                        <div id="footer-content-nav-brand">
+                            <h4><a href="/">PHÒNG CÔNG TÁC SINH VIÊN</a></h4>
+                        </div>
+                        <div id="footer-content-nav-links">
+                            <a href="/">TRANG CHỦ</a>
+                            <a href="#">LIÊN HỆ</a>
+                            <a href="#">LÊN ĐẦU TRANG</a>
+                        </div>
+                    </div>
+                    <div id="footer-content-links">
+                        <div class="links-group contact">
+                            <h4>LIÊN HỆ</h4>
+                            <p>Trường Đại học Bách khoa - Đại học Đà Nẵng.</p>
+                            <p>Địa chỉ: 54 - Nguyễn Lương Bằng - Đà Nẵng.</p>
+                            <p>Tel: 0511.3738.268</p>
+                            <p>Email: ctsv.dhbk@dut.udn.vn</p>
+                        </div>
+                        <div class="links-group links">
+                            <h4>LIÊN KẾT</h4>
+                            <a>Đại Học Bách Khoa</a><br />
+                            <a>Đại Học Đà Nẵng</a><br />
+                            <a>Trang Đào Tạo</a><br />
+                            <a>Hệ thống trang tín chỉ</a><br />
+                            <a>Đoàn Trường Bách Khoa</a>
+                        </div>
+                        <div class="links-group connectus">
+                            <h4>KẾT NỐI</h4>
+                            <p>Đăng ký để nhận các thông báo và tin tức mới nhất từ Phòng Công Tác Sinh Viên qua mail</p>
+                            <form id="fSubscribe" class="input-group" name="fSubscribe" novalidate="novalidate">
+                                <input type="email" name="email" id="email" class="form-control" placeholder="Nhập địa chỉ mail của bạn">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-important"><i class="fa fa-envelope-o"></i> <span>Đăng ký ngay !!!</span></button>
+                                </span>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="footer-copyright">
+                <div class="container">
+                    <p><span id="footer-copyright-university">Bản quyền trường Đại Học Bách Khoa Đà Nẵng 2016</span><span id="footer-copyright-statisfics">Lượt truy cập: <strong>@HttpContext.Current.Application["Visitors"].ToString()</strong> Trực tuyến: <strong>@HttpContext.Current.Application["OnlineVisitors"].ToString()</strong></span></p>
+                </div>
+            </div>
+        </div>
+        <nav id="my-menu">
+            <ul>
+                <li class="Selected"><a href="/">Trang chủ</a></li>
+                @if (account != null)
+                {
+                    <li>
+                        <a>@(account.FullName)(@account.UserName)</a>
+                        <ul>
+                            <li><a href="/QuanLy/ThongTin">Trang quản lý</a></li>
+                            <li><a href="/Logout">Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li class="Selected"><a href="/Login">Đăng nhập</a></li>
+                }
+                <li>
+                    <a>GIỚI THIỆU</a>
+                    <ul>
+                        <li><a href="/GioiThieu/ChucNangNhiemVu">Chức năng nhiệm vụ</a></li>
+                        <li><a href="/GioiThieu/PhanCongNhiemVu">Danh sách cán bộ</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a>THÔNG TIN</a>
+                    <ul>
+                        <li><a href="/ThongBao">Thông báo</a></li>
+                        <li><a href="/SuKien">Sự kiện</a></li>
+                        <li><a href="/HocBong">Học bổng</a></li>
+                        <li><a href="/TuyenDung">Tuyển dụng</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a>VĂN BẢN BIỂU MẪU</a>
+                    <ul>
+                        <li><a href="~/VanBanBieuMau?type=VanBan">Văn bản</a></li>
+                        <li><a href="~/VanBanBieuMau?type=BieuMau">Biểu mẫu</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a>SINH VIÊN</a>
+                    <ul>
+                        <li><a href="~/DanhGiaRenLuyen">Đánh giá rèn luyện</a></li>
+                        <li><a href="~/TuVan/DanhSachCauHoi">Hỏi đáp</a></li>
+                        <li><a href="~/GiaoDucPhapLuat">Giáo dục pháp luật</a></li>
+                        <li><a href="~/YTeHocDuong">Y tế học đường</a></li>
+                        <li><a href="~/HTSV-QHDN">HTSV & QHDN</a></li>
+                        <li><a href="~/CuuSinhVien">Cựu sinh viên</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a>CÔNG TÁC GVCN</a>
+                    <ul>
+                        <li><a href="/CongTac/DanhSachGVCN">Danh sách giảng viên chủ nhiệm</a></li>
+                        <li><a href="/CongTac/HoatDongGVCN">Hoạt động giảng viên chủ nhiệm</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a>HỎI ĐÁP</a>
+                    <ul>
+                        <li><a href="/TuVan/DanhSachCauHoi">Danh sách câu hỏi</a></li>
+                        <li><a href="/TuVan/CauHoiThuongGap">Câu hỏi thường gặp</a></li>
+                        <li><a href="/TuVan/DatCauHoi">Đặt câu hỏi</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="navbar-slide Fixed">
+            <ul class="nav navbar-nav">
+                <li class="navbar-slide-show">
+                    <a href="#my-menu"><i class="fa fa-bars"></i></a>
+                </li>
+                <li class="navbar-slide-show navbar-right" id="btn-search">
+                    <a><i class="fa fa-search"></i></a>
+                </li>
+                <li class="navbar-brand">
+                    <span>PHÒNG CÔNG TÁC SINH VIÊN</span>
+                </li>
+                <li class="navbar-slide-logo">
+                    <div class="header-slice-logo-img">
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">GIỚI THIỆU</a>
+                    <ul class="dropdown-menu menumarchil">
+                        <li><a href="/GioiThieu/ChucNangNhiemVu">Chức năng nhiệm vụ</a></li>
+                        <li><a href="/GioiThieu/PhanCongNhiemVu">Danh sách cán bộ</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">THÔNG TIN</a>
+                    <ul class="dropdown-menu menumarchil">
+                        <li><a href="/ThongBao">Thông báo</a></li>
+                        <li><a href="/SuKien">Sự kiện</a></li>
+                        <li><a href="/HocBong">Học bổng</a></li>
+                        <li><a href="/TuyenDung">Tuyển dụng</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">VĂN BẢN BIỂU MẪU</a>
+                    <ul class="dropdown-menu menumarchil">
+                        <li><a href="~/VanBanBieuMau?type=VanBan">Văn bản</a></li>
+                        <li><a href="~/VanBanBieuMau?type=BieuMau">Biểu mẫu</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">SINH VIÊN</a>
+                    <ul class="dropdown-menu menumarchil">
+                        <li><a href="~/DanhGiaRenLuyen">Đánh giá rèn luyện</a></li>
+                        <li><a href="~/GiaoDucPhapLuat">Giáo dục pháp luật</a></li>
+                        <li><a href="~/YTeHocDuong">Y tế học đường</a></li>
+                        <li><a href="~/HTSV-QHDN">HTSV & QHDN</a></li>
+                        <li><a href="http://dut.udn.vn/index.php?option=com_content&view=article&id=1446&Itemid=269">Cựu sinh viên</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">CÔNG TÁC GVCN</a>
+                    <ul class="dropdown-menu menumarchil">
+                        <li><a href="/CongTac/DanhSachGVCN">Danh sách giảng viên chủ nhiệm</a></li>
+                        <li><a href="/CongTac/HoatDongGVCN">Hoạt động giảng viên chủ nhiệm</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">HỎI ĐÁP</a>
+                    <ul class="dropdown-menu menumarchil">
+                        <li><a href="/TuVan/DanhSachCauHoi">Danh sách câu hỏi</a></li>
+                        <li><a href="/TuVan/CauHoiThuongGap">Câu hỏi thường gặp</a></li>
+                        <li><a href="/TuVan/DatCauHoi">Đặt câu hỏi</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="search-area">
+            <div class="search-area-div">
+                <div class="search-area-div-form">
+                    <form action="/TimKiem/KetQuaTimKiem" method="get">
+                        <input class="search-box" type="text" placeholder="Search" name="txtFind" id="txtFind" />
+                    </form>
+                </div>
+            </div>
+            <div class="search-area-background" style="display:none;">
+            </div>
+        </div>
+        <div id="modal-login" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    @Html.Partial("~/Views/PartialViews/PartialLoadingIcon.cshtml")
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Đăng nhập hệ thống</h4>
+                    </div>
+                    <form id="fLoginAjax" method="post">
+                        <div class="modal-body">
+                            <div class="modal-message">
+                            </div>
+                            <div class="form-group">
+                                <label>Tên đăng nhập </label>
+                                <input type="text" name="userName" class="form-control" placeholder="Tên đăng nhập" />
+                            </div>
+                            <div class="form-group">
+                                <label>Mật khẩu </label>
+                                <input type="password" name="password" class="form-control" placeholder="Mật  khẩu" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="modal-login-submit" class="btn btn-success" type="button"><i class="fa fa-sign-in" aria-hidden="true"></i> Đăng nhập</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="modal-announcement" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="alert cssload-container-over" style="display:none;"></div>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">THÔNG BÁO</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-announcement-message">
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* This is section of scripts *@
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/jquery.mmenu.min.all.js"></script>
+    <script src="/assets/js/jquery.mmenu.fixedelements.min.js" type="text/javascript"></script>
+    <script src="~/js/jquery.validate.js" type="text/javascript"></script>
+    <script src="~/assets/js/clientmaster.min.js" type="text/javascript"></script>
+
+    @*<script type="text/javascript">
+        prevurl = "";
+        $(document).ready(function () {
+            // Hover to show dropdown in bootstrap
+            $('ul.nav li.dropdown').hover(function () {
+                $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(200);
+            }, function () {
+                $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(200);
+            });
+            $(function () {
+                $(window).scroll(function () {
+                    // set distance user needs to scroll before we fadeIn navbar
+                    if ($(this).scrollTop() > $('#wrapper-header').height() + 60) {
+                        $('.navbar-slide').addClass('navbar-show');
+                    } else if ($('#wrapper-header').css('display') != 'none') {
+                        $('.navbar-slide').removeClass('navbar-show');
+                    }
+                });
+
+            });
+            //set menu slide side
+            $('#my-menu').mmenu();
+
+            // Show search bar
+            $('.search-area-background').click(function () {
+                $('.search-area > div').removeClass('search-show');
+                $(this).fadeOut();
+                $('#btn-search i').removeClass('fa-remove');
+                $('#btn-search i').addClass('fa-search');
+                $('#header-nav-sub-search').removeClass('fa-remove');
+                $('#header-nav-sub-search').addClass('fa-search');
+            });
+
+            $('#header-nav-sub-search, #btn-search').click(function () {
+                if ($('.search-area-background').css('display') == 'none') {
+                    $('.search-area-background').fadeIn();
+                    $('.search-area > div').addClass('search-show');
+                    $('#header-nav-sub-search').removeClass('fa-search');
+                    $('#header-nav-sub-search').addClass('fa-remove');
+                    $('#btn-search i').removeClass('fa-search');
+                    $('#btn-search i').addClass('fa-remove');
+                } else {
+                    $('.search-area-background').fadeOut();
+                    $('.search-area > div').removeClass('search-show');
+                    $('#header-nav-sub-search').removeClass('fa-remove');
+                    $('#header-nav-sub-search').addClass('fa-search');
+                    $('#btn-search i').removeClass('fa-remove');
+                    $('#btn-search i').addClass('fa-search');
+                }
+            });
+            $('#header-nav-sub-login').click(function () {
+                $('#modal-login').modal("show");
+            });
+            $('#modal-login-submit').click(function () {
+                doLogin(prevurl);
+            });
+
+            $('#modal-login input').keypress(function (e) {
+                // Prevent submit form by enter button
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                    doLogin(prevurl);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        function doConduct(isLogged) {
+            if (isLogged) {
+                location.href = '../DanhGiaRenLuyen';
+            } else {
+                prevurl = "../DanhGiaRenLuyen";
+                $('#modal-login').modal("show");
+            }
+        }
+
+        function loadIconLoading(element) {
+            // Load icon when do ajax request
+            element.html('<div class="cssload-spin-box"></div>');
+        }
+        function unloadIconLoading(element) {
+            // Load icon when do ajax request
+            element.html('');
+        }
+        function doLogin(prevurl) {
+            $.ajax({
+                type: 'POST',
+                data: $('#fLoginAjax').serialize(),
+                url: '../Account/LoginAjax',
+                beforeSend: function () {
+                    $('.modal-message').fadeOut();
+                    $('.modal-message').html("");
+                    $('.cssload-container').fadeIn();
+                    loadIconLoading($('.cssload-container'));
+                },
+                success: function (response) {
+                    if (response.success == true) {
+                        typeAlert = 'alert-success';
+                        if (prevurl != "")
+                            location.href = prevurl;
+                        else {
+                            location.reload();
+                        }
+                    } else {
+                        typeAlert = 'alert-danger';
+                        $.when($('.cssload-container').fadeOut()).then(function () {
+                            $('.modal-message').html('<div class="alert ' + typeAlert + '">' + response.responseText + '</div>')
+                            $('.modal-message').fadeIn();
+                        });
+                    }
+                },
+                error: function (response) {
+                    $('.modal-message').html('<div class="alert alert-danger">Lỗi trong quá trình lấy dữ liệu!</div>')
+                    $('.cssload-container').fadeOut();
+                    $('.modal-message').fadeIn();
+                }
+            });
+        }
+    </script>*@
+
+
+    @*<script type="text/javascript">
+        $(document)
+                .ready(
+                        function () {
+                            $("#fSubscribe")
+                                    .validate(
+                                            {
+                                                rules: {
+                                                    email: {
+                                                        required: true,
+                                                        email: true
+                                                    }
+                                                },
+                                                messages: {
+                                                    email: {
+                                                        required: "Chưa nhập địa chỉ email!",
+                                                        email: "Nhập sai định dạng địa chỉ email!"
+                                                    }
+                                                },
+
+                                                submitHandler: function (form) {
+                                                    subscribe();
+                                                }
+                                            });
+                        });
+        function subscribe() {
+            $.ajax({
+                url: "../Account/Subscrible",
+                type: "post",
+                dateType: "text",
+                data: {
+                    mail: $('#email').val()
+                },
+                success: function (result) {
+                    $('.modal-announcement-message').html(result);
+                    $('#modal-announcement').modal('show');
+                },
+                error: function (result) {
+                    $('.modal-announcement-message').html('Lỗi trong quá trình gửi dữ liệu!');
+                    $('#modal-announcement').modal('show');
+                }
+            });
+        }
+    </script>*@
+</body>
+</html>

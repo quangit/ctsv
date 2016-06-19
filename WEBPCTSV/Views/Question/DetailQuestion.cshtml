@@ -1,0 +1,62 @@
+﻿@using WEBPCTSV.Models.bean;
+@model Question
+
+@{
+    ViewBag.Title = "Chi tiết câu hỏi";
+    Layout = "~/Views/Shared/ClientMaster.cshtml";
+    <link rel="stylesheet" href="~/css/style-metro.css">
+}
+
+<div id="maincontent">
+    <div id="maincontent-section1">
+        <div class="maincontent-main listbox listbox-main">
+            <div class="listbox-content">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="portlet box blue">
+                            <div class="portlet-title">
+                                <div class="caption"></div>
+                                <div id="action-bar" class="actions">
+                                    <a href="javascript:window.history.back();" class="btn default btn-sm btn-prev yellow-stripe">
+                                        <i class="fa fa-angle-left"></i>
+                                        <span class="hidden-480">
+                                            Quay lại
+                                        </span>
+                                    </a>
+                                    <a href="~/TuVan/DatCauHoi" class="btn btn-sm green" style="padding: 5px 8px"><i class="fa fa-plus"></i> Thêm câu hỏi</a>
+                                    <a href="~/TuVan/DanhSachCauHoi" class="btn btn-sm red" style="padding: 5px 5px">
+                                        <i class="fa fa-bullhorn"></i>
+                                        Tất cả câu hỏi
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <h2>Phản hồi của tư vấn viên</h2>
+                                <hr />
+                                <div class="form-body">
+                                    <div class="cauhoi">
+                                        <img id="iconRequest" src="~/images/hoi.png" />
+                                        <div id="contentRequest">@Model.ContentHtml</div>
+                                        <div style="clear: both"></div>
+                                    </div>
+                                    <div class="traloi">
+                                        <div id="contentResponse">
+                                            @Html.Raw(HttpUtility.HtmlDecode(Model.Reply))
+                                        </div>
+                                        <img id="iconResponse" src="~/images/dap.png" />
+                                        <div style="clear: both"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="maincontent-sidebar">
+            @Html.Action("RandomQuestion", "Question", new { count = 5 })
+        </div>
+    </div>
+</div>

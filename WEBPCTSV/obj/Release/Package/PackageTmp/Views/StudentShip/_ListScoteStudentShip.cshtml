@@ -1,0 +1,73 @@
+﻿@model List<LearningOutCome>
+@using WEBPCTSV.Models.bean;
+
+<div>
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Tên sinh viên</th>
+                <th>Lớp</th>
+                <th>Số TC ĐK</th>
+                <th>Số TCHL</th>
+                <th>Số TCKĐ</th>
+                <th>Điểm hệ 10</th>
+                <th>Điểm RL</th>
+                <th>Điểm TBHB</th>
+                <th>Điểm cộng</th>
+                <th>Điểm xét HB</th>
+                <th>Xếp loại</th>
+                <th>Mức học bổng</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int stt = 1;
+            }
+            @foreach (LearningOutCome learningOutCome in Model)
+            {
+                <tr>
+                    <td align="center">@stt</td>
+                    <td>@(learningOutCome.Student.LastNameStudent + " " + learningOutCome.Student.FirstNameStudent)</td>
+                    <td>@learningOutCome.Student.Class.ClassName</td>
+                    <td align="center">@learningOutCome.CreditsNumber.</td>
+                    <td align="center">@learningOutCome.RelearnCreditsNumber</td>
+                    <td align="center">@learningOutCome.CreditNumberUnQualified</td>
+                    <td align="center">@learningOutCome.Points10Scale</td>
+
+                    <td align="center">@learningOutCome.PointTraining</td>
+                    <td align="center">@learningOutCome.PointsAverageShipSchool</td>
+                    <td align="center"></td>
+                    <td align="center">@learningOutCome.PointsShipSchool</td>
+                    <td align="center">@learningOutCome.RankingAcademic.NameRankingAcademic</td>
+                    <td align="center">@WEBPCTSV.Models.Support.ConvertObject.ConvertCurrency(learningOutCome.RankingAcademic.MoneyStudentShip) vnđ</td>
+                    <td align="center">
+                        @if (learningOutCome.isAcceptConsider)
+                        {
+                            <button id="btn_@learningOutCome.IdLearningOutComes" class="btn btn-danger" ng-click="UpdateIsAcceptConsider('@learningOutCome.IdLearningOutComes','btn_@learningOutCome.IdLearningOutComes')" data-toggle="tooltip" title="Hủy xác nhận đạt yêu cầu xét học bổng!">Hủy Xác nhận</button>
+                        }
+                        else
+                        {
+                            <button id="btn_@learningOutCome.IdLearningOutComes" class="btn btn-default" ng-click="UpdateIsAcceptConsider('@learningOutCome.IdLearningOutComes','btn_@learningOutCome.IdLearningOutComes')" data-toggle="tooltip" title="Xác nhân đạt yêu cầu xét học bổng!">Xác nhận</button>
+                        }
+                    </td>
+                    <td align="center">
+                        @if (learningOutCome.isDisEnableConsider)
+                        {
+                            <button id="btn2_@learningOutCome.IdLearningOutComes" class="btn btn-danger" ng-click="UpdateIsDisEnableConsider('@learningOutCome.IdLearningOutComes','btn2_@learningOutCome.IdLearningOutComes')" data-toggle="tooltip" title="Đưa vào danh sách xét học bổng!"> Cho phép </button>
+                        }
+                        else
+                        {
+                            <button id="btn2_@learningOutCome.IdLearningOutComes" class="btn btn-default" ng-click="UpdateIsDisEnableConsider('@learningOutCome.IdLearningOutComes','btn2_@learningOutCome.IdLearningOutComes')" data-toggle="tooltip" title="Loại khỏi danh sách xét học bổng!">Loại</button>
+                        }
+                        
+                    </td>
+                </tr>
+                stt = stt + 1;
+            }
+        </tbody>
+    </table>
+
+</div>

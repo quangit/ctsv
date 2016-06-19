@@ -1,0 +1,51 @@
+﻿@using WEBPCTSV.Models.bean;
+@using PagedList.Mvc;
+@using WEBPCTSV.Helpers.Common;
+@model PagedList.IPagedList<Question>
+
+@{
+    ViewBag.Title = "Câu hỏi thường gặp";
+    Layout = "~/Views/Shared/ClientMaster.cshtml";
+}
+
+<div id="maincontent">
+    <div id="maincontent-section1">
+        <div class="maincontent-main listbox listbox-main">
+            <ol class="breadcrumb box-shadow">
+                <li><a href="~/">Trang chủ</a></li>
+                <li><a href="#">FAQs</a></li>
+                <li class="active">Câu hỏi thường gặp</li>
+                <a href="/TuVan/DatCauHoi" class="btn btn-danger btn-sm btn-request-question"><i class="fa fa-plus"></i> Thêm câu hỏi</a>
+            </ol>
+            <div class="listbox-content">
+                @foreach (var x in Model)
+                {
+                    <div class="listbox-content-item-sub">
+                        <div class="col-xs-2">
+                            <img id="tbanh" src="~/assets/images/icon/HelpIcon.png" />
+                        </div>
+                        <div class="col-xs-10">
+                            <div class="listbox-content-item-sub-title">
+                                <a href="../TuVan/DanhSachCauHoi/ChiTiet?id=@x.IdQuestion" title="@x.Title">@StringExtension.GetLimitSubString(x.Title,20)</a>
+                            </div>
+                            <div class="listbox-content-item-moreinfo">
+                                <span class="listbox-content-item-moreinfo-comment date">@x.Field</span>
+                            </div>
+                            <p>
+                                <span><a href="../TuVan/DanhSachCauHoi/ChiTiet?id=@x.IdQuestion">Xem tiếp</a></span>
+                            <p>
+                        </div>
+                    </div>
+                }
+                <br />
+                <div class="menuTrang">
+                    @Html.PagedListPager(Model, page => Url.Action("../TuVan/CauHoiThuongGap", new { page = page }))
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="maincontent-sidebar">
+        @Html.Action("TopNewsEvent", "NewsEvent", new { count = 3 })
+    </div>
+</div>

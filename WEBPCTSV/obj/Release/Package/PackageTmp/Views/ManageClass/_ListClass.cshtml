@@ -1,0 +1,147 @@
+﻿@model List<Class>
+@using WEBPCTSV.Models.bean;
+
+@{
+    List<Class> listClass = Model;
+    int stt = 1;
+    int s;
+}
+<table class="table table-hover" style="width:1000px">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Tên Lớp</th>
+            <th>Sỉ số</th>
+            <th>Giáo viên chủ nhiệm</th>
+            <td>Thời gian học</td>
+            <td>Tiền học phí hàng tháng</td>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Class cl in listClass)
+        {
+            <tr>
+                <td>@stt</td>
+                <td>@cl.ClassName</td>
+                <td>@cl.TotalNumberStudent</td>
+
+
+                @try
+                {
+                    Lecturer lecturer = cl.LecturerClasses.OrderByDescending(l => l.EndDate).FirstOrDefault().Lecturer;
+                    <td>@(lecturer.LastName + " " + lecturer.FirstName)</td> 
+                }
+                catch {
+                    <td></td>
+                }
+
+                <td>@cl.NumberMonthSchool Tháng</td>
+                <td>@cl.MoneyOfMonth VNĐ/Tháng</td>
+                <td>
+
+                    <label class="label label-success" data-toggle="modal" data-target="#modalEditClass_@cl.IdClass">Chỉnh sửa</label>
+                    <div id="modalEditClass_@cl.IdClass" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <form class="modal-content" action="/ManageClass/UpdateClass?idClass=@cl.IdClass" method="post">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title"> Chỉnh sửa lớp</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-4" for="email">Tên Lớp:</label>
+                                            <div class="col-sm-5">    
+                                                    <input name="ClassName" value="@cl.ClassName" type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-4" for="email">Thời gian học:</label>
+                                            <div class="col-sm-5">
+                                                <div class="input-group">
+                                                    <input id="NumberMonthSchool" name="NumberMonthSchool" ng-model="NumberMonthSchool" value="@cl.NumberMonthSchool" type="text" class="form-control">
+                                                    <span class="input-group-addon"> Tháng</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-4" for="email">Học phí:</label>
+                                            <div class="col-sm-5">
+                                                <div class="input-group">
+                                                    <input id="MoneyOfMonth" name="MoneyOfMonth" type="text" ng-model="MoneyOfMonth" value="@cl.MoneyOfMonth" class="form-control">
+                                                    <span class="input-group-addon">/Tháng</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" style="float:left"> Lưu chỉnh sửa  </button>
+                                    <a href="/ManageClass/DeleteClass?idClass=@cl.IdClass"><label class="btn btn-danger" style="float:left;margin-left:10px"> Xóa</label></a>
+                                    <button type="button" class="btn btn-default" onclick="window.location.reload();" data-dismiss="modal">Đóng</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                    <label class="label label-warning" data-toggle="modal" data-target="#modalClass_@cl.IdClass">Chi tiết</label>
+                    <div id="modalClass_@cl.IdClass" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <form class="modal-content" action="/ManageClass/UpdateRegency?idClass=@cl.IdClass" method="post">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title"> Lớp @cl.ClassName</h4>
+                                </div>
+                                <div class="modal-body">
+
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Tên sinh viên</th>
+                                                <th>Ngày sinh</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+            s = 1;
+                                            }
+                                            @foreach (Student student in cl.Students)
+                                            {
+                                                <tr>
+                                                    <td>@s</td>
+                                                    <td>@(student.LastNameStudent + " " + student.FirstNameStudent)</td>
+                                                    <td>@(student.BirthDay != null ? @student.BirthDay.Value.ToShortDateString() : "")</td>
+                                                    <td><a href="/ManageStudent/EditStudent?idStudent=@student.IdStudent"><label class="label label-primary">Chi tiết</label></a></td>
+                                                </tr>
+                                                s++;
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" onclick="window.location.reload();" data-dismiss="modal">Đóng</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </td>
+            </tr>
+                                            stt++;
+        }
+    </tbody>
+</table>
+
+<button class="btn btn-primary" data-toggle="modal" data-target="#modalAddClass"><i class="fa fa-plus" aria-hidden="true"></i> Thêm lớp</button>
+
+

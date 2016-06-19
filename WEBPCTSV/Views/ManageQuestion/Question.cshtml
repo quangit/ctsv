@@ -1,0 +1,72 @@
+﻿@using WEBPCTSV.Models.bean;
+@using PagedList.Mvc;
+@using WEBPCTSV.Helpers;
+@using WEBPCTSV.Helpers.Common
+@model PagedList.IPagedList<Question>
+
+@{
+    ViewBag.Active = "TuVan";
+    ViewBag.Title = "Danh sách câu hỏi tư vấn";
+    Layout = "~/Views/Shared/_LayoutManager.cshtml";
+}
+
+<ol class="breadcrumb box-shadow">
+    <li class="active">Danh sách tư vấn</li>
+</ol>
+<div class="main-content">
+    <div class="alert-result">
+        @if (TempData["success"] != null)
+        {
+            <div class="alert alert-success">
+                @((string)TempData["success"])
+            </div>
+        }
+        @if (TempData["error"] != null)
+        {
+            <div class="alert alert-danger">
+                @((string)TempData["error"])
+            </div>
+        }
+    </div>
+    <div id="tbnoidung">
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr class="tieude">
+                    <th>Đối tượng</th>
+                    <th>Ngày đăng</th>
+                    <th>Tiêu đề</th>
+                    <th class="col-responsive-hide">Nội dung</th>
+                    <th width="90px">Tùy Chọn</th>
+                </tr>
+            </thead>
+            @foreach (var question in Model)
+            {
+                <tr class="noidung row@(question.IdQuestion)">
+                    <td>@Define.typeRequestQuestion[question.TypeRequest]</td>
+                    <td>@(question.CreatedDate != null ? question.CreatedDate.Value.ToString("dd/MM/yyyy") : "")</td>
+                    <td>
+                        <a href="/QuanLy/QuanLyCauHoi/CapNhat?id=@question.IdQuestion" title="@question.Title">
+                            @StringExtension.GetLimitSubString(question.Title, 10)
+                        </a>
+                        @if (!StringExtension.IsNullOrWhiteSpace(question.Reply))
+                        {
+                            <i class="fa fa-check-circle color-success" title="Đã trả lời" aria-hidden="true"></i>
+                        }
+                    </td>
+                    <td class="col-responsive-hide">
+                        <a href="/QuanLy/QuanLyCauHoi/CapNhat?id=@question.IdQuestion" title="@question.ContentHtml">
+                            @System.Text.RegularExpressions.Regex.Replace(StringExtension.GetLimitSubString(question.ContentHtml, 15), "<.*?>", String.Empty)
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn btn-warning btn-sm" href="/QuanLy/QuanLyCauHoi/CapNhat?id=@question.IdQuestion"><i class="fa fa-reply" aria-hidden="true"></i></a>
+                        <a class="btn btn-danger btn-sm" href="/QuanLy/QuanLyCauHoi/Xoa?id=@question.IdQuestion"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            }
+        </table>
+        <div class="menuTrang">
+            @Html.PagedListPager(Model, page => Url.Action("../QuanLy/QuanLyCauHoi", new { page = page }))
+        </div>
+    </div>
+</div>

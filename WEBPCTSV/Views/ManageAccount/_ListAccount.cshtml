@@ -1,0 +1,145 @@
+﻿@model List<Account>
+@using WEBPCTSV.Models.bean;
+
+@{
+    List<Account> listAccount = Model;
+    int stt = 1;
+}
+<table class="table table-hover" ng-controller="listAccount">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Tài khoản</th>
+            <th>Tên cá nhân</th>
+            <th>Loại tài khoản</th>
+            <th>Tình trạng</th>
+            <th>Phân quyền</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Account account in listAccount)
+        {
+            <tr>
+                <td>@stt</td>
+                <td>@account.UserName</td>
+                <td>
+                    @WEBPCTSV.Models.Support.ConvertObject.GetPersonNamebyAccount(account)                                                                                                             
+                </td>
+                <td>@account.TypeAccount</td>
+                @if (account.TimeLock >= DateTime.Now)
+                {
+                    <td>Khóa</td>
+                }
+                else
+                {
+                    <td>Bình thường</td>
+                }
+                <td>
+                    <select id="selectGroup_@account.IdAccount" ng-init="selectGroup_@account.IdAccount = '@((account.IdDecentralizationGroup != null)?account.IdDecentralizationGroup+"":"")' " ng-model="selectGroup_@account.IdAccount" ng-change="ChangeGroupAccount('@account.IdAccount','selectGroup_@account.IdAccount')" style="border-radius:5px">
+                        @foreach (DecentralizationGroup decentralizationGroup in ViewBag.listGroup)
+                        {
+                            <option  value="@decentralizationGroup.IdDecentralizationGroup">@decentralizationGroup.DecentralizationGroupName</option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    <button class="btn btn-success" data-toggle="modal" data-target="#accountInfor_@account.IdAccount" style="margin:0px;padding:1px;padding-left:6px;padding-right:6px"><span class="glyphicon glyphicon-pencil"></span></button>
+                    <button class="btn btn-danger" style="margin:0px;padding:1px;padding-left:6px;padding-right:6px"><span class="glyphicon glyphicon-trash"></span></button>
+                    <div id="accountInfor_@account.IdAccount" class="modal fade" role="dialog">
+                        <form action="/ManageAccount/UpdateAccount" method="post">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Thông tin tài khoản</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-horizontal" role="form">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="email">Ảnh đại diện:</label>
+                                                <div class="col-sm-8">
+                                                    @if (account.Avatar != null)
+                                                    {
+                                                        <img src="@account.Avatar" width="100" height="100" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/assets/images/icon/Contacts.svg" width="100" height="100" />
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="email">Tên tài khoản:</label>
+                                                <div class="col-sm-8">
+                                                    <input name="username" class="form-control" value="@account.UserName" />
+                                                    <input name="idAccount" type="hidden" class="form-control" value="@account.IdAccount" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="email">Mật khẩu:</label>
+                                                <div class="col-sm-8">
+                                                    <button type="button" ng-click="ResetPassword('@account.IdAccount')" class="btn btn-success">Reset mật khẩu</button>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="email">Tên chủ tài khoản:</label>
+                                                <div class="col-sm-8">
+                                                    <p class="form-control-static">
+                                                        @WEBPCTSV.Models.Support.ConvertObject.GetPersonNamebyAccount(account)
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="email">Email:</label>
+                                                <div class="col-sm-8">
+                                                    <input name="email" class="form-control" value="@account.Email" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="email">Nhóm phân quyền:</label>
+                                                <div class="col-sm-8">
+                                                    <select id="selectGroup2_@account.IdAccount" onchange="ChangeGroupAccount('@account.IdAccount','selectGroup2_@account.IdAccount')" class="form-control">
+                                                        @foreach (DecentralizationGroup decentralizationGroup in ViewBag.listGroup)
+                                                        {
+                                                            string select = "selected";
+                                                            <option @if (decentralizationGroup.IdDecentralizationGroup == account.IdDecentralizationGroup) { @select      } value="@decentralizationGroup.IdDecentralizationGroup">@decentralizationGroup.DecentralizationGroupName</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4" for="email">Khóa đến ngày:</label>
+                                                <div class="col-sm-8">
+                                                    @if (account.TimeLock != null)
+                                                    {
+                                                        <input name="locktime" class="form-control" type="date" value="@account.TimeLock.Value.ToString("yyyy-MM-dd")" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <input name="locktime" class="form-control" type="date" value="2014-02-03" />
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary" style="float:left">Lưu thay đổi</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </td>
+                
+            </tr>
+            
+            
+                        stt++;
+        }
+    </tbody>
+</table>

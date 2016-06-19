@@ -1,0 +1,193 @@
+﻿@using WEBPCTSV.Models.bean;
+@using WEBPCTSV.Helpers;
+
+@model NewsScholarship
+
+@{
+    ViewBag.Title = "Cập nhật học bổng";
+    ViewBag.Active = "HocBong";
+    Layout = "~/Views/Shared/_LayoutManager.cshtml";
+}
+<script src="~/Content/ckfinder/ckfinder.js"></script>
+<script src="~/Content/ckeditor/ckeditor.js"></script>
+<script src="~/js/jquery.validate.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document)
+            .ready(
+                    function () {
+
+                        $("#fAddInfo")
+                                .validate(
+                                        {
+                                            ignore: [],
+                                            rules: {
+                                                title: {
+                                                    required: true,
+                                                },
+                                                description: {
+                                                    required: true,
+                                                },
+                                                requirement: {
+                                                    required: true,
+                                                },
+                                                sponsor: {
+                                                    required: true,
+                                                },
+                                                contentHtml: {
+                                                    required: function () {
+                                                        CKEDITOR.instances.NoiDung.updateElement();
+                                                    }
+                                                }
+                                            },
+                                            messages: {
+                                                title: {
+                                                    required: "Chưa nhập tiêu đề!",
+                                                },
+                                                description: {
+                                                    required: "Chưa nhập mô tả!",
+                                                },
+                                                requirement: {
+                                                    required: "Chưa nhập yêu cầu nhận học bổng!",
+                                                },
+                                                sponsor: {
+                                                    required: "Chưa nhập đơn vị tài trợ!",
+                                                },
+                                                contentHtml: {
+                                                    required: "Chưa nhập nội dung!",
+                                                }
+                                            },
+
+                                            submitHandler: function (form) {
+                                                form.submit();
+                                            }
+                                        });
+                    });
+</script>
+<style type="text/css">
+
+</style>
+<ol class="breadcrumb box-shadow">
+    <li><a href="TrangChu">Trang chủ</a></li>
+    <li><a href="~/QuanLy/QuanLyHocBong">Quản lý học bổng</a></li>
+    <li class="active">Cập nhật học bổng</li>
+</ol>
+
+<div class="main-content">
+    <div class="col-xs-12 col-sm-12">
+        <div class="main-form">
+            @using (Html.BeginForm("CapNhat", "QuanLy/QuanLyHocBong", FormMethod.Post, new { @id = "fAddInfo" }))
+            {
+                <div class="form-group">
+                    <label>ID</label>
+                    <input type="text" class="form-control" readonly name="idNewsScholarship" value="@Model.IdNewsScholarship">
+                </div>
+                <div class="form-group">
+                    <label>Loại học bổng : </label>
+                    <select class="form-control" name="type">
+                        <option value="HocBongKhac" @(Model.News.Type.Equals("HocBongKhac") ? "selected" : "")>@Define.typeScholarShip["HocBongKhac"]</option>
+                        <option value="HocBongKhuyenKhich" @(Model.News.Type.Equals("HocBongKhuyenKhich") ? "selected" : "")>@Define.typeScholarShip["HocBongKhuyenKhich"]</option>
+                    </select>
+                </div>
+                <div>
+                    <label><input type="checkbox" @(Model.News.IsPinned.Value ? "checked" : "") name="isPinned">Ghim tin quan trọng</label>
+                </div>
+                <div class="form-group">
+                    <label>Tên học bổng</label>
+                    <input type="text" class="form-control" placeholder="Tên học bổng" name="title" value="@Model.News.Title">
+                </div>
+                <div class="form-group">
+                    <label>Mô tả</label>
+                    <textarea id="description" name="description" class="form-control" rows="3" placeholder="Nội dung mô tả">@Model.News.Description</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Yêu cầu nhận</label>
+                    <textarea id="requirement" name="requirement" class="form-control" rows="3" placeholder="Yêu cầu nhận">@Model.Requirement</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Đơn vị tài trợ</label>
+                    <input type="text" class="form-control" placeholder="Đơn vị tài trợ" name="sponsor" value="@Model.Sponsor">
+                </div>
+                <div class="form-group">
+                    <label>Nội dung</label>
+                    <textarea id="contentHtml" name="contentHtml">@Model.News.ContentHtml</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Hình ảnh</label>
+                    <div class="input-group">
+                        <input class="form-control" type="text" id="image" name="image" value="@Model.News.Image" />
+                        <div class="input-group-btn">
+                            <button type="button" id="brow" class="btn btn-primary">
+                                <i class="fa fa-plus" aria-hidden="true"></i> Chọn ảnh
+                            </button>
+                        </div>
+                    </div>
+                    <p class="help-block">Chọn file .png, .jpg ...</p>
+                </div>
+                <div class="form-group">
+                    <label>File đính kèm</label>
+                    <button type="button" id="browfile" class="btn btn-primary btn-xs">
+                        <i class="fa fa-plus" aria-hidden="true"></i> Thêm tệp
+                    </button>
+                    <input type="hidden" id="attachedDocuments" name="attachedDocuments" placeholder="Chọn file đính kèm ..." value="@Model.News.AttachedDocuments" />
+                    <table>
+                        <tbody id="table-file"></tbody>
+                    </table>
+                </div>
+                <input class="btn btn-danger" type="submit" value="Hoàn tất" />
+                <input class="btn btn-warning" type="reset" value="Reset" />
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        showListAttachedDocument();
+        $("#brow").click(function () {
+            var ck = new CKFinder();
+            ck.selectActionFunction = function (fileUrl) {
+                $("#image").val(fileUrl);
+            };
+            ck.popup();
+        });
+        $("#browfile").click(function () {
+            var ck = new CKFinder();
+            ck.selectActionFunction = function (fileUrl) {
+                $("#attachedDocuments").val($("#attachedDocuments").val() + ':' + fileUrl);
+                showListAttachedDocument();
+            };
+            ck.popup();
+        });
+    });
+
+    function showListAttachedDocument() {
+        $("#table-file").html("");
+        var x = ($("#attachedDocuments").val()).substr(1);
+        if (x != "") {
+            var arrayFiles = x.split(":");
+            $.each(arrayFiles, function (index, file) {
+                $("#table-file").append('<tr>'
+                                    + '<td><i class="fa fa-file-text-o" aria-hidden="true"></i></td>'
+                                    + '<td id="table-file-' + index + '">' + decodeURI(file) + '</td>'
+                                    + '<td><i class="fa fa-times" aria-hidden="true" onclick="deleteFile(' + index + ')"></i></td>'
+                                        + '</tr>');
+            });
+        }
+    }
+
+    function deleteFile(index) {
+        var files = $("#attachedDocuments").val();
+        var x = ":" + $("#table-file-" + index).text();
+        $("#attachedDocuments").val(files.replace(encodeURI(x), ""));
+        showListAttachedDocument();
+        console.log("ok");
+    }
+
+    var ckeditor;
+    function createEditor(languageCode, id) {
+        var editor = CKEDITOR.replace(id, { language: languageCode });
+    };
+    $(function () {
+        createEditor('vi', 'contentHtml');
+    });
+</script>

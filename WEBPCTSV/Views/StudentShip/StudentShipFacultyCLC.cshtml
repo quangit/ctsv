@@ -1,0 +1,229 @@
+﻿@using WEBPCTSV.Models.bean;
+@using WEBPCTSV.Models.Support;
+@{
+    Layout = "~/Views/Shared/_LayoutManager.cshtml";
+    ViewBag.Title = "Class";
+}
+
+<h3 class="header-paper"> Học bổng</h3>
+@{
+    StudentShipSchool studentShipSchool = ViewBag.studentShipSchool;
+}
+<div ng-controller="StudentShipFaculty">
+
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-lg-3" for="email">Học kì:</label>
+            <div class="col-lg-4">
+                <p class="form-control-static"><strong>Học kỳ @studentShipSchool.Semester.SemesterYear.SemesterYearName năm học @studentShipSchool.Semester.Year.YearName</strong></p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-3" for="email">Tổng số tiền học bổng:</label>
+            <div class="col-lg-4">
+                <p class="form-control-static"><strong> @ConvertObject.ConvertCurrency(studentShipSchool.TotalMoney) VNĐ</strong></p>
+            </div>
+        </div>
+        @*<div class="form-group">
+            <label class="control-label col-lg-3" for="email">Tổng số tiền học bổng:</label>
+            <div class="col-lg-4">
+                <p class="form-control-static"><strong ng-init="totalmoney= @studentShipSchool.TotalMoney"> Tổng tiền @studentShipSchool.TotalMoney VNĐ</strong></p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-lg-3" for="email">Tổng số dư:</label>
+            <div class="col-lg-4">
+                <div class="input-group">
+                    <p class="form-control-static"><strong ng-init="SURPLUS = @ViewBag.surplus">{{SURPLUS}} VNĐ </strong> <a href="/StudentShip/GetAdditionalConsiderStudentShipSchoolFaculty?idStudentShipSchool=@studentShipSchool.IdStudentShipSchool&&totalMoney=@ViewBag.surplus&&page=1"><button class="btn btn-primary"> Tiếp tục xét</button></a></p>
+                </div>
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            <label class="control-label col-lg-3" for="email">Nhập thông tin file Excel:</label>
+            <div class="col-lg-4">
+                <div class="input-group">
+                    <div class="btn btn-default image-preview-input ">
+                        <span class="glyphicon glyphicon-open"></span>
+                        <span class="image-preview-input-title">Upload </span>
+                        <span class="image-preview-input-process" id="progressNumber">0%</span>
+                        <input id="fileInput" type="file" onchange="UploadFile('@studentShipSchool.IdStudentShipSchool','fileInput','progressNumber')" name="input-file-preview" /> <!-- rename it -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    @{
+        List<StudentShipSchoolFaculty> listStudentShipSchoolFaculty = ViewBag.listStudentShipSchoolFaculty;
+    }
+    <br />
+    <ul class="nav nav-tabs">
+        <li  style="margin-left:50px"><a href="/StudentShip/StudentShipFaculty?idSemester=@studentShipSchool.IdSemester">Các lớp thường</a></li>
+        <li class ="active"><a href="#">Các lớp CLC </a></li>
+    </ul>
+
+    <div class="container-layoutmanager" style="margin-top:5px">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Lớp</th>
+                    <th>Số tiền</th>
+                    <th>học phí</th>
+                    <th>Tình trạng </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int stt = 1;
+                }
+                @foreach (Class cl in ViewBag.ClassCLC)
+                {
+                    <tr>
+                        <td>@stt</td>
+                        <td>@cl.ClassName</td>
+                        <td>
+                            <div class="input-group" style="max-width:200px">
+                                @{
+                    string totalMoney = "";
+                    int idStudentShipSchoolFaculty = 0;
+                    string status = "Chưa xét";
+                    string tuitionFee = "";
+                    try
+                    {
+                        StudentShipSchoolFaculty st = listStudentShipSchoolFaculty.Single(s => s.IdClass == cl.IdClass);
+                        if (st != null)
+                        {
+                            totalMoney = st.TotalMoney;
+                            tuitionFee = st.TuitionFee;
+                            idStudentShipSchoolFaculty = st.IdStudentShipSchoolFaculty;
+                            if (st.StudentShipSchoolStudents.Count > 0) { status = "Đã xét"; }
+                        }
+                    }
+                    catch { }
+
+                                }
+                                <input id="inputMoney_@stt" ng-init="inputMoney_@stt = '@ConvertObject.ConvertCurrency(totalMoney)'" ng-model="inputMoney_@stt" class="form-control" onkeypress="return KeyCode()">
+                                <span class="input-group-addon">.VNĐ </span>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="input-group" style="max-width:200px">
+                                <input id="tuitionFee_@stt" ng-init="tuitionFee_@stt = '@ConvertObject.ConvertCurrency(tuitionFee)'" ng-model="tuitionFee_@stt" class="form-control" onkeypress="return KeyCode()">
+                                <span class="input-group-addon">.VNĐ </span>
+                            </div>
+                        </td>
+
+                        <td>@status</td>
+                        <td><button class="btn btn-primary" ng-click="SaveMoneyStudentShipSchoolFacultyCLC('@cl.IdClass','@studentShipSchool.IdStudentShipSchool','inputMoney_@stt','tuitionFee_@stt')">Lưu lại</button></td>
+                        <td>
+                            @if (idStudentShipSchoolFaculty != 0)
+                            {<a href="/StudentShip/ListStudentShipSchoolFacultyCLC?idStudentShipSchoolFaculty=@idStudentShipSchoolFaculty&page=1"><input class="btn btn-success" value="Chi tiết"></a> }
+                        </td>
+
+
+                    </tr>
+                            stt++;
+                }
+
+            </tbody>
+        </table>
+        <p ng-init="totalElement = @stt"></p>
+
+        <p>
+            <a href="/File/ExportStudentShip?idStudentShipSchool=@studentShipSchool.IdStudentShipSchool">
+                <strong onclick="getprogress()" data-toggle="modal" data-target="#DownloadExcel" style="cursor:pointer;margin-right:20px">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                    Tải xuống danh sách học bổng
+                </strong>
+            </a>
+            <a href="/StudentShip/ListScoteStudent?idSemester=@studentShipSchool.IdSemester&page=1"><strong><i class="fa fa-file-o aria-hidden=" true"></i> kết quả học tập</strong></a>
+        </p>
+
+
+        <div id="DownloadExcel" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-sm">
+
+                <!-- Modal content-->
+                <div class="modal-content" align="center">
+                    <div class="modal-body">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" id="progressbarStudentShip" role="progressbar"
+                                 aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:90%">
+                                90%
+                            </div>
+                        </div>
+                        Chuẩn bị tải xuống ...
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+   
+
+</div>
+
+
+
+<script>
+    var w;
+
+    function getprogress() {
+        if (typeof (Worker) !== "undefined") {
+            if (typeof (w) == "undefined") {
+                w = new Worker("/js/ExporstStudentShipWebworker.js");
+            }
+            w.onmessage = function (event) {
+                document.getElementById("progressbarStudentShip").innerHTML = event.data + "%";
+                document.getElementById("progressbarStudentShip").style["width"] = event.data + "%";
+                if (event.data == 1) $('#DownloadExcel').modal('hide');
+            };
+        } else {
+        }
+    }
+    function UploadFile(idStudentShipSchool, elementfile, proccessNumber) {
+
+        var percentValue = "0%";
+        var fileInput = document.getElementById(elementfile);
+        var proccess = document.getElementById(proccessNumber);
+        var formdata = new FormData();
+        for (i = 0; i < fileInput.files.length; i++) {
+            formdata.append(fileInput.files[i].name, fileInput.files[i]);
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/File/ImportExcelStudentShipSchool?idStudentShipSchool=' + idStudentShipSchool);
+        xhr.upload.onprogress = function (e) {
+            if (e.lengthComputable) {
+                var percentValue = (e.loaded / e.total) * 100 + '%';
+                proccess.innerHTML = percentValue;
+                bar.setAttribute('style', 'width: ' + percentValue);
+            }
+        };
+        xhr.onload = function () {
+            if (this.status == 200) {
+                location.reload();
+            };
+        };
+        xhr.send(formdata);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+            }
+        }
+        return false;
+    }
+
+    function KeyCode() {
+
+        return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode == 46);
+    }
+</script>
+

@@ -1,0 +1,326 @@
+﻿@using WEBPCTSV.Models.bean;
+
+@{
+    Layout = "~/Views/Shared/_LayoutManager.cshtml";
+    ViewBag.Title = "EditStudent4";
+}
+@using WEBPCTSV.Models.Support;
+
+<br />
+@{
+    Student student = ViewBag.student;
+}
+<div class="container-layoutmanager" ng-controller="editStudent4">
+    <ul class="nav nav-tabs">
+        <li><a href="/ManageStudent/EditStudent?idStudent=@student.IdStudent">Thông tin cơ bản</a></li>
+        <li><a href="/ManageStudent/EditStudent2?idStudent=@student.IdStudent">Lý lich</a></li>
+        <li><a href="/ManageStudent/EditStudent3?idStudent=@student.IdStudent">Sức khỏe</a></li>
+        <li class="active"><a href="/ManageStudent/EditStudent4?idStudent=@student.IdStudent"> Bổ sung</a></li>
+        <li><a href="/ManageStudent/EditStudentRelative?idStudent=@student.IdStudent"> Gia đình</a></li>
+        <li><a href="/ManageStudent/EditStudentSocialActivity?idStudent=@student.IdStudent"> Hoạt động xã hội</a></li>
+        <li><a href="/ManageStudent/EditStudentAcademicAchievement?idStudent=@student.IdStudent">Thành tích học tập</a></li>
+    </ul>
+    <br />
+    <form class="form-horizontal" action="/ManageStudent/ProcessEditStudent4?idStudent=@student.IdStudent" method="post">
+        <div class="form-group">
+            <label class="control-label col-lg-3">Ngày nhập học</label>
+            <div class="col-lg-6">
+                <input id="dateAdmission" name="dateAdmission" class="form-control" type="date" value="@if(student.DateAdmission!=null){@student.DateAdmission.Value.ToString("yyyy-MM-dd")}" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-lg-3">Trình độ học vấn:</label>
+            <div class="col-lg-6">
+                <input id="academicLevel" name="academicLevel" class="form-control" value="@student.EducationalBackground" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-lg-3">Loại hình đào tạo:</label>
+            <div class="col-lg-6">
+                <select class="form-control" id="madeOfStudy" name="madeOfStudy" @if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "chinhsuathongtinsinhvien")) { @: disabled
+                                                }>
+                    <option value=""> Chọn hệ đào tạo </option>
+                    @foreach (MadeOfStudy madeOfStudy in ViewBag.madeofstudy)
+                    {
+                        <option @if (madeOfStudy.idMadeOfStudy == student.IdMadeOfStudy) { @: selected
+                                                                                                                                                                                                                                                                                        } value="@madeOfStudy.idMadeOfStudy">
+                            @madeOfStudy.MadeOfStudyName
+                        </option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-lg-3"> Loại đầu vào:</label>
+            <div class="col-lg-6">
+                <select class="form-control" id="typeInput" name="typeInput" @if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "chinhsuathongtinsinhvien")) { @: disabled
+                                                }>
+                    <option value="">Chọn loại đầu vào </option>
+                    @foreach (TypeInput typeInput in ViewBag.typeInput)
+                    {
+                        <option @if (typeInput.IdTypeInput == student.IdTypeInput) { @: selected
+                                                                                                                                                                                                                                                                                                } value="@typeInput.IdTypeInput">
+                            @typeInput.TypeInputName
+                        </option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-lg-3">Ngoại ngữ:</label>
+            <div class="col-lg-6">
+                @foreach (SecondLanguageStudent secondLanguagueStudent in student.SecondLanguageStudents)
+                {
+                    <p style="margin-top:10px"><span class="glyphicon glyphicon-star-empty"></span> @secondLanguagueStudent.SecondLanguage.SecondLanguageName</p>
+                }
+                <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modalLanguague"><span class="glyphicon glyphicon-plus"></span> ngoại ngữ</button>
+                <!-- Modal -->
+                <div id="modalLanguague" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-sm">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Ngoại ngữ</h4>
+                            </div>
+                            <div class="modal-body">
+                                @foreach (SecondLanguage secondLanguague in ViewBag.SecondLanguage)
+                                {
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" ng-init="checkboxLanguage_@secondLanguague.IdSecondLanguage = @(student.SecondLanguageStudents.Any(s => s.IdSecondLanguage.Equals(secondLanguague.IdSecondLanguage))?"true":"false")" ng-model="checkboxLanguage_@secondLanguague.IdSecondLanguage" ng-change="ChangeSelectLanguage('@secondLanguague.IdSecondLanguage',@student.IdStudent)" />@secondLanguague.SecondLanguageName
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" onclick="window.location.reload();" data-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-lg-3"> Thuộc diện </label>
+            <div class="col-lg-6">
+                <label class="radio-inline"><input type="radio" name="ObjectTuitionFee" value="1" @if (student.ObjectTuitionFee == 1) {@:checked 
+                                               }> Không miễn giảm</label>
+                <label class="radio-inline">
+                    <input type="radio" name="ObjectTuitionFee" value="2" @if (student.ObjectTuitionFee == 2) { @: checked
+                                                                          }> Giảm học phí
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="ObjectTuitionFee" value="3" @if (student.ObjectTuitionFee == 3) { @: checked
+                                                                           }> Miễn học phí
+                </label>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-lg-3"> Thuộc đối tượng </label>
+            <div class="col-lg-6">
+                <label class="radio-inline">
+                    <input type="radio" name="OrPhan" value="false" @if (!student.IsOrphan.Value) { @: checked
+                                                                                                                                }> Không mồ côi
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="OrPhan" value="true" @if (student.IsOrphan.Value) { @: checked
+                                                                                                     }>Mồ côi
+                </label>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-lg-3">Đối tượng chính sách ưu đãi</label>
+            <div class="col-lg-6">
+                <select class="form-control" id="IdPreferentialPolicyBeneficiary" name="IdPreferentialPolicyBeneficiary" @if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "chinhsuathongtinsinhvien")) { @: disabled
+                                                }>
+                    <option value="">Chọn đối tượng ưu đãi</option>
+                    @foreach (PreferentialPolicyBeneficiary p in ViewBag.preferentialPolicyBeneficiary)
+                    {
+                        <option @if (p.IdPreferentialPolicyBeneficiaries == student.IdPreferentialPolicyBeneficiaries) { @: selected
+                                                                                                                                                                                                                                                                                                                                                                } value="@p.IdPreferentialPolicyBeneficiaries">
+                            @p.PreferentialPolicyBeneficiariesName
+                        </option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-lg-3">Đối tượng chính sách xã hội</label>
+            <div class="col-lg-6">
+                @foreach (SocialPolicyBeneficiariesStudent s in student.SocialPolicyBeneficiariesStudents)
+                {
+                    <p style="margin-top:10px"><span class="glyphicon glyphicon-star"></span> @s.SocialPolicyBeneficiary.SocialPolicyBeneficiariesName</p>
+                }
+                <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modalSocialPolicyBeneficiaries" @if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "chinhsuathongtinsinhvien")) { @: disabled
+                                                }>
+                    <span class="glyphicon glyphicon-plus"></span> Đối tượng chính sách xã hội
+                </button>
+            </div>
+
+            <!-- Modal -->
+            <div id="modalSocialPolicyBeneficiaries" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-sm">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Đối tượng chính sách xã hội</h4>
+                        </div>
+                        <div class="modal-body">
+                            @foreach (SocialPolicyBeneficiary s in ViewBag.SocialPolicyBeneficiary)
+                            {
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-init="checkbox_@s.idSocialPolicyBeneficiaries =  @(student.SocialPolicyBeneficiariesStudents.Any(so => so.IdSocialPolicyBeneficiaries == s.idSocialPolicyBeneficiaries)?"true":"false")" ng-model="checkbox_@s.idSocialPolicyBeneficiaries" ng-change="ChangeSelectSocialPolicyBeneficiary('@s.idSocialPolicyBeneficiaries',@student.IdStudent)" />@s.SocialPolicyBeneficiariesName
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" onclick="window.location.reload();" data-dismiss="modal">Đóng</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+            <label class="control-label col-lg-3">Giấy tờ đã nộp:</label>
+            <div class="col-lg-6">
+                @foreach (TypePaperStudent typePaperStudent in student.TypePaperStudents)
+                {
+                    <p style="margin-top:10px;">
+                        <span class="glyphicon glyphicon-star-empty"></span> @(typePaperStudent.Typepaper.TypePaperName + "     (" + typePaperStudent.SubmitTime.ToString("hh:mm dd/MM/yyyy") + ")")
+                        @if (typePaperStudent.LinkFile == null)
+                        {
+                            <div class="btn btn-default image-preview-input ">
+                                <span class="glyphicon glyphicon-open"></span>
+                                <span class="image-preview-input-title">Tại lên bản sao lưu</span>
+                                <span class="image-preview-input-process" id="progressNumber_@typePaperStudent.IdTypePaperStudent">0%</span>
+                                <input id="fileInput_@typePaperStudent.IdTypePaperStudent" type="file" accept="image/png, image/jpeg" onchange="UploadFile('@typePaperStudent.IdTypePaperStudent','fileInput_@typePaperStudent.IdTypePaperStudent','progressNumber_@typePaperStudent.IdTypePaperStudent')" name="input-file-preview" @if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "chinhsuathongtinsinhvien")) { @: disabled
+                                                               } /> <!-- rename it -->
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#ShowImage_@typePaperStudent.IdTypePaperStudent"><span class="glyphicon glyphicon-picture"></span> Xem ảnh</button>
+                                <div id="ShowImage_@typePaperStudent.IdTypePaperStudent" class="modal fade" role="dialog">
+                                    <div class="modal-dialog modal-lg">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">@typePaperStudent.Typepaper.TypePaperName</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <img src="@typePaperStudent.LinkFile" style="width:100%" />
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="btn btn-default image-preview-input ">
+                                    <span class="glyphicon glyphicon-open"></span>
+                                    <span class="image-preview-input-title">Tại lên bản sửa đổi</span>
+                                    <span class="image-preview-input-process" id="progressNumber_@typePaperStudent.IdTypePaperStudent">0%</span>
+                                    <input id="fileInput_@typePaperStudent.IdTypePaperStudent" type="file" accept="image/png, image/jpeg" onchange="UploadFile('@typePaperStudent.IdTypePaperStudent','fileInput_@typePaperStudent.IdTypePaperStudent','progressNumber_@typePaperStudent.IdTypePaperStudent')" name="input-file-preview" @if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "chinhsuathongtinsinhvien")) { @: disabled
+                                                                   } /> <!-- rename it -->
+                                </div>
+                            </div>
+                        }
+
+                    </p>
+                }
+                <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modalTypePaper" @if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "chinhsuathongtinsinhvien")) { @: disabled
+                                                }>
+                    <span class="glyphicon glyphicon-plus"></span>Giấy tờ
+                </button>
+                <!-- Modal -->
+                <div id="modalTypePaper" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-sm">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Giấy tờ</h4>
+                            </div>
+                            <div class="modal-body">
+                                @foreach (TypePaper typePaper in ViewBag.typepaper)
+                                {
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" ng-init="checkboxTypePaper_@typePaper.IdTypePaper = @(student.TypePaperStudents.Any(t => t.IdTypePaper == typePaper.IdTypePaper)?"true":"false")" ng-model="checkboxTypePaper_@typePaper.IdTypePaper" ng-change="ChangeSelectTypePaper('@typePaper.IdTypePaper',@student.IdStudent)" />@typePaper.TypePaperName
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" onclick="window.location.reload();" data-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Lưu thông tin</button>
+    </form>
+</div>
+
+<script>
+
+    function UploadFile(idTypePaperStudent, elementfile,proccessNumber) {
+
+        var percentValue = "0%";
+        var fileInput = document.getElementById(elementfile);
+        var proccess = document.getElementById(proccessNumber);
+        var formdata = new FormData();
+        for (i = 0; i < fileInput.files.length; i++) {
+            formdata.append(fileInput.files[i].name, fileInput.files[i]);
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/File/UploadImagePaper?idTypePaperStudent=' + idTypePaperStudent);
+        xhr.upload.onprogress = function (e) {
+            if (e.lengthComputable) {
+                var percentValue = (e.loaded / e.total) * 100 + '%';
+                proccess.innerHTML = percentValue;
+                bar.setAttribute('style', 'width: ' + percentValue);
+            }
+        };
+        xhr.onload = function () {
+            if (this.status == 200) {
+                location.reload();
+            };
+        };
+        xhr.send(formdata);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+            }
+        }
+        return false;
+    }
+</script>

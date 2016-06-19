@@ -1,0 +1,217 @@
+﻿@using WEBPCTSV.Models.bean;
+@using PagedList.Mvc;
+@using WEBPCTSV.Helpers.Common;
+
+@model PagedList.IPagedList<News>
+
+@{
+    ViewBag.Title = "Trang đánh giá kết quả rèn luyện - Đại Học Bách Khoa - Đại học Đà Nẵng";
+    Layout = "~/Views/Shared/ClientMaster.cshtml";
+}
+@{
+    AccountSession accountSession = (AccountSession)Session["AccountSession"];
+}
+<div id="maincontent">
+    <div id="maincontent-section1">
+        <div class="conduct-menu">
+            <ul class="nav navbar-nav side-nav">
+                @Html.Partial("~/Views/Conduct/PartialViews/SideBarShared.cshtml")
+                @Html.Partial("~/Views/Conduct/PartialViews/SideBarConduct.cshtml")
+            </ul>
+        </div>
+        <div class="maincontent-main conduct-page" id="maincontent">
+            <ol class="breadcrumb box-shadow">
+                <li><a href="~/">Trang chủ</a></li>
+                <li class="active">Trang đánh giá kết quả rèn luyện</li>
+            </ol>
+            <div class="listbox-content">
+                <br />
+                <div class="listbox-content">
+                    @if (ViewBag.error != null)
+                    {
+                        <div class="alert alert-danger">
+                            @ViewBag.error
+                        </div>
+                    }
+                    else
+                    {
+                        Semester currentSemester = ViewBag.currentSemester;
+                        Student student = ViewBag.student;
+                        List<ConductItem> itemsByForm = ViewBag.itemsByForm;
+                        ConductResult conductResult = ViewBag.conductResult;
+                        Dictionary<string, string> oldValue = new Dictionary<string, string>();
+                        if (conductResult != null)
+                        {
+                            string[] arrPairValue = conductResult.PartialPoint.Split(';');
+                            foreach (string pair in arrPairValue)
+                            {
+                                string[] arrValue = pair.Split(':');
+                                oldValue.Add(arrValue[0], arrValue[1]);
+                            }
+                        }
+
+                        <div class="conduct-evaluate">
+                            <div class="conduct-evaluate-title">
+                                <h3>ĐÁNH GIÁ KẾT QUẢ RÈN LUYỆN KỲ @currentSemester.SemesterYear.SemesterYearName NĂM HỌC @currentSemester.Year.YearName</h3>
+                            </div>
+                            <div class="conduct-evaluate-student">
+                                <p class="row">
+                                    <span class="col-xs-12 col-md-7"><strong>Họ và tên: </strong>@(student.LastNameStudent + " " + student.FirstNameStudent)</span><span class="col-xs-12 col-md-5"><strong>Mã sinh viên: </strong>@student.StudentNumber</span>
+                                </p>
+                                <p class="info-box-description-student row">
+                                    <span class="col-xs-12 col-md-3"><strong>Lớp: </strong>@student.Class.ClassName</span><span class="col-xs-12 col-md-4"><strong>Khóa: </strong>@student.Class.Course.CouseName</span><span class="col-xs-12 col-md-4"><strong>Khoa: </strong>@student.Class.Faculty.FacultyName</span>
+                                </p>
+                            </div>
+                            <div class="conduct-evaluate-items">
+                                @using (Html.BeginForm("DanhGiaCaNhan", "DanhGiaRenLuyen", FormMethod.Post, new { @id = "fConductEvaluate" }))
+                                {
+                                    <input type="hidden" name="isApproved" id="isApproved" />
+                                    <table class="table table-triped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <td class="col-md-8">Nội dung</td>
+                                                <td class="col-md-2">Tối đa</td>
+                                                <td class="col-md-2">Đánh giá</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (ConductItem conductItem in itemsByForm)
+                                            {
+                                                if (conductItem.ConductItemGroup.ConductItemGroupRoles.SingleOrDefault(role => role.IdDecentralizationGroup == accountSession.IdDecentralizationGroup) != null)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @if (@conductItem.ItemIndex.Length == 2 || @conductItem.ItemIndex.Length == 4)
+                                                            {
+                                                                <strong>@(StringExtension.GetListNumbering(conductItem.ItemIndex)) @conductItem.ItemName</strong>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p>@(StringExtension.GetListNumbering(conductItem.ItemIndex)) @(conductItem.ItemName)</p>
+                                                            }
+                                                        </td>
+                                                        <td><span class="P@(conductItem.IdConductItems)">@conductItem.MaxPoints</span></td>
+                                                        <td>
+                                                            @if (@conductItem.ItemIndex.Length == 4)
+                                                            {
+                                                                <input name="P@(conductItem.IdConductItems)" type="text" class="form-control" @(oldValue.Count != 0 ? "value=" + oldValue[conductItem.IdConductItems.ToString()] : "") />
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            <tr>
+                                                <td colspan="2" class="text-right">
+                                                    <span>Điểm tổng kết</span>
+                                                </td>
+                                                <td><strong><span class="conduct-total">0</span></strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="conduct-evaluate-summary">
+                                        Xếp loại:
+                                    </div>
+                                    <div class="conduct-evaluate-footer-btn">
+                                        <button type="button" onclick="evaluateConduct(true)" class="btn btn-success">Hoàn tất</button>
+                                        <button type="button" onclick="evaluateConduct(false)" class="btn btn-default">Lưu điểm</button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/assets/js/conduct-grade.js"></script>
+<script type="text/javascript">
+    function refreshSummaryPoint() {
+        total = 0;
+        max = 0;
+        $('.conduct-evaluate-items input[type=text]').each(function (e) {
+            if ($(this).val().length != 0) {
+                total = total + parseInt($(this).val());
+            }
+            max += parseInt($("." + this.name).text());
+        });
+        $('.conduct-evaluate-summary').html('Xếp loại: ' + '<strong>' + GetGradeEvaluated(total) + '</strong>');
+        $('.conduct-total').html(total);
+    }
+    $(document)
+            .ready(
+                    function () {
+                        refreshSummaryPoint();
+                        $('.conduct-evaluate-items input').on("blur", function () {
+                            refreshSummaryPoint();
+                        });
+                        $('#fConductEvaluate')
+                                .validate(
+                                        {
+                                            submitHandler: function (form) {
+                                                submitForm();
+                                            }
+                                        });
+                        $('.conduct-evaluate-items input').each(function (e) {
+                            $(this).rules("add", {
+                                digits: true,
+                                max: $("." + this.name).text(),
+                                min: 0,
+                                required: true
+                            });
+                            $(this).rules("add", {
+                                messages: {
+                                    max: "Điểm tối đa là " + $("." + this.name).text(),
+                                    min: "Điểm tối thiểu là 0",
+                                    digits: "Sai định dạng số",
+                                    required: "Chưa nhập điểm"
+                                }
+                            });
+                        });
+                    });
+
+    function evaluateConduct(isApproved) {
+        $('#isApproved').val(isApproved);
+        $("#fConductEvaluate").submit();
+    }
+    function submitForm() {
+        isApproved = $('#isApproved').val();
+        if (isApproved == 'true') {
+            $('.modal-announcement-message').html('Kiểm tra kỹ lại thông tin trước khi gửi! </br>Khi đã xác nhận điểm sẽ không thể chỉnh sửa được nữa.');
+            $('#modal-announcement .modal-dialog .modal-content .modal-footer').html('<button type="button" onclick="submitEvaluate()" class="btn btn-success">Xác nhận</button>  <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
+            $('#modal-announcement').modal('show');
+        } else {
+            $('.modal-announcement-message').html('Hết hạn đánh giá nếu bạn chưa thực hiện gửi kết quả điểm rèn luyện, kết quả đánh giá điểm rèn luyện của bạn sẽ bị hủy!');
+            $('#modal-announcement .modal-dialog .modal-content .modal-footer').html('<button type="button" onclick="submitEvaluate()" class="btn btn-success">Lưu kết quả</button>  <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
+            $('#modal-announcement').modal('show');
+        }
+    }
+    function submitEvaluate() {
+        $.ajax({
+            type: 'POST',
+            data: $('#fConductEvaluate').serialize(),
+            url: '/DanhGiaRenLuyen/DanhGiaCaNhan',
+            beforeSend: function () {
+                $('.modal-announcement-message').html("");
+                loadIconLoading($('.cssload-container-over'));
+                $('.cssload-container-over').append("Đang xử lý dữ liệu!");
+                $('.cssload-container-over').fadeIn();
+            },
+            success: function (response) {
+                $('.cssload-container-over').hide();
+                unloadIconLoading($('.cssload-container-over'));
+                $('.modal-announcement-message').html(response.responseText);
+                $('#modal-announcement .modal-dialog .modal-content .modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
+                if ($('#isApproved').val() == 'true') {
+                    $('input').attr('readonly', true);
+                }
+            },
+            error: function (result) {
+                $('.cssload-container-over').hide();
+                unloadIconLoading($('.modal-announcement-message'));
+                $('.modal-announcement-message').html('Lỗi trong quá trình cập nhật dữ liệu!');
+                $('#modal-announcement .modal-dialog .modal-content .modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
+            }
+        });
+    }
+</script>

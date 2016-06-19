@@ -1,0 +1,70 @@
+﻿@using WEBPCTSV.Models.bean;
+@{
+    Layout = "~/Views/Shared/_LayoutManager.cshtml";
+    ViewBag.Title = "DetailPaper";
+}
+
+<h3 class="header-paper">Chi tiết giấy tờ</h3>
+
+@{
+    Paper paper = ViewBag.paper;
+    List<ReasonRequest> listReason = paper.ReasonRequests.ToList();
+}
+<div style="width:100%;padding:10px" ng-controller="detailPaper">
+    {{data.title}}
+    @if (listReason.Count > 0)
+    {
+        <form action="/ManagePaper/AddRequestPaper" method="post">
+            <h4>Chọn lý do gửi yêu cầu :</h4>
+            <select ng-model="selectReason" ng-change="changeselect()" name="selectReason" id="selectReasonDetail" class="form-control" style="width:80%">
+                <option value="">Chọn lý do</option>
+                @foreach (ReasonRequest reason in listReason)
+                {
+                    <option value="@reason.IdReasonRequest">@reason.Reason </option>
+                }
+            </select>
+            <br />
+
+            <input type="radio" name="isImportant" value="false"><strong> Bình thường</strong> (lệ phí :@paper.PriceNormal VNĐ  thời gian chờ :@paper.WaittingPeriodNormal ngày)<br>
+            <input type="radio" name="isImportant" value="true" checked> <strong>Khẩn cấp</strong> (lệ phí :@paper.PriceUrgency VNĐ  thời gian chờ :@paper.WaittingPeriodUrgency ngày)<br>
+            
+            <div ng-bind-html="divReasonDetail" id="divReasonDetail">
+
+                @if (listReason.First().Reason.Equals("khác"))
+                {
+                    <textarea name="otherReason" class="form-control" style="width:80%;margin-top:10px" placeholder="nhập lý do khác"></textarea>
+                }
+            </div>
+            <input type="submit" class="btn btn-primary" style="margin-top:10px" value="Gửi yêu cầu" />
+        </form>
+    }else{
+        <strong>Giấy này chưa sẳn sàng</strong>
+    }
+    
+    <hr />
+    <h4>Mẩu đơn :</h4>
+    <div id="printPaper" style="width:800px;padding:20px;background-color:#ffffff" class="well" >
+        @Html.Raw(paper.ContentPaper)
+    </div>
+</div>
+<script>
+    
+
+    function printDiv(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+
+        window.print();
+
+        document.body.innerHTML = originalContents;
+        location.reload();
+    }
+
+</script>
+
+
+
+
+

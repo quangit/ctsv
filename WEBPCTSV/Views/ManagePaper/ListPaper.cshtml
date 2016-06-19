@@ -1,0 +1,18 @@
+﻿@using WEBPCTSV.Models.bean;
+@{
+    Layout = "~/Views/Shared/_LayoutManager.cshtml";
+    ViewBag.Title = "Danh sách giấy tờ";
+}
+
+<h3 class="header-paper">Danh sách giấy tờ</h3>
+
+
+@foreach (Paper paper in ViewBag.listPaper)
+{
+    <div class="well well-sm" style="margin:10px">
+        <a href="/ManagePaper/EditPaper?id=@paper.IdPaper"><span class="glyphicon glyphicon-paperclip "></span> @paper.PaperName </a>
+    </div>
+}
+
+
+

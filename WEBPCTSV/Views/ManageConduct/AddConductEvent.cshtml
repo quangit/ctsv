@@ -1,0 +1,70 @@
+﻿@using WEBPCTSV.Models.bean;
+
+@{
+    ViewBag.Title = "Thêm đợt đánh giá rèn luyện";
+    Layout = "~/Views/Shared/_LayoutManager.cshtml";
+}
+
+<ol class="breadcrumb box-shadow">
+    <li><a href="TrangChu">Trang chủ</a></li>
+    <li><a href="/QuanLy/QuanLyRenLuyen">Quản lý điểm rèn luyện</a></li>
+    <li><a href="/QuanLy/QuanLyRenLuyen/DotXetRenLuyen">Đợt đánh giá</a></li>
+    <li class="active">Thêm</li>
+</ol>
+<div class="main-content">
+    <div class="message">
+
+    </div>
+    <div class="form-info">
+        @using (Html.BeginForm("", "", FormMethod.Post, new { @id = "fAddInfo" }))
+        {
+            <div class="form-group">
+                <label>Chọn kỳ đánh giá</label>
+                <select name="idSemester" class="form-control">
+                    @foreach (Semester semester in ViewBag.semesters)
+                    {
+                        <option value="@semester.IdSemester">
+                            Học kỳ @semester.SemesterYear.SemesterYearName năm học @semester.Year.YearName
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Mẫu đơn xét điểm rèn luyện</label>
+                <select name="idConductForm" class="form-control">
+                    @foreach (ConductForm conductForm in ViewBag.conductForm)
+                    {
+                        <option value="@conductForm.IdConductForm">
+                            @conductForm.Name
+                        </option>
+                    }
+                </select>
+            </div>
+            <br />
+            <button type="button" onclick="addConductEvent()" class="btn btn-success">
+                <i class="fa fa-check"></i>
+                Hoàn tất
+            </button>
+        }
+    </div>
+</div>
+
+<script>
+    function addConductEvent() {
+        $.ajax({
+            type: "POST",
+            data: $('#fAddInfo').serialize(),
+            url: "/QuanLy/QuanLyRenLuyen/DotXetRenLuyen/Them",
+            success: function (response) {
+                if (response.success == 'true' ) {
+                    location.href = "/QuanLy/QuanLyRenLuyen/DotXetRenLuyen/CapNhat?id=" + response.idConductEvent
+                } else {
+                    $('.message').html('<div class="alert alert-danger">' + response.responseText + '</div>');
+                }
+            },
+            error: function (response) {
+                $('.message').html('<div class="alert alert-danger">' + response.responseText + '</div>');
+            }
+        });
+    }
+</script>
