@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WEBPCTSV.Helpers;
 
 namespace WEBPCTSV.Models.bo
 {
@@ -43,6 +44,16 @@ namespace WEBPCTSV.Models.bo
         public List<Message> GetMessageReceiveUnRead(int idAccount)
         {
             return context.Messages.Where(m => m.IdAccountReceiver == idAccount && m.isReaded == false).OrderByDescending(m => m.IdMessage).ToList();
+        }
+
+        public int GetCountMessageReceiveUnRead(int idAccount)
+        {
+            return context.Messages.Where(m => m.IdAccountReceiver == idAccount && m.isReaded == false).Count();
+        }
+
+        public Message GetLastMessageReceiveUnRead(int idAccount)
+        {
+            return context.Messages.Where(m => m.IdAccountReceiver == idAccount && m.isReaded == false).OrderByDescending(m => m.IdMessage).FirstOrDefault();
         }
 
         public List<Message> GetMessageReceiveUnReadByPage(int idAccount, int page)
@@ -96,10 +107,12 @@ namespace WEBPCTSV.Models.bo
             try {
                 Message message = new Message();
                 message.IdAccountSender = idAccountSender;
+                Account accountSender = new AccountBO().GetAccount(idAccountSender);
                 Account accountReceiver = new AccountBO().GetAccountByName(form["AccountReceiver"]);
                 message.IdAccountReceiver = accountReceiver.IdAccount;
                 message.TitleMessage = form["TitleMessage"];
                 message.ContentMessage = form["editor1"];
+                
                 string text = ConvertObject.RemoveHtmlTags(form["editor1"]);
                 text = text.Substring(0, (text.Length < 70 ? text.Length : 70));
                 message.TextSummary = text;
@@ -107,10 +120,28 @@ namespace WEBPCTSV.Models.bo
                 message.isReaded = false;
                 context.Messages.Add(message);
                 context.SaveChanges();
+                if (form["notifyByMail"] == "on")
+                {
+                    SendMail(accountSender,accountReceiver);
+                }
                 return true;
             }
             catch { }
             return false;
+        }
+        public void SendMail( Account accountSender, Account accountReceiver)
+        {
+            if (!String.IsNullOrEmpty(accountReceiver.Email))
+            {
+                List<string> listEmail = new List<string>();
+                listEmail.Add(accountReceiver.Email);
+                string link = "http://" + HttpContext.Current.Request.Url.Authority + "/ManageMessage/MessageReceiveUnRead?page=1";
+                string content = "Chào " + ConvertObject.GetPersonNamebyAccount(accountReceiver) + ". Vào lúc " + DateTime.Now.ToLongDateString() + " bạn nhận được 1 tin nhắn từ  " + ConvertObject.GetPersonNamebyAccount(accountSender) + ". Click vào link sau để biết thêm chi tiết";
+                SendMailService sendMailService = new SendMailService(listEmail, "Nhắc nhở", "Nhắc nhở", link, content);
+                sendMailService.sendEmail();
+                
+            }
+
         }
 
         public bool SendMessage(int idAccountSender,string nameAccountReceiver,string title,string content)

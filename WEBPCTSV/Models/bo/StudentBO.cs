@@ -50,7 +50,7 @@ namespace WEBPCTSV.Models.bo
             if (student.IdProvinceIdentityCard.Equals("")) student.IdProvinceIdentityCard = null;
             student.idState = form["selectState"];
             AccountBO accountBo = new AccountBO();
-            student.IdAccount = accountBo.AddAccount(student.StudentNumber);
+            student.IdAccount = accountBo.AddAccountSV(student.StudentNumber);
             context.Students.Add(student);
             context.SaveChanges();
 
@@ -243,6 +243,190 @@ namespace WEBPCTSV.Models.bo
                 catch { }
             }
         }
+        public void ImportStudent3(ExcelPackage package)
+        {
+            var currentSheet = package.Workbook.Worksheets;
+            var workSheet = currentSheet.Last();
+            int maxCol = workSheet.Dimension.End.Column;
+            int maxRow = workSheet.Dimension.End.Row;
+            percentProgress = 0;
+
+            for (int rowIterator = 2; rowIterator <= maxRow; rowIterator++)
+            {
+                try
+                {
+                    using (DSAContext ct = new DSAContext())
+                    {
+                        string studentNumber = workSheet.Cells[rowIterator, 1].Value.ToString();
+                        if (!String.IsNullOrEmpty(studentNumber))
+                        {
+                            Student student = ct.Students.SingleOrDefault(s => s.StudentNumber.Equals(studentNumber));
+                            if (student == null)
+                            {
+                                student = new Student();
+                                student.StudentNumber = studentNumber;
+                            }
+
+                            string studentName = workSheet.Cells[rowIterator, 3].Value.ToString();
+                            string[] listString = studentName.Split(' ');
+                            student.FirstNameStudent = listString[listString.Count() - 1];
+                            student.LastNameStudent = studentName.Replace(student.FirstNameStudent, "");
+
+                            if (workSheet.Cells[rowIterator, 5].Value != null)
+                            {
+                                student.BirthDay = Convert.ToDateTime(workSheet.Cells[rowIterator, 5].Value.ToString());
+                            }
+
+                            string sex = workSheet.Cells[rowIterator, 4].Value.ToString();
+                            if (sex.Trim().Equals("1"))
+                            {
+                                student.Sex = "Nam";
+                            }
+                            else
+                            {
+                                student.Sex = "Nữ";
+                            }
+
+                            string className = workSheet.Cells[rowIterator, 15].Value.ToString();
+                            Class cl = new ClassBO().Get(className.Trim());
+                            if (cl == null)
+                            {
+                                string facultyNumber = workSheet.Cells[rowIterator, 16].Value.ToString();
+                                string courseName = className.Substring(0, 2);
+                                cl = new ClassBO().Insert(className, courseName, facultyNumber);
+                            }
+                            student.IdClass = cl.IdClass;
+
+
+                            if (workSheet.Cells[rowIterator, 6].Value != null)
+                            {
+                                try
+                                {
+                                    string ethnic = workSheet.Cells[rowIterator, 6].Value.ToString();
+                                    Ethnic et = ct.Ethnics.Single(e => e.EthnicName.Equals(ethnic));
+                                    student.IdEthnic = et.IdEthnic;
+                                }
+                                catch { }
+
+                            }
+
+
+
+                            if (workSheet.Cells[rowIterator, 7].Value != null)
+                            {
+                                try
+                                {
+                                    string state = workSheet.Cells[rowIterator, 7].Value.ToString();
+                                    State st = ct.States.Single(c => c.StateName.Equals(state));
+                                    student.idState = st.IdState;
+                                }
+                                catch { }
+
+                            }
+
+                            if (workSheet.Cells[rowIterator, 20].Value != null)
+                            {
+                                try
+                                {
+                                    string madeofStudy = workSheet.Cells[rowIterator, 20].Value.ToString();
+                                    MadeOfStudy mod = ct.MadeOfStudies.Single(m => m.MadeOfStudyName.Equals(madeofStudy));
+                                    student.IdMadeOfStudy = mod.idMadeOfStudy;
+                                }
+                                catch { }
+
+                            }
+
+
+                            if (workSheet.Cells[rowIterator, 24].Value != null)
+                            {
+                                try
+                                {
+                                    student.IdentityCard = workSheet.Cells[rowIterator, 24].Value.ToString();
+                                }
+                                catch { }
+
+                            }
+
+                            if (workSheet.Cells[rowIterator, 25].Value != null)
+                            {
+                                try
+                                {
+                                    student.DateOfIssuanceIdentityCard = DateTime.ParseExact(workSheet.Cells[rowIterator, 25].Value.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                                }
+                                catch { }
+
+                            }
+
+                            if (workSheet.Cells[rowIterator, 26].Value != null)
+                            {
+                                try
+                                {
+                                    string PlaceIdentityCard = workSheet.Cells[rowIterator, 26].Value.ToString().Replace("CA ", "");
+                                    Province province = ct.Provinces.SingleOrDefault(p => p.ProvinceName.ToUpper().Trim().Contains(PlaceIdentityCard.ToString()));
+                                    student.IdProvinceIdentityCard = province.IdProvince;
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(e);
+                                }
+
+                            }
+
+                            if (workSheet.Cells[rowIterator, 32].Value != null)
+                            {
+                                try
+                                {
+                                    student.AdditionalPermanentResidence = workSheet.Cells[rowIterator, 32].Value.ToString();
+                                }
+                                catch { }
+
+                            }
+
+                            if (workSheet.Cells[rowIterator, 33].Value != null)
+                            {
+                                try
+                                {
+                                    student.MobilePhoneNumber = workSheet.Cells[rowIterator, 33].Value.ToString();
+                                }
+                                catch { }
+
+                            }
+
+                            if (workSheet.Cells[rowIterator, 38].Value != null)
+                            {
+                                try
+                                {
+                                    student.Email = workSheet.Cells[rowIterator, 38].Value.ToString();
+
+                                }
+                                catch { }
+
+                            }
+
+                            if (student.IdStudent == 0)
+                            {
+                                int idAccount = new AccountBO().AddAccountSV(student);
+                                student.IdAccount = idAccount;
+                                ct.Students.Add(student);
+                            }
+                            else
+                            {
+                                Account account = ct.Accounts.Single(a => a.IdAccount == student.IdAccount);
+                                account.Email = student.Email;
+                            }
+
+                            ct.SaveChanges();
+
+                            percentProgress = (int)(((double)rowIterator / maxRow) * 100);
+                        }
+
+
+                    }
+
+                }
+                catch { }
+            }
+        }
 
         public void AddStudent(string studentNumber, string studentName, string birthDay, string sex, int idClass)
         {
@@ -256,8 +440,8 @@ namespace WEBPCTSV.Models.bo
                         student = ct.Students.Single(s => s.StudentNumber.Equals(studentNumber));
                     }
                     catch { }
-                    
-                    
+
+
                     if (student != null)
                     {
                         student.FirstNameStudent = listString[listString.Count() - 1];
@@ -265,19 +449,23 @@ namespace WEBPCTSV.Models.bo
                         student.BirthDay = Convert.ToDateTime(birthDay);
                         student.Sex = sex;
                         student.IdClass = idClass;
+                        student.IsOrphan = false;
+                        student.ObjectTuitionFee = 1;
                         ct.SaveChanges();
                     }
                     else
                     {
                         student = new Student();
                         student.StudentNumber = studentNumber;
-                        int idAccount = new AccountBO().AddAccount(studentNumber);
+                        int idAccount = new AccountBO().AddAccountSV(studentNumber);
                         student.IdAccount = idAccount;
                         student.FirstNameStudent = listString[listString.Count() - 1];
                         student.LastNameStudent = studentName.Replace(student.FirstNameStudent, "");
                         if (birthDay != "") student.BirthDay = Convert.ToDateTime(birthDay);
                         student.Sex = sex;
                         student.IdClass = idClass;
+                        student.IsOrphan = false;
+                        student.ObjectTuitionFee = 1;
                         ct.Students.Add(student);
                         ct.SaveChanges();
                     }

@@ -15,7 +15,7 @@ namespace WEBPCTSV.Models.bo
         public static int percentProgress;
         int rowInPage = new Configuration().rowInPage;
 
-        public bool Insert(Student student, int idSemester, float points10Scale, float points4Scale, int pointStraining, float creditsNumber, float relearnCreditsNumber, float pointsAverageShipSchool, float creditNumberUnQualified,bool isSchedule)
+        public bool Insert(Student student, int idSemester, float points10Scale, float points4Scale, int pointStraining, float creditsNumber, float relearnCreditsNumber, float pointsAverageShipSchool, float creditNumberUnQualified,bool isSchedule,float PointPlus)
         {
             using (DSAContext ct = new DSAContext())
             {
@@ -32,6 +32,7 @@ namespace WEBPCTSV.Models.bo
                     learningOutcome.PointsAverageShipSchool = pointsAverageShipSchool;
                     learningOutcome.CreditNumberUnQualified = creditNumberUnQualified;
                     learningOutcome.IsSchedule = isSchedule;
+                    learningOutcome.PointPlus = PointPlus;
 
                     float pointPlusRegency = 0;
                     if (student.RegencyStudents.Count > 0)
@@ -67,7 +68,7 @@ namespace WEBPCTSV.Models.bo
             return null;
         }
 
-        public bool Update(Student student, int idLearningOutComes, int idSemester, float points10Scale, float points4Scale, int pointStraining, float creditsNumber, float relearnCreditsNumber, float pointsAverageShipSchool, float creditNumberUnQualified, bool isSchedule)
+        public bool Update(Student student, int idLearningOutComes, int idSemester, float points10Scale, float points4Scale, int pointStraining, float creditsNumber, float relearnCreditsNumber, float pointsAverageShipSchool, float creditNumberUnQualified, bool isSchedule,float PointPlus)
         {
             using(DSAContext ct = new DSAContext())
             {
@@ -83,6 +84,7 @@ namespace WEBPCTSV.Models.bo
                     learningOutcome.PointsAverageShipSchool = pointsAverageShipSchool;
                     learningOutcome.CreditNumberUnQualified = creditNumberUnQualified;
                     learningOutcome.IsSchedule = isSchedule;
+                    learningOutcome.PointPlus = PointPlus;
 
                     float pointPlusRegency = 0;
                     if (student.RegencyStudents.Count > 0)
@@ -114,6 +116,7 @@ namespace WEBPCTSV.Models.bo
             int maxCol = workSheet.Dimension.End.Column;
             int maxRow = workSheet.Dimension.End.Row;
             percentProgress = 0;
+            Semester semester = context.Semesters.Single(s => s.IdSemester == idSemester);
 
             for (int rowIterator = 2; rowIterator <= maxRow; rowIterator++)
             {
@@ -121,6 +124,7 @@ namespace WEBPCTSV.Models.bo
                 {
                     string studentNumber = workSheet.Cells[rowIterator, 1].Value.ToString();
                     Student student = context.Students.Single(s => s.StudentNumber.Equals(studentNumber));
+                    
                     if (student != null)
                     {
                         float points10Scale = (float)Convert.ToDouble(workSheet.Cells[rowIterator, 6].Value.ToString());
@@ -130,14 +134,24 @@ namespace WEBPCTSV.Models.bo
                         float relearnCreditsNumber = (float)Convert.ToDouble(workSheet.Cells[rowIterator, 11].Value.ToString());
                         float pointsAverageShipSchool = (float)Convert.ToDouble(workSheet.Cells[rowIterator, 5].Value.ToString());
                         float creditNumberUnQualified = (float)Convert.ToDouble(workSheet.Cells[rowIterator, 8].Value.ToString());
+                        int course = Convert.ToInt32(workSheet.Cells[rowIterator, 10].Value.ToString());
+                        // năm học của sinh viên
+                        int courseStudent = semester.IdYear - student.Class.Course.AdmissionYear + 1;
+                        // nếu học đúng tiến độ
                         bool isSchedule = false;
-                        if( workSheet.Cells[rowIterator, 12].Value.ToString() == "1")
+                        if(course==courseStudent)
                         {
                             isSchedule = true;
                         }
+                        float pointPlus = 0;
+                        if (student.RegencyStudents.Count>0)
+                        {
+                            pointPlus = student.RegencyStudents.First().Regency.PlusPoint.Value;
+                        }
+                        
                         LearningOutCome learningOutCome = Get(student.IdStudent, idSemester);
-                        if (learningOutCome == null) Insert(student, idSemester, points10Scale, points4Scale, pointStraining, creditsNumber, relearnCreditsNumber, pointsAverageShipSchool, creditNumberUnQualified, isSchedule);
-                        else Update(student, learningOutCome.IdLearningOutComes, idSemester, points10Scale, points4Scale, pointStraining, creditsNumber, relearnCreditsNumber, pointsAverageShipSchool, creditNumberUnQualified, isSchedule);
+                        if (learningOutCome == null) Insert(student, idSemester, points10Scale, points4Scale, pointStraining, creditsNumber, relearnCreditsNumber, pointsAverageShipSchool, creditNumberUnQualified, isSchedule,pointPlus);
+                        else Update(student, learningOutCome.IdLearningOutComes, idSemester, points10Scale, points4Scale, pointStraining, creditsNumber, relearnCreditsNumber, pointsAverageShipSchool, creditNumberUnQualified, isSchedule,pointPlus);
                     }
                     percentProgress = (int)(((double)rowIterator / maxRow) * 100);
                 }

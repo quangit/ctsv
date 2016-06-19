@@ -97,5 +97,10 @@ namespace WEBPCTSV.Controllers
             return RedirectToAction("Semester");
         }
 
+        public ActionResult test()
+        {
+            return View("test");
+        }
+
     }
 }

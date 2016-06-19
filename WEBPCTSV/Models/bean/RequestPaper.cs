@@ -18,6 +18,8 @@ namespace WEBPCTSV.Models.bean
         public DateTime? TimeRequest { get; set; }
         public DateTime? TimeReceivePaper{ get; set; }
 
+        public int NumberPaper { get; set; }
+
         public bool isImportant { get; set; }
 
         public int? IdReasonRequest { get; set; }

@@ -31,6 +31,8 @@ namespace WEBPCTSV.Models.bean
 
         public float? CreditNumberUnQualified { get; set; }
 
+        public float? PointPlus { get; set; }
+
         public string IdRankingAcademic { get; set; }
 
         public bool IsSchedule { get; set; }

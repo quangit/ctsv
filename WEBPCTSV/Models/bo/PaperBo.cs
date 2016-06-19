@@ -48,13 +48,18 @@ namespace WEBPCTSV.Models.bo
             return paper;
         }
 
-        public String GetContentListPaper(List<int> listIdAccount, List<int> listIdPaper)
+        public String GetContentListPaper(List<int> listIdRequest)
         {
             string content = "";
-            for (int i = 0; i < listIdAccount.Count; i++)
+            for (int i = 0; i < listIdRequest.Count; i++)
             {
-                Paper paper = ReplacePaper(listIdPaper[i], listIdAccount[i]);
-                content = content + paper.ContentPaper;
+                int idRequest = listIdRequest[i];
+                RequestPaper request = context.RequestPapers.Single(r => r.IdRequestPaper == idRequest);
+                Paper paper = ReplacePaper(request.Reasonrequest.IdPaper, request.IdAccountRequest);
+                for (int j = 0; j < request.NumberPaper;j++ )
+                {
+                    content = content + paper.ContentPaper;
+                }
             }
             return content;
         }

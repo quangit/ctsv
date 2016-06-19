@@ -2014,6 +2014,7 @@
     <Content Include="js\jquery.js" />
     <Content Include="js\jquery.nivo.slider.js" />
     <Content Include="js\jquery.validate.js" />
+    <Content Include="js\LayoutManageWebworker.js" />
     <Content Include="js\lean-slider.js" />
     <Content Include="css\slidebars.min.css" />
     <Content Include="js\ProgressWebworker.js" />

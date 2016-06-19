@@ -5,6 +5,12 @@ app.controller("detailPaper", function ($scope) {
     $scope.changeselect = function () {
         var valueSelectReason = $scope.selectReason;
         var textSelectReason = $("#selectReasonDetail :selected").text().trim();
+        if (textSelectReason == 'Chọn lý do')
+        {
+            $('#buttonSendRequest').prop( "disabled", true );
+        } else {
+            $('#buttonSendRequest').prop("disabled", false);
+        }
         if (textSelectReason == 'khác') {
             $('#divReasonDetail').html('<textarea name="otherReason" class="form-control" style="width:80%;margin-top:10px" placeholder="nhập lý do khác"></textarea>');
         }

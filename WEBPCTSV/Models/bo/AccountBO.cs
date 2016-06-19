@@ -100,13 +100,27 @@ namespace WEBPCTSV.Models.bo
         //    return toltalStudent / rowInPage + 1;
         //}
 
-        public int AddAccount(string studentNumber)
+        public int AddAccountSV(string studentNumber)
         {
             Account account = new Account();
             account.UserName = studentNumber;
             account.Password = GetMD5(studentNumber);
             account.IsDelete = false;
             account.IdDecentralizationGroup = 1;
+            account.TypeAccount = "SV";
+            context.Accounts.Add(account);
+            context.SaveChanges();
+            return account.IdAccount;
+        }
+
+        public int AddAccountSV(Student student)
+        {
+            Account account = new Account();
+            account.UserName = student.StudentNumber;
+            account.Password = GetMD5(student.StudentNumber);
+            account.Email = student.Email;
+            account.IsDelete = false;
+            account.IdDecentralizationGroup = 2;
             account.TypeAccount = "SV";
             context.Accounts.Add(account);
             context.SaveChanges();

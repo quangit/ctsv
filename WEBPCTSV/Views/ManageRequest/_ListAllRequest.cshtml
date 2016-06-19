@@ -4,6 +4,7 @@
     int stt = 1;
     List<RequestPaper> listRequest = Model;
 }
+@using WEBPCTSV.Models.Support;
 <button class="btn btn-primary" onclick="PrintAllHtml()" style="margin-bottom:5px">In tất cả</button>
 
 <table class="table table-hover">
@@ -13,7 +14,8 @@
             <th>Tên Sinh Viên</th>
             <th>Tên giấy yêu cầu</th>
             <th>Lý do</th>
-            <th>Ngày nhận giấy</th>
+            <th>NgàyNG</th>
+            <th>SL</th>
             <th>Lệ phí</th>
             <th>Tình trạng</th>
             <th></th>
@@ -27,7 +29,7 @@
         {
             <tr>
                 <td>@stt</td>
-                <td><input id="@request.IdAccountRequest" type="checkbox" name="@request.Reasonrequest.IdPaper" /></td>
+                <td><input id="@request.IdRequestPaper" type="checkbox"/></td>
                 <td data-toggle="modal" data-target="#detailRequest_@request.IdRequestPaper">
                     @if (request.AccountRequest.Students.Count > 0)
                     {
@@ -48,19 +50,20 @@
                     @if (request.TimeReceivePaper != null)
                     { @request.TimeReceivePaper.Value.ToShortDateString() }
                 </td>
+                <td>@request.NumberPaper</td>
                 <td data-toggle="modal" data-target="#detailRequest_@request.IdRequestPaper">
                     @if (request.isImportant)
                     {
-                        @request.Reasonrequest.Paper.PriceUrgency
+                        @ConvertObject.ConvertCurrency((Convert.ToInt32(request.Reasonrequest.Paper.PriceUrgency)*request.NumberPaper).ToString())
                     }
                     else
                     {
-                        @request.Reasonrequest.Paper.PriceNormal
+                        @ConvertObject.ConvertCurrency((Convert.ToInt32(request.Reasonrequest.Paper.PriceNormal) * request.NumberPaper).ToString())
                     } VNĐ
                 </td>
                 <td data-toggle="modal" data-target="#detailRequest_@request.IdRequestPaper">@request.Requeststatus.StatusName</td>
                 <td>
-                    <span class="glyphicon glyphicon-print text-success" data-toggle="tooltip" title="In đơn !" onclick="PrintHtml('@request.Reasonrequest.IdPaper','@request.IdAccountRequest')"></span>
+                    <span class="glyphicon glyphicon-print text-success" data-toggle="tooltip" title="In đơn !" onclick="PrintHtml('@request.Reasonrequest.IdPaper','@request.IdAccountRequest',@request.NumberPaper)"></span>
                 </td>
                 <td>
                     @if (request.IdRequestStatus == 1)
@@ -134,16 +137,24 @@
                             </div>
                             <div class="form-horizontal" role="form">
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4">Số lượng:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static">@request.NumberPaper</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal" role="form">
+                                <div class="form-group">
                                     <label class="control-label col-sm-4" for="email">Lệ phí :</label>
                                     <div class="col-sm-8">
                                         <p class="form-control-static">
                                             @if (request.isImportant)
                                             {
-                                                @request.Reasonrequest.Paper.PriceUrgency
+                                                @ConvertObject.ConvertCurrency((Convert.ToInt32(request.Reasonrequest.Paper.PriceUrgency) * request.NumberPaper).ToString())
                                             }
                                             else
                                             {
-                                                @request.Reasonrequest.Paper.PriceNormal
+                                                @ConvertObject.ConvertCurrency((Convert.ToInt32(request.Reasonrequest.Paper.PriceNormal) * request.NumberPaper).ToString())
                                             }VNĐ
                                         </p>
                                     </div>
@@ -204,7 +215,7 @@
 </table>
 
 <script>
-    function PrintHtml(idPaper, idAccountRequest) {
+    function PrintHtml(idPaper, idAccountRequest,number) {
         //var divContents = $("#dvContainer").html();
         /*var printWindow = window.open('', '', 'height=400,width=800');
         printWindow.document.write('<html><head><title>DIV Contents</title>');
@@ -217,7 +228,7 @@
         $.ajax({
             url: "/ManagePaper/DetailPrintPaper",
             type: "post",
-            data: { 'idPaper': idPaper, 'idAccountRequest': idAccountRequest },
+            data: { 'idPaper': idPaper, 'idAccountRequest': idAccountRequest,'numberPaper':number },
             success: function (result) {
                 var originalContents = document.body.innerHTML;
                 document.body.innerHTML = result;
@@ -236,16 +247,14 @@
     }
 
     function PrintAllHtml() {
-        var listIdAccountselected = [];
-        var listIdPaperselected = [];
+        var listIdRequestselected = [];
         $('#checkboxs input:checked').each(function () {
-            listIdAccountselected.push($(this).attr('id'));
-            listIdPaperselected.push($(this).attr('name'));
+            listIdRequestselected.push($(this).attr('id'));
         });
         $.ajax({
             url: "/ManagePaper/PrintListPaper",
             type: "post",
-            data: { listIdAccount: listIdAccountselected, listIdPaper: listIdPaperselected },
+            data: { listIdRequest: listIdRequestselected},
             success: function (data) {
                 var originalContents = document.body.innerHTML;
                 document.body.innerHTML = data.Result;

@@ -44,15 +44,20 @@ namespace WEBPCTSV.Controllers
             return View("DetailPaper");
         }
 
-        public ActionResult DetailPrintPaper(int idPaper, int idAccountRequest)
+        public ActionResult DetailPrintPaper(int idPaper, int idAccountRequest,int numberPaper)
         {
             Paper paper = paperBo.ReplacePaper(idPaper, idAccountRequest);
-            return Content(paper.ContentPaper, "text/plain");
+            string printPaper = "";
+            for (int i = 0; i < numberPaper;i++ )
+            {
+                printPaper += paper.ContentPaper;
+            }
+                return Content(printPaper, "text/plain");
         }
 
-        public ActionResult PrintListPaper(List<int> listIdAccount, List<int> listIdPaper)
+        public ActionResult PrintListPaper(List<int> listIdRequest)
         {
-            string content = paperBo.GetContentListPaper(listIdAccount, listIdPaper);
+            string content = paperBo.GetContentListPaper(listIdRequest);
             return Json(new { Result = content});
         }
 

@@ -15,14 +15,20 @@
                 <h4 class="modal-title"> Gửi tin nhắn </h4>
             </div>
             <div class="modal-body">
-                <input type="text" id="AccountReceiver" name="AccountReceiver" class="form-control" required placeholder="Tài khoản gửi tới" style="border:none" />
-                <input type="text" id="TitleMessage" name="TitleMessage" class="form-control" placeholder="chủ đề" style="border:none" />
+                <div class="input-group" style="margin-bottom:10px">
+                    <span class="input-group-addon" style="border-radius:0px;border:none">Tới:</span>
+                    <input type="text" id="AccountReceiver" name="AccountReceiver" class="form-control" required placeholder="Tài khoản gửi tới" style="border:none;border-radius:0px" />
+                </div>
+                <input type="text" id="TitleMessage" name="TitleMessage" class="form-control" placeholder="Chủ đề" style="border:none" />
                 <hr />
                 <textarea name="editor1" id="editor1"></textarea>
             </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Gửi</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <div class="modal-footer">          
+                <div class="btn-group" style="float:left">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Gửi </button>
+                    <label class="btn btn-default" data-toggle="tooltip" title="Nhắc nhở có tin nhắn qua email của tài khoản đó nếu có!"><input type="checkbox" name="notifyByMail" /> Nhắc qua email</label>
+                </div>
+                <button type="button" class="btn btn-default" data-dismiss="modal"> Đóng </button>
             </div>
         </div>
 

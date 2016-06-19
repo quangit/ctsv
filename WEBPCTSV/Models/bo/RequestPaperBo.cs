@@ -22,6 +22,7 @@ namespace WEBPCTSV.Models.bo
             request.ContentReason = otherReason;
             request.IdReasonRequest = idReason;
             request.TimeRequest = DateTime.Now;
+            request.NumberPaper = Convert.ToInt32(form["numberPaper"]);
             DateTime timeReceive = DateTime.Now;
             if (reason.Reason.Equals("khác"))
             {

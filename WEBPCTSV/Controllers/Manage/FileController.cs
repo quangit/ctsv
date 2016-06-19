@@ -198,7 +198,7 @@ namespace WEBPCTSV.Controllers
                     var data = file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.ContentLength));
                     using (var package = new ExcelPackage(file.InputStream))
                     {
-                       new StudentBO().ImportStudent(package);
+                       new StudentBO().ImportStudent3(package);
                     }
                     
                 }
@@ -229,6 +229,12 @@ namespace WEBPCTSV.Controllers
             return Content("upload thành công", "text/plain");
         }
 
+
+        /// <summary>
+        /// Upload điểm sinh viên
+        /// </summary>
+        /// <param name="idSemester"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult UploadExcelScoteStudent(int idSemester)
         {
@@ -334,6 +340,14 @@ namespace WEBPCTSV.Controllers
         {
             MemoryStream fs = new StudentShipSchoolBo().ExportListStudentShips(idStudentShipSchool);
             return File(fs, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MyFileName.xlsx");
+        }
+
+        public FileResult DownloadExcel(string filename)
+        {
+            string dir = Server.MapPath("~/FileData/Sample/");
+            string path = Path.Combine(dir, filename);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(path);
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, filename);
         }
         
     }
