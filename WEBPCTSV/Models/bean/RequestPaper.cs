@@ -30,6 +30,8 @@ namespace WEBPCTSV.Models.bean
 
         public int? IdAccountProcess { get; set; }
 
+        public bool? IsPrint { get;set;}
+
         public virtual Account AccountRequest { get; set; }
 
         public virtual Account AccountProcess { get; set; }

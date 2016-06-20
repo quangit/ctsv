@@ -2286,6 +2286,7 @@
     <Content Include="Views\ManageStaff\InfoStaff.cshtml" />
     <Content Include="Views\StudentShip\SendStudenshipApplication.cshtml" />
     <Content Include="Views\Conduct\ConductDetail.cshtml" />
+    <Content Include="Views\ManageMessage\_ListMessage2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

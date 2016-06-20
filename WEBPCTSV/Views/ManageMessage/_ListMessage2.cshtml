@@ -1,0 +1,64 @@
+﻿@model IEnumerable<WEBPCTSV.Models.bean.Message>
+<div ng-controller="manageMessage">
+    @using WEBPCTSV.Models.Support;
+    @foreach (WEBPCTSV.Models.bean.Message message in Model)
+    {
+        <div class="alert alert-info fade in" style="background-color:white;padding:3px;margin-top:6px;margin-bottom:0px">
+            
+            <div class="row" >
+                <div class="col-sm-1" data-toggle="modal" data-target="#DetailMessage_@message.IdMessage" ng-click="Readed('@message.IdMessage')">
+                    @if (message.AccountSender.Avatar != null)
+                    {
+                        <img src="@message.AccountSender.Avatar" class="img-circle" alt="Cinque Terre" width="50" height="50" />
+                    }
+                    else
+                    {
+                        <img src="https://maxcdn.icons8.com/office/PNG/80/Users/circled_user_male-80.png" class="img-circle" alt="Cinque Terre" width="50" height="50" />
+                    }
+                </div>
+
+                <div class="col-sm-11">
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width:auto" data-toggle="modal" data-target="#DetailMessage_@message.IdMessage" ng-click="Readed('@message.IdMessage')">
+                                <label class="label label-primary">@ConvertObject.GetPersonNamebyAccount(message.AccountSender)</label>
+                                <label>@message.TitleMessage</label>
+                            </td>
+                            <td align="right" style="color:#cbcbcb">
+                                <span class="glyphicon glyphicon-time"></span> @message.Time.ToString("hh:mm dd/MM/yyy")
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close" style="margin-left:10px">&times;</a>
+                            </td>
+                        </tr>
+                        <tr data-toggle="modal" data-target="#DetailMessage_@message.IdMessage" ng-click="Readed('@message.IdMessage')"
+                            >
+                            <td colspan="2">@message.TextSummary</td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+            <div id="DetailMessage_@message.IdMessage" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><span class="glyphicon glyphicon-envelope"></span> @ConvertObject.GetPersonNamebyAccount(message.AccountSender) (@message.AccountSender.UserName) </h4>
+                        </div>
+                        <div class="modal-body" style="padding:10px">
+                            <h3> @message.TitleMessage</h3>
+                            <p style="width:100%;text-align:right;color:#808080;background-color:#f5f5f5">thời gian @message.Time.ToString("hh:mm dd/MM/yyyy")</p>
+                            <div style="padding:3px">@Html.Raw(message.ContentMessage)</div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    }
+</div>

@@ -84,6 +84,8 @@ namespace WEBPCTSV.Models.bean
         [StringLength(11)]
         public string PhoneNumberHouseholder { get; set; }
 
+        public string NameHouseholder { get; set; }
+
         [StringLength(20)]
         public string HealthInsuranceNumber { get; set; }
 
@@ -99,6 +101,9 @@ namespace WEBPCTSV.Models.bean
 
         public string MedicalExaminationTreatment { get; set; }
 
+        public string RegisteredNumber { get; set; }
+
+        public float? PointInput { get; set; }
         public int? IdSpecialize { get; set; }
 
         public int? IdClass { get; set; }

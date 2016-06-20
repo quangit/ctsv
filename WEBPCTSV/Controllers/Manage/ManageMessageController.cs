@@ -35,18 +35,13 @@ namespace WEBPCTSV.Controllers
             if (Session["numberMessagerUnread"] == null)
                 Session["numberMessagerUnread"] = 0;
             int numberMessagerUnread = new MessageBo().GetCountMessageReceiveUnRead(Convert.ToInt32(Session["idAccount"]));
-            if (Convert.ToInt32(Session["numberMessagerUnread"]) != numberMessagerUnread)
-            {
-                Session["numberMessagerUnread"] = numberMessagerUnread;
-                return Content("1", "text/plain");
-            }
-
-            return Content("0", "text/plain");
+            return Content(numberMessagerUnread.ToString(), "text/plain");
         }
 
         public ActionResult GetLastMessageReceiveUnRead()
         {
             Message message = new MessageBo().GetLastMessageReceiveUnRead(Convert.ToInt32(Session["idAccount"]));
+            if (message == null) return null;
             return Json(new { data = message.TextSummary, title = message.TitleMessage, image = message.AccountSender.Avatar });
         }
 

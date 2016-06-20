@@ -2,12 +2,14 @@
 @using WEBPCTSV.Models.bean;
 
 <table class="table table-hover">
+    @using WEBPCTSV.Models.Support;
     <thead>
         <tr>
             <th>STT</th>
             <th>Tên giấy yêu cầu</th>
             <th>Lý do</th>
             <th>Ngày nhận giấy</th>
+            <th>Số lượng</th>
             <th>Lệ phí</th>
 
             <th>Tình trạng</th>
@@ -34,14 +36,15 @@
                 }
                 <td>@if (request.TimeReceivePaper != null)
                 { @request.TimeReceivePaper.Value.ToShortDateString() }</td>
+                <td></td>
                 <td>
                     @if (request.isImportant)
                     {
-                        @request.Reasonrequest.Paper.PriceUrgency
+                        @ConvertObject.ConvertCurrency((Convert.ToInt32(request.Reasonrequest.Paper.PriceUrgency) * request.NumberPaper).ToString())
                     }
                     else
                     {
-                        @request.Reasonrequest.Paper.PriceNormal
+                        @ConvertObject.ConvertCurrency((Convert.ToInt32(request.Reasonrequest.Paper.PriceNormal) * request.NumberPaper).ToString())
                     } VNĐ
                 </td>
                 <td>@request.Requeststatus.StatusName</td>

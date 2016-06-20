@@ -427,97 +427,84 @@
         </div>
     </div>
 
-    @{
-        if (Session["numberMessagerUnread"] == null)
-        {
-            Session["numberMessagerUnread"] = 0;
-        }
-    }
-
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
     <script src="~/js/bootstrap.min.js"></script>
     <script src="~/js/angular.min.js"></script>
     <script src="~/js/angular-sanitize.min.js"></script>
     <script src="~/js/angularjs/app.js"></script>
     <script>
-        $(document).ready(function () {
-            $("#btnMemu").click(function () {
-                $("#menubar").addClass("menubar-show");
-            });
-            $("#btnMenuHiden").click(function () {
-                $("#menubar").removeClass("menubar-show");
-            });
-
-            $('[data-tooltip="true"]').tooltip();
+    $(document).ready(function () {
+        $("#btnMemu").click(function () {
+            $("#menubar").addClass("menubar-show");
+        });
+        $("#btnMenuHiden").click(function () {
+            $("#menubar").removeClass("menubar-show");
         });
 
-        function loadIconLoading(element) {
-            // Load icon when do ajax request
-            element.html('<div class="cssload-spin-box"></div>');
+        $('[data-tooltip="true"]').tooltip();
+    });
+
+    function loadIconLoading(element) {
+        // Load icon when do ajax request
+        element.html('<div class="cssload-spin-box"></div>');
+    }
+    function unloadIconLoading(element) {
+        // Load icon when do ajax request
+        element.html('');
+    }
+
+    // Notification
+    document.addEventListener('DOMContentLoaded', function () {
+        if (Notification.permission !== "granted")
+            Notification.requestPermission();
+    });
+
+    function notifyMe() {
+        if (!Notification) {
+            alert('Desktop notifications not available in your browser. Try Chromium.');
+            return;
         }
-        function unloadIconLoading(element) {
-            // Load icon when do ajax request
-            element.html('');
-        }
 
-        // Notification
-        document.addEventListener('DOMContentLoaded', function () {
-            if (Notification.permission !== "granted")
-                Notification.requestPermission();
-        });
-
-        function notifyMe() {
-            if (!Notification) {
-                alert('Desktop notifications not available in your browser. Try Chromium.');
-                return;
-            }
-
-            if (Notification.permission !== "granted")
-                Notification.requestPermission();
-            else {
-                $.ajax({
-                    url: "/ManageMessage/GetLastMessageReceiveUnRead",
-                    type: "post",
-                    success: function (result) {
+        if (Notification.permission !== "granted")
+            Notification.requestPermission();
+        else {
+            $.ajax({
+                url: "/ManageMessage/GetLastMessageReceiveUnRead",
+                type: "post",
+                success: function (result) {
+                    if (result.data != null)
+                    {
                         var notification = new Notification(result.title, {
                             icon: result.image,
                             body: result.data,
                         });
-
-                        notification.onclick = function () {
-                            window.location.href = "/ManageMessage/MessageReceiveUnRead?page=1";
-                            notification.close();
-                        };
                     }
-                });
+                    notification.onclick = function () {
+                        window.location.href = "/ManageMessage/MessageReceiveUnRead?page=1";
+                        notification.close();
+                    };
+                }
+            });
+        }
+    }
 
 
-
+    if (typeof (Worker) !== "undefined") {
+        // Trình duyệt hỗ trợ Web worker!
+        // Viết tiếp các mã javascript
+        var worker = new Worker("/js/LayoutManageWebworker.js");
+        worker.onmessage = function (event) {
+            var numberMessage = document.getElementById("numberMessageUnRead").innerHTML;
+            if (event.data != numberMessage)
+            {
+                notifyMe();
+                document.getElementById("numberMessageUnRead").innerHTML = event.data;
+                document.getElementById("numberMessageUnRead2").innerHTML = event.data;
             }
-        }
-
-
-        if (typeof (Worker) !== "undefined") {
-            // Trình duyệt hỗ trợ Web worker!
-            // Viết tiếp các mã javascript
-            var worker = new Worker("/js/LayoutManageWebworker.js");
-            worker.onmessage = function (event) {
-                alert("adad");
-                if (event.data == "1")
-                {
-                    notifyMe();
-
-                }
-                if(@Session["numberMessagerUnread"]!=null)
-                {
-                    document.getElementById("numberMessageUnRead").innerHTML = '@Session["numberMessagerUnread"].ToString()';
-                    document.getElementById("numberMessageUnRead2").innerHTML = '@Session["numberMessagerUnread"].ToString()';
-                }
-            
-            };
-        } else {
-            // Rất tiếc! Trình duyệt không hỗ trợ Web Worker..
-        }
-    </script>
+        };
+    } else {
+        // Rất tiếc! Trình duyệt không hỗ trợ Web Worker..
+    }
+</script>
 </body>
 </html>
