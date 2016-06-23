@@ -60,6 +60,11 @@ namespace WEBPCTSV.Controllers
             string content = paperBo.GetContentListPaper(listIdRequest);
             return Json(new { Result = content});
         }
+        public ActionResult PrintListPaperByClass(int idReason,int idClass)
+        {
+            string content = paperBo.GetContentListPaperByClass(idReason,idClass);
+            return Json(new { Result = content });
+        }
 
         public ActionResult EditPaper(int id)
         {

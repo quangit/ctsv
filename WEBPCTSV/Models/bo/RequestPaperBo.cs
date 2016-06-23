@@ -50,6 +50,38 @@ namespace WEBPCTSV.Models.bo
             
         
         }
+
+        public RequestPaper AddRequest(int idStudent, int idReason,int numberpaper)
+        {
+            Student student = context.Students.SingleOrDefault(s => s.IdStudent == idStudent);
+            RequestPaper request = new RequestPaper();
+            ReasonRequest reason = new ReasonPaperBo().Get(idReason);
+            request.IdReasonRequest = idReason;
+            request.TimeRequest = DateTime.Now;
+            request.NumberPaper = numberpaper;
+            DateTime timeReceive = DateTime.Now;
+            request.IdRequestStatus = 2;
+            request.isImportant = false;
+            timeReceive = DateTime.Now.AddDays(reason.Paper.WaittingPeriodNormal);
+
+            request.TimeReceivePaper = GetTimeReceive(timeReceive);
+            request.IdAccountRequest = student.IdAccount.Value;
+            context.RequestPapers.Add(request);
+            context.SaveChanges();
+            Account account = context.Accounts.SingleOrDefault(a => a.IdAccount == student.IdAccount.Value);
+            SendMail(request, account, reason);
+            return request;
+
+        }
+
+        public void UpdateRequest(int idRequest, int numberPaper)
+        {
+            RequestPaper request = context.RequestPapers.SingleOrDefault(r => r.IdRequestPaper == idRequest);
+            request.NumberPaper = numberPaper;
+            context.SaveChanges();
+        }
+
+
         public void SendMail(RequestPaper request, Account account, ReasonRequest reason)
         {
             if(!String.IsNullOrEmpty(account.Email))
@@ -58,7 +90,7 @@ namespace WEBPCTSV.Models.bo
                 listEmail.Add(account.Email);
                 string link = "http://" + HttpContext.Current.Request.Url.Authority + "/ManageRequest/ListSendRequestPaper?page=1";
                 string content = "Chào " + ConvertObject.GetPersonNamebyAccount(account) + ". Vào lúc " + DateTime.Now.ToLongDateString() + " bạn đã gửi yêu cầu xin giấy " + reason.Paper.PaperName + " với lý do " + reason.Reason + "."
-                    + " Thòi gian bạn nhận giấy là: " + request.TimeReceivePaper.Value.ToShortDateString();
+                    + " Thời gian bạn nhận giấy là: " + request.TimeReceivePaper.Value.ToShortDateString();
                 SendMailService sendMailService = new SendMailService(listEmail, "yêu cầu", "Xin cấp giấy " + reason.Paper.PaperName, link, content);
                 sendMailService.sendEmail();
                 new MessageBo().SendMessage(1, account.UserName, "Xin cấp giấy " + reason.Paper.PaperName, content);
@@ -175,6 +207,11 @@ namespace WEBPCTSV.Models.bo
             pageNumber.PageNumberTotal = CountTotal / rowInPage + 1;
             pageNumber.PageNumberCurrent = Page;
             return pageNumber;
+        }
+
+        public List<RequestPaper> GetRequestByClass(int idReason,int idClass) {
+            List<RequestPaper> listRequest = context.RequestPapers.Where(c => c.AccountRequest.Students.FirstOrDefault().IdClass == idClass&&(c.IdRequestStatus==1||c.IdRequestStatus==2)&&c.IdReasonRequest==idReason).ToList();
+            return listRequest;
         }
 
 

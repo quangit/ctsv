@@ -55,10 +55,25 @@ namespace WEBPCTSV.Models.bo
             {
                 int idRequest = listIdRequest[i];
                 RequestPaper request = context.RequestPapers.Single(r => r.IdRequestPaper == idRequest);
-                Paper paper = ReplacePaper(request.Reasonrequest.IdPaper, request.IdAccountRequest);
+                string tam = ReplacePaper2(request.Reasonrequest.IdPaper, request.IdAccountRequest);
                 for (int j = 0; j < request.NumberPaper;j++ )
                 {
-                    content = content + paper.ContentPaper;
+                    content = content + tam;
+                }
+            }
+            return content;
+        }
+        public string GetContentListPaperByClass(int idReason,int idClass)
+        {
+            string content = "";
+            List<RequestPaper> listRequest = new RequestPaperBo().GetRequestByClass(idReason,idClass);
+            foreach (RequestPaper request in listRequest)
+            {
+                
+                string tam = ReplacePaper2(request.Reasonrequest.IdPaper, request.IdAccountRequest);
+                for (int j = 0; j < request.NumberPaper; j++)
+                {
+                    content = content + tam;
                 }
             }
             return content;
@@ -186,6 +201,127 @@ namespace WEBPCTSV.Models.bo
 
         }
 
+        public string ReplacePaper2(int idPaper, int idAccount)
+        {
+            Paper paper = GetPaper(idPaper);
+            string content = paper.ContentPaper;
+            try
+            {
+
+                Account account = new AccountBO().GetAccount(idAccount);
+                
+                if (account.TypeAccount.Trim().Equals("SV"))
+                {
+                    Student student = new StudentBO().GetStudent(account.Students.First().IdStudent);
+
+                    content = content.Replace("#hovaten", student.LastNameStudent + " " + student.FirstNameStudent);
+                    content = content.Replace("#lop", student.Class.ClassName);
+
+                    content = content.Replace("#ngaysinh", (student.BirthDay != null ? student.BirthDay.Value.ToString("dd/MM/yyyy") : ""));
+                    if (student.Sex != null) content = content.Replace("#gioitinh", student.Sex);
+                    content = content.Replace("#matruong", "DUT");
+                    content = content.Replace("#tentruong", "Đại học Bách Khoa - Đại Học Đà Nẵng");
+
+                    if (student.MadeOfStudy != null) content = content.Replace("#loaihinhdaotao", student.MadeOfStudy.MadeOfStudyName);
+                    else content = content.Replace("#loaihinhdaotao", "");
+
+                    content = content.Replace("#trinhdodaotao", "Đại học");
+                    if (student.Class != null)
+                    {
+                        content = content.Replace("#nganh", student.Class.Faculty.FacultyName);
+                        content = content.Replace("#khoa", student.Class.Faculty.FacultyName);
+                        int beginCourse = Convert.ToInt32(student.Class.Course.AdmissionYear);
+                        int endCourse = beginCourse + 5;
+                        content = content.Replace("#khoahoc", beginCourse + "-" + endCourse);
+                    }
+
+                    content = content.Replace("#sothesinhvien", student.StudentNumber);
+
+                    if (student.DateAdmission != null)
+                    {
+                        content = content.Replace("#ngaynhaphoc", student.DateAdmission.Value.ToShortDateString());
+                        content = content.Replace("#ngayratruong", student.DateAdmission.Value.AddMonths(student.Class.NumberMonthSchool).ToShortDateString());
+                    }
+                    else
+                    {
+                        content = content.Replace("#ngaynhaphoc", "");
+                        content = content.Replace("#ngayratruong", "");
+                    }
+
+
+
+                    content = content.Replace("#thoigianhoctaitruong", student.Class.NumberMonthSchool + "");
+
+                    content = content.Replace("#tienhocphithang", ConvertObject.ConvertCurrency(student.Class.MoneyOfMonth));
+
+
+
+                    if (student.IdentityCard != null)
+                    {
+                        content = content.Replace("#socmnd", student.IdentityCard);
+                    }
+
+                    if (student.DateOfIssuanceIdentityCard != null)
+                    {
+                        content = content.Replace("#ngaycapcmnd", student.DateOfIssuanceIdentityCard.Value.ToShortDateString());
+                    }
+
+                    if (student.IdProvinceIdentityCard != null) content = content.Replace("#noicapcmnd", student.ProvinceIdentityCard.ProvinceName);
+
+                    content = content.Replace("#socmnd", "");
+                    content = content.Replace("#ngaycapcmnd", "");
+                    content = content.Replace("#noicapcmnd", "");
+
+
+                    if (student.IdWardBirthPlace != null)
+                    {
+                        content = content.Replace("#noisinh(tinh)", student.WardBirthPlace.District.Province.ProvinceName);
+                    }
+                    else
+                    {
+                        content = content.Replace("#noisinh(tinh)", "");
+                    }
+
+                    content = content.Replace("#khongmiengiam", "<input type='checkbox' " + (student.ObjectTuitionFee == 1 ? "checked/>" : "/>"));
+                    content = content.Replace("#giamhocphi", "<input type='checkbox'" + (student.ObjectTuitionFee == 2 ? "checked/>" : "/>"));
+                    content = content.Replace("#mienhocphi", "<input type='checkbox' " + (student.ObjectTuitionFee == 3 ? "checked/>" : "/>"));
+                    content = content.Replace("#mocoi", "<input type='checkbox' " + (student.IsOrphan.Value ? "checked/>" : "/>"));
+                    content = content.Replace("#khongmocoi", "<input type='checkbox' " + (!student.IsOrphan.Value ? "checked/>" : "/>"));
+
+                    if (student.AdditionalPermanentResidence != null)
+                    {
+                        content = content.Replace("#hokhauthuongtru", student.AdditionalPermanentResidence);
+                    }
+                    else
+                    {
+                        if (student.IdWardPermanentResidence != null)
+                        {
+                            content = content.Replace("#hokhauthuongtru", student.WardPermanentResidence.WardName + "," + student.WardPermanentResidence.District.DistrictName + "," + student.WardPermanentResidence.District.Province.ProvinceName);
+                        }
+                        else
+                        {
+                            content = content.Replace("#hokhauthuongtru", "");
+                        }
+                    }
+
+                    if (content.Contains("#bangkequarenluyen"))
+                    {
+                        string table = GetPointTranning(student);
+                        content = content.Replace("#bangkequarenluyen", table);
+                    }
+
+
+                    content = content.Replace("#ngay", DateTime.Now.Day.ToString());
+                    content = content.Replace("#thang", DateTime.Now.Month.ToString());
+                    content = content.Replace("#nam", DateTime.Now.Year.ToString());
+
+
+                }
+            }
+            catch { }
+            return content;
+
+        }
         public string GetPointTranning(Student student)
         {
             List<Semester> listSemester = new SemesterBO().GetSemesterByYear(student.Class.Course.AdmissionYear);
@@ -219,7 +355,7 @@ namespace WEBPCTSV.Models.bo
                 }
             }
 
-            string table = "<table border='1' style='width:100%'> <thead><tr><th align='center'>STT</th><th align='center'>Học kỳ</th><th align='center'>Năm học</th><th align='center'>Điểm rèn luyện</th><th align='center'>xếp loại</th><th align='center'>Ghi chú</th></tr> </thead><tbody>";
+            string table = "<table border='1' style='width:100%'> <thead><tr><th align='center'> STT </th><th align='center'> Học kỳ </th><th align='center'> Năm học </th><th align='center'> Điểm rèn luyện </th><th align='center'> Xếp loại </th><th align='center'> Ghi chú </th></tr> </thead><tbody>";
             int i = 1;
             foreach (ConductResultSemester cd in listResult)
             {

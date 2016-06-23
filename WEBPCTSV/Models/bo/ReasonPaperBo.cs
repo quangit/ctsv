@@ -14,6 +14,10 @@ namespace WEBPCTSV.Models.bo
         {
             return context.ReasonRequests.SingleOrDefault(r => r.IdReasonRequest == idReason);
         }
+        public ReasonRequest GetReasonByIdRequest(int idRequest)
+        {
+            return context.RequestPapers.SingleOrDefault(r => r.IdRequestPaper == idRequest).Reasonrequest;
+        }
         public Paper AddReasonRequest(int idPaper, string reason)
         {
             ReasonRequest reasonRequest = new ReasonRequest();

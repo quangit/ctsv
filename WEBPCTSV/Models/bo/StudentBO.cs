@@ -27,7 +27,7 @@ namespace WEBPCTSV.Models.bo
 
         public List<Student> GetListStudentByClass(int idClass)
         {
-            return dsaContext.Students.Where(s => s.IdClass == idClass).ToList();
+            return context.Students.Where(s => s.IdClass == idClass).ToList();
         }
 
         public void AddStudent(FormCollection form)

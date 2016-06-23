@@ -25,6 +25,8 @@
             </select>
         </div>
 
+        <a href="/ManageRequest/ChoosePaper"><label class="btn btn-success"><span class="glyphicon glyphicon-print" data-toggle="tooltip" title="In đơn !" onclick="PrintAllHtml('@ViewBag.idClass')"></span> In  giấy tờ theo lớp</label></a>
+
         <form action="/ManageRequest/ListAllRequestPaper?value=@ViewBag.idRequestStatus&page=1" method="post" class="input-group" style="width:400px;float:right">
             <input id="inputSearchRequestPaper" name="inputSearchRequestPaper" type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm!" />
             <span class="input-group-btn">

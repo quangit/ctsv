@@ -5,7 +5,9 @@
     List<RequestPaper> listRequest = Model;
 }
 @using WEBPCTSV.Models.Support;
-<button class="btn btn-primary" onclick="PrintAllHtml()" style="margin-bottom:5px">In tất cả</button>
+
+
+<button class="btn btn-primary" onclick="PrintAllHtml()" style="margin-bottom:5px"><span class="glyphicon glyphicon-print" data-toggle="tooltip" title="In đơn !" onclick="PrintAllHtml('@ViewBag.idClass')"></span> In tất cả</button>
 
 <table class="table table-hover">
     <thead>

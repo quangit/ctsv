@@ -2287,6 +2287,10 @@
     <Content Include="Views\StudentShip\SendStudenshipApplication.cshtml" />
     <Content Include="Views\Conduct\ConductDetail.cshtml" />
     <Content Include="Views\ManageMessage\_ListMessage2.cshtml" />
+    <Content Include="Views\ManageRequest\ChoosePapers.cshtml" />
+    <Content Include="Views\ManageRequest\ChooseClass.cshtml" />
+    <Content Include="Views\ManageRequest\ListStudentByClass.cshtml" />
+    <Content Include="Views\ManageRequest\_ListStudent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

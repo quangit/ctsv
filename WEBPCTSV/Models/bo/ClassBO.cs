@@ -214,7 +214,7 @@ namespace WEBPCTSV.Models.bo
         {
             try
             {
-                return dsaContext.Classes.Where(c => c.IdFaculty == idFaculty).ToList();
+                return context.Classes.Where(c => c.IdFaculty == idFaculty).ToList();
             }
             catch
             {
