@@ -5,6 +5,12 @@ app.controller("detailPaper", function ($scope) {
     $scope.changeselect = function () {
         var valueSelectReason = $scope.selectReason;
         var textSelectReason = $("#selectReasonDetail :selected").text().trim();
+        if (textSelectReason == 'Chọn lý do')
+        {
+            $('#buttonSendRequest').prop( "disabled", true );
+        } else {
+            $('#buttonSendRequest').prop("disabled", false);
+        }
         if (textSelectReason == 'khác') {
             $('#divReasonDetail').html('<textarea name="otherReason" class="form-control" style="width:80%;margin-top:10px" placeholder="nhập lý do khác"></textarea>');
         }
@@ -494,6 +500,47 @@ app.controller("manageMessage", function ($scope, $http, $sce) {
         var responsePromise = $http.post("/ManageMessage/ChangeIsReaded", { "idMessage": idMessage });
         responsePromise.success(function (data, status, headers, config) {
             $scope.totalMoneyStudentShip = data;
+        });
+        responsePromise.error(function (data, status, headers, config) {
+        });
+    }
+});
+
+app.controller("chooseClass", function ($scope, $http, $sce) {
+    $scope.ChangeFaculty = function (idReason,idFaculty) {
+        location.href = "/ManageRequest/ChooseClass?idReason="+idReason+"&idFaculty="+idFaculty
+    }
+
+    $scope.OpenListStudent = function (idClass) {
+        var responsePromise = $http.post("/ManageRequest/ListStudentByClass", { "idClass": idClass});
+        responsePromise.success(function (data, status, headers, config) {
+            document.getElementById("listStudentModel").innerHTML = data;
+        });
+        responsePromise.error(function (data, status, headers, config) {
+        });
+    }
+});
+
+app.controller("listStudentByClass", function ($scope, $http, $sce) {
+    $scope.AddRequest = function (idStudent, idReason, idnumberPaper, listButton) {
+        var numberPaper = document.getElementById(idnumberPaper).value;
+        if (numberPaper == "") {
+            alert("Bạn chưa nhập số lượng giấy yêu cầu!");
+        } else {
+            var responsePromise = $http.post("/ManageRequest/AddRequest", { "idStudent": idStudent, "idReason": idReason, "numberPaper": numberPaper });
+            responsePromise.success(function (data, status, headers, config) {
+                document.getElementById(listButton).innerHTML = data;
+            });
+            responsePromise.error(function (data, status, headers, config) {
+            });
+        }
+        
+    }
+    $scope.UpdateRequest = function (idRequest, idnumberPaper) {
+        var numberPaper = document.getElementById(idnumberPaper).value;
+        var responsePromise = $http.post("/ManageRequest/UpdateRequest", { "idRequest": idRequest, "numberPaper": numberPaper });
+        responsePromise.success(function (data, status, headers, config) {
+            alert("Bạn đã cập nhật thành công!");
         });
         responsePromise.error(function (data, status, headers, config) {
         });

@@ -18,6 +18,16 @@
     WEBPCTSV.Models.bean.AccountSession accountSession = (WEBPCTSV.Models.bean.AccountSession)Session["AccountSession"];
 }
 <body ng-app="myapp">
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-77162536-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
     <div class="menubar" id="menubar">
         @using WEBPCTSV.Models.Support;
         <div>
@@ -41,7 +51,7 @@
         <div class="menu-wrapper">
             <ul class="menubar-basic">
                 <li data-toggle="collapse" data-target="#menu0" class="collapsed">
-                    <a href="#" title="Pannel cá nhân"><span class="glyphicon glyphicon-qrcode icon-menubar"></span> Panel cá nhân <i class="fa fa-fw fa-caret-down"></i>  </a>
+                    <a href="#" title="Pannel cá nhân"><span class="glyphicon glyphicon-qrcode icon-menubar"></span> Panel cá nhân <i class="fa fa-fw fa-caret-down"></i> <span id="numberMessageUnRead2" class="badge umberMessageUnRead">0</span> </a>
                     <ul class="submenu collapse" id="menu0">
                         <li style="background-color:#242424">
                             <a href="/ManageAccount/AccountInformation" title="Thông tin tài khoản">
@@ -74,7 +84,7 @@
                         <li style="background-color:#242424">
                             <a href="/ManageMessage/MessageReceiveUnRead?page=1" title="Hộp thư">
                                 <p>
-                                    <i class="fa fa-comment icon-menubar" aria-hidden="true"></i>Hộp thư
+                                    <i class="fa fa-comment icon-menubar" aria-hidden="true"></i>Hộp thư <span id="numberMessageUnRead" class="badge">0</span>
                                 </p>
                             </a>
                         </li>
@@ -293,6 +303,7 @@
                 @if (CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlyyeucaugiayto"))
                 {
                     <li><a href="/ManageRequest/ListAllRequestPaper?value=0&page=1"><p><span class="glyphicon glyphicon-saved icon-menubar"></span> Quản lý yêu cầu</p></a></li>
+                    
                 }
 
                 @if (CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlytaikhoan"))
@@ -423,25 +434,78 @@
     <script src="~/js/angular-sanitize.min.js"></script>
     <script src="~/js/angularjs/app.js"></script>
     <script>
-        $(document).ready(function () {
-            $("#btnMemu").click(function () {
-                $("#menubar").addClass("menubar-show");
-            });
-            $("#btnMenuHiden").click(function () {
-                $("#menubar").removeClass("menubar-show");
-            });
-
-            $('[data-tooltip="true"]').tooltip();
+    $(document).ready(function () {
+        $("#btnMemu").click(function () {
+            $("#menubar").addClass("menubar-show");
+        });
+        $("#btnMenuHiden").click(function () {
+            $("#menubar").removeClass("menubar-show");
         });
 
-        function loadIconLoading(element) {
-            // Load icon when do ajax request
-            element.html('<div class="cssload-spin-box"></div>');
+        $('[data-tooltip="true"]').tooltip();
+    });
+
+    function loadIconLoading(element) {
+        // Load icon when do ajax request
+        element.html('<div class="cssload-spin-box"></div>');
+    }
+    function unloadIconLoading(element) {
+        // Load icon when do ajax request
+        element.html('');
+    }
+
+    // Notification
+    document.addEventListener('DOMContentLoaded', function () {
+        if (Notification.permission !== "granted")
+            Notification.requestPermission();
+    });
+
+    function notifyMe() {
+        if (!Notification) {
+            alert('Desktop notifications not available in your browser. Try Chromium.');
+            return;
         }
-        function unloadIconLoading(element) {
-            // Load icon when do ajax request
-            element.html('');
+
+        if (Notification.permission !== "granted")
+            Notification.requestPermission();
+        else {
+            $.ajax({
+                url: "/ManageMessage/GetLastMessageReceiveUnRead",
+                type: "post",
+                success: function (result) {
+                    if (result.data != null)
+                    {
+                        var notification = new Notification(result.title, {
+                            icon: result.image,
+                            body: result.data,
+                        });
+                    }
+                    notification.onclick = function () {
+                        window.location.href = "/ManageMessage/MessageReceiveUnRead?page=1";
+                        notification.close();
+                    };
+                }
+            });
         }
-    </script>
+    }
+
+
+    if (typeof (Worker) !== "undefined") {
+        // Trình duyệt hỗ trợ Web worker!
+        // Viết tiếp các mã javascript
+        var worker = new Worker("/js/LayoutManageWebworker.js");
+        worker.onmessage = function (event) {
+            var numberMessage = document.getElementById("numberMessageUnRead").innerHTML;
+            if (event.data != numberMessage)
+            {
+                notifyMe();
+                document.getElementById("numberMessageUnRead").innerHTML = event.data;
+                document.getElementById("numberMessageUnRead2").innerHTML = event.data;
+            }
+        };
+    } else {
+        // Rất tiếc! Trình duyệt không hỗ trợ Web Worker..
+    }
+</script>
 </body>
 </html>

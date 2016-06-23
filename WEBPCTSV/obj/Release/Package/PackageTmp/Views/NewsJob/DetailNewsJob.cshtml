@@ -47,7 +47,7 @@
                         @if (!WEBPCTSV.Helpers.Common.StringExtension.IsNullOrWhiteSpace(Model.News.AttachedDocuments))
                         {
                             String link = Model.News.AttachedDocuments.Substring(1);
-                            String[] arrlink = link.Split(',');
+                            String[] arrlink = link.Split(':');
                             <p style="font-weight :bold;">Các tệp tin đính kèm:</p>
                             <div id="file-download">
                                 @foreach (String nLink in arrlink)

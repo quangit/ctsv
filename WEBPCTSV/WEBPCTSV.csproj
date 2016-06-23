@@ -465,6 +465,7 @@
     <Content Include="assets\css\slide\jquery.mmenu.oncanvas.css" />
     <Content Include="assets\css\slide\jquery.mmenu.oncanvas.min.js" />
     <Content Include="assets\css\slide\site.css" />
+    <Content Include="assets\css\slide\slide.main.css" />
     <Content Include="assets\css\style.css" />
     <Content Include="assets\css\subpage.css" />
     <Content Include="assets\fonts\fontawesome-webfont.svg" />
@@ -485,6 +486,8 @@
     <Content Include="assets\images\slide\12.jpg" />
     <Content Include="assets\images\slide\DHBKBackGroundManage.png" />
     <Content Include="assets\js\bootstrap.min.js" />
+    <Content Include="assets\js\clientmaster.js" />
+    <Content Include="assets\js\clientmaster.min.js" />
     <Content Include="assets\js\conduct-grade.js" />
     <Content Include="assets\js\dataTables.bootstrap.min.js" />
     <Content Include="assets\js\jquery-1.9.1.min.js" />
@@ -496,7 +499,9 @@
     <Content Include="assets\js\jssocials.min.js" />
     <Content Include="assets\js\MicrosoftAjax.js" />
     <Content Include="assets\js\MicrosoftMvcValidation.js" />
+    <Content Include="assets\js\slide.list.min.js" />
     <Content Include="assets\slidebanner\jssor.slider.mini.js" />
+    <Content Include="assets\js\slide.list.js" />
     <Content Include="Content\ckeditor2\adapters\jquery.js" />
     <Content Include="Content\ckeditor2\build-config.js" />
     <Content Include="Content\ckeditor2\ckeditor.js" />

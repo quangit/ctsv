@@ -1,0 +1,30 @@
+﻿@using WEBPCTSV.Models.bean;
+@using WEBPCTSV.Models.Support;
+@{
+    Layout = "~/Views/Shared/_LayoutManager.cshtml";
+    ViewBag.Title = "ListAllRequest";
+}
+
+<h3 class="header-paper">Chọn loại giấy tờ </h3>
+<div class="container-layoutmanager">
+    @foreach (Paper paper in ViewBag.Papers)
+    {
+        <div>
+            <p><b><span class="glyphicon glyphicon-tag"></span> @paper.PaperName</b></p>
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                    Chọn lý do
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    @foreach (ReasonRequest reason in paper.ReasonRequests)
+                    {
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/ManageRequest/ChooseClass?idReason=@reason.IdReasonRequest&idFaculty=1">@reason.Reason</a></li>
+                    }
+                </ul>
+            </div>
+
+            <hr />
+        </div>
+    }
+</div>

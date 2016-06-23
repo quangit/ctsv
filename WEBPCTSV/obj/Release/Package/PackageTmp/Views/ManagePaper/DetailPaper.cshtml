@@ -35,9 +35,21 @@
                     <textarea name="otherReason" class="form-control" style="width:80%;margin-top:10px" placeholder="nhập lý do khác"></textarea>
                 }
             </div>
-            <input type="submit" class="btn btn-primary" style="margin-top:10px" value="Gửi yêu cầu" />
+            <div  class="input-group col-sm-3" style="margin-top:10px">
+                <span class="input-group-btn">
+                    <label class="btn btn-default"> Số lượng : </label>
+                </span>
+                <input name="numberPaper" id="numberPaper" type="number" min="1" step="1" max="5" value="1" class="form-control">
+                <span class="input-group-btn">
+                    <button id="buttonSendRequest" type="submit" class="btn btn-primary" disabled> Gửi yêu cầu </button>
+                </span>
+            </div>
         </form>
-    }else{
+
+
+    }
+    else
+    {
         <strong>Giấy này chưa sẳn sàng</strong>
     }
     

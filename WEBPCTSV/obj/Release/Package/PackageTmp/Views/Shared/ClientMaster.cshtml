@@ -16,6 +16,16 @@
     <script src="/assets/js/jquery-1.9.1.min.js"></script>
 </head>
 <body>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-77162536-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
     @{
         AccountSession account = (AccountSession)Session["AccountSession"];
     }
@@ -35,9 +45,8 @@
                 <div id="header-nav">
                     <div id="header-nav-sub">
                         <span class="label label-primary label-link" onclick="doConduct(@(account !=null?"true":"false"))">Đánh giá rèn luyện</span>
-                        @*<a href="http://dut.udn.vn/index.php?option=com_content&amp;view=article&amp;id=1259&amp;Itemid=269">Đảng ủy</a>*@
                         <a href="http://congdoan.dut.udn.vn/">Công đoàn</a>
-                        <a href="http://ktx.dut.udn.vn">Ký túc xá</a>
+                        <a href="http://ktx.dut.udn.vn:8080">Ký túc xá</a>
                         @if (account != null)
                         {
                             <span class="dropdown">
@@ -358,172 +367,5 @@
     <script src="/assets/js/jquery.mmenu.fixedelements.min.js" type="text/javascript"></script>
     <script src="~/js/jquery.validate.js" type="text/javascript"></script>
     <script src="~/assets/js/clientmaster.min.js" type="text/javascript"></script>
-
-    @*<script type="text/javascript">
-        prevurl = "";
-        $(document).ready(function () {
-            // Hover to show dropdown in bootstrap
-            $('ul.nav li.dropdown').hover(function () {
-                $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(200);
-            }, function () {
-                $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(200);
-            });
-            $(function () {
-                $(window).scroll(function () {
-                    // set distance user needs to scroll before we fadeIn navbar
-                    if ($(this).scrollTop() > $('#wrapper-header').height() + 60) {
-                        $('.navbar-slide').addClass('navbar-show');
-                    } else if ($('#wrapper-header').css('display') != 'none') {
-                        $('.navbar-slide').removeClass('navbar-show');
-                    }
-                });
-
-            });
-            //set menu slide side
-            $('#my-menu').mmenu();
-
-            // Show search bar
-            $('.search-area-background').click(function () {
-                $('.search-area > div').removeClass('search-show');
-                $(this).fadeOut();
-                $('#btn-search i').removeClass('fa-remove');
-                $('#btn-search i').addClass('fa-search');
-                $('#header-nav-sub-search').removeClass('fa-remove');
-                $('#header-nav-sub-search').addClass('fa-search');
-            });
-
-            $('#header-nav-sub-search, #btn-search').click(function () {
-                if ($('.search-area-background').css('display') == 'none') {
-                    $('.search-area-background').fadeIn();
-                    $('.search-area > div').addClass('search-show');
-                    $('#header-nav-sub-search').removeClass('fa-search');
-                    $('#header-nav-sub-search').addClass('fa-remove');
-                    $('#btn-search i').removeClass('fa-search');
-                    $('#btn-search i').addClass('fa-remove');
-                } else {
-                    $('.search-area-background').fadeOut();
-                    $('.search-area > div').removeClass('search-show');
-                    $('#header-nav-sub-search').removeClass('fa-remove');
-                    $('#header-nav-sub-search').addClass('fa-search');
-                    $('#btn-search i').removeClass('fa-remove');
-                    $('#btn-search i').addClass('fa-search');
-                }
-            });
-            $('#header-nav-sub-login').click(function () {
-                $('#modal-login').modal("show");
-            });
-            $('#modal-login-submit').click(function () {
-                doLogin(prevurl);
-            });
-
-            $('#modal-login input').keypress(function (e) {
-                // Prevent submit form by enter button
-                if (e.keyCode == 13) {
-                    e.preventDefault();
-                    doLogin(prevurl);
-                }
-            });
-        });
-    </script>
-
-    <script>
-        function doConduct(isLogged) {
-            if (isLogged) {
-                location.href = '../DanhGiaRenLuyen';
-            } else {
-                prevurl = "../DanhGiaRenLuyen";
-                $('#modal-login').modal("show");
-            }
-        }
-
-        function loadIconLoading(element) {
-            // Load icon when do ajax request
-            element.html('<div class="cssload-spin-box"></div>');
-        }
-        function unloadIconLoading(element) {
-            // Load icon when do ajax request
-            element.html('');
-        }
-        function doLogin(prevurl) {
-            $.ajax({
-                type: 'POST',
-                data: $('#fLoginAjax').serialize(),
-                url: '../Account/LoginAjax',
-                beforeSend: function () {
-                    $('.modal-message').fadeOut();
-                    $('.modal-message').html("");
-                    $('.cssload-container').fadeIn();
-                    loadIconLoading($('.cssload-container'));
-                },
-                success: function (response) {
-                    if (response.success == true) {
-                        typeAlert = 'alert-success';
-                        if (prevurl != "")
-                            location.href = prevurl;
-                        else {
-                            location.reload();
-                        }
-                    } else {
-                        typeAlert = 'alert-danger';
-                        $.when($('.cssload-container').fadeOut()).then(function () {
-                            $('.modal-message').html('<div class="alert ' + typeAlert + '">' + response.responseText + '</div>')
-                            $('.modal-message').fadeIn();
-                        });
-                    }
-                },
-                error: function (response) {
-                    $('.modal-message').html('<div class="alert alert-danger">Lỗi trong quá trình lấy dữ liệu!</div>')
-                    $('.cssload-container').fadeOut();
-                    $('.modal-message').fadeIn();
-                }
-            });
-        }
-    </script>*@
-
-
-    @*<script type="text/javascript">
-        $(document)
-                .ready(
-                        function () {
-                            $("#fSubscribe")
-                                    .validate(
-                                            {
-                                                rules: {
-                                                    email: {
-                                                        required: true,
-                                                        email: true
-                                                    }
-                                                },
-                                                messages: {
-                                                    email: {
-                                                        required: "Chưa nhập địa chỉ email!",
-                                                        email: "Nhập sai định dạng địa chỉ email!"
-                                                    }
-                                                },
-
-                                                submitHandler: function (form) {
-                                                    subscribe();
-                                                }
-                                            });
-                        });
-        function subscribe() {
-            $.ajax({
-                url: "../Account/Subscrible",
-                type: "post",
-                dateType: "text",
-                data: {
-                    mail: $('#email').val()
-                },
-                success: function (result) {
-                    $('.modal-announcement-message').html(result);
-                    $('#modal-announcement').modal('show');
-                },
-                error: function (result) {
-                    $('.modal-announcement-message').html('Lỗi trong quá trình gửi dữ liệu!');
-                    $('#modal-announcement').modal('show');
-                }
-            });
-        }
-    </script>*@
 </body>
 </html>
