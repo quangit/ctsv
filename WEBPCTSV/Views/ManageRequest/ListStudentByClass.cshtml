@@ -32,7 +32,7 @@
                             <div class="input-group" style="width:100px">
                                 <input id="numberPaper_@student.IdStudent" placeholder="SL" type="number" min="1" max="20" step="1" class="form-control" />
                                 <div class="input-group-btn">
-                                    <button class="btn btn-primary" ng-click="AddRequest('@student.IdStudent','@ViewBag.idReason','numberPaper_@student.IdStudent','ListButton_@student.IdStudent')"><span class="glyphicon glyphicon-save "></span></button>
+                                    <button class="btn btn-primary" ng-click="AddRequest('@student.IdStudent','@ViewBag.idReason','numberPaper_@student.IdStudent','ListButton_@student.IdStudent')" data-toggle="tooltip" title="Thêm yêu cầu!"><span class="glyphicon glyphicon-save "></span></button>
                                 </div>
                             </div>
                             
@@ -131,14 +131,18 @@
     }
 
     function UpdateStatusCancelRequest(idRequest) {
-        $.ajax({
-            url: "/ManageRequest/UpdateStatusCancelRequest",
-            type: "post",
-            data: { 'idRequestPaper': idRequest },
-            success: function (result) {
-                location.reload();
-            }
-        });
+        if(confirm("Bạn có muốn xóa yêu cầu!"))
+        {
+            $.ajax({
+                url: "/ManageRequest/UpdateStatusCancelRequest",
+                type: "post",
+                data: { 'idRequestPaper': idRequest },
+                success: function (result) {
+                    location.reload();
+                }
+            });
+        }
+        
     }
 
     function UpdateRequest(idRequest, idnumberPaper) {
