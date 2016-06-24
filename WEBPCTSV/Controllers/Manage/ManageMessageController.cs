@@ -19,12 +19,14 @@ namespace WEBPCTSV.Controllers
         [ValidateInput(false)]
         public ActionResult SendMessage(FormCollection form)
         {
+
             new MessageBo().SendMessage(Convert.ToInt32(Session["idAccount"]), form);
             return RedirectToAction("MessageReceiveUnRead", new { page = 1 });
         }
 
         public ActionResult MessageReceiveUnRead(int page)
         {
+            if(Session["idAccount"] == null) return RedirectToAction("Index", "Home");
             ViewBag.Message = new MessageBo().GetMessageReceiveUnReadByPage(Convert.ToInt32(Session["idAccount"]), page);
             ViewBag.pageNumber = new MessageBo().TotalPagenumberReceiveUnRead(Convert.ToInt32(Session["idAccount"]), page);
             return View("MessageUnRead");
@@ -48,12 +50,14 @@ namespace WEBPCTSV.Controllers
 
         public ActionResult MessageReceiveReaded(int page)
         {
+            if (Session["idAccount"] == null) return RedirectToAction("Index", "Home");
             ViewBag.Message = new MessageBo().GetMessageReceiveReadedByPage(Convert.ToInt32(Session["idAccount"]), page);
             ViewBag.pageNumber = new MessageBo().TotalPagenumberReceiveReaded(Convert.ToInt32(Session["idAccount"]), page);
             return View("MessageReaded");
         }
         public ActionResult MessageSended(int page)
         {
+            if (Session["idAccount"] == null) return RedirectToAction("Index", "Home");
             ViewBag.Message = new MessageBo().GetMessageSendByPage(Convert.ToInt32(Session["idAccount"]), page);
             ViewBag.pageNumber = new MessageBo().TotalPagenumberSend(Convert.ToInt32(Session["idAccount"]), page);
             return View("MessageSended");

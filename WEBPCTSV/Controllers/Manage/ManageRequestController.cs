@@ -23,8 +23,12 @@ namespace WEBPCTSV.Controllers
 
         public ActionResult ListSendRequestPaper(int page)
         {
+            if (Session["idAccount"] == null) return RedirectToAction("Index", "Home");
+
             RequestPaperBo requestPaperBo = new RequestPaperBo();
             int idAccount = Convert.ToInt32(Session["idAccount"]);
+            Account account = new AccountBO().GetAccount(idAccount);
+            if (!account.TypeAccount.Equals("SV")) return RedirectToAction("NotAccess", "ManageDecentralization");
             ViewBag.listRequest = requestPaperBo.ListRequestPaper(idAccount, page);
             PageNumber pageNumber = requestPaperBo.GetSendPageNumber(idAccount, page);
             pageNumber.Link = "/ManageRequest/ListSendRequestPaper?page=";
@@ -84,13 +88,14 @@ namespace WEBPCTSV.Controllers
 
         public ActionResult ChoosePaper()
         {
+            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlyyeucaugiayto")) return RedirectToAction("NotAccess", "ManageDecentralization");
             ViewBag.Papers = new PaperBo().GetListPaper();
             return View("ChoosePapers");
         }
 
         public ActionResult ChooseClass(int idReason, int idFaculty)
         {
-
+            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlyyeucaugiayto")) return RedirectToAction("NotAccess", "ManageDecentralization");
             List<Faculty> listFaculty = new FacultyBO().GetListFaculty();
             ViewBag.Faculty = listFaculty;
             ViewBag.idFaculty = idFaculty;
@@ -121,6 +126,7 @@ namespace WEBPCTSV.Controllers
 
         public ActionResult ListStudent(int idReason, int idClass)
         {
+            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlyyeucaugiayto")) return RedirectToAction("NotAccess", "ManageDecentralization");
             ViewBag.student = new StudentBO().GetListStudentByClass(idClass);
             ViewBag.request = new RequestPaperBo().GetRequestByClass(idReason,idClass);
             ViewBag.idReason = idReason;

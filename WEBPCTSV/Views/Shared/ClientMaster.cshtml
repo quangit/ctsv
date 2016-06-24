@@ -50,11 +50,13 @@
                         @if (account != null)
                         {
                             <span class="dropdown">
-                                <span class="dropdown-toggle label-link" data-toggle="dropdown" aria-expanded="false">
+                                <span class="dropdown-toggle label-link" data-toggle="dropdown" aria-expanded="false" >
+                                    <span class="label label-primary " id="iconNotification" style="visibility:hidden"><span class="glyphicon glyphicon-envelope"></span> <span id="numberMessager" style="font-size:10px">5</span></span>
                                     @(account.FullName)(@account.UserName)
                                     <span class="caret"></span>
                                 </span>
                                 <ul class="dropdown-menu">
+                                    <li><a href="/ManageMessage/MessageReceiveUnRead?page=1"> Tin nhắn <span id="numberMessager2" class="badge">5</span> </a></li>
                                     <li><a href="/QuanLy/ThongTin">Trang quản lý</a></li>
                                     <li><a href="/Logout">Đăng xuất</a></li>
                                 </ul>
@@ -95,6 +97,7 @@
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown">SINH VIÊN</a>
                                 <ul class="dropdown-menu menumarchil">
+                                    <li><a href="~/ManageRequest/ListSendRequestPaper?page=1">Yêu cầu giấy tờ</a></li>
                                     <li><a href="~/DanhGiaRenLuyen">Đánh giá rèn luyện</a></li>
                                     <li><a href="~/TuVan/DanhSachCauHoi">Hỏi đáp</a></li>
                                     <li><a href="~/GiaoDucPhapLuat">Giáo dục pháp luật</a></li>
@@ -367,5 +370,26 @@
     <script src="/assets/js/jquery.mmenu.fixedelements.min.js" type="text/javascript"></script>
     <script src="~/js/jquery.validate.js" type="text/javascript"></script>
     <script src="~/assets/js/clientmaster.min.js" type="text/javascript"></script>
+    <script>
+        if (typeof (Worker) !== "undefined") {
+            // Trình duyệt hỗ trợ Web worker!
+            // Viết tiếp các mã javascript
+            var worker = new Worker("/js/LayoutManageWebworker.js");
+            worker.onmessage = function (event) {
+                if (event.data > 0) {
+                    document.getElementById("iconNotification").style.visibility = 'visible';
+                    document.getElementById("numberMessager").innerHTML = event.data;
+                    document.getElementById("numberMessager2").innerHTML = event.data;
+                    document.getElementById("numberMessager2").style.visibility = 'visible';
+                }
+                else {
+                    document.getElementById("iconNotification").style.visibility = 'hidden';
+                    document.getElementById("numberMessager2").style.visibility = 'hidden';
+                }
+            };
+        } else {
+            // Rất tiếc! Trình duyệt không hỗ trợ Web Worker..
+        }
+    </script>
 </body>
 </html>

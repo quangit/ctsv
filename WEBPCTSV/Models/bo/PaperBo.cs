@@ -109,6 +109,7 @@ namespace WEBPCTSV.Models.bo
                         int beginCourse = Convert.ToInt32(student.Class.Course.AdmissionYear);
                         int endCourse = beginCourse + 5;
                         content = content.Replace("#khoahoc", beginCourse + "-" + endCourse);
+                        content = content.Replace("#khtuyensinh", student.Class.Course.AdmissionYear.ToString());
                     }
 
                     content = content.Replace("#sothesinhvien", student.StudentNumber);
@@ -182,8 +183,7 @@ namespace WEBPCTSV.Models.bo
 
                     if (content.Contains("#bangkequarenluyen"))
                     {
-                        string table = GetPointTranning(student);
-                        content = content.Replace("#bangkequarenluyen", table);
+                        content = ReplacePointTranning(student, content);
                     }
 
 
@@ -230,9 +230,10 @@ namespace WEBPCTSV.Models.bo
                     {
                         content = content.Replace("#nganh", student.Class.Faculty.FacultyName);
                         content = content.Replace("#khoa", student.Class.Faculty.FacultyName);
-                        int beginCourse = Convert.ToInt32(student.Class.Course.AdmissionYear);
+                        int beginCourse = student.Class.Course.AdmissionYear;
                         int endCourse = beginCourse + 5;
                         content = content.Replace("#khoahoc", beginCourse + "-" + endCourse);
+                        content = content.Replace("#khtuyensinh", student.Class.Course.AdmissionYear.ToString());
                     }
 
                     content = content.Replace("#sothesinhvien", student.StudentNumber);
@@ -306,8 +307,7 @@ namespace WEBPCTSV.Models.bo
 
                     if (content.Contains("#bangkequarenluyen"))
                     {
-                        string table = GetPointTranning(student);
-                        content = content.Replace("#bangkequarenluyen", table);
+                        content = ReplacePointTranning(student,content);
                     }
 
 
@@ -322,7 +322,20 @@ namespace WEBPCTSV.Models.bo
             return content;
 
         }
-        public string GetPointTranning(Student student)
+
+        public double GetPointAverageTrainning(List<ConductResultSemester> listResult)
+        {
+            double pointAverage = 0;
+            int count = 0;
+            foreach (ConductResultSemester cd in listResult)
+            {
+                pointAverage += (double)cd.Point;
+                count++;
+            }
+            pointAverage =Math.Round(pointAverage / ((double)count),2);
+            return pointAverage;
+        }
+        public List<ConductResultSemester> GetPointTranning(Student student)
         {
             List<Semester> listSemester = new SemesterBO().GetSemesterByYear(student.Class.Course.AdmissionYear);
             List<ConductResultSemester> listResult = new List<ConductResultSemester>();
@@ -354,8 +367,12 @@ namespace WEBPCTSV.Models.bo
                     listResult.Add(conductResultSemester);
                 }
             }
+            return listResult;
+        }
 
-            string table = "<table border='1' style='width:100%'> <thead><tr><th align='center'> STT </th><th align='center'> Học kỳ </th><th align='center'> Năm học </th><th align='center'> Điểm rèn luyện </th><th align='center'> Xếp loại </th><th align='center'> Ghi chú </th></tr> </thead><tbody>";
+        public string GetTablePointTranning(List<ConductResultSemester> listResult)
+        {
+            string table = "<table border='1' style='width:100%'> <thead><tr><td align='center'><b> STT </b> </td><td align='center'><b> Học kỳ </b></td><td align='center'><b> Năm học </b></td><td align='center'><b> Điểm rèn luyện </b></td><td align='center'><b> Xếp loại </b></td><td align='center'><b> Ghi chú </b></td></tr> </thead><tbody>";
             int i = 1;
             foreach (ConductResultSemester cd in listResult)
             {
@@ -369,6 +386,35 @@ namespace WEBPCTSV.Models.bo
             }
             table += "</tbody></table>";
             return table;
+        }
+
+        public string GetTableENPointTranning(List<ConductResultSemester> listResult)
+        {
+            string table = "<table border='1' style='width:100%'> <thead><tr><td align='center'><b> STT </b> </td><td align='center'><b> Semester </b></td><td align='center'><b> Năm học </b></td><td align='center'><b> Điểm rèn luyện </b></td><td align='center'><b> Xếp loại </b></td><td align='center'><b> Ghi chú </b></td></tr> </thead><tbody>";
+            int i = 1;
+            foreach (ConductResultSemester cd in listResult)
+            {
+                table += "<tr>";
+                table += "<td align='center'>" + (i++) + "</td>";
+                table += "<td align='center'>" + cd.SemesterName + "</td>";
+                table += "<td align='center'>" + cd.SemesterYear + "</td>";
+                table += "<td align='center'>" + cd.Point + "</td>";
+                table += "<td align='center'>" + DataExtension.GetGradeEvaluated(cd.Point) + "</td>";
+                table += "<td align='center'></td></tr>";
+            }
+            table += "</tbody></table>";
+            return table;
+        }
+        public string  ReplacePointTranning(Student student,string content)
+        {
+            List<ConductResultSemester> listResult = GetPointTranning(student);
+            string table = GetTablePointTranning(listResult);
+            content = content.Replace("#bangkequarenluyen", table);
+            double pointAverage = GetPointAverageTrainning(listResult);
+            content = content.Replace("#diemtrungbinhrenluyen", pointAverage.ToString());
+            string rank = DataExtension.GetGradeEvaluated(Convert.ToInt32(pointAverage));
+            content = content.Replace("#xeploairenluyen", rank);
+            return content;
         }
 
         public bool UpdatePaper(string content, int idPaper)
