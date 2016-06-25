@@ -152,9 +152,7 @@ namespace WEBPCTSV.Models.bo
                 search = search.ToUpper().Trim();
                 listRequestPaper = listRequestPaper.Where(r => r.AccountRequest.UserName.ToUpper().Contains(search)
                 || ((r.AccountRequest.Students.First().LastNameStudent + r.AccountRequest.Students.First().FirstNameStudent).ToUpper().Trim().Contains(search))
-                || (r.Reasonrequest.Paper.PaperName.ToUpper().Contains(search))
-                || (r.Reasonrequest.Reason.ToUpper().Contains(search))
-                || (r.ContentReason.ToUpper().Contains(search))).ToList();
+                || (r.Reasonrequest.Paper.PaperName.ToUpper().Contains(search))).ToList();
             }
 
 

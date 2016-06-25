@@ -46,7 +46,7 @@
         <div class="form-group">
             <label class="control-label col-sm-3" for="identityCardNumber">Số CMND:</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" name="identityCardNumber" id="identityCardNumber" value="@student.IdentityCard" placeholder="vd: 12345678532 ">
+                <input type="number" class="form-control" name="identityCardNumber" id="identityCardNumber" value="@student.IdentityCard" placeholder="vd: 12345678532 ">
             </div>
             <label class="control-label col-sm-2" for="identityCardDate">Ngày cấp:</label>
             <div class="col-sm-2">
@@ -114,7 +114,7 @@
         <div class="form-group">
             <label class="control-label col-sm-3" for="PhoneNumberHouseholder">Số điện thoại chủ trọ</label>
             <div class="col-sm-6">
-                <input type="text" class="form-control" name="PhoneNumberHouseholder" id="PhoneNumberHouseholder" value="@student.PhoneNumberHouseholder" placeholder="SĐT:01663676453">
+                <input type="number" class="form-control" name="PhoneNumberHouseholder" id="PhoneNumberHouseholder" value="@student.PhoneNumberHouseholder" placeholder="SĐT:01663676453">
             </div>
         </div>
 
@@ -125,7 +125,7 @@
             </div>
             <label class="control-label col-sm-2" for="identityCardDate">Số sổ đăng ký:</label>
             <div class="col-sm-2">
-                <input type="number" class="form-control" name="TemporaryResidenceNotebookNumber" id="TemporaryResidenceNotebookNumber" value='@student.TemporaryResidenceNotebookNumber' placeholder=" 13123 ">
+                <input  class="form-control" name="TemporaryResidenceNotebookNumber" id="TemporaryResidenceNotebookNumber" value='@student.TemporaryResidenceNotebookNumber' placeholder=" 13123 " onkeypress="return KeyCode()">
             </div>
         </div>
 
@@ -259,9 +259,10 @@
                 <input type="submit" value="Lưu lại" class="btn btn-success control-label" />
             </label>
         </div>
-
-
-
-
     </form>
 </div>
+<script>
+    function KeyCode() {
+        return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode == 47);
+    }
+</script>

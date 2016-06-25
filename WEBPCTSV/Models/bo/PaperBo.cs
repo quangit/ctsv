@@ -149,15 +149,23 @@ namespace WEBPCTSV.Models.bo
                     content = content.Replace("#ngaycapcmnd", "");
                     content = content.Replace("#noicapcmnd", "");
 
-
-                    if (student.IdWardBirthPlace != null)
+                    if(student.IdWardBirthPlace.Equals("00000"))
                     {
-                        content = content.Replace("#noisinh(tinh)", student.WardBirthPlace.District.Province.ProvinceName);
+                        if (student.AdditionalBirthplace != null)
+                        {
+                            List<String> list = student.AdditionalBirthplace.Split(',').ToList();
+                            content = content.Replace("#noisinh(tinh)", list.LastOrDefault());
+                        }
+                        else
+                        {
+                            content = content.Replace("#noisinh(tinh)", "");
+                        }
                     }
                     else
                     {
-                        content = content.Replace("#noisinh(tinh)", "");
+                        content = content.Replace("#noisinh(tinh)", student.WardBirthPlace.District.Province.ProvinceName);
                     }
+                    
 
                     content = content.Replace("#khongmiengiam", "<input type='checkbox' " + (student.ObjectTuitionFee == 1 ? "checked/>" : "/>"));
                     content = content.Replace("#giamhocphi", "<input type='checkbox'" + (student.ObjectTuitionFee == 2 ? "checked/>" : "/>"));
@@ -274,13 +282,21 @@ namespace WEBPCTSV.Models.bo
                     content = content.Replace("#noicapcmnd", "");
 
 
-                    if (student.IdWardBirthPlace != null)
+                    if (student.IdWardBirthPlace.Equals("00000"))
                     {
-                        content = content.Replace("#noisinh(tinh)", student.WardBirthPlace.District.Province.ProvinceName);
+                        if (student.AdditionalBirthplace != null)
+                        {
+                            List<String> list = student.AdditionalBirthplace.Split(',').ToList();
+                            content = content.Replace("#noisinh(tinh)", list.LastOrDefault());
+                        }
+                        else
+                        {
+                            content = content.Replace("#noisinh(tinh)", "");
+                        }
                     }
                     else
                     {
-                        content = content.Replace("#noisinh(tinh)", "");
+                        content = content.Replace("#noisinh(tinh)", student.WardBirthPlace.District.Province.ProvinceName);
                     }
 
                     content = content.Replace("#khongmiengiam", "<input type='checkbox' " + (student.ObjectTuitionFee == 1 ? "checked/>" : "/>"));

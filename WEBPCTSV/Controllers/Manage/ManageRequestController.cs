@@ -44,11 +44,11 @@ namespace WEBPCTSV.Controllers
             string search = form["inputSearchRequestPaper"];
             if (search == null)
             {
-                if (Session["search"] != null) search = Session["search"].ToString();
+                if (Session["searchrequest"] != null) search = Session["searchrequest"].ToString();
             }
             else
             {
-                Session["search"] = search;
+                Session["searchrequest"] = search;
             }
             RequestPaperBo requestPaperBo = new RequestPaperBo();
             ViewBag.listRequest = requestPaperBo.ListAllRequestPaper(value, page, search);

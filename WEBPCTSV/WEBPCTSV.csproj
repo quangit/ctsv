@@ -451,6 +451,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\admin.css" />
+    <Content Include="assets\css\animationMessage.css" />
     <Content Include="assets\css\bootstrap.min.css" />
     <Content Include="assets\css\dataTables.bootstrap.min.css" />
     <Content Include="assets\css\font-awesome.min.css" />
@@ -499,7 +500,6 @@
     <Content Include="assets\js\jssocials.min.js" />
     <Content Include="assets\js\MicrosoftAjax.js" />
     <Content Include="assets\js\MicrosoftMvcValidation.js" />
-    <Content Include="assets\js\slide.list.min.js" />
     <Content Include="assets\slidebanner\jssor.slider.mini.js" />
     <Content Include="assets\js\slide.list.js" />
     <Content Include="Content\ckeditor2\adapters\jquery.js" />

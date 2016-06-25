@@ -48,11 +48,11 @@ namespace WEBPCTSV.Controllers
             string search = form["search"];
             if (search == null)
             {
-                if (Session["search"] != null) search = Session["search"].ToString();
+                if (Session["searchstudent"] != null) search = Session["searchstudent"].ToString();
             }
             else
             {
-                Session["search"] = search;
+                Session["searchstudent"] = search;
             }
             ViewBag.listStudent = studentBo.GetListStudent(page,search);
             pageNumber.PageNumberTotal = studentBo.TotalPage(search);

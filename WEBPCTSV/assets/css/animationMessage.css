@@ -1,0 +1,24 @@
+﻿.animation-messager {
+    color:blue;
+    -webkit-animation-name: example;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-direction: alternate;
+    animation-name: example;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes example {
+    from {background-color: blue;}
+    to {background-color: red;}
+}
+
+/* Standard syntax */
+@keyframes example {
+    from {background-color: blue;}
+    to {background-color: red;}
+}

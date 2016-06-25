@@ -45,11 +45,11 @@ namespace WEBPCTSV.Controllers
             string search = form["search"];
             if (search == null)
             {
-                if (Session["search"] != null) search = Session["search"].ToString();
+                if (Session["searchship"] != null) search = Session["searchship"].ToString();
             }
             else
             {
-                Session["search"] = search;
+                Session["searchship"] = search;
             }
             if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlyhocbong")) return RedirectToAction("NotAccess", "ManageDecentralization");
             ViewBag.listSemester = new SemesterBO().Get();

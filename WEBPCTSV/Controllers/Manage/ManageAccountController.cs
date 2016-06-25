@@ -61,11 +61,11 @@ namespace WEBPCTSV.Controllers
             string search = form["search"];
             if (search == null)
             {
-                if (Session["search"] != null) search = Session["search"].ToString();
+                if (Session["searchaccount"] != null) search = Session["searchaccount"].ToString();
             }
             else
             {
-                Session["search"] = search;
+                Session["searchaccount"] = search;
             }
             DecentralizationGroupBo decentralizationGroupBo = new DecentralizationGroupBo();
             ViewBag.listAccount = accountBo.GetListAccount(page,search);
