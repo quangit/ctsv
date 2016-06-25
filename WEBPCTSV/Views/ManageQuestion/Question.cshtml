@@ -55,7 +55,7 @@
                     </td>
                     <td class="col-responsive-hide">
                         <a href="/QuanLy/QuanLyCauHoi/CapNhat?id=@question.IdQuestion" title="@question.ContentHtml">
-                            @System.Text.RegularExpressions.Regex.Replace(StringExtension.GetLimitSubString(question.ContentHtml, 15), "<.*?>", String.Empty)
+                            @Html.Raw(HttpUtility.HtmlDecode(System.Text.RegularExpressions.Regex.Replace(StringExtension.GetLimitSubString(question.ContentHtml, 15), "<.*?>", String.Empty)))
                         </a>
                     </td>
                     <td>

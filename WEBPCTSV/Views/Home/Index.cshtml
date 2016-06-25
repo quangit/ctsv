@@ -238,7 +238,7 @@
                         <div class="listbox-content-item">
                             <div class="listbox-content-item-title">
                                 <a  href="~/TuVan/DanhSachCauHoi/ChiTiet?id=@x.IdQuestion" title="@x.Title">
-                                    <p><span class="listbox-content-item-title-status status-success">ĐÃ TRẢ LỜI</span><span class="question-title">@(StringExtension.GetLimitSubString(x.Title, 20))</span> <span class="question-content">@System.Text.RegularExpressions.Regex.Replace(StringExtension.GetLimitSubString(x.ContentHtml, 20), "<.*?>", String.Empty)</span></p>
+                                    <p><span class="listbox-content-item-title-status status-success">ĐÃ TRẢ LỜI</span><span class="question-title">@(StringExtension.GetLimitSubString(x.Title, 20))</span> <span class="question-content">@Html.Raw(HttpUtility.HtmlDecode(System.Text.RegularExpressions.Regex.Replace(StringExtension.GetLimitSubString(x.ContentHtml, 20), "<.*?>", String.Empty)))</span></p>
                                 </a>
                             </div>
                             <div class="listbox-content-item-moreinfo">
