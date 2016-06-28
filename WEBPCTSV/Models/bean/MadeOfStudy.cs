@@ -19,6 +19,7 @@ namespace WEBPCTSV.Models.bean
         public int idMadeOfStudy { get; set; }
 
         public string MadeOfStudyName { get; set; }
+        public string MadeOfStudyNameEN { get; set; }
 
         
         public virtual ICollection<Student> Students { get; set; }

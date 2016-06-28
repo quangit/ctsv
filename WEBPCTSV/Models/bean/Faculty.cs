@@ -25,6 +25,8 @@ namespace WEBPCTSV.Models.bean
 
         public string FacultyName { get; set; }
 
+        public string FacultyNameEN { get; set; }
+
         public string Acronym { get; set; }
 
         public virtual ICollection<Class> Classes { get; set; }

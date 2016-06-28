@@ -48,11 +48,12 @@
                         <span class="label label-primary label-link" onclick="doConduct(@(account !=null?"true":"false"))">Đánh giá rèn luyện</span>
                         <a href="http://congdoan.dut.udn.vn/">Công đoàn</a>
                         <a href="http://ktx.dut.udn.vn:8080">Ký túc xá</a>
+                        <span class="label label-primary animation-messager" id="iconNotification" style="display:none"><span class="glyphicon glyphicon-envelope "></span> <span id="numberMessager" style="font-size:10px">5</span></span>
                         @if (account != null)
                         {
                             <span class="dropdown">
                                 <span class="dropdown-toggle label-link" data-toggle="dropdown" aria-expanded="false" >
-                                    <span class="label label-primary animation-messager" id="iconNotification" style="visibility:hidden"><span class="glyphicon glyphicon-envelope "></span> <span id="numberMessager" style="font-size:10px">5</span></span>
+                                    
                                     @(account.FullName)(@account.UserName)
                                     <span class="caret"></span>
                                 </span>
@@ -371,26 +372,31 @@
     <script src="/assets/js/jquery.mmenu.fixedelements.min.js" type="text/javascript"></script>
     <script src="~/js/jquery.validate.js" type="text/javascript"></script>
     <script src="~/assets/js/clientmaster.min.js" type="text/javascript"></script>
+@if (account != null)
+{
     <script>
         if (typeof (Worker) !== "undefined") {
             // Trình duyệt hỗ trợ Web worker!
             // Viết tiếp các mã javascript
             var worker = new Worker("/js/LayoutManageWebworker.js");
             worker.onmessage = function (event) {
+
                 if (event.data > 0) {
-                    document.getElementById("iconNotification").style.visibility = 'visible';
+                    document.getElementById("iconNotification").style.display = 'inline';
                     document.getElementById("numberMessager").innerHTML = event.data;
                     document.getElementById("numberMessager2").innerHTML = event.data;
-                    document.getElementById("numberMessager2").style.visibility = 'visible';
+                    document.getElementById("numberMessager2").style.display = 'inline';
                 }
                 else {
-                    document.getElementById("iconNotification").style.visibility = 'hidden';
-                    document.getElementById("numberMessager2").style.visibility = 'hidden';
+                    document.getElementById("iconNotification").style.display = 'none';
+                    document.getElementById("numberMessager2").style.display = 'none';
                 }
             };
         } else {
             // Rất tiếc! Trình duyệt không hỗ trợ Web Worker..
         }
     </script>
+}
+    
 </body>
 </html>

@@ -34,5 +34,32 @@ namespace WEBPCTSV.Helpers.Common
                 return "Kém";
             }
         }
+        public static string GetGradeEvaluatedEN(int point)
+        {
+            if (point >= 90)
+            {
+                return "Excellent";
+            }
+            else if (80 <= point && point < 90)
+            {
+                return " Very good";
+            }
+            else if (65 <= point && point < 80)
+            {
+                return "Good";
+            }
+            else if (50 <= point && point < 65)
+            {
+                return "Average";
+            }
+            else if (35 <= point && point < 50)
+            {
+                return "Weak";
+            }
+            else
+            {
+                return "Least";
+            }
+        }
     }
 }
