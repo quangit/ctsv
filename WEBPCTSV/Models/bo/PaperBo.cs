@@ -170,8 +170,29 @@ namespace WEBPCTSV.Models.bo
                 if (student.AdditionalBirthplace != null)
                 {
                     List<String> list = student.AdditionalBirthplace.Split(',').ToList();
-                    content = content.Replace("#noisinh(tinh)", list.LastOrDefault());
-                    content = content.Replace("#birthPlace", ConvertObject.ToEnglish(list.LastOrDefault())+","+ConvertObject.ToEnglish(student.State.StateName));
+                    List<string> birthplace = list.LastOrDefault().Split(' ').ToList();
+                    int length = birthplace.Count;
+                    if(length>2)
+                    {
+                        if(birthplace.LastOrDefault().Contains("Hu"))
+                        {
+                            content = content.Replace("#noisinh(tinh)", birthplace[length-3]+" "+birthplace[length-2]+" "+birthplace[length-1]);
+                            content = content.Replace("#birthPlace", ConvertObject.ToEnglish(birthplace[length - 3] + " " + birthplace[length - 2] + " " + birthplace[length - 1]) + "," + ConvertObject.ToEnglish(student.State.StateName));
+                        }
+                        else
+                        {
+                            content = content.Replace("#noisinh(tinh)",birthplace[length - 2] + " " + birthplace[length - 1]);
+                            content = content.Replace("#birthPlace", ConvertObject.ToEnglish(birthplace[length - 2] + " " + birthplace[length - 1]) + "," + ConvertObject.ToEnglish(student.State.StateName));
+                        }
+                            
+                    }
+                    else
+                    {
+                        content = content.Replace("#noisinh(tinh)", list.LastOrDefault());
+                        content = content.Replace("#birthPlace", ConvertObject.ToEnglish(list.LastOrDefault()) + "," + ConvertObject.ToEnglish(student.State.StateName));
+                    }
+
+                    
                 }
                 else
                 {
