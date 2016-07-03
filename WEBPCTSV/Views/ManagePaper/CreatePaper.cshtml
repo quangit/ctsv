@@ -68,65 +68,7 @@
                         <h4 class="modal-title">Gửi tin nhắn </h4>
                     </div>
                     <div class="modal-body">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <td>Từ khóa</td>
-                                    <td>Giải thích</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>#hovaten</td>
-                                    <td>Họ và tên sinh viên</td>
-                                </tr>
-                                <tr>
-                                    <td>#lop</td>
-                                    <td>Lớp sinh viên đang học</td>
-                                </tr>
-                                <tr>
-                                    <td>#khoa</td>
-                                    <td>Khoa sinh viên đang học</td>
-                                </tr>
-                                <tr>
-                                    <td>#khoahoc</td>
-                                    <td>Sinh viên khóa bao nhiêu</td>
-                                </tr>
-                                <tr>
-                                    <td>#nganh</td>
-                                    <td>Chuyên ngành sinh viên</td>
-                                </tr>
-                                <tr>
-                                    <td>#ngaysinh</td>
-                                    <td>Ngày sinh của sinh viên</td>
-                                </tr>
-                                <tr>
-                                    <td>#gioitinh</td>
-                                    <td>Giới tính của sinh viên</td>
-                                </tr>
-                                <tr>
-                                    <td>#loaihinhdaotao</td>
-                                    <td>Loại hình đào tạo</td>
-                                </tr>
-                                <tr>
-                                    <td>#trinhdodaotao</td>
-                                    <td>Trình độ đào tạo</td>
-                                </tr>
-                                <tr>
-                                    <td>#sothesinhvien</td>
-                                    <td>Mã số sinh viên</td>
-                                </tr>
-                                <tr>
-                                    <td>#ngaynhaphoc</td>
-                                    <td>Ngày nhập học</td>
-                                </tr>
-                                <tr>
-                                    <td>#ngayratruong</td>
-                                    <td>Ngày ra trường</td>
-                                </tr>
-
-                            </tbody>
-                        </table>
+                        @Html.Partial("_KeyWord")
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -141,19 +83,13 @@
     CKEDITOR.on('dialogDefinition', function (ev) {
         var dialogName = ev.data.name;
         var dialogDefinition = ev.data.definition;
-
         if (dialogName == 'table') {
             var info = dialogDefinition.getContents('info');
-
             info.get('txtWidth')['default'] = '100%';       // Set default width to 100%
             info.get('txtBorder')['default'] = '0';         // Set default border to 0
         }
     });
     CKEDITOR.replace('editor1');
-    CKEDITOR.config.extraPlugins = 'tableresize,divarea,lineheight';
-    //CKEDITOR.config.extraPlugins = 'divarea';
-    //CKEDITOR.config.extraPlugins = 'lineheight';
-    CKEDITOR.config.enterMode = CKEDITOR.ENTER_DIV;
     CKEDITOR.config.width = 800;
    // CKEDITOR.config.contentsCss = 'fontckeditor.css';
     //the next line add the new font to the combobox in CKEditor

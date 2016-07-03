@@ -57,6 +57,7 @@ namespace WEBPCTSV.Controllers
             ViewBag.pageNumber = pageNumber;
             ViewBag.idRequestStatus = value;
             ViewBag.listStatus = new RequestStatusBo().GetRequestStatus();
+            ViewBag.inforFooter = requestPaperBo.GetInfoFooterPaper(Convert.ToInt32(Session["idAccount"]));
             return View("ListAllRequestPaper");
         }
 
@@ -133,6 +134,7 @@ namespace WEBPCTSV.Controllers
             ReasonRequest reason = new ReasonPaperBo().Get(idReason);
             ViewBag.PaperName = reason.Paper.PaperName;
             ViewBag.idClass = idClass;
+            ViewBag.inforFooter = new RequestPaperBo().GetInfoFooterPaper(Convert.ToInt32(Session["idAccount"]));
             return View("ListStudentByClass");
         }
 

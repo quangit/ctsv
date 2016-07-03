@@ -87,6 +87,7 @@
             success: function (result) {
                 var originalContents = document.body.innerHTML;
                 document.body.innerHTML = result;
+                document.body.innerHTML+="<div class='divFooter'>'@ViewBag.inforFooter'</div>";
                 window.print();
                 document.body.innerHTML = originalContents;
                 location.reload();
@@ -110,6 +111,7 @@
             success: function (data) {
                 var originalContents = document.body.innerHTML;
                 document.body.innerHTML = data.Result;
+                document.body.innerHTML += "<div class='divFooter'>'@ViewBag.inforFooter'</div>";
                 window.print();
                 document.body.innerHTML = originalContents;
                 location.reload();
@@ -142,7 +144,7 @@
                 }
             });
         }
-        
+
     }
 
     function UpdateRequest(idRequest, idnumberPaper) {

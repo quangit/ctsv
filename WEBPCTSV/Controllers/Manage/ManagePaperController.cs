@@ -57,8 +57,12 @@ namespace WEBPCTSV.Controllers
 
         public ActionResult PrintListPaper(List<int> listIdRequest)
         {
-            string content = paperBo.GetContentListPaper(listIdRequest);
-            return Json(new { Result = content});
+            if(listIdRequest!=null)
+            {
+                string content = paperBo.GetContentListPaper(listIdRequest);
+                return Json(new { Result = content });
+            }
+            return null;
         }
         public ActionResult PrintListPaperByClass(int idReason,int idClass)
         {

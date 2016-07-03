@@ -372,7 +372,13 @@ namespace WEBPCTSV
               new { controller = "ManageAccount", action = "AccountInformation" }
               );
             #endregion
-
+            #region controller ManageRequest
+            routes.MapRoute(
+               "ListAllRequestPaper",
+               "QuanLy/DanhSachYeuCau",
+               new { controller = "ManageRequest", action = "ListAllRequestPaper" }
+               );
+            #endregion
 
             //Client routes
             #region controller Account
@@ -636,6 +642,8 @@ namespace WEBPCTSV
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
             #endregion
+
+            
 
         }
     }

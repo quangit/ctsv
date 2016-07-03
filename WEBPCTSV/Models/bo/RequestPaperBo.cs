@@ -212,6 +212,16 @@ namespace WEBPCTSV.Models.bo
             return listRequest;
         }
 
+        public string GetInfoFooterPaper(int idAccount)
+        {
+            string infoFooterPaper = "";
+            Account account = new AccountBO().GetAccount(idAccount);
+            infoFooterPaper += DateTime.Now.ToString("hh_mm_ss_dd_MM_yy");
+            infoFooterPaper += "_";
+            infoFooterPaper += account.UserName;
+            return infoFooterPaper;
+        }
+
 
     }
 }

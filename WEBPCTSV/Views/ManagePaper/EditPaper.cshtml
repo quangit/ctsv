@@ -80,157 +80,7 @@
                     <h4 class="modal-title">Từ khóa </h4>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <td>Từ khóa</td><td>Từ khóa tiếng anh</td><td>Giải thích</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>#hovaten</td><td>#fullname</td><td>Họ và tên sinh viên</td>                            
-                            </tr>
-                            <tr>
-                                <td>#lop</td><td></td><td>Lớp sinh viên đang học</td>
-                            </tr>
-                            <tr>
-                                <td>#khoa</td>
-                                <td>#faculty</td>
-                                <td>Khoa sinh viên đang học</td>
-                            </tr>
-                            <tr>
-                                <td>#nganh</td>
-                                <td>#major</td>
-                                <td>Ngành sinh viên đang học</td>
-                            </tr>
-                            <tr>
-                                <td>#khoahoc</td>
-                                <td></td>
-                                <td>Sinh viên khóa bao nhiêu</td>
-                            </tr>
-                            <tr>
-                                <td>#nganh</td>
-                                <td>#major</td>
-                                <td>Chuyên ngành sinh viên</td>
-                            </tr>
-                            <tr>
-                                <td>#ngaysinh</td>
-                                <td>#birthday</td>
-                                <td>Ngày sinh của sinh viên</td>
-                            </tr>
-                            <tr>
-                                <td>#gioitinh</td>
-                                <td>#sex</td>
-                                <td>Giới tính của sinh viên</td>
-                            </tr>
-                            <tr>
-                                <td>#loaihinhdaotao</td>
-                                <td>#madeofstudy</td>
-                                <td>Loại hình đào tạo</td>
-                            </tr>
-                            <tr>
-                                <td>#trinhdodaotao</td>
-                                <td>#leveloftraining</td>
-                                <td>Trình độ đào tạo</td>
-                            </tr>
-                            <tr>
-                                <td>#sothesinhvien</td>
-                                <td></td>
-                                <td>Mã số sinh viên</td>
-                            </tr>
-                            <tr>
-                                <td>#ngaynhaphoc</td>
-                                <td></td>
-                                <td>Ngày nhập học</td>
-                            </tr>
-                            <tr>
-                                <td>#ngayratruong</td>
-                                <td></td>
-                                <td>Ngày ra trường</td>
-                            </tr>
-                            <tr>
-                                <td>#thoigianhoctaitruong</td>
-                                <td></td>
-                                <td>Thời gian học tại trường</td>
-                            </tr>
-                            <tr>
-                                <td>#tienhocphithang</td>
-                                <td></td>
-                                <td>Tiền học phí hàng tháng</td>
-                            </tr>
-                            <tr>
-                                <td>#socmnd</td>
-                                <td></td>
-                                <td>Số chứng minh nhân dân</td>
-                            </tr>
-                            <tr>
-                                <td>#ngaycapcmnd</td>
-                                <td></td>
-                                <td>Ngày cấp chứng minh nhân dân</td>
-                            </tr>
-                            <tr>
-                                <td>#noicapcmnd</td>
-                                <td></td>
-                                <td>Nơi cấp chứng minh nhân dân</td>
-                            </tr>
-                            <tr>
-                                <td>#noisinh(tinh)</td>
-                                <td></td>
-                                <td>Tĩnh nơi sinh</td>
-                            </tr>
-                            <tr>
-                                <td>#khongmiengiam</td>
-                                <td></td>
-                                <td>Đối tượng không miễn giãm học phí</td>
-                            </tr>
-                            <tr>
-                                <td>"#giamhocphi"</td>
-                                <td></td>
-                                <td>Đổi tượng giảm học phí</td>
-                            </tr>
-                            <tr>
-                                <td>"#mienhocphi"</td>
-                                <td></td>
-                                <td>Đối tượng miễn học phí</td>
-                            </tr>
-                            <tr>
-                                <td>#mocoi</td>
-                                <td></td>
-                                <td>Đối tượng mồ côi</td>
-                            </tr>
-                            <tr>
-                                <td>#khongmocoi</td>
-                                <td></td>
-                                <td>Đối tượng không mô côi</td>
-                            </tr>
-                            <tr>
-                                <td>#hokhauthuongtru</td>
-                                <td></td>
-                                <td>Hộ khẩu thường trú bổ sung</td>
-                            </tr>
-                            <tr>
-                                <td>#bangkequarenluyen</td>
-                                <td>#tablepointraining</td>
-                                <td>Bảng kết quả rèn luyện</td>
-                            </tr>
-                            <tr>
-                                <td>#diemtrungbinhrenluyen</td>
-                                <td></td>
-                                <td>Điểm trung bình rèn luyện</td>
-                            </tr>
-                            <tr>
-                                <td>#xeploairenluyen</td>
-                                <td>#ranktraining</td>
-                                <td>Xếp loại rèn luyện</td>
-                            </tr>
-                            <tr>
-                                <td>#ngay #thang #nam</td>
-                                <td></td>
-                                <td>Ngày Tháng Năm</td>
-                            </tr>
-                        
-                        </tbody>
-                    </table>
+                    @Html.Partial("_KeyWord")
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
@@ -276,10 +126,10 @@
         }
     });
 
-    CKEDITOR.inline('contentEditPaper', {
-        extraPlugins: 'tableresize,divarea,lineheight',
-        enterMode : CKEDITOR.ENTER_DIV,
-    });
+    //CKEDITOR.inline('contentEditPaper', {
+    //    extraPlugins: 'tableresize,divarea,lineheight',
+    //    enterMode : CKEDITOR.ENTER_DIV,
+    //});
 
 
 </script>

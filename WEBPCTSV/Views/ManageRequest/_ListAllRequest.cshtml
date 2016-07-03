@@ -1,13 +1,14 @@
 ﻿@model List<RequestPaper>
 @using WEBPCTSV.Models.bean;
+@using WEBPCTSV.Models.Support;
 @{
     int stt = 1;
     List<RequestPaper> listRequest = Model;
 }
-@using WEBPCTSV.Models.Support;
 
 
-<button class="btn btn-primary" onclick="PrintAllHtml()" style="margin-bottom:5px"><span class="glyphicon glyphicon-print" data-toggle="tooltip" title="In đơn !" onclick="PrintAllHtml('@ViewBag.idClass')"></span> In tất cả</button>
+
+<button class="btn btn-primary" onclick='PrintAllHtml()' style="margin-bottom:5px"><span class="glyphicon glyphicon-print" data-toggle="tooltip" title="In đơn !" onclick="PrintAllHtml('@ViewBag.idClass')"></span> In tất cả</button>
 
 <table class="table table-hover">
     <thead>
@@ -224,16 +225,11 @@
 
 </table>
 
+
 <script>
     function PrintHtml(idPaper, idAccountRequest,number) {
         //var divContents = $("#dvContainer").html();
-        /*var printWindow = window.open('', '', 'height=400,width=800');
-        printWindow.document.write('<html><head><title>DIV Contents</title>');
-        printWindow.document.write('</head><body >');
-        printWindow.document.write(contentPaper);
-        printWindow.document.write('</body></html>');
-        printWindow.document.close();
-        printWindow.print();*/
+
         //alert(idPaper+idAccountRequest);
         $.ajax({
             url: "/ManagePaper/DetailPrintPaper",
@@ -242,9 +238,21 @@
             success: function (result) {
                 var originalContents = document.body.innerHTML;
                 document.body.innerHTML = result;
+                document.body.innerHTML += '<div class="divFooter">@ViewBag.inforFooter</div>';
                 window.print();
+
                 document.body.innerHTML = originalContents;
                 location.reload();
+                //var printWindow = window.open('', '', 'height=400,width=800');
+                //printWindow.document.write('<html><head>');
+                //printWindow.document.write('<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">');
+                //printWindow.document.write('<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"><//script>');
+                //printWindow.document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"><//script>');
+                //printWindow.document.write('</head><body >');
+                //printWindow.document.write(result);
+                //printWindow.document.write('</body></html>');
+                //printWindow.document.close();
+                //printWindow.print();
             }
         });
 
@@ -268,6 +276,7 @@
             success: function (data) {
                 var originalContents = document.body.innerHTML;
                 document.body.innerHTML = data.Result;
+                document.body.innerHTML += '<div class="divFooter">@ViewBag.inforFooter</div>';
                 window.print();
                 document.body.innerHTML = originalContents;
                 location.reload();
