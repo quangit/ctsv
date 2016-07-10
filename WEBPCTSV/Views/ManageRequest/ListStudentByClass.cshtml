@@ -7,6 +7,7 @@
 @{
     List<RequestPaper> listRequestPaper = ViewBag.request;
 }
+
 <h3 class="header-paper">Danh sách số lượng yêu cầu giấy @ViewBag.PaperName </h3>
 <div class="container-layoutmanager" ng-controller="listStudentByClass">
     <table class="table table-hover">
@@ -84,14 +85,15 @@
             url: "/ManagePaper/DetailPrintPaper",
             type: "post",
             data: { 'idPaper': idPaper, 'idAccountRequest': idAccountRequest, 'numberPaper': number },
-            success: function (result) {
+            success: function (data) {          
                 var originalContents = document.body.innerHTML;
-                document.body.innerHTML = result;
-                document.body.innerHTML+="<div class='divFooter'>'@ViewBag.inforFooter'</div>";
+                document.body.innerHTML = data.Result;                
                 window.print();
                 document.body.innerHTML = originalContents;
                 location.reload();
-            }
+            },
+            dataType: "json",
+            traditional: true
         });
 
         /*var printContents = document.getElementById(contentPaper).innerHTML;

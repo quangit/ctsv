@@ -46,14 +46,11 @@ namespace WEBPCTSV.Controllers
 
         public ActionResult DetailPrintPaper(int idPaper, int idAccountRequest,int numberPaper)
         {
-            Paper paper = paperBo.ReplacePaper(idPaper, idAccountRequest);
-            string printPaper = "";
-            for (int i = 0; i < numberPaper;i++ )
-            {
-                printPaper += paper.ContentPaper;
-            }
-                return Content(printPaper, "text/plain");
+            string printPaper =paperBo.DetailPrintPaper(idPaper,idAccountRequest,numberPaper);
+            return Json(new { Result = printPaper });
         }
+
+
 
         public ActionResult PrintListPaper(List<int> listIdRequest)
         {

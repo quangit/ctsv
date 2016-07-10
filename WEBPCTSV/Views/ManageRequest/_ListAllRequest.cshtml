@@ -235,25 +235,15 @@
             url: "/ManagePaper/DetailPrintPaper",
             type: "post",
             data: { 'idPaper': idPaper, 'idAccountRequest': idAccountRequest,'numberPaper':number },
-            success: function (result) {
+            success: function (data) {
                 var originalContents = document.body.innerHTML;
-                document.body.innerHTML = result;
-                document.body.innerHTML += '<div class="divFooter">@ViewBag.inforFooter</div>';
+                document.body.innerHTML = data.Result;
                 window.print();
-
                 document.body.innerHTML = originalContents;
                 location.reload();
-                //var printWindow = window.open('', '', 'height=400,width=800');
-                //printWindow.document.write('<html><head>');
-                //printWindow.document.write('<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">');
-                //printWindow.document.write('<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"><//script>');
-                //printWindow.document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"><//script>');
-                //printWindow.document.write('</head><body >');
-                //printWindow.document.write(result);
-                //printWindow.document.write('</body></html>');
-                //printWindow.document.close();
-                //printWindow.print();
-            }
+            },
+            dataType: "json",
+            traditional: true
         });
 
         /*var printContents = document.getElementById(contentPaper).innerHTML;

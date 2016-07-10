@@ -48,6 +48,18 @@ namespace WEBPCTSV.Models.bo
             return paper;
         }
 
+        public string DetailPrintPaper(int idPaper, int idAccountRequest, int numberPaper)
+        {
+            Paper paper = ReplacePaper(idPaper, idAccountRequest);
+            
+            string printPaper = "";
+            for (int i = 0; i < numberPaper; i++)
+            {
+                printPaper += paper.ContentPaper;
+            }
+            return printPaper;
+        }
+
         public String GetContentListPaper(List<int> listIdRequest)
         {
             string content = "";
