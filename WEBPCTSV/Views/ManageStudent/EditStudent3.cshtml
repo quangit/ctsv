@@ -1,29 +1,41 @@
-﻿@using WEBPCTSV.Models.bean;
-
+﻿@using WEBPCTSV.Models.bean
 @{
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
     ViewBag.Title = "EditStudent3";
 }
-@using WEBPCTSV.Models.Support;
 
-<br />
+<br/>
 @{
     Student student = ViewBag.student;
 }
 <div class="container-layoutmanager">
     <ul class="nav nav-tabs">
-        <li><a href="/ManageStudent/EditStudent?idStudent=@student.IdStudent">Thông tin cơ bản</a></li>
-        <li><a href="/ManageStudent/EditStudent2?idStudent=@student.IdStudent"> Lý lịch</a></li>
-        <li class="active"><a href="#">Thông tin sức khỏe</a></li>
-        <li><a href="/ManageStudent/EditStudent4?idStudent=@student.IdStudent"> Bổ sung</a></li>
-        <li><a href="/ManageStudent/EditStudentRelative?idStudent=@student.IdStudent">Gia đình</a></li>
-        <li><a href="/ManageStudent/EditStudentSocialActivity?idStudent=@student.IdStudent">Hoạt động xã hội</a></li>
-        <li><a href="/ManageStudent/EditStudentAcademicAchievement?idStudent=@student.IdStudent">Thành tích học tập</a></li>
+        <li>
+            <a href="/ManageStudent/EditStudent?idStudent=@student.IdStudent">Thông tin cơ bản</a>
+        </li>
+        <li>
+            <a href="/ManageStudent/EditStudent2?idStudent=@student.IdStudent"> Lý lịch</a>
+        </li>
+        <li class="active">
+            <a href="#">Thông tin sức khỏe</a>
+        </li>
+        <li>
+            <a href="/ManageStudent/EditStudent4?idStudent=@student.IdStudent"> Bổ sung</a>
+        </li>
+        <li>
+            <a href="/ManageStudent/EditStudentRelative?idStudent=@student.IdStudent">Gia đình</a>
+        </li>
+        <li>
+            <a href="/ManageStudent/EditStudentSocialActivity?idStudent=@student.IdStudent">Hoạt động xã hội</a>
+        </li>
+        <li>
+            <a href="/ManageStudent/EditStudentAcademicAchievement?idStudent=@student.IdStudent">Thành tích học tập</a>
+        </li>
     </ul>
     <form class="form-horizontal" action="/ManageStudent/ProcessEditStudent3?idStudent=@student.IdStudent" method="post">
-        <br />
+        <br/>
         <strong>Thông tin cơ bản:</strong>
-        <br />
+        <br/>
 
 
         <div class="form-group">
@@ -48,8 +60,11 @@
                     <option value=""> Chọn nhóm máu</option>
                     @foreach (BloodGroup bloodgroup in ViewBag.bloodgroup)
                     {
-                        <option @if(student.IdBloodGroup == bloodgroup.IdBloodGroup){@: selected
-                                } value="@bloodgroup.IdBloodGroup">@bloodgroup.BloodGroupName</option>
+                        <option @if (student.IdBloodGroup == bloodgroup.IdBloodGroup)
+                                {
+                                    @: selected
+                                } value="@bloodgroup.IdBloodGroup">
+                            @bloodgroup.BloodGroupName</option>
                     }
                 </select>
             </div>
@@ -87,16 +102,13 @@
         </div>
 
 
-
-        <br />
+        <br/>
         <div class="form-group">
             <label class="control-label col-sm-3">
-                <input type="submit" value="Lưu lại" class="btn btn-success control-label" />
+                <input type="submit" value="Lưu lại" class="btn btn-success control-label"/>
             </label>
         </div>
 
 
     </form>
 </div>
-
-

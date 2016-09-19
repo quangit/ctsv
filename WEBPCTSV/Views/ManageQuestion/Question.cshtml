@@ -1,8 +1,7 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
-@using WEBPCTSV.Helpers;
+﻿@using PagedList.Mvc
+@using WEBPCTSV.Helpers
 @using WEBPCTSV.Helpers.Common
-@model PagedList.IPagedList<Question>
+@model PagedList.IPagedList<WEBPCTSV.Models.bean.Question>
 
 @{
     ViewBag.Active = "TuVan";
@@ -31,19 +30,19 @@
     <div id="tbnoidung">
         <table class="table table-hover table-bordered">
             <thead>
-                <tr class="tieude">
-                    <th>Đối tượng</th>
-                    <th>Ngày đăng</th>
-                    <th>Tiêu đề</th>
-                    <th class="col-responsive-hide">Nội dung</th>
-                    <th width="90px">Tùy Chọn</th>
-                </tr>
+            <tr class="tieude">
+                <th>Đối tượng</th>
+                <th>Ngày đăng</th>
+                <th>Tiêu đề</th>
+                <th class="col-responsive-hide">Nội dung</th>
+                <th width="90px">Tùy Chọn</th>
+            </tr>
             </thead>
             @foreach (var question in Model)
             {
                 <tr class="noidung row@(question.IdQuestion)">
                     <td>@Define.typeRequestQuestion[question.TypeRequest]</td>
-                    <td>@(question.CreatedDate != null ? question.CreatedDate.Value.ToString("dd/MM/yyyy") : "")</td>
+                    <td>@(question.CreatedDate != null ? question.CreatedDate.Value.ToString("dd/MM/yyyy") : string.Empty)</td>
                     <td>
                         <a href="/QuanLy/QuanLyCauHoi/CapNhat?id=@question.IdQuestion" title="@question.Title">
                             @StringExtension.GetLimitSubString(question.Title, 10)
@@ -55,12 +54,16 @@
                     </td>
                     <td class="col-responsive-hide">
                         <a href="/QuanLy/QuanLyCauHoi/CapNhat?id=@question.IdQuestion" title="@question.ContentHtml">
-                            @Html.Raw(HttpUtility.HtmlDecode(System.Text.RegularExpressions.Regex.Replace(StringExtension.GetLimitSubString(question.ContentHtml, 15), "<.*?>", String.Empty)))
+                            @Html.Raw(HttpUtility.HtmlDecode(System.Text.RegularExpressions.Regex.Replace(StringExtension.GetLimitSubString(question.ContentHtml, 15), "<.*?>", string.Empty)))
                         </a>
                     </td>
                     <td>
-                        <a class="btn btn-warning btn-sm" href="/QuanLy/QuanLyCauHoi/CapNhat?id=@question.IdQuestion"><i class="fa fa-reply" aria-hidden="true"></i></a>
-                        <a class="btn btn-danger btn-sm" href="/QuanLy/QuanLyCauHoi/Xoa?id=@question.IdQuestion"><i class="fa fa-trash"></i></a>
+                        <a class="btn btn-warning btn-sm" href="/QuanLy/QuanLyCauHoi/CapNhat?id=@question.IdQuestion">
+                            <i class="fa fa-reply" aria-hidden="true"></i>
+                        </a>
+                        <a class="btn btn-danger btn-sm" href="/QuanLy/QuanLyCauHoi/Xoa?id=@question.IdQuestion">
+                            <i class="fa fa-trash"></i>
+                        </a>
                     </td>
                 </tr>
             }

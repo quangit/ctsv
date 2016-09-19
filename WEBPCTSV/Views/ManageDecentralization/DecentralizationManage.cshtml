@@ -1,4 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
+﻿@using WEBPCTSV.Models.bean
 @{
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
     ViewBag.Title = "DecentralizationManage";
@@ -8,43 +8,41 @@
 <div class="container-layoutmanager" ng-controller="decentraizationManage">
     <table class="table table-hover">
         <thead>
-            <tr>
-                <th>Tên chức năng</th>
-                <th>@ViewBag.namegroup</th>
-            </tr>
+        <tr>
+            <th>Tên chức năng</th>
+            <th>@ViewBag.namegroup</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (Function funtion in ViewBag.listFuntion)
-            {
-                bool display = true;
-                <tr>
-                    <td>@funtion.FunctionName</td>
-                    @if (ViewBag.listDecentralization != null)
+        @foreach (Function funtion in ViewBag.listFuntion)
+        {
+            bool display = true;
+            <tr>
+                <td>@funtion.FunctionName</td>
+                @if (ViewBag.listDecentralization != null)
+                {
+                    foreach (Decentralization decentralization in ViewBag.listDecentralization)
                     {
-                        foreach (Decentralization decentralization in ViewBag.listDecentralization)
+                        if (decentralization.IdFunction.Equals(funtion.IdFunction))
                         {
-                            if (decentralization.IdFunction.Equals(funtion.IdFunction))
-                            {
-                                <td>
-                                    <input type="checkbox" id="checkBox_@funtion.IdFunction" value="@decentralization.IdDecentralization" ng-init="checkBoxFuntion_@funtion.IdFunction = @((decentralization.IsAccept==true)?"true":"false")" ng-model="checkBoxFuntion_@funtion.IdFunction" ng-change="ChangeDecentralization('@decentralization.IdDecentralization','@ViewBag.idgroup','@funtion.IdFunction')" />
-                                </td>
-                                display = false;
-                            }
+                            <td>
+                                <input type="checkbox" id="checkBox_@funtion.IdFunction" value="@decentralization.IdDecentralization" ng-init="checkBoxFuntion_@funtion.IdFunction = @((decentralization.IsAccept == true) ? "true" : "false")" ng-model="checkBoxFuntion_@funtion.IdFunction" ng-change="ChangeDecentralization('@decentralization.IdDecentralization','@ViewBag.idgroup','@funtion.IdFunction')"/>
+                            </td>
+                            display = false;
                         }
                     }
+                }
 
-                    @if (display)
-                    {
-                        <td>
-                            <input type="checkbox" id="checkBox_@funtion.IdFunction" value="0" ng-init="checkBoxFuntion_@funtion.IdFunction = false" ng-model="checkBoxFuntion_@funtion.IdFunction" ng-change="ChangeDecentralization(1,'@ViewBag.idgroup','@funtion.IdFunction')" />
-                        </td>
-                    }
+                @if (display)
+                {
+                    <td>
+                        <input type="checkbox" id="checkBox_@funtion.IdFunction" value="0" ng-init="checkBoxFuntion_@funtion.IdFunction = false" ng-model="checkBoxFuntion_@funtion.IdFunction" ng-change="ChangeDecentralization(1,'@ViewBag.idgroup','@funtion.IdFunction')"/>
+                    </td>
+                }
 
-                </tr>
-            }
+            </tr>
+        }
 
         </tbody>
     </table>
 </div>
-
-

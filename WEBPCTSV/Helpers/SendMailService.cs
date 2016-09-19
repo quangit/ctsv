@@ -1,75 +1,51 @@
-﻿using Hangfire;
-using Postal;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.Hosting;
-using System.Web.Mvc;
-using WEBPCTSV.Models.bean;
-
-namespace WEBPCTSV.Helpers
+﻿namespace WEBPCTSV.Helpers
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Web.Hosting;
+    using System.Web.Mvc;
+
+    using Hangfire;
+
+    using Postal;
+
+    using WEBPCTSV.Models.bean;
+
     public class SendMailService
     {
         private List<string> arrEmail;
-        private string link;
-        private string title;
-        private string categories;
-        private string content;
 
-        public List<string> ArrEmail
-        {
-            set
-            {
-                if (value.Count != 0)
-                    arrEmail = value;
-                else
-                    arrEmail = null;
-            }
-            get
-            {
-                return arrEmail;
-            }
-        }
-        public string Link
-        {
-            set
-            {
-                link = value;
-            }
-            get
-            {
-                return link;
-            }
-        }
-        public string Content
-        {
-            set
-            {
-                content = value;
-            }
-            get
-            {
-                return content;
-            }
-        }
+        private readonly string categories;
+
+        private readonly string title;
+
         public SendMailService(List<string> arrEmail, string categories, string title, string link, string content)
         {
             this.arrEmail = arrEmail;
-            this.link = link;
+            this.Link = link;
             this.title = title;
             this.categories = categories;
-            this.content = content;
+            this.Content = content;
         }
-        public void sendEmail()
+
+        public List<string> ArrEmail
         {
-            foreach (string email in arrEmail)
+            get
             {
-                BackgroundJob.Enqueue(() => NotifyNewEmail(email, categories, title, link, content));
+                return this.arrEmail;
+            }
+
+            set
+            {
+                if (value.Count != 0) this.arrEmail = value;
+                else this.arrEmail = null;
             }
         }
+
+        public string Content { get; set; }
+
+        public string Link { get; set; }
+
         public static void NotifyNewEmail(string toEmail, string categories, string title, string link, string content)
         {
             var viewsPath = Path.GetFullPath(HostingEnvironment.MapPath(@"~/Views/Emails"));
@@ -77,18 +53,26 @@ namespace WEBPCTSV.Helpers
             engines.Add(new FileSystemRazorViewEngine(viewsPath));
 
             var emailService = new EmailService(engines);
+
             // Get comment and send a notification.
             var email = new NewCommentEmail
-                    {
-                        To = toEmail,
-                        Title = title,
-                        Categories = categories,
-                        Link = link,
-                        Comment = content
-                    };
+                            {
+                                To = toEmail,
+                                Title = title,
+                                Categories = categories,
+                                Link = link,
+                                Comment = content
+                            };
 
             emailService.Send(email);
         }
-    }
 
+        public void sendEmail()
+        {
+            foreach (string email in this.arrEmail)
+            {
+                BackgroundJob.Enqueue(() => NotifyNewEmail(email, this.categories, this.title, this.Link, this.Content));
+            }
+        }
+    }
 }

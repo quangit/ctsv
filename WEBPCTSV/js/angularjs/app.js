@@ -1,28 +1,28 @@
-﻿var app = angular.module("myapp", ['ngSanitize']);
+﻿var app = angular.module("myapp", ["ngSanitize"]);
 
 
 app.controller("detailPaper", function ($scope) {
     $scope.changeselect = function () {
         var valueSelectReason = $scope.selectReason;
         var textSelectReason = $("#selectReasonDetail :selected").text().trim();
-        if (textSelectReason == 'Chọn lý do')
+        if (textSelectReason == "Chọn lý do")
         {
-            $('#buttonSendRequest').prop( "disabled", true );
+            $("#buttonSendRequest").prop( "disabled", true );
         } else {
-            $('#buttonSendRequest').prop("disabled", false);
+            $("#buttonSendRequest").prop("disabled", false);
         }
-        if (textSelectReason == 'khác') {
-            $('#divReasonDetail').html('<textarea name="otherReason" class="form-control" style="width:80%;margin-top:10px" placeholder="nhập lý do khác"></textarea>');
+        if (textSelectReason == "khác") {
+            $("#divReasonDetail").html('<textarea name="otherReason" class="form-control" style="width:80%;margin-top:10px" placeholder="nhập lý do khác"></textarea>');
         }
         else {
-            $('#divReasonDetail').html('');
+            $("#divReasonDetail").html("");
         }
         $.ajax({
             url: "/ManagePaper/GetStringInfoReasonRequest",
             type: "post",
             data: { 'idReason': valueSelectReason },
             success: function (result) {
-                $('#noteReason').html(result);
+                $("#noteReason").html(result);
             }
         });
     }
@@ -228,30 +228,46 @@ app.controller("listAccount", function ($scope, $http) {
     }
 })
 
-app.controller("accountInformation", function ($scope, $http) {
+app.controller("accountInformation",
+    function($scope, $http) {
 
-    $scope.ChangePassword = function () {
-        var oldPassword = $scope.oldPassword;
-        var newPassword = $scope.newPassword;
-        var reNewPassword = $scope.reNewPassword;
-        if ((oldPassword == "") || (newPassword == "")) {
-            $('#info-changepassword').html('bạn chưa nhập mật khảu');
+        $scope.ChangePassword = function() {
+            var oldPassword = $scope.oldPassword;
+            var newPassword = $scope.newPassword;
+            var reNewPassword = $scope.reNewPassword;
+            if ((oldPassword == "") || (newPassword == "")) {
+                $("#info-changepassword").html("bạn chưa nhập mật khảu");
+            } else if (newPassword != reNewPassword) {
+                $("#info-changepassword").html("mật khẩu mới không trùng khớp");
+            } else {
+                $.ajax({
+                    url: "/ManageAccount/ChangePassword",
+                    type: "post",
+                    data: { 'oldPassword': oldPassword, 'newPassword': newPassword },
+                    success: function(result) {
+                        $("#info-changepassword").html(result);
+                    }
+                });
+            }
         }
-        else if (newPassword != reNewPassword) {
-            $('#info-changepassword').html('mật khẩu mới không trùng khớp');
+
+        $scope.SaveEmail = function() {
+            var email = $scope.infoEmail;
+            if (email == "" || email == null) {
+                $("#info-saveemail").html("bạn chưa nhập đúng địa chỉ email");
+            } else {
+                $.ajax({
+                    url: "/ManageAccount/SaveEmail",
+                    type: "post",
+                    data: { 'email': email},
+                    success: function (result) {
+                        location.reload();
+                        alert("Lưu lại mật khẩu email thành công");
+                    }
+                });
+            }
         }
-        else {
-            $.ajax({
-                url: "/ManageAccount/ChangePassword",
-                type: "post",
-                data: { 'oldPassword': oldPassword, 'newPassword': newPassword },
-                success: function (result) {
-                    $('#info-changepassword').html(result);
-                }
-            });
-        }
-    }
-})
+    });
 
 app.controller("decentraizationManage", function ($scope, $http) {
     //Decentralization Manager
@@ -330,7 +346,7 @@ app.controller("editPaper", function ($scope, $http) {
             type: "post",
             data: { 'idPaper': idPaper, 'reason': contentReason},
             success: function (result) {
-                $('#reasonsEditPaper').html(result);
+                $("#reasonsEditPaper").html(result);
             }
         });
     }
@@ -440,7 +456,7 @@ app.controller("ScoteStudent", function ($scope, $http, $sce) {
         var button = document.getElementById(idbutton);
         var responsePromise = $http.post("/StudentShip/UpdateIsAcceptConsider", { "idLearningOutCome": idLearningOutCome });
         responsePromise.success(function (data, status, headers, config) {
-            if (button.className == 'btn btn-default')
+            if (button.className == "btn btn-default")
             {
                 button.className = "btn btn-danger";
                 button.innerHTML = "Hủy xác nhận";
@@ -456,7 +472,7 @@ app.controller("ScoteStudent", function ($scope, $http, $sce) {
         var button = document.getElementById(idbutton);
         var responsePromise = $http.post("/StudentShip/UpdateIsDisEnableConsider", { "idLearningOutCome": idLearningOutCome });
         responsePromise.success(function (data, status, headers, config) {
-            if (button.className == 'btn btn-default') {
+            if (button.className == "btn btn-default") {
                 button.className = "btn btn-danger";
                 button.innerHTML = "Cho phép";
             } else {
@@ -485,13 +501,13 @@ app.controller("ListStudentShipSchoolFaculty", function ($scope, $http, $sce) {
 
 app.controller("ListSendRequestPaper", function ($scope, $http, $sce) { 
     $scope.ChangeSelectPaper = function () {
-        location.href = '/ManagePaper/DetailPaper?id=' + $scope.selectPaper;
+        location.href = "/ManagePaper/DetailPaper?id=" + $scope.selectPaper;
     }
 });
 
 app.controller("ListAllRequestPaper", function ($scope, $http, $sce) {
     $scope.ChangeSelectRequestStatus = function () {
-        location.href = '/ManageRequest/ListAllRequestPaper?value=' + $scope.requestStatus + '&page=1';
+        location.href = "/ManageRequest/ListAllRequestPaper?value=" + $scope.requestStatus + "&page=1";
     }
 });
 

@@ -1,12 +1,13 @@
-﻿@using WEBPCTSV.Models.bean;
-@{
+﻿@{
     ViewBag.Title = "Cấu hình website";
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
 }
 <script src="~/Content/ckfinder/ckfinder.js"></script>
 <script src="~/Content/ckeditor/ckeditor.js"></script>
 <ol class="breadcrumb box-shadow">
-    <li><a href="TrangChu">Trang chủ</a></li>
+    <li>
+        <a href="TrangChu">Trang chủ</a>
+    </li>
     <li class="active">Thông tin cựu sinh viên</li>
 </ol>
 
@@ -32,18 +33,21 @@
             <textarea class="editor" id="N_@ViewBag.visionAndMission.IdResource" name="N_@ViewBag.visionAndMission.IdResource">@ViewBag.visionAndMission.ResourceContent</textarea>
         </div>
         <div class="btn-group">
-            <input type="submit" class="btn btn-success" value="Cập nhật" />
+            <input type="submit" class="btn btn-success" value="Cập nhật"/>
         </div>
     }
 </div>
 
 <script language="javascript" type="text/javascript">
     var ckeditor;
+
     function createEditor(languageCode, id) {
 
         var editor = CKEDITOR.replace(id, { language: languageCode });
     };
-    $('.editor').each(function () {
-        createEditor('vi', $(this).attr("name"));
-    });
+
+    $('.editor')
+        .each(function() {
+            createEditor('vi', $(this).attr("name"));
+        });
 </script>

@@ -1,0 +1,15 @@
+﻿@model List<WEBPCTSV.Models.Support.ErrorImportExcel>
+
+@foreach (var errorImportExcel in Model)
+{
+    <div style="text-align: left">
+        <div>
+            <strong style="float: left"> row : @errorImportExcel.Row</strong>
+            <span style="float: right"> Mã số sinh viên : @errorImportExcel.NumberStudent</span>
+        </div>
+        <p style="clear: both;color: #696969">
+            Lỗi:@errorImportExcel.ErrorName
+        </p>
+        <hr/>
+    </div>  
+}

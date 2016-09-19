@@ -198,7 +198,7 @@ function ChangeDecentralization(idDecentralization, idGroup, idFuntion) {
 
 // Group
 function AddGroup() {
-    var nameGroup = $('#inputNameGroup').val();
+    var nameGroup = $("#inputNameGroup").val();
     $.ajax({
         url: "/ManageDecentralization/AddGroup",
         type: "post",
@@ -234,7 +234,7 @@ function PrintHtml() {
 
 function AddReasonRequest(idPaper) {
     var contentReason = $("#reasonRequestEditPaper").val();
-    var isimportant = $("#isImportantEditPaper").prop('checked');
+    var isimportant = $("#isImportantEditPaper").prop("checked");
     var priceRequest = $("#priceRequestEditPaper").val();
     var waittingPeriod = $("#waittingPeriodEditPaper").val();
     $.ajax({
@@ -242,7 +242,7 @@ function AddReasonRequest(idPaper) {
         type: "post",
         data: { 'idPaper': idPaper, 'reason': contentReason, 'isImportant': isimportant, 'priceRequest': priceRequest, 'waittingPeriod': waittingPeriod },
         success: function (result) {
-            $('#reasonsEditPaper').html(result);
+            $("#reasonsEditPaper").html(result);
         }
     });
 }

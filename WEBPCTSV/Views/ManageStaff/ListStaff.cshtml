@@ -1,4 +1,5 @@
-﻿@{
+﻿@using WEBPCTSV.Models.bean
+@{
     ViewBag.Title = "ListStaff";
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
 }
@@ -7,116 +8,119 @@
 <div class="container-layoutmanager">
     <table class="table table-bordered table-hover">
         <thead>
-            <tr>
-                <th align="center">STT</th>
-                <th>Ten nhân viên</th>
-                <th>số điện thoại</th>
-                <th>Email</th>
-                <th>Địa chỉ</th>
-                <th></th>
-            </tr>
+        <tr>
+            <th align="center">STT</th>
+            <th>Ten nhân viên</th>
+            <th>số điện thoại</th>
+            <th>Email</th>
+            <th>Địa chỉ</th>
+            <th></th>
+        </tr>
         </thead>
         <tbody>
-            @{
-                int stt = 1;
-            }
-            @foreach (WEBPCTSV.Models.bean.Staff staff in ViewBag.listStaff)
-            {
-                <tr>
-                    <td align="center">@stt</td>
-                    <td>@staff.Name</td>
-                    <td>@staff.PhoneNumber</td>
-                    <td>@staff.Email</td>
-                    <td>@staff.Address</td>
-                    <td>
-                        <!-- Trigger the modal with a button -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#detail_@staff.IdStaff">Chi tiết</button>
+        @{
+            int stt = 1;
+        }
+        @foreach (Staff staff in ViewBag.listStaff)
+        {
+            <tr>
+                <td align="center">@stt</td>
+                <td>@staff.Name</td>
+                <td>@staff.PhoneNumber</td>
+                <td>@staff.Email</td>
+                <td>@staff.Address</td>
+                <td>
+                    <!-- Trigger the modal with a button -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#detail_@staff.IdStaff">Chi tiết</button>
 
-                        <!-- Modal -->
-                        <div id="detail_@staff.IdStaff" class="modal fade" role="dialog">
-                            <div class="modal-dialog">
+                    <!-- Modal -->
+                    <div id="detail_@staff.IdStaff" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
 
-                                <!-- Modal content-->
-                                <form class="modal-content" action="/ManageStaff/UpdateStaff" method="post">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Thông tin nhân viên</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="form-horizontal" role="form">
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4" for="username">Tên tài khoản:</label>
-                                                <div class="col-sm-6">
-                                                    <input name="idStaff" id="idStaff" type="hidden" value="@staff.IdStaff" />
-                                                    <input name="username" id="username" type="text" disabled value="@staff.Account.UserName" class="form-control" />
-                                                </div>
+                            <!-- Modal content-->
+                            <form class="modal-content" action="/ManageStaff/UpdateStaff" method="post">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Thông tin nhân viên</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-4" for="username">Tên tài khoản:</label>
+                                            <div class="col-sm-6">
+                                                <input name="idStaff" id="idStaff" type="hidden" value="@staff.IdStaff"/>
+                                                <input name="username" id="username" type="text" disabled value="@staff.Account.UserName" class="form-control"/>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4" for="name">Họ và tên:</label>
-                                                <div class="col-sm-6">
-                                                    <input name="name" id="name" type="text" required value="@staff.Name" class="form-control" />
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4" for="IdentityCardNumber">Số chứng minh nhân dân:</label>
-                                                <div class="col-sm-6">
-                                                    <input name="IdentityCardNumber" id="IdentityCardNumber" value="@staff.IdentityCardNumber" type="text" class="form-control" />
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4" for="Position">Vị trí:</label>
-                                                <div class="col-sm-6">
-                                                    <input name="Position" id="Position" type="text" value="@staff.Position" class="form-control" />
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4" for="birthday">Ngày sinh:</label>
-                                                <div class="col-sm-6">
-                                                    <input name="birthday" id="birthday" type="date" value="@if (staff.Birthday != null) { @staff.Birthday.Value.ToString("yyyy-MM-dd")}" class="form-control" />
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4" for="phone">Số điện thoại:</label>
-                                                <div class="col-sm-6">
-                                                    <input name="phone" id="phone" type="text" value="@staff.PhoneNumber" class="form-control" />
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4" for="email">Email:</label>
-                                                <div class="col-sm-6">
-                                                    <input name="email" id="email" type="text" value="@staff.Email" class="form-control" />
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4" for="address">Địa chỉ:</label>
-                                                <div class="col-sm-6">
-                                                    <input name="address" id="address" type="text" value="@staff.Address" class="form-control" />
-                                                </div>
-                                            </div>
-
-
-
-
                                         </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-4" for="name">Họ và tên:</label>
+                                            <div class="col-sm-6">
+                                                <input name="name" id="name" type="text" required value="@staff.Name" class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-4" for="IdentityCardNumber">Số chứng minh nhân dân:</label>
+                                            <div class="col-sm-6">
+                                                <input name="IdentityCardNumber" id="IdentityCardNumber" value="@staff.IdentityCardNumber" type="text" class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-4" for="Position">Vị trí:</label>
+                                            <div class="col-sm-6">
+                                                <input name="Position" id="Position" type="text" value="@staff.Position" class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-4" for="birthday">Ngày sinh:</label>
+                                            <div class="col-sm-6">
+                                                <input name="birthday" id="birthday" type="date" value="@if (staff.Birthday != null)
+                                                                                                        {
+                                                                                                            @staff.Birthday.Value.ToString("yyyy-MM-dd")
+                                                                                                        }" class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-4" for="phone">Số điện thoại:</label>
+                                            <div class="col-sm-6">
+                                                <input name="phone" id="phone" type="text" value="@staff.PhoneNumber" class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-4" for="email">Email:</label>
+                                            <div class="col-sm-6">
+                                                <input name="email" id="email" type="text" value="@staff.Email" class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-4" for="address">Địa chỉ:</label>
+                                            <div class="col-sm-6">
+                                                <input name="address" id="address" type="text" value="@staff.Address" class="form-control"/>
+                                            </div>
+                                        </div>
+
+
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="submit" style="float:left" class="btn btn-primary">Lưu lại</button>
-                                        <a href="/ManageStaff/DeleteStaff?idStaff=@staff.IdStaff"><button type="button" style="float:left;margin-left:10px" class="btn btn-danger"> Xoá </button></a>
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                </form>
-                            </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" style="float: left" class="btn btn-primary">Lưu lại</button>
+                                    <a href="/ManageStaff/DeleteStaff?idStaff=@staff.IdStaff">
+                                        <button type="button" style="float: left; margin-left: 10px" class="btn btn-danger"> Xoá </button>
+                                    </a>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
                         </div>
-                    </td>
-                </tr>
-                stt++;
-            }
+                    </div>
+                </td>
+            </tr>
+            stt++;
+        }
         </tbody>
     </table>
 
@@ -138,62 +142,62 @@
                         <div class="form-group">
                             <label class="control-label col-sm-4" for="username">Tên tài khoản:</label>
                             <div class="col-sm-6">
-                                <input name="username" id="username" type="text" required class="form-control" />
+                                <input name="username" id="username" type="text" required class="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-4" for="name">Họ và tên:</label>
                             <div class="col-sm-6">
-                                <input name="name" id="name" type="text" required class="form-control" />
+                                <input name="name" id="name" type="text" required class="form-control"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-4" for="IdentityCardNumber">Số chứng minh nhân dân:</label>
                             <div class="col-sm-6">
-                                <input name="IdentityCardNumber" id="IdentityCardNumber" type="text" class="form-control" />
+                                <input name="IdentityCardNumber" id="IdentityCardNumber" type="text" class="form-control"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-4" for="birthday">Ngày sinh:</label>
                             <div class="col-sm-6">
-                                <input name="birthday" id="birthday" type="date" class="form-control" />
+                                <input name="birthday" id="birthday" type="date" class="form-control"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-4" for="phone">Số điện thoại:</label>
                             <div class="col-sm-6">
-                                <input name="phone" id="phone" type="text" class="form-control" />
+                                <input name="phone" id="phone" type="text" class="form-control"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-4" for="Position">Vị trí:</label>
                             <div class="col-sm-6">
-                                <input name="Position" id="Position" type="text" class="form-control" />
+                                <input name="Position" id="Position" type="text" class="form-control"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-4" for="email">Email:</label>
                             <div class="col-sm-6">
-                                <input name="email" id="email" type="text" class="form-control" />
+                                <input name="email" id="email" type="text" class="form-control"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-4" for="address">Địa chỉ:</label>
                             <div class="col-sm-6">
-                                <input name="address" id="address" type="text" class="form-control" />
+                                <input name="address" id="address" type="text" class="form-control"/>
                             </div>
                         </div>
 
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" style="float:left" class="btn btn-primary">Thêm</button>
+                    <button type="submit" style="float: left" class="btn btn-primary">Thêm</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </form>
@@ -202,4 +206,3 @@
     </div>
 
 </div>
-

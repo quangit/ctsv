@@ -1,10 +1,10 @@
-﻿@using WEBPCTSV.Models.bean;
-@using WEBPCTSV.Helpers.Common;
+﻿@using PagedList.Mvc
+@using WEBPCTSV.Helpers.Common
+@using WEBPCTSV.Models.bean
 @model PagedList.IPagedList<Lecturer>
-@using PagedList.Mvc;
 
 <div class="list-tile">
-    @if (Model != null  && Model.Count() > 0)
+    @if (Model != null && Model.Count() > 0)
     {
         int i = 0;
         foreach (var x in Model)
@@ -12,7 +12,7 @@
             <div class="col-md-6 col-xs-12">
                 <div class="list-tile-item listbox-content-item-sub">
                     <div class="list-tile-item-image col-md-3 col-xs-3">
-                        <img id="tbanh" src="~/Images/logo.jpg" />
+                        <img id="tbanh" src="~/Images/logo.jpg"/>
                     </div>
                     <div class="list-tile-item-content col-md-9 xol-xs-9">
                         <p>@StringExtension.GeneratePrefixLecturer(x.AcademicTitle, x.Degree, x.Type) @x.LastName @x.FirstName</p>
@@ -35,13 +35,13 @@
             </div>
             if (++i % 2 == 0)
             {
-            <div class="clearfix"></div>
+                <div class="clearfix"></div>
             }
         }
     }
     else
     {
-        <h4 style="text-align:center">Không tìm thấy kết quả phù hợp!</h4>
+        <h4 style="text-align: center">Không tìm thấy kết quả phù hợp!</h4>
     }
 </div>
 <div class="menuTrang">

@@ -1,4 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
+﻿@using WEBPCTSV.Models.bean
 @{
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
     ViewBag.Title = "Class";
@@ -15,7 +15,7 @@
             <div class="col-lg-4">
                 <select id="idSemester" name="idSemester" class="form-control">
                     <option value="">Chọn học kỳ </option>
-                    @foreach (WEBPCTSV.Models.bean.Semester semester in ViewBag.listSemester)
+                    @foreach (Semester semester in ViewBag.listSemester)
                     {
                         <option value="@semester.IdSemester">Học kỳ @semester.SemesterYear.SemesterYearName năm học @semester.Year.YearName</option>
                     }
@@ -31,4 +31,3 @@
         </div>
     </form>
 </div>
-

@@ -1,5 +1,5 @@
-﻿@model List<SocialActivity>
-@using WEBPCTSV.Models.bean;
+﻿@using WEBPCTSV.Models.bean
+@model List<SocialActivity>
 
 @{
     List<SocialActivity> listSocialActivity = Model;
@@ -8,25 +8,23 @@
 
 <table class="table table-hover">
     <thead>
-        <tr>
-            <th>Tên hoạt động</th>
-            <th>Thời gian</th>
-            <th>Địa điểm</th>
-        </tr>
+    <tr>
+        <th>Tên hoạt động</th>
+        <th>Thời gian</th>
+        <th>Địa điểm</th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (SocialActivity socialActivity in listSocialActivity)
-        {
-            <tr>
-                <td>@socialActivity.SocialActivityName</td>
-                <td>@socialActivity.Time</td>
-                <td>@socialActivity.Place</td>
-                <td>
-                    <button type="button" class="btn btn-success" onclick="AddSocial('@socialActivity.IdSocialActivity')">Thêm</button>
-                </td>
-            </tr>
-        }
+    @foreach (SocialActivity socialActivity in listSocialActivity)
+    {
+        <tr>
+            <td>@socialActivity.SocialActivityName</td>
+            <td>@socialActivity.Time</td>
+            <td>@socialActivity.Place</td>
+            <td>
+                <button type="button" class="btn btn-success" onclick="AddSocial('@socialActivity.IdSocialActivity')">Thêm</button>
+            </td>
+        </tr>
+    }
     </tbody>
 </table>
-
-

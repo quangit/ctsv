@@ -1,60 +1,47 @@
-﻿using WEBPCTSV.Models.bean;
-using WEBPCTSV.Models.Support;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace WEBPCTSV.Models.bo
+﻿namespace WEBPCTSV.Models.bo
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Models.bean;
+    using WEBPCTSV.Models.Support;
+
     public class SocialActivityBo
     {
-        DSAContext context = new DSAContext();
-        int rowInPage = new Configuration().rowInPage;
+        readonly DSAContext context = new DSAContext();
+
+        readonly int rowInPage = new Configuration().rowInPage;
+
+        public void Delete(int idSocialActivity)
+        {
+            SocialActivity socialActivity =
+                this.context.SocialActivities.Single(s => s.IdSocialActivity == idSocialActivity);
+            this.context.SocialActivities.Remove(socialActivity);
+            this.context.SaveChanges();
+        }
+
         public List<SocialActivity> GetListSocialActivity(int page)
         {
-            return context.SocialActivities.OrderByDescending(st => st.IdSocialActivity).Skip((page - 1) * rowInPage).Take(rowInPage).ToList();
-        }
-        public List<SocialActivity> GetListSocialActivity(int page,string search)
-        {
-            return context.SocialActivities.Where(
-                s=>s.SocialActivityName.Contains(search)
-                    || s.OrganizationName.Contains(search)
-                    || s.Place.Contains(search)
-                ).OrderByDescending(st => st.IdSocialActivity).Skip((page - 1) * rowInPage).Take(rowInPage).ToList();
+            return
+                this.context.SocialActivities.OrderByDescending(st => st.IdSocialActivity)
+                    .Skip((page - 1) * this.rowInPage)
+                    .Take(this.rowInPage)
+                    .ToList();
         }
 
-        public PageNumber TotalPage(int page)
+        public List<SocialActivity> GetListSocialActivity(int page, string search)
         {
-            PageNumber pageNumber = new PageNumber();
-            pageNumber.PageNumberTotal = context.SocialActivities.ToList().Count/rowInPage+1;
-            pageNumber.PageNumberCurrent = page;
-            pageNumber.Link = "/SocialActivity/ManageSocialActivity?page=";
-            return pageNumber;
-        }
-        public PageNumber TotalPage(int page,string search)
-        {
-            PageNumber pageNumber = new PageNumber();
-            pageNumber.PageNumberTotal = context.SocialActivities.Where(
-                s => s.SocialActivityName.Contains(search)
-                    || s.OrganizationName.Contains(search)
-                    || s.Place.Contains(search)
-                ).ToList().Count / rowInPage + 1;
-            pageNumber.PageNumberCurrent = page;
-            pageNumber.Link = "/SocialActivity/SearchSocialActivity?search="+search+"&page=";
-            return pageNumber;
-        }
-
-        public void Update(int idSocialActivity , FormCollection form)
-        {
-            SocialActivity socialActivity = context.SocialActivities.Single(s=>s.IdSocialActivity == idSocialActivity);
-            socialActivity.SocialActivityName = form["SocialActivityName"];
-            socialActivity.OrganizationName = form["OrganizationName"];
-            if (form["timeSocialActivity"] != "") socialActivity.Time = Convert.ToDateTime(form["timeSocialActivity"]);
-            socialActivity.Place = form["placeSocialActivity"];
-            context.SocialActivities.Add(socialActivity);
-            context.SaveChanges();
+            return
+                this.context.SocialActivities.Where(
+                    s =>
+                    s.SocialActivityName.Contains(search) || s.OrganizationName.Contains(search)
+                    || s.Place.Contains(search))
+                    .OrderByDescending(st => st.IdSocialActivity)
+                    .Skip((page - 1) * this.rowInPage)
+                    .Take(this.rowInPage)
+                    .ToList();
         }
 
         public void Insert(FormCollection form)
@@ -62,21 +49,44 @@ namespace WEBPCTSV.Models.bo
             SocialActivity socialActivity = new SocialActivity();
             socialActivity.SocialActivityName = form["SocialActivityName"];
             socialActivity.OrganizationName = form["OrganizationName"];
-            if (form["timeSocialActivity"] != "") socialActivity.Time = Convert.ToDateTime(form["timeSocialActivity"]);
+            if (form["timeSocialActivity"] != string.Empty) socialActivity.Time = Convert.ToDateTime(form["timeSocialActivity"]);
             socialActivity.Place = form["placeSocialActivity"];
-            context.SocialActivities.Add(socialActivity);
-            context.SaveChanges();
+            this.context.SocialActivities.Add(socialActivity);
+            this.context.SaveChanges();
         }
-        public void Delete(int idSocialActivity)
+
+        public PageNumber TotalPage(int page)
         {
-            SocialActivity socialActivity = context.SocialActivities.Single(s => s.IdSocialActivity == idSocialActivity);
-            context.SocialActivities.Remove(socialActivity);
-            context.SaveChanges();
+            PageNumber pageNumber = new PageNumber();
+            pageNumber.PageNumberTotal = this.context.SocialActivities.ToList().Count / this.rowInPage + 1;
+            pageNumber.PageNumberCurrent = page;
+            pageNumber.Link = "/SocialActivity/ManageSocialActivity?page=";
+            return pageNumber;
         }
 
-        
-        
+        public PageNumber TotalPage(int page, string search)
+        {
+            PageNumber pageNumber = new PageNumber();
+            pageNumber.PageNumberTotal =
+                this.context.SocialActivities.Where(
+                    s =>
+                    s.SocialActivityName.Contains(search) || s.OrganizationName.Contains(search)
+                    || s.Place.Contains(search)).ToList().Count / this.rowInPage + 1;
+            pageNumber.PageNumberCurrent = page;
+            pageNumber.Link = "/SocialActivity/SearchSocialActivity?search=" + search + "&page=";
+            return pageNumber;
+        }
 
-
+        public void Update(int idSocialActivity, FormCollection form)
+        {
+            SocialActivity socialActivity =
+                this.context.SocialActivities.Single(s => s.IdSocialActivity == idSocialActivity);
+            socialActivity.SocialActivityName = form["SocialActivityName"];
+            socialActivity.OrganizationName = form["OrganizationName"];
+            if (form["timeSocialActivity"] != string.Empty) socialActivity.Time = Convert.ToDateTime(form["timeSocialActivity"]);
+            socialActivity.Place = form["placeSocialActivity"];
+            this.context.SocialActivities.Add(socialActivity);
+            this.context.SaveChanges();
+        }
     }
 }

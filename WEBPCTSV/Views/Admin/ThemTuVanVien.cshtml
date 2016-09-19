@@ -6,80 +6,86 @@
 
 <script type="text/javascript">
     $(document)
-            .ready(
-                    function () {
-                        //Check validate username
-                        $.validator.addMethod("username", function (value,
-                                element, regexpr) {
-                            return regexpr.test(value);
-                        }, "Tên đăng nhập không đúng định dạng");
+        .ready(
+            function() {
+                //Check validate username
+                $.validator.addMethod("username",
+                    function(value,
+                        element,
+                        regexpr) {
+                        return regexpr.test(value);
+                    },
+                    "Tên đăng nhập không đúng định dạng");
 
-                        $("#fThemNhanSu")
-                                .validate(
-                                        {
-                                            rules: {
-                                                TenDangNhap: {
-                                                    required: true,
-                                                    username: /^(?=[_a-zA-Z]+)[a-zA-Z0-9_]{4,50}$/
-                                                },
-                                                HoTen: {
-                                                    required: true,
-                                                },
-                                                ChucVu: {
-                                                    required: true,
-                                                },
-                                                DienThoai: {
-                                                    required: true,
-                                                    digits: true,
-                                                    maxlength: 11
-                                                },
-                                                Email: {
-                                                    required: true,
-                                                    email: true
-                                                }
-                                            },
-                                            messages: {
-                                                TenDangNhap: {
-                                                    required: "Chưa nhập tên tài khoản",
-                                                    username: "Tên đăng nhập không đúng định dạng<br>Bắt đầu bằng _ hoặc chữ cái<br>Có tối thiểu 4 kí tự."
-                                                },
-                                                HoTen: {
-                                                    required: "Chưa nhập họ tên",
-                                                },
-                                                LinhVuc: {
-                                                    required: "Chưa nhập lĩnh vực tư vấn",
-                                                },
-                                                DienThoai: {
-                                                    required: "Chưa nhập số điện thoại",
-                                                    digits: "Nhập sai định dạng số điện thoại",
-                                                    maxlength: "Số điện thoại không được dài quá 11 kí tự"
-                                                },
-                                                Email: {
-                                                    required: "Chưa nhập địa chỉ email",
-                                                    email: "Nhập sai định dạng email"
-                                                }
-                                            },
-                                            submitHandler: function (form) {
-                                                form.submit();
-                                            }
-                                        });
+                $("#fThemNhanSu")
+                    .validate(
+                    {
+                        rules: {
+                            TenDangNhap: {
+                                required: true,
+                                username: /^(?=[_a-zA-Z]+)[a-zA-Z0-9_]{4,50}$/
+                            },
+                            HoTen: {
+                                required: true,
+                            },
+                            ChucVu: {
+                                required: true,
+                            },
+                            DienThoai: {
+                                required: true,
+                                digits: true,
+                                maxlength: 11
+                            },
+                            Email: {
+                                required: true,
+                                email: true
+                            }
+                        },
+                        messages: {
+                            TenDangNhap: {
+                                required: "Chưa nhập tên tài khoản",
+                                username:
+                                    "Tên đăng nhập không đúng định dạng<br>Bắt đầu bằng _ hoặc chữ cái<br>Có tối thiểu 4 kí tự."
+                            },
+                            HoTen: {
+                                required: "Chưa nhập họ tên",
+                            },
+                            LinhVuc: {
+                                required: "Chưa nhập lĩnh vực tư vấn",
+                            },
+                            DienThoai: {
+                                required: "Chưa nhập số điện thoại",
+                                digits: "Nhập sai định dạng số điện thoại",
+                                maxlength: "Số điện thoại không được dài quá 11 kí tự"
+                            },
+                            Email: {
+                                required: "Chưa nhập địa chỉ email",
+                                email: "Nhập sai định dạng email"
+                            }
+                        },
+                        submitHandler: function(form) {
+                            form.submit();
+                        }
                     });
+            });
 </script>
 <style type="text/css">
-    label.error {
-        color: #FF0000;
-    }
+    label.error { color: #FF0000; }
 
     input.error {
         border: 2px solid #FF0000;
-        color: #0000FF;
         border-style: ridge;
+        color: #0000FF;
     }
 </style>
 
 <ol class="breadcrumb box-shadow">
-    <li><a href="TrangChu">Trang chủ</a></li>
-    <li><a href="~/Admin/ListTuVanVien?page=1&x=2">Quản lý tư vấn viên</a></li>
+    <li>
+        <a href="TrangChu">Trang chủ</a>
+    </li>
+    <li>
+        <a href="~/Admin/ListTuVanVien?page=1&x=2">Quản lý tư vấn viên</a>
+    </li>
     <li class="active">Thêm mới</li>
 </ol>
 
@@ -96,7 +102,7 @@
                     <label>Họ tên</label>
                     <input type="text" class="form-control" placeholder="Họ và tên" name="HoTen">
                 </div>
-                <input type="hidden"  name="ChucVu" value="Tư vấn viên">
+                <input type="hidden" name="ChucVu" value="Tư vấn viên">
                 <div class="form-group">
                     <label>Điện thoại</label>
                     <input type="text" class="form-control" placeholder="Điện thoại" name="DienThoai">
@@ -127,13 +133,13 @@
                             <option value="Tạm dừng; Học lại; Học phí; Kỷ luật; Khen thưởng"> Tạm dừng; Học lại; Học phí; Kỷ luật; Khen thưởng</option>
                             <option value="Chế độ chính sách; Học bổng; Phục vụ Sư phạm">Chế độ chính sách; Học bổng; Phục vụ Sư phạm</option>
                             <option value="Điểm rèn luyện; Hoạt động cộng đồng; Đoàn - Hội">Điểm rèn luyện; Hoạt động cộng đồng; Đoàn - Hội</option>
-                            <option value="Tư vấn hướng nghiệp - Tuyển sinh">Tư vấn hướng nghiệp - Tuyển sinh</option>                   
+                            <option value="Tư vấn hướng nghiệp - Tuyển sinh">Tư vấn hướng nghiệp - Tuyển sinh</option>
                         </select>
                     </div>
                 </div>
 
-                <input class="btn btn-danger" type="submit" value="Thêm mới" />
-                <input class="btn btn-warning" type="reset" value="Reset" />
+                <input class="btn btn-danger" type="submit" value="Thêm mới"/>
+                <input class="btn btn-warning" type="reset" value="Reset"/>
             }
         </div>
     </div>

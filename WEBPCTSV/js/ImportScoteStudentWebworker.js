@@ -9,7 +9,7 @@ function update() {
 function GetData() {
     try {
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/File/GetInforProgressImportScote', false);
+        xhr.open("GET", "/File/GetInforProgressImportScote", false);
         xhr.setRequestHeader("Content-Type",
         "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function () {

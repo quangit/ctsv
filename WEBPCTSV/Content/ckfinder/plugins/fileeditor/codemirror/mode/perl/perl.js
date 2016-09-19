@@ -512,12 +512,12 @@ CodeMirror.defineMode("perl",function(){
                         return tokenChain(stream,state,state.chain,state.style,state.tail);
                 if(stream.match(/^\-?[\d\.]/,false))
                         if(stream.match(/^(\-?(\d*\.\d+(e[+-]?\d+)?|\d+\.\d*)|0x[\da-fA-F]+|0b[01]+|\d+(e[+-]?\d+)?)/))
-                                return 'number';
+                                return "number";
                 if(stream.match(/^<<(?=\w)/)){                  // NOTE: <<SOMETHING\n...\nSOMETHING\n
                         stream.eatWhile(/\w/);
                         return tokenSOMETHING(stream,state,stream.current().substr(2));}
                 if(stream.sol()&&stream.match(/^\=item(?!\w)/)){// NOTE: \n=item...\n=cut\n
-                        return tokenSOMETHING(stream,state,'=cut');}
+                        return tokenSOMETHING(stream,state,"=cut");}
                 var ch=stream.next();
                 if(ch=='"'||ch=="'"){                           // NOTE: ' or " or <<'SOMETHING'\n...\nSOMETHING\n or <<"SOMETHING"\n...\nSOMETHING\n
                         if(prefix(stream, 3)=="<<"+ch){
@@ -714,11 +714,11 @@ CodeMirror.defineMode("perl",function(){
                 if(ch=="_"){
                         if(stream.pos==1){
                                 if(suffix(stream, 6)=="_END__"){
-                                        return tokenChain(stream,state,['\0'],"comment");}
+                                        return tokenChain(stream,state,["\0"],"comment");}
                                 else if(suffix(stream, 7)=="_DATA__"){
-                                        return tokenChain(stream,state,['\0'],"variable-2");}
+                                        return tokenChain(stream,state,["\0"],"variable-2");}
                                 else if(suffix(stream, 7)=="_C__"){
-                                        return tokenChain(stream,state,['\0'],"string");}}}
+                                        return tokenChain(stream,state,["\0"],"string");}}}
                 if(/\w/.test(ch)){
                         var p=stream.pos;
                         if(look(stream, -2)=="{"&&(look(stream, 0)=="}"||stream.eatWhile(/\w/)&&look(stream, 0)=="}"))

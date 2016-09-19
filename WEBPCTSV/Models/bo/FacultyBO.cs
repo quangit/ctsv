@@ -1,74 +1,79 @@
-﻿using WEBPCTSV.Models.bean;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace WEBPCTSV.Models.bo
+﻿namespace WEBPCTSV.Models.bo
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Models.bean;
+
     public class FacultyBO
     {
-        DSAContext context = new DSAContext();
+        readonly DSAContext context = new DSAContext();
+
+        private readonly DSAContext dsaContext;
+
         public FacultyBO()
-        {}
-        private DSAContext dsaContext;
+        {
+        }
+
         public FacultyBO(DSAContext dsaContext)
         {
             this.dsaContext = dsaContext;
+        }
+
+        public void Delete(int idFaculty)
+        {
+            Faculty faculty = this.context.Faculties.Single(f => f.IdFaculty == idFaculty);
+            this.context.Faculties.Remove(faculty);
+            this.context.SaveChanges();
+        }
+
+        public Faculty Get(string facultyNumber)
+        {
+            try
+            {
+                return this.context.Faculties.Single(f => f.NumberFaculty.Equals(facultyNumber));
+            }
+            catch
+            {
+            }
+
+            return null;
         }
 
         public Faculty GetFaculty(int idFaculty)
         {
             try
             {
-                return dsaContext.Faculties.SingleOrDefault(c => c.IdFaculty == idFaculty);
+                return this.dsaContext.Faculties.SingleOrDefault(c => c.IdFaculty == idFaculty);
             }
             catch (Exception)
             {
                 return null;
             }
         }
-       
+
         public List<Faculty> GetListFaculty()
         {
-
-            return context.Faculties.ToList();
+            return this.context.Faculties.ToList();
         }
-
-        public Faculty Get(string facultyNumber)
-        {
-            try {
-                return context.Faculties.Single(f => f.NumberFaculty.Equals(facultyNumber));
-            }
-            catch { }
-            return null;
-            
-        }
-
 
         public void Insert(FormCollection form)
         {
             Faculty faculty = new Faculty();
             faculty.NumberFaculty = form["NumberFaculty"];
             faculty.FacultyName = form["FacultyName"];
-            context.Faculties.Add(faculty);
-            context.SaveChanges();
+            this.context.Faculties.Add(faculty);
+            this.context.SaveChanges();
         }
 
         public void Update(int idFaculty, FormCollection form)
         {
-            Faculty faculty = context.Faculties.Single(f => f.IdFaculty == idFaculty);
+            Faculty faculty = this.context.Faculties.Single(f => f.IdFaculty == idFaculty);
             faculty.NumberFaculty = form["NumberFaculty"];
             faculty.FacultyName = form["FacultyName"];
-            context.SaveChanges();
-        }
-
-        public void Delete(int idFaculty)
-        {
-            Faculty faculty = context.Faculties.Single(f => f.IdFaculty == idFaculty);
-            context.Faculties.Remove(faculty);
-            context.SaveChanges();
+            this.context.SaveChanges();
         }
     }
 }

@@ -8,7 +8,7 @@
 })(function(CodeMirror) {
 "use strict";
 
-CodeMirror.defineMode('rst', function (config, options) {
+CodeMirror.defineMode("rst", function (config, options) {
 
   var rx_strong = /^\*\*[^\*\s](?:[^\*]*[^\*\s])?\*\*/;
   var rx_emphasis = /^\*[^\*\s](?:[^\*]*[^\*\s])?\*/;
@@ -27,19 +27,19 @@ CodeMirror.defineMode('rst', function (config, options) {
     token: function (stream) {
 
       if (stream.match(rx_strong) && stream.match (/\W+|$/, false))
-        return 'strong';
+        return "strong";
       if (stream.match(rx_emphasis) && stream.match (/\W+|$/, false))
-        return 'em';
+        return "em";
       if (stream.match(rx_literal) && stream.match (/\W+|$/, false))
-        return 'string-2';
+        return "string-2";
       if (stream.match(rx_number))
-        return 'number';
+        return "number";
       if (stream.match(rx_positive))
-        return 'positive';
+        return "positive";
       if (stream.match(rx_negative))
-        return 'negative';
+        return "negative";
       if (stream.match(rx_uri))
-        return 'link';
+        return "link";
 
       while (stream.next() != null) {
         if (stream.match(rx_strong, false)) break;
@@ -56,16 +56,16 @@ CodeMirror.defineMode('rst', function (config, options) {
   };
 
   var mode = CodeMirror.getMode(
-    config, options.backdrop || 'rst-base'
+    config, options.backdrop || "rst-base"
   );
 
   return CodeMirror.overlayMode(mode, overlay, true); // combine
-}, 'python', 'stex');
+}, "python", "stex");
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-CodeMirror.defineMode('rst-base', function (config) {
+CodeMirror.defineMode("rst-base", function (config) {
 
   ///////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////
@@ -73,7 +73,7 @@ CodeMirror.defineMode('rst-base', function (config) {
   function format(string) {
     var args = Array.prototype.slice.call(arguments, 1);
     return string.replace(/{(\d+)}/g, function (match, n) {
-      return typeof args[n] != 'undefined' ? args[n] : match;
+      return typeof args[n] != "undefined" ? args[n] : match;
     });
   }
 
@@ -82,7 +82,7 @@ CodeMirror.defineMode('rst-base', function (config) {
   }
 
   AssertException.prototype.toString = function () {
-    return 'AssertException: ' + this.message;
+    return "AssertException: " + this.message;
   };
 
   function assert(expression, message) {
@@ -93,72 +93,72 @@ CodeMirror.defineMode('rst-base', function (config) {
   ///////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////
 
-  var mode_python = CodeMirror.getMode(config, 'python');
-  var mode_stex = CodeMirror.getMode(config, 'stex');
+  var mode_python = CodeMirror.getMode(config, "python");
+  var mode_stex = CodeMirror.getMode(config, "stex");
 
   ///////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////
 
   var SEPA = "\\s+";
   var TAIL = "(?:\\s*|\\W|$)",
-  rx_TAIL = new RegExp(format('^{0}', TAIL));
+  rx_TAIL = new RegExp(format("^{0}", TAIL));
 
   var NAME =
     "(?:[^\\W\\d_](?:[\\w!\"#$%&'()\\*\\+,\\-\\.\/:;<=>\\?]*[^\\W_])?)",
-  rx_NAME = new RegExp(format('^{0}', NAME));
+  rx_NAME = new RegExp(format("^{0}", NAME));
   var NAME_WWS =
     "(?:[^\\W\\d_](?:[\\w\\s!\"#$%&'()\\*\\+,\\-\\.\/:;<=>\\?]*[^\\W_])?)";
-  var REF_NAME = format('(?:{0}|`{1}`)', NAME, NAME_WWS);
+  var REF_NAME = format("(?:{0}|`{1}`)", NAME, NAME_WWS);
 
   var TEXT1 = "(?:[^\\s\\|](?:[^\\|]*[^\\s\\|])?)";
   var TEXT2 = "(?:[^\\`]+)",
-  rx_TEXT2 = new RegExp(format('^{0}', TEXT2));
+  rx_TEXT2 = new RegExp(format("^{0}", TEXT2));
 
   var rx_section = new RegExp(
     "^([!'#$%&\"()*+,-./:;<=>?@\\[\\\\\\]^_`{|}~])\\1{3,}\\s*$");
   var rx_explicit = new RegExp(
-    format('^\\.\\.{0}', SEPA));
+    format("^\\.\\.{0}", SEPA));
   var rx_link = new RegExp(
-    format('^_{0}:{1}|^__:{1}', REF_NAME, TAIL));
+    format("^_{0}:{1}|^__:{1}", REF_NAME, TAIL));
   var rx_directive = new RegExp(
-    format('^{0}::{1}', REF_NAME, TAIL));
+    format("^{0}::{1}", REF_NAME, TAIL));
   var rx_substitution = new RegExp(
-    format('^\\|{0}\\|{1}{2}::{3}', TEXT1, SEPA, REF_NAME, TAIL));
+    format("^\\|{0}\\|{1}{2}::{3}", TEXT1, SEPA, REF_NAME, TAIL));
   var rx_footnote = new RegExp(
-    format('^\\[(?:\\d+|#{0}?|\\*)]{1}', REF_NAME, TAIL));
+    format("^\\[(?:\\d+|#{0}?|\\*)]{1}", REF_NAME, TAIL));
   var rx_citation = new RegExp(
-    format('^\\[{0}\\]{1}', REF_NAME, TAIL));
+    format("^\\[{0}\\]{1}", REF_NAME, TAIL));
 
   var rx_substitution_ref = new RegExp(
-    format('^\\|{0}\\|', TEXT1));
+    format("^\\|{0}\\|", TEXT1));
   var rx_footnote_ref = new RegExp(
-    format('^\\[(?:\\d+|#{0}?|\\*)]_', REF_NAME));
+    format("^\\[(?:\\d+|#{0}?|\\*)]_", REF_NAME));
   var rx_citation_ref = new RegExp(
-    format('^\\[{0}\\]_', REF_NAME));
+    format("^\\[{0}\\]_", REF_NAME));
   var rx_link_ref1 = new RegExp(
-    format('^{0}__?', REF_NAME));
+    format("^{0}__?", REF_NAME));
   var rx_link_ref2 = new RegExp(
-    format('^`{0}`_', TEXT2));
+    format("^`{0}`_", TEXT2));
 
   var rx_role_pre = new RegExp(
-    format('^:{0}:`{1}`{2}', NAME, TEXT2, TAIL));
+    format("^:{0}:`{1}`{2}", NAME, TEXT2, TAIL));
   var rx_role_suf = new RegExp(
-    format('^`{1}`:{0}:{2}', NAME, TEXT2, TAIL));
+    format("^`{1}`:{0}:{2}", NAME, TEXT2, TAIL));
   var rx_role = new RegExp(
-    format('^:{0}:{1}', NAME, TAIL));
+    format("^:{0}:{1}", NAME, TAIL));
 
-  var rx_directive_name = new RegExp(format('^{0}', REF_NAME));
-  var rx_directive_tail = new RegExp(format('^::{0}', TAIL));
-  var rx_substitution_text = new RegExp(format('^\\|{0}\\|', TEXT1));
-  var rx_substitution_sepa = new RegExp(format('^{0}', SEPA));
-  var rx_substitution_name = new RegExp(format('^{0}', REF_NAME));
-  var rx_substitution_tail = new RegExp(format('^::{0}', TAIL));
+  var rx_directive_name = new RegExp(format("^{0}", REF_NAME));
+  var rx_directive_tail = new RegExp(format("^::{0}", TAIL));
+  var rx_substitution_text = new RegExp(format("^\\|{0}\\|", TEXT1));
+  var rx_substitution_sepa = new RegExp(format("^{0}", SEPA));
+  var rx_substitution_name = new RegExp(format("^{0}", REF_NAME));
+  var rx_substitution_tail = new RegExp(format("^::{0}", TAIL));
   var rx_link_head = new RegExp("^_");
-  var rx_link_name = new RegExp(format('^{0}|_', REF_NAME));
-  var rx_link_tail = new RegExp(format('^:{0}', TAIL));
+  var rx_link_name = new RegExp(format("^{0}|_", REF_NAME));
+  var rx_link_tail = new RegExp(format("^:{0}", TAIL));
 
-  var rx_verbatim = new RegExp('^::\\s*$');
-  var rx_examples = new RegExp('^\\s+(?:>>>|In \\[\\d+\\]:)\\s');
+  var rx_verbatim = new RegExp("^::\\s*$");
+  var rx_examples = new RegExp("^\\s+(?:>>>|In \\[\\d+\\]:)\\s");
 
   ///////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////
@@ -172,10 +172,10 @@ CodeMirror.defineMode('rst-base', function (config) {
       });
     } else if (stream.sol() && stream.match(rx_explicit)) {
       change(state, to_explicit);
-      token = 'meta';
+      token = "meta";
     } else if (stream.sol() && stream.match(rx_section)) {
       change(state, to_normal);
-      token = 'header';
+      token = "header";
     } else if (phase(state) == rx_role_pre ||
                stream.match(rx_role_pre, false)) {
 
@@ -183,12 +183,12 @@ CodeMirror.defineMode('rst-base', function (config) {
       case 0:
         change(state, to_normal, context(rx_role_pre, 1));
         assert(stream.match(/^:/));
-        token = 'meta';
+        token = "meta";
         break;
       case 1:
         change(state, to_normal, context(rx_role_pre, 2));
         assert(stream.match(rx_NAME));
-        token = 'keyword';
+        token = "keyword";
 
         if (stream.current().match(/^(?:math|latex)/)) {
           state.tmp_stex = true;
@@ -197,7 +197,7 @@ CodeMirror.defineMode('rst-base', function (config) {
       case 2:
         change(state, to_normal, context(rx_role_pre, 3));
         assert(stream.match(/^:`/));
-        token = 'meta';
+        token = "meta";
         break;
       case 3:
         if (state.tmp_stex) {
@@ -207,7 +207,7 @@ CodeMirror.defineMode('rst-base', function (config) {
         }
 
         if (state.tmp) {
-          if (stream.peek() == '`') {
+          if (stream.peek() == "`") {
             change(state, to_normal, context(rx_role_pre, 4));
             state.tmp = undefined;
             break;
@@ -219,12 +219,12 @@ CodeMirror.defineMode('rst-base', function (config) {
 
         change(state, to_normal, context(rx_role_pre, 4));
         assert(stream.match(rx_TEXT2));
-        token = 'string';
+        token = "string";
         break;
       case 4:
         change(state, to_normal, context(rx_role_pre, 5));
         assert(stream.match(/^`/));
-        token = 'meta';
+        token = "meta";
         break;
       case 5:
         change(state, to_normal, context(rx_role_pre, 6));
@@ -232,7 +232,7 @@ CodeMirror.defineMode('rst-base', function (config) {
         break;
       default:
         change(state, to_normal);
-        assert(stream.current() == '');
+        assert(stream.current() == "");
       }
     } else if (phase(state) == rx_role_suf ||
                stream.match(rx_role_suf, false)) {
@@ -241,27 +241,27 @@ CodeMirror.defineMode('rst-base', function (config) {
       case 0:
         change(state, to_normal, context(rx_role_suf, 1));
         assert(stream.match(/^`/));
-        token = 'meta';
+        token = "meta";
         break;
       case 1:
         change(state, to_normal, context(rx_role_suf, 2));
         assert(stream.match(rx_TEXT2));
-        token = 'string';
+        token = "string";
         break;
       case 2:
         change(state, to_normal, context(rx_role_suf, 3));
         assert(stream.match(/^`:/));
-        token = 'meta';
+        token = "meta";
         break;
       case 3:
         change(state, to_normal, context(rx_role_suf, 4));
         assert(stream.match(rx_NAME));
-        token = 'keyword';
+        token = "keyword";
         break;
       case 4:
         change(state, to_normal, context(rx_role_suf, 5));
         assert(stream.match(/^:/));
-        token = 'meta';
+        token = "meta";
         break;
       case 5:
         change(state, to_normal, context(rx_role_suf, 6));
@@ -269,7 +269,7 @@ CodeMirror.defineMode('rst-base', function (config) {
         break;
       default:
         change(state, to_normal);
-        assert(stream.current() == '');
+        assert(stream.current() == "");
       }
     } else if (phase(state) == rx_role || stream.match(rx_role, false)) {
 
@@ -277,17 +277,17 @@ CodeMirror.defineMode('rst-base', function (config) {
       case 0:
         change(state, to_normal, context(rx_role, 1));
         assert(stream.match(/^:/));
-        token = 'meta';
+        token = "meta";
         break;
       case 1:
         change(state, to_normal, context(rx_role, 2));
         assert(stream.match(rx_NAME));
-        token = 'keyword';
+        token = "keyword";
         break;
       case 2:
         change(state, to_normal, context(rx_role, 3));
         assert(stream.match(/^:/));
-        token = 'meta';
+        token = "meta";
         break;
       case 3:
         change(state, to_normal, context(rx_role, 4));
@@ -295,7 +295,7 @@ CodeMirror.defineMode('rst-base', function (config) {
         break;
       default:
         change(state, to_normal);
-        assert(stream.current() == '');
+        assert(stream.current() == "");
       }
     } else if (phase(state) == rx_substitution_ref ||
                stream.match(rx_substitution_ref, false)) {
@@ -304,26 +304,26 @@ CodeMirror.defineMode('rst-base', function (config) {
       case 0:
         change(state, to_normal, context(rx_substitution_ref, 1));
         assert(stream.match(rx_substitution_text));
-        token = 'variable-2';
+        token = "variable-2";
         break;
       case 1:
         change(state, to_normal, context(rx_substitution_ref, 2));
-        if (stream.match(/^_?_?/)) token = 'link';
+        if (stream.match(/^_?_?/)) token = "link";
         break;
       default:
         change(state, to_normal);
-        assert(stream.current() == '');
+        assert(stream.current() == "");
       }
     } else if (stream.match(rx_footnote_ref)) {
       change(state, to_normal);
-      token = 'quote';
+      token = "quote";
     } else if (stream.match(rx_citation_ref)) {
       change(state, to_normal);
-      token = 'quote';
+      token = "quote";
     } else if (stream.match(rx_link_ref1)) {
       change(state, to_normal);
       if (!stream.peek() || stream.peek().match(/^\W$/)) {
-        token = 'link';
+        token = "link";
       }
     } else if (phase(state) == rx_link_ref2 ||
                stream.match(rx_link_ref2, false)) {
@@ -339,7 +339,7 @@ CodeMirror.defineMode('rst-base', function (config) {
       case 1:
         change(state, to_normal, context(rx_link_ref2, 2));
         assert(stream.match(/^`/));
-        token = 'link';
+        token = "link";
         break;
       case 2:
         change(state, to_normal, context(rx_link_ref2, 3));
@@ -348,11 +348,11 @@ CodeMirror.defineMode('rst-base', function (config) {
       case 3:
         change(state, to_normal, context(rx_link_ref2, 4));
         assert(stream.match(/^`_/));
-        token = 'link';
+        token = "link";
         break;
       default:
         change(state, to_normal);
-        assert(stream.current() == '');
+        assert(stream.current() == "");
       }
     } else if (stream.match(rx_verbatim)) {
       change(state, to_verbatim);
@@ -378,7 +378,7 @@ CodeMirror.defineMode('rst-base', function (config) {
       case 0:
         change(state, to_explicit, context(rx_substitution, 1));
         assert(stream.match(rx_substitution_text));
-        token = 'variable-2';
+        token = "variable-2";
         break;
       case 1:
         change(state, to_explicit, context(rx_substitution, 2));
@@ -387,16 +387,16 @@ CodeMirror.defineMode('rst-base', function (config) {
       case 2:
         change(state, to_explicit, context(rx_substitution, 3));
         assert(stream.match(rx_substitution_name));
-        token = 'keyword';
+        token = "keyword";
         break;
       case 3:
         change(state, to_explicit, context(rx_substitution, 4));
         assert(stream.match(rx_substitution_tail));
-        token = 'meta';
+        token = "meta";
         break;
       default:
         change(state, to_normal);
-        assert(stream.current() == '');
+        assert(stream.current() == "");
       }
     } else if (phase(state) == rx_directive ||
                stream.match(rx_directive, false)) {
@@ -405,7 +405,7 @@ CodeMirror.defineMode('rst-base', function (config) {
       case 0:
         change(state, to_explicit, context(rx_directive, 1));
         assert(stream.match(rx_directive_name));
-        token = 'keyword';
+        token = "keyword";
 
         if (stream.current().match(/^(?:math|latex)/))
           state.tmp_stex = true;
@@ -415,7 +415,7 @@ CodeMirror.defineMode('rst-base', function (config) {
       case 1:
         change(state, to_explicit, context(rx_directive, 2));
         assert(stream.match(rx_directive_tail));
-        token = 'meta';
+        token = "meta";
 
         if (stream.match(/^latex\s*$/) || state.tmp_stex) {
           state.tmp_stex = undefined; change(state, to_mode, {
@@ -433,7 +433,7 @@ CodeMirror.defineMode('rst-base', function (config) {
         break;
       default:
         change(state, to_normal);
-        assert(stream.current() == '');
+        assert(stream.current() == "");
       }
     } else if (phase(state) == rx_link || stream.match(rx_link, false)) {
 
@@ -442,23 +442,23 @@ CodeMirror.defineMode('rst-base', function (config) {
         change(state, to_explicit, context(rx_link, 1));
         assert(stream.match(rx_link_head));
         assert(stream.match(rx_link_name));
-        token = 'link';
+        token = "link";
         break;
       case 1:
         change(state, to_explicit, context(rx_link, 2));
         assert(stream.match(rx_link_tail));
-        token = 'meta';
+        token = "meta";
         break;
       default:
         change(state, to_normal);
-        assert(stream.current() == '');
+        assert(stream.current() == "");
       }
     } else if (stream.match(rx_footnote)) {
       change(state, to_normal);
-      token = 'quote';
+      token = "quote";
     } else if (stream.match(rx_citation)) {
       change(state, to_normal);
-      token = 'quote';
+      token = "quote";
     }
 
     else {
@@ -468,7 +468,7 @@ CodeMirror.defineMode('rst-base', function (config) {
       } else {
         stream.skipToEnd();
         change(state, to_comment);
-        token = 'comment';
+        token = "comment";
       }
     }
 
@@ -479,11 +479,11 @@ CodeMirror.defineMode('rst-base', function (config) {
   ///////////////////////////////////////////////////////////////////////////
 
   function to_comment(stream, state) {
-    return as_block(stream, state, 'comment');
+    return as_block(stream, state, "comment");
   }
 
   function to_verbatim(stream, state) {
-    return as_block(stream, state, 'meta');
+    return as_block(stream, state, "meta");
   }
 
   function as_block(stream, state, token) {
@@ -562,12 +562,12 @@ CodeMirror.defineMode('rst-base', function (config) {
       return state.tok(stream, state);
     }
   };
-}, 'python', 'stex');
+}, "python", "stex");
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-CodeMirror.defineMIME('text/x-rst', 'rst');
+CodeMirror.defineMIME("text/x-rst", "rst");
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////

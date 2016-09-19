@@ -1,7 +1,6 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
-@using WEBPCTSV.Helpers.Common;
-@model PagedList.IPagedList<NewsJob>
+﻿@using PagedList.Mvc
+@using WEBPCTSV.Helpers.Common
+@model PagedList.IPagedList<WEBPCTSV.Models.bean.NewsJob>
 
 @{
     ViewBag.Title = "Tin tuyển dụng Phòng Công Tác Sinh Viên trường Đại Học Bách Khoa - Đại Học Đà Nẵng";
@@ -12,7 +11,9 @@
     <div id="maincontent-section1">
         <div class="maincontent-main listbox listbox-main">
             <ol class="breadcrumb box-shadow">
-                <li><a href="~/">Trang chủ</a></li>
+                <li>
+                    <a href="~/">Trang chủ</a>
+                </li>
                 <li class="active">Tuyển dụng</li>
             </ol>
             <div class="listbox-content">
@@ -41,7 +42,8 @@
                             }
                             <h2 class="blog-thumbnail-title post-title-color gdl-title">
                                 <a href="../TuyenDung/ChiTiet?id=@x.IdNewsJob" title="@x.News.Title">@StringExtension.GetLimitSubString(x.News.Title, 20)</a>
-                            </h2><div class="blog-thumbnail-info post-info-color gdl-divider">
+                            </h2>
+                            <div class="blog-thumbnail-info post-info-color gdl-divider">
                                 <div class="blog-thumbnail-author">
                                 </div>
                                 <div class="clear">
@@ -82,7 +84,7 @@
                             </div>
                         </div>*@
                 }
-                <br />
+                <br/>
                 <div class="menuTrang">
                     @Html.PagedListPager(Model, page => Url.Action("../TuyenDung", new { page = page }))
                 </div>

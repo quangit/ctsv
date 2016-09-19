@@ -1,5 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
+﻿@using WEBPCTSV.Models.bean
 @model List<Lecturer>
 <link rel="stylesheet" href="/assets/css/dataTables.bootstrap.min.css">
 <script type="text/javascript" src="/assets/js/jquery.dataTables.min.js"></script>
@@ -9,7 +8,7 @@
     ViewBag.Active = "GVCN";
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
 }
-<link href="~/css/loadinglec.css" rel="stylesheet" />
+<link href="~/css/loadinglec.css" rel="stylesheet"/>
 <ol class="breadcrumb box-shadow">
     <li>Quản lý giảng viên chủ nhiệm</li>
     <li>Danh sách giảng viên chủ nhiệm</li>
@@ -26,43 +25,49 @@
             <i class="fa fa-print" aria-hidden="true"></i> Thống kê giấy tờ
         </a>
     </div>
-    <hr />
+    <hr/>
     <div id="tbnoidung">
         <div class="alert-area">
             @Html.Partial("~/Views/PartialViews/PartialLoadingArea.cshtml")
         </div>
         <table id="myTable" class="table table-hover">
             <thead>
-                <tr class="tieude">
-                    <th>Mã GV</th>
-                    <th>Họ Tên</th>
-                    <th>Điện Thoại</th>
-                    <th>Email</th>
-                    <th>Khoa</th>
-                    <th style="text-align: center;"></th>
-                </tr>
+            <tr class="tieude">
+                <th>Mã GV</th>
+                <th>Họ Tên</th>
+                <th>Điện Thoại</th>
+                <th>Email</th>
+                <th>Khoa</th>
+                <th style="text-align: center;"></th>
+            </tr>
             </thead>
             <tfoot>
-                <tr>
-                    <th>Mã GV</th>
-                    <th>Họ Tên</th>
-                    <th>Điện Thoại</th>
-                    <th>Email</th>
-                    <th>Khoa</th>
-                    <th style="text-align: center;"></th>
-                </tr>
+            <tr>
+                <th>Mã GV</th>
+                <th>Họ Tên</th>
+                <th>Điện Thoại</th>
+                <th>Email</th>
+                <th>Khoa</th>
+                <th style="text-align: center;"></th>
+            </tr>
             </tfoot>
             @foreach (Lecturer lecturer in Model)
             {
                 <tr class="noidung row@(lecturer.IdLecturer)">
                     <td>@lecturer.LecturerNumber</td>
                     <td>@lecturer.LastName @lecturer.FirstName</td>
-                    <td><p class="mota"> @lecturer.PhoneNumber </p></td>
+                    <td>
+                        <p class="mota"> @lecturer.PhoneNumber </p>
+                    </td>
                     <td>@lecturer.Email</td>
                     <td>@lecturer.Faculty.FacultyName</td>
                     <td style="width: 10%">
-                        <a class="btn btn-warning btn-sm" href="/QuanLy/QuanLyGVCN/CapNhat?idLecturer=@lecturer.IdLecturer"><i class="fa fa-pencil"></i></a>
-                        <a class="btn btn-danger btn-sm" href="#" onclick="deleteLecturer(@lecturer.IdLecturer)"><i class="fa fa-trash"></i></a>
+                        <a class="btn btn-warning btn-sm" href="/QuanLy/QuanLyGVCN/CapNhat?idLecturer=@lecturer.IdLecturer">
+                            <i class="fa fa-pencil"></i>
+                        </a>
+                        <a class="btn btn-danger btn-sm" href="#" onclick="deleteLecturer(@lecturer.IdLecturer)">
+                            <i class="fa fa-trash"></i>
+                        </a>
                     </td>
                 </tr>
             }
@@ -81,9 +86,9 @@
                 @using (Html.BeginForm("Importexcel", "QuanLy/QuanLyGVCN", FormMethod.Post, new { enctype = "multipart/form-data", @id = "fImportExcel", @class = "form-horizontal" }))
                 {
                     <div class="modal-body">
-                        <div class="modal-message" style="display:none;">
+                        <div class="modal-message" style="display: none;">
                         </div>
-                        <div class="modal-loading alert alert-info" style="display:none;">
+                        <div class="modal-loading alert alert-info" style="display: none;">
 
                         </div>
                         <div class="form-group">
@@ -111,7 +116,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-3">Chọn tệp</label>
                             <div class="col-md-9">
-                                <input class="form-control" type="file" id="UploadedFile" name="UploadedFile" />
+                                <input class="form-control" type="file" id="UploadedFile" name="UploadedFile"/>
                             </div>
                             <label class="control-label col-md-3"></label>
                             <div class="col-md-9">
@@ -138,12 +143,12 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Xuất kết quả nộp biển bản họp lớp giảng viên</h4>
                 </div>
-                @using (Html.BeginForm("ExportExcel", "QuanLy/QuanLyGVCN", FormMethod.Get, new {@id = "fExportExcel", @class = "form-horizontal" }))
+                @using (Html.BeginForm("ExportExcel", "QuanLy/QuanLyGVCN", FormMethod.Get, new { @id = "fExportExcel", @class = "form-horizontal" }))
                 {
                     <div class="modal-body">
-                        <div class="modal-message" style="display:none;">
+                        <div class="modal-message" style="display: none;">
                         </div>
-                        <div class="modal-loading alert alert-info" style="display:none;">
+                        <div class="modal-loading alert alert-info" style="display: none;">
 
                         </div>
                         <div class="form-group">
@@ -185,71 +190,83 @@
 <script>
     function loadIconLoading(element) {
         // Load icon when do ajax request
-        element.html('<div class="cssload-container-object">'
-                    + '<div class="cssload-square">'
-                    + '<div class="cssload-square-part cssload-square-green"></div>'
-                    + '<div class="cssload-square-part cssload-square-pink"></div>'
-                    + '<div class="cssload-square-blend"></div></div></div>');
+        element.html('<div class="cssload-container-object">' +
+            '<div class="cssload-square">' +
+            '<div class="cssload-square-part cssload-square-green"></div>' +
+            '<div class="cssload-square-part cssload-square-pink"></div>' +
+            '<div class="cssload-square-blend"></div></div></div>');
         element.append('<div style="text-align: center;">ĐANG XỬ LÝ DỮ LIỆU. VUI LÒNG CHỜ GIÂY LÁT!</div>');
     }
+
     function unloadIconLoading(element) {
         element.html('');
     }
-    $(document).ready(function () {
 
-        // Setup - add a text input to each footer cell
-        $('#myTable tfoot th').each(function () {
-            var title = $(this).text();
-            $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-        });
+    $(document)
+        .ready(function() {
 
-        // DataTable
-        var table = $('#myTable').DataTable();
+            // Setup - add a text input to each footer cell
+            $('#myTable tfoot th')
+                .each(function() {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+                });
 
-        // Apply the search
-        table.columns().every(function () {
-            var that = this;
+            // DataTable
+            var table = $('#myTable').DataTable();
 
-            $('input', this.footer()).on('keyup change', function () {
-                if (that.search() !== this.value) {
-                    that
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
+            // Apply the search
+            table.columns()
+                .every(function() {
+                    var that = this;
 
-        // Bring model to main layout
-        $('.add-excel').on('click', function () {
-            $('#modal-excel').appendTo("body").modal('show');
+                    $('input', this.footer())
+                        .on('keyup change',
+                            function() {
+                                if (that.search() !== this.value) {
+                                    that
+                                        .search(this.value)
+                                        .draw();
+                                }
+                            });
+                });
+
+            // Bring model to main layout
+            $('.add-excel')
+                .on('click',
+                    function() {
+                        $('#modal-excel').appendTo("body").modal('show');
+                    });
+            $('.export-excel')
+                .on('click',
+                    function() {
+                        $('#modal-excel-export').modal('show');
+                    });
+            // Form ajax
+            $('#fImportExcel')
+                .ajaxForm({
+                    // Return text to avoid auto download file json in old browser.
+                    dataType: 'text',
+                    beforeSend: function() {
+                        $('.modal-message').html("");
+                        //loadIconLoading($('.modal-loading'));
+                        //$('.modal-loading').fadeIn();
+                    },
+                    success: function(data) {
+                        // Returned data is text: status;content
+                        //$.when($('.modal-loading').fadeOut()).then(function () {
+                        //unloadIconLoading($('.modal-loading'));
+                        var response = data.split(';');
+                        if (response[0] == "true") {
+                            $('.modal-message').html('<div class="alert alert-success">' + response[1] + '</div>')
+                        } else {
+                            $('.modal-message').html('<div class="alert alert-danger">' + response[1] + '</div>')
+                        }
+                        $('.modal-message').fadeIn();
+                        //});
+                    }
+                });
         });
-        $('.export-excel').on('click', function () {
-            $('#modal-excel-export').modal('show');
-        });
-        // Form ajax
-        $('#fImportExcel').ajaxForm({
-            // Return text to avoid auto download file json in old browser.
-            dataType: 'text',
-            beforeSend: function () {
-                $('.modal-message').html("");
-                //loadIconLoading($('.modal-loading'));
-                //$('.modal-loading').fadeIn();
-            },
-            success: function (data) {
-                // Returned data is text: status;content
-                //$.when($('.modal-loading').fadeOut()).then(function () {
-                //unloadIconLoading($('.modal-loading'));
-                var response = data.split(';');
-                if (response[0] == "true") {
-                    $('.modal-message').html('<div class="alert alert-success">' + response[1] + '</div>')
-                } else {
-                    $('.modal-message').html('<div class="alert alert-danger">' + response[1] + '</div>')
-                }
-                $('.modal-message').fadeIn();
-                //});
-            }
-        });
-    });
 
     function deleteLecturer(idLecturer) {
         $.ajax({
@@ -258,12 +275,12 @@
                 IdLecturer: idLecturer
             },
             url: '/QuanLy/QuanLyGVCN/Xoa',
-            beforeSend: function () {
+            beforeSend: function() {
                 $('.alert-box').fadeOut();
                 $('.alert-box').html("");
                 //$('.cssload-container').fadeIn();
             },
-            success: function (response) {
+            success: function(response) {
                 if (response.success == true) {
                     $('.row' + idLecturer).remove();
                     typeAlert = 'alert-success';
@@ -275,7 +292,7 @@
                 $('.alert-box').fadeIn();
                 //});
             },
-            error: function (response) {
+            error: function(response) {
                 $('.alert-box').html('<div class="alert alert-danger">Lỗi trong quá trình lấy dữ liệu!</div>')
                 $('.cssload-container').fadeOut();
                 $('.alert-box').fadeIn();

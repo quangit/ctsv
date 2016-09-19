@@ -161,7 +161,7 @@ CodeMirror.defineMode("ruby", function(config) {
     return function(stream, state) {
       var escaped = false, ch;
 
-      if (state.context.type === 'read-quoted-paused') {
+      if (state.context.type === "read-quoted-paused") {
         state.context = state.context.prev;
         stream.eat("}");
       }
@@ -174,7 +174,7 @@ CodeMirror.defineMode("ruby", function(config) {
         if (embed && ch == "#" && !escaped) {
           if (stream.eat("{")) {
             if (quote == "}") {
-              state.context = {prev: state.context, type: 'read-quoted-paused'};
+              state.context = {prev: state.context, type: "read-quoted-paused"};
             }
             state.tokenize.push(tokenBaseUntilBrace());
             break;

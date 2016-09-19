@@ -1,27 +1,37 @@
-﻿@model ICollection<Student>
-@using WEBPCTSV.Models.bean;
+﻿@using WEBPCTSV.Models.bean
+@model ICollection<Student>
 <table class="table table-hover">
     <thead>
-        <tr>
-            <th>STT</th>
-            <th>Tên sinh viên</th>
-            <th></th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>STT</th>
+        <th>Tên sinh viên</th>
+        <th></th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-        @{int stt = 1;
+    @{
+        int stt = 1;
         foreach (Student student in Model)
         {
             <tr>
-                <td><p class="form-control-static">@stt</p></td>
-                <td><p class="form-control-static">@(student.LastNameStudent + " " + student.FirstNameStudent)</p></td>
-                <td><input type="number" class="form-control"/></td>
-                <td><button class="btn btn-primary">Gửi</button></td>
+                <td>
+                    <p class="form-control-static">@stt</p>
+                </td>
+                <td>
+                    <p class="form-control-static">@(student.LastNameStudent + " " + student.FirstNameStudent)</p>
+                </td>
+                <td>
+                    <input type="number" class="form-control"/>
+                </td>
+                <td>
+                    <button class="btn btn-primary">Gửi</button>
+                </td>
             </tr>
             stt++;
         }
-        }
-        
+
+    }
+
     </tbody>
 </table>

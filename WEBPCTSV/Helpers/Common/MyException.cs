@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace WEBPCTSV.Helpers.Common
+﻿namespace WEBPCTSV.Helpers.Common
 {
+    using System;
+
     public class MyException : Exception
     {
         public MyException()
             : base()
         {
-
         }
+
         public MyException(string message)
             : base(message)
         {
-
         }
     }
 }

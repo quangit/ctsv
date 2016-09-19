@@ -8,7 +8,7 @@ function update() {
 function GetData() {
     try {
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/ManageMessage/GetCountMessageReceiveUnRead', false);
+        xhr.open("GET", "/ManageMessage/GetCountMessageReceiveUnRead", false);
         xhr.setRequestHeader("Content-Type",
         "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function () {

@@ -1,38 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using WEBPCTSV.Models.bean;
-
-namespace WEBPCTSV.Models.bo
+﻿namespace WEBPCTSV.Models.bo
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using WEBPCTSV.Models.bean;
+
     public class ConductBO
     {
-        private DSAContext dsaContext;
+        private readonly DSAContext dsaContext;
+
         public ConductBO(DSAContext dsaContext)
         {
             this.dsaContext = dsaContext;
         }
 
-        #region Conduct schedule
-        public List<ConductSchedule> GetListScheduleByEvent(int idConductEvent)
-        {
-            return dsaContext.ConductSchedules.Where(c => c.IdConductEvent.Equals(idConductEvent)).ToList();
-        }
-
-        #endregion
-
-        #region Conduct event
         public ConductEvent GetConductEventBySemester(int idSemester)
         {
-            return dsaContext.ConductEvents.SingleOrDefault(c => c.IdSemester == idSemester);
-        } 
-        #endregion
-        #region Conduct schedule
-        #endregion
-        #region Conduct schedule
-        #endregion
-        #region Conduct schedule
-        #endregion
+            return this.dsaContext.ConductEvents.SingleOrDefault(c => c.IdSemester == idSemester);
+        }
+
+        public List<ConductSchedule> GetListScheduleByEvent(int idConductEvent)
+        {
+            return this.dsaContext.ConductSchedules.Where(c => c.IdConductEvent.Equals(idConductEvent)).ToList();
+        }
     }
 }

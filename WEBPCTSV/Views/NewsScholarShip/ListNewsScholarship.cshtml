@@ -1,9 +1,7 @@
-﻿@using WEBPCTSV.Models.bean;
-@using WEBPCTSV.Helpers;
-@using WEBPCTSV.Helpers.Common;
-@using PagedList.Mvc;
-
-@model PagedList.IPagedList<NewsScholarship>
+﻿@using PagedList.Mvc
+@using WEBPCTSV.Helpers
+@using WEBPCTSV.Helpers.Common
+@model PagedList.IPagedList<WEBPCTSV.Models.bean.NewsScholarship>
 
 @{
     ViewBag.Title = "Học bổng trường Đại Học Bách Khoa - Đại Học Đà Nẵng";
@@ -14,20 +12,28 @@
     <div id="maincontent-section1">
         <div class="maincontent-main listbox listbox-main">
             <ol class="breadcrumb box-shadow">
-                <li><a href="~/">Trang chủ</a></li>
+                <li>
+                    <a href="~/">Trang chủ</a>
+                </li>
                 <li class="~/HocBong">Học bổng</li>
-                <li class="active">@Define.typeScholarShip[(ViewBag.type == null ? "" : (ViewBag.type))]</li>
+                <li class="active">@Define.typeScholarShip[ViewBag.type == null ? string.Empty : (ViewBag.type)]</li>
             </ol>
             <div class="listbox-content row">
                 <div class="listbox-content-section">
                     <div class="dropdown">
                         <button class="btn btn-default dropdown-toggle btn-sm" type="button" data-toggle="dropdown" aria-expanded="false">Lọc theo loại văn bản <span class="caret"></span></button>
                         <ul class="dropdown-menu">
-                            <li><a href="/HocBong">Tất cả</a></li>
+                            <li>
+                                <a href="/HocBong">Tất cả</a>
+                            </li>
                             <li class="divider"></li>
                             <li class="dropdown-header">Loại học bổng</li>
-                            <li><a href="/HocBong?type=HocBongKhuyenKhich">Khuyến khích học tập</a></li>
-                            <li><a href="/HocBong?type=HocBongKhac">Học bổng khác</a></li>
+                            <li>
+                                <a href="/HocBong?type=HocBongKhuyenKhich">Khuyến khích học tập</a>
+                            </li>
+                            <li>
+                                <a href="/HocBong?type=HocBongKhac">Học bổng khác</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -35,7 +41,7 @@
                 {
                     <div class="listbox-content-item-sub">
                         <div class="col-xs-2">
-                            <img src="@(StringExtension.IsNullOrWhiteSpace(x.News.Image) ? "/Images/logo.jpg" : x.News.Image)" />
+                            <img src="@(StringExtension.IsNullOrWhiteSpace(x.News.Image) ? "/Images/logo.jpg" : x.News.Image)"/>
                         </div>
                         <div class="col-xs-10">
                             <div class="listbox-content-item-sub-title">
@@ -54,14 +60,14 @@
                                 <span class="listbox-content-item-moreinfo-comment date"><i class="fa fa-mortar-board"></i> @x.Sponsor</span>
                             </div>
                             <p>
-                                <span><a href="../HocBong/ChiTiet?id=@x.IdNewsScholarship">Xem tiếp</a></span>
+                            <span><a href="../HocBong/ChiTiet?id=@x.IdNewsScholarship">Xem tiếp</a></span>
                             <p>
                         </div>
                     </div>
                 }
-                <br />
+                <br/>
                 <div class="menuTrang">
-                    @Html.PagedListPager(Model, page => Url.Action("../HocBong", new { page = page, type=@ViewBag.type }))
+                    @Html.PagedListPager(Model, page => Url.Action("../HocBong", new { page = page, type = @ViewBag.type }))
                 </div>
             </div>
         </div>

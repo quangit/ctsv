@@ -9,7 +9,7 @@
         <div id="importFile" class="btn btn-default image-preview-input ">
             <span class="glyphicon glyphicon-open"></span>
             <span class="image-preview-input-title">Import file Excel</span>
-            <input id="fileInput" type="file" accept="" onchange="UploadFile('fileInput', 'progressBar', 'progressBarNumber')" name="input-file-preview" /> <!-- rename it -->
+            <input id="fileInput" type="file" accept="" onchange="UploadFile('fileInput', 'progressBar', 'progressBarNumber')" name="input-file-preview"/> <!-- rename it -->
         </div>
 
         <div id="progress" style="width:120px;margin-top:20px;visibility:hidden">
@@ -38,32 +38,80 @@
 
         <button id="buttonComplete" onclick="ResetPercentProgress()" style="visibility:hidden" class="btn btn-success"> Hoàn thành !</button>
 
+        <br />
+        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#listErrorModal" onclick="RefreshListError()">
+            Hiện thị các dòng bị lỗi <span class="badge " id="numberRowError1">0</span>
+        </button>
 
+        <!-- Modal -->
+        <div id="listErrorModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
 
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="btn btn-warning" style="float: left" onclick="RefreshListError()">
+                            <span class="badge " style="margin-right: 5px" id="numberRowError2">0</span>
+                            <span class="glyphicon glyphicon-refresh"></span>
+                        </button>
 
-        <hr style="clear:both" />
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"> Danh sách các dòng bị lỗi </h4>
+                    </div>
+                    <div class="modal-body" id="listError">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <hr style="clear: both"/>
+        <strong>Chú ý:</strong> File excel nhập vào theo mẩu sau <a href="/File/DownloadExcel?filename=ThôngTinSinhVien.xlsx">Dowload</a>
     </div>
 </div>
-<div id="info-xuly"></div>
+@*<div id="info-xuly"></div>*@
 <script>
 
     function ResetPercentProgress() {
         $.ajax({
             url: "/ManageStudent/ResetPercentProgress",
             type: "post",
-            success: function (result) {
+            success: function(result) {
                 location.reload();
             }
         });
     }
 
+    function RefreshListError() {
+        $.ajax({
+            url: "/ManageStudent/GetListErrorImportScote",
+            type: "post",
+            success: function (result) {
+                $("#listError").html(result);
+            }
+        });
+        $.ajax({
+            url: "/ManageStudent/GetCountListErrorImportScote",
+            type: "post",
+            success: function (result) {
+                $("#numberRowError1").html(result);
+                $("#numberRowError2").html(result);
+            }
+        });
+    }
+
     var oldclass = "p0";
+
     function UploadFile(elementfile, proccessBar, progressBarNumber) {
         document.getElementById("importFile").style.visibility = "hidden";
         document.getElementById("progress").style.visibility = "visible";
         document.getElementById("loaddingProgress").style.visibility = "visible";
 
-        
+
         var percentValue = "0%";
         var fileInput = document.getElementById(elementfile);
         var proccess = document.getElementById(proccessBar);
@@ -76,7 +124,7 @@
 
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/File/UploadExcel');
-        xhr.upload.onprogress = function (e) {
+        xhr.upload.onprogress = function(e) {
             if (e.lengthComputable) {
                 var percentValue = parseInt(e.loaded / e.total * 100);
                 //proccess.innerHTML = percentValue;
@@ -91,46 +139,44 @@
                 //bar.setAttribute('style', 'width: ' + percentValue);
             }
         };
-        xhr.onload = function () {
+        xhr.onload = function() {
             if (this.status == 200) {
             };
         };
         xhr.send(formdata);
-        xhr.onreadystatechange = function () {
+        xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
-                
+
             }
         }
         return false;
     }
 
 
-
     if (typeof (Worker) !== "undefined") {
         // Trình duyệt hỗ trợ Web worker!
         // Viết tiếp các mã javascript
         var worker = new Worker("/js/ProgressWebworker.js");
-        worker.onmessage = function (event) {
-            document.getElementById("info-xuly").innerHTML = event.data;
+        worker.onmessage = function(event) {
+            //document.getElementById("info-xuly").innerHTML = event.data;
             if (event.data == 100) {
                 document.getElementById("buttonComplete").style.visibility = "visible";
                 document.getElementById("progress").style.visibility = "hidden";
                 document.getElementById("loaddingProgress").style.visibility = "hidden";
             }
             else
-            if (event.data != 0) {
-                document.getElementById("importFile").style.visibility = "hidden";
-                document.getElementById("progress").style.visibility = "visible";
-                document.getElementById("loaddingProgress").style.visibility = "visible";
-                document.getElementById("noteProgress").innerHTML = "Đang xữ lý !";  
-                document.getElementById("progressBarNumber").innerHTML = event.data + "%";
-                document.getElementById("progressBar").classList.remove(oldclass);
-                oldclass = "p" + event.data;
-                document.getElementById("progressBar").classList.add(oldclass);
-            }
+                if (event.data != 0) {
+                    document.getElementById("importFile").style.visibility = "hidden";
+                    document.getElementById("progress").style.visibility = "visible";
+                    document.getElementById("loaddingProgress").style.visibility = "visible";
+                    document.getElementById("noteProgress").innerHTML = "Đang xữ lý !";
+                    document.getElementById("progressBarNumber").innerHTML = event.data + "%";
+                    document.getElementById("progressBar").classList.remove(oldclass);
+                    oldclass = "p" + event.data;
+                    document.getElementById("progressBar").classList.add(oldclass);
+                }
         };
     } else {
         // Rất tiếc! Trình duyệt không hỗ trợ Web Worker..
     }
 </script>
-

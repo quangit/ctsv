@@ -1,37 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using WEBPCTSV.Models.bean;
-using WEBPCTSV.Models.bo;
-
-namespace WEBPCTSV.Controllers
+﻿namespace WEBPCTSV.Controllers
 {
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Models.bean;
+    using WEBPCTSV.Models.bo;
+
     public class NewsJobController : Controller
     {
-        DSAContext dsaContext;
-        NewsJobBO newsJobBO;
+        readonly DSAContext dsaContext;
+
+        readonly NewsJobBO newsJobBO;
+
         public NewsJobController()
         {
-            dsaContext = new DSAContext();
-            newsJobBO = new NewsJobBO(dsaContext);
+            this.dsaContext = new DSAContext();
+            this.newsJobBO = new NewsJobBO(this.dsaContext);
+        }
+
+        public ActionResult DetailNewsJob(int id)
+        {
+            return this.View(this.newsJobBO.GetNewsJob(id));
         }
 
         public ActionResult ListNewsJob(int? page)
         {
-            return View(newsJobBO.GetListNewsJob(page));
-        }
-        public ActionResult DetailNewsJob(int id)
-        {
-            return View(newsJobBO.GetNewsJob(id));
+            return this.View(this.newsJobBO.GetListNewsJob(page));
         }
 
         public ActionResult TopNewsJob(int count)
         {
-            ViewBag.topNewsJob = newsJobBO.GetTopNewsJob(count);
-            return View();
+            this.ViewBag.topNewsJob = this.newsJobBO.GetTopNewsJob(count);
+            return this.View();
         }
-
     }
 }

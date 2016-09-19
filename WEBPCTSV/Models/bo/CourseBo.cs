@@ -1,28 +1,39 @@
-﻿using WEBPCTSV.Models.bean;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace WEBPCTSV.Models.bo
+﻿namespace WEBPCTSV.Models.bo
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Models.bean;
+
     public class CourseBo
     {
-        DSAContext context = new DSAContext();
-        public List<Course> GetListCourse()
+        readonly DSAContext context = new DSAContext();
+
+        public void Delete(int idCourse)
         {
-            return context.Courses.ToList();
+            Course course = this.context.Courses.Single(c => c.IdCourse == idCourse);
+            this.context.Courses.Remove(course);
+            this.context.SaveChanges();
         }
 
         public Course Get(string name)
         {
-            try {
-                return context.Courses.Single(c => c.CouseName.Equals(name));
+            try
+            {
+                return this.context.Courses.Single(c => c.CouseName.Equals(name));
             }
-            catch { }
+            catch
+            {
+            }
+
             return null;
-            
+        }
+
+        public List<Course> GetListCourse()
+        {
+            return this.context.Courses.ToList();
         }
 
         public void Insert(FormCollection form)
@@ -30,23 +41,16 @@ namespace WEBPCTSV.Models.bo
             Course course = new Course();
             course.CouseName = form["CourseName"];
             course.AdmissionYear = Convert.ToInt32(form["AdmissionYear"]);
-            context.Courses.Add(course);
-            context.SaveChanges();
+            this.context.Courses.Add(course);
+            this.context.SaveChanges();
         }
 
         public void Update(int idCourse, FormCollection form)
         {
-            Course course = context.Courses.Single(c => c.IdCourse == idCourse);
+            Course course = this.context.Courses.Single(c => c.IdCourse == idCourse);
             course.CouseName = form["CourseName"];
             course.AdmissionYear = Convert.ToInt32(form["AdmissionYear"]);
-            context.SaveChanges();
-        }
-
-        public void Delete(int idCourse)
-        {
-            Course course = context.Courses.Single(c => c.IdCourse == idCourse);
-            context.Courses.Remove(course);
-            context.SaveChanges();
+            this.context.SaveChanges();
         }
     }
 }

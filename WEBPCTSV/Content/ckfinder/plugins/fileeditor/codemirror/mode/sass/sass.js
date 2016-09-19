@@ -117,19 +117,19 @@ CodeMirror.defineMode("sass", function(config) {
     var ch = stream.peek();
 
     // Single line Comment
-    if (stream.match('//')) {
+    if (stream.match("//")) {
       stream.skipToEnd();
       return "comment";
     }
 
     // Multiline Comment
-    if (stream.match('/*')){
+    if (stream.match("/*")){
       state.tokenizer = multilineComment;
       return state.tokenizer(stream, state);
     }
 
     // Interpolation
-    if (stream.match('#{')){
+    if (stream.match("#{")){
     state.tokenizer = buildInterpolationTokenizer(tokenBase);
       return "operator";
     }
@@ -255,7 +255,7 @@ CodeMirror.defineMode("sass", function(config) {
     }
 
     // Pseudo element selectors
-    if (ch == ':' && stream.match(pseudoElementsRegexp)){
+    if (ch == ":" && stream.match(pseudoElementsRegexp)){
       return "keyword";
     }
 
@@ -318,7 +318,7 @@ CodeMirror.defineMode("sass", function(config) {
     startState: function() {
       return {
         tokenizer: tokenBase,
-        scopes: [{offset: 0, type: 'sass'}],
+        scopes: [{offset: 0, type: "sass"}],
         definedVars: [],
         definedMixins: []
       };

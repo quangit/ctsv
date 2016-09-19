@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Web;
-
-namespace WEBPCTSV.Models.Support
+﻿namespace WEBPCTSV.Models.Support
 {
+    using System.IO;
+
     public class ManageFile
     {
         public void DeleteFile(string filename)

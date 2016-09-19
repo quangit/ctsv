@@ -1,4 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
+﻿@using WEBPCTSV.Models.bean
 @{
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
     ViewBag.Title = "Class";
@@ -9,7 +9,7 @@
     List<Class> listClass = ViewBag.Class;
 }
 <div ng-controller="ManageClass">
-    <div class="row" style="margin-left:10px">
+    <div class="row" style="margin-left: 10px">
         <div class="col-lg-4">
             <div class="input-group">
                 <span class="input-group-btn">
@@ -25,7 +25,7 @@
             </div><!-- /input-group -->
         </div><!-- /.col-lg-6 -->
         <div class="col-lg-4">
-            <div class="input-group">             
+            <div class="input-group">
                 <span class="input-group-btn">
                     <button class="btn btn-primary" type="button">Chọn khóa</button>
                 </span>
@@ -39,7 +39,7 @@
             </div><!-- /input-group -->
         </div><!-- /.col-lg-6 -->
     </div><!-- /.row -->
-    <hr />
+    <hr/>
     <div ng-bind-html="contentlistclass" class="container-layoutmanager"></div>
     <div id="modalAddClass" class="modal fade" role="dialog">
         <div class="modal-dialog modal-sm">
@@ -65,7 +65,7 @@
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="email">Thời gian học:</label>
                             <div class="col-sm-7">
-                                <div class="input-group">                                  
+                                <div class="input-group">
                                     <input id="NumberMonthSchool" name="NumberMonthSchool" ng-model="NumberMonthSchool" type="text" class="form-control">
                                     <span class="input-group-addon"> Tháng</span>
                                 </div>
@@ -75,7 +75,7 @@
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="email">Học phí:</label>
                             <div class="col-sm-7">
-                                <div class="input-group">                                   
+                                <div class="input-group">
                                     <input id="MoneyOfMonth" name="MoneyOfMonth" type="text" ng-model="MoneyOfMonth" class="form-control">
                                     <span class="input-group-addon" >/Tháng</span>
                                 </div>
@@ -85,7 +85,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" ng-click="AddClass()" style="float:left" data-dismiss="modal"><i class="fa fa-plus" aria-hidden="true"></i> Thêm  </button>
+                    <button type="button" class="btn btn-primary" ng-click="AddClass()" style="float: left" data-dismiss="modal"><i class="fa fa-plus" aria-hidden="true"></i> Thêm </button>
                     <button type="button" class="btn btn-default" onclick="window.location.reload();" data-dismiss="modal">Đóng</button>
                 </div>
             </form>
@@ -93,8 +93,3 @@
         </div>
     </div>
 </div>
-
-
-
-
-

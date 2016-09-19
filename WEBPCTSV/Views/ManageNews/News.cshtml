@@ -1,5 +1,5 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
+﻿@using PagedList.Mvc
+@using WEBPCTSV.Models.bean
 @model PagedList.IPagedList<News>
 
 @{
@@ -10,7 +10,9 @@
 
 
 <ol class="breadcrumb box-shadow">
-    <li><a href="TrangChu">Trang chủ</a></li>
+    <li>
+        <a href="TrangChu">Trang chủ</a>
+    </li>
     <li class="active">Quản lý tin tức</li>
 </ol>
 <div class="main-content">
@@ -19,7 +21,7 @@
             <i class="fa fa-plus-square"></i> Thêm mới
         </a>
     </div>
-    <hr />
+    <hr/>
     <div class="alert-result">
         @if (TempData["success"] != null)
         {
@@ -37,19 +39,21 @@
     <div id="tbnoidung">
         <table class="table table-hover">
             <thead>
-                <tr class="tieude">
-                    <th width="30%">Tiêu đề</th>
-                    <th width="42%">Mô tả</th>
-                    <th width="8%">Loại tin</th>
-                    <th width="12%">Ngày đăng</th>
-                    <th width="8%">Tùy Chọn</th>
-                </tr>
+            <tr class="tieude">
+                <th width="30%">Tiêu đề</th>
+                <th width="42%">Mô tả</th>
+                <th width="8%">Loại tin</th>
+                <th width="12%">Ngày đăng</th>
+                <th width="8%">Tùy Chọn</th>
+            </tr>
             </thead>
             @foreach (News news in Model)
             {
                 <tr class="noidung">
                     <td>@news.Title</td>
-                    <td><p class="mota"> @news.Description </p></td>
+                    <td>
+                        <p class="mota"> @news.Description </p>
+                    </td>
                     <td>@WEBPCTSV.Helpers.Define.typeNews[news.Type]</td>
                     <td>@news.UpdatedDate.ToString("dd/MM/yyyy")</td>
                     <td>

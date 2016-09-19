@@ -1,11 +1,14 @@
-﻿@using WEBPCTSV.Models.bean;
-
+﻿@using WEBPCTSV.Models.bean
 @{
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
 }
 <ol class="breadcrumb box-shadow">
-    <li><a href="TrangChu">Trang chủ</a></li>
-    <li><a href="/QuanLy/QuanLyRenLuyen">Quản lý điểm rèn luyện</a></li>
+    <li>
+        <a href="TrangChu">Trang chủ</a>
+    </li>
+    <li>
+        <a href="/QuanLy/QuanLyRenLuyen">Quản lý điểm rèn luyện</a>
+    </li>
     <li class="active">Biểu mẫu đánh giá</li>
 </ol>
 <div class="main-content">
@@ -14,7 +17,7 @@
             <i class="fa fa-plus-square"></i> Thêm mới
         </a>
     </div>
-    <hr />
+    <hr/>
     <div class="alert-result">
         @if (TempData["success"] != null)
         {
@@ -32,34 +35,40 @@
     <div id="tbnoidung">
         <table class="table table-hover">
             <thead class="thead-default">
-                <tr>
-                    <th class="table-index" width="30px;">
-                        STT
-                    </th>
-                    <th>
-                        Mẫu đánh giá
-                    </th>
-                    <th>
-                        Ghi chú
-                    </th>
-                    <th width="90px">
-                    </th>
-                </tr>
+            <tr>
+                <th class="table-index" width="30px;">
+                    STT
+                </th>
+                <th>
+                    Mẫu đánh giá
+                </th>
+                <th>
+                    Ghi chú
+                </th>
+                <th width="90px">
+                </th>
+            </tr>
             </thead>
             <tbody>
-                @{int index = 0;}
-                @foreach (ConductForm conductForm in ViewBag.conductForms)
-                {
-                    <tr>
-                        <td>@(++index)</td>
-                        <td>@conductForm.Name</td>
-                        <td>@conductForm.Note</td>
-                        <td>
-                            <a href="MauXetRenLuyen/CapNhat?id=@conductForm.IdConductForm"><div data-tooltip="true" title="Chỉnh sửa" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></div></a>
-                            <div data-toggle="modal" data-tooltip="true" data-target="#myModal" onclick="confirmDeleteForm(@conductForm.IdConductForm)" title="Xóa" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></div>
-                        </td>
-                    </tr>
-                }
+            @{ int index = 0; }
+            @foreach (ConductForm conductForm in ViewBag.conductForms)
+            {
+                <tr>
+                    <td>@(++index)</td>
+                    <td>@conductForm.Name</td>
+                    <td>@conductForm.Note</td>
+                    <td>
+                        <a href="MauXetRenLuyen/CapNhat?id=@conductForm.IdConductForm">
+                            <div data-tooltip="true" title="Chỉnh sửa" class="btn btn-warning btn-sm">
+                                <i class="fa fa-pencil"></i>
+                            </div>
+                        </a>
+                        <div data-toggle="modal" data-tooltip="true" data-target="#myModal" onclick="confirmDeleteForm(@conductForm.IdConductForm)" title="Xóa" class="btn btn-danger btn-sm">
+                            <i class="fa fa-trash"></i>
+                        </div>
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     </div>
@@ -69,9 +78,12 @@
 @* This is section of scripts *@
 <script>
     function confirmDeleteForm(id) {
-        content = '<p>Việc xóa xóa biểu mẫu đánh giá kết quả rèn luyện sẽ làm mất đi tất cả thông tin đánh giá rèn luyện có sử dụng biểu mẫu đánh giá này!<br />'
-                    + 'Bạn có chắc muốn biểu mẫu đánh giá này không ?</p>';
-        $('#modal-announcement .modal-dialog .modal-content .modal-footer').html('<a href="/QuanLy/QuanLyRenLuyen/MauXetRenLuyen/Xoa?id=' + id + '"><button type="button" class="btn btn-danger">Xóa</button></a>  <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
+        content =
+            '<p>Việc xóa xóa biểu mẫu đánh giá kết quả rèn luyện sẽ làm mất đi tất cả thông tin đánh giá rèn luyện có sử dụng biểu mẫu đánh giá này!<br />' + 'Bạn có chắc muốn biểu mẫu đánh giá này không ?</p>';
+        $('#modal-announcement .modal-dialog .modal-content .modal-footer')
+            .html('<a href="/QuanLy/QuanLyRenLuyen/MauXetRenLuyen/Xoa?id=' +
+                id +
+                '"><button type="button" class="btn btn-danger">Xóa</button></a>  <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
         $('.modal-announcement-message').html(content);
         $('#modal-announcement').modal("show");
     }

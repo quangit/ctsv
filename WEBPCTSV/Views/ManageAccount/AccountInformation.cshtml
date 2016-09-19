@@ -1,9 +1,10 @@
-﻿@{
+﻿@using WEBPCTSV.Models.bean
+@{
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
     ViewBag.Title = "AccountInformation";
 }
 @{
-    WEBPCTSV.Models.bean.Account account = ViewBag.account;
+    Account account = ViewBag.account;
 }
 <h3>Thông tin tài khoản</h3>
 <div class="form-horizontal" ng-controller="accountInformation">
@@ -12,17 +13,17 @@
         <div class="col-sm-6">
             @if (account.Avatar == null)
             {
-                <img src="~/assets/images/icon/Contacts.svg" width="200" height="200" />
+                <img src="~/assets/images/icon/Contacts.svg" width="200" height="200"/>
             }
             else
             {
-                <img src="@account.Avatar" width="200" height="200" />
+                <img src="@account.Avatar" width="200" height="200"/>
             }
-
+            <br/>
             @using (Html.BeginForm("UploadImageAvatar", "File", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <div class="input-group">
-                    <input class="form-control" type="file" name="file" />
+                    <input class="form-control" type="file" name="file"/>
                     <div class="input-group-btn">
                         <button class="btn btn-primary" type="submit">Upload</button>
                     </div>
@@ -31,7 +32,26 @@
         </div>
     </div>
 
-    <hr style="width:90%" />
+    <hr style="width: 90%" />
+
+    <div class="form-group">
+        <label class="control-label col-sm-3" data-toggle="tooltip" title="Địa chỉ email dùng để nhắc nhở các thông báo qua email"> Địa chỉ Email </label>
+        <div class=" col-sm-6">
+            <div class="input-group">
+                <input ng-init="infoEmail = '@account.Email'" ng-model="infoEmail"  type="email" class="form-control" placeholder="địa chỉ email của bạn" />
+                <div class="input-group-btn">
+                    <button id="btn-saveemail" ng-click="SaveEmail()" class="btn btn-primary"> Lưu lại </button>
+                </div>
+            </div>               
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-9 col-sm-offset-3">
+            <label class="control-label " id="info-saveemail" for="btn-saveemail" style="color: #ff6a00"></label>
+        </div>
+    </div>
+
+    <hr style="width: 90%"/>
     <div class="form-group">
         <label class="control-label col-sm-3" for="oldPassword">Mật khẩu cũ</label>
         <div class="col-sm-3">
@@ -53,9 +73,8 @@
     </div>
     <div class="form-group">
         <div class="col-sm-9 col-sm-offset-3">
-            <label class="control-label " id="info-changepassword" for="btn-changePassword" style="color:#ff6a00"></label>
+            <label class="control-label " id="info-changepassword" for="btn-changePassword" style="color: #ff6a00"></label>
         </div>
-
     </div>
 
 
@@ -65,6 +84,6 @@
         </div>
     </div>
 
+    
+
 </div>
-
-

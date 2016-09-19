@@ -1,93 +1,46 @@
-﻿using WEBPCTSV.Models.bean;
-using WEBPCTSV.Models.bo;
-using WEBPCTSV.Models.Support;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace WEBPCTSV.Controllers
+﻿namespace WEBPCTSV.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Models.bean;
+    using WEBPCTSV.Models.bo;
+    using WEBPCTSV.Models.Support;
+
     public class ManagePaperController : Controller
     {
-        PaperBo paperBo = new PaperBo();
-        // GET: ManagerPaper
-        public ActionResult Index()
-        {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "themgiayto")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            return View("CreatePaper");
-        }
+        readonly PaperBo paperBo = new PaperBo();
 
         [ValidateInput(false)]
         public ActionResult AddPaper(FormCollection form)
         {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "themgiayto")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            paperBo.AddPaper(form);
-            return RedirectToAction("ListPaper");
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "themgiayto")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            this.paperBo.AddPaper(form);
+            return this.RedirectToAction("ListPaper");
         }
 
-
-        public ActionResult ListPaper()
-        {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "chinhsuagiayto")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            List<Paper> listPaper = paperBo.GetListPaper();
-            ViewBag.listPaper = listPaper;
-            return View("ListPaper");
-        }
-
-        public ActionResult DetailPaper(int id)
-        {
-            int idAccount = Convert.ToInt32(Session["idAccount"]);
-            Paper paper = paperBo.ReplacePaper(id, idAccount);
-            ViewBag.paper = paper;
-            return View("DetailPaper");
-        }
-
-        public ActionResult DetailPrintPaper(int idPaper, int idAccountRequest,int numberPaper)
-        {
-            string printPaper =paperBo.DetailPrintPaper(idPaper,idAccountRequest,numberPaper);
-            return Json(new { Result = printPaper });
-        }
-
-
-
-        public ActionResult PrintListPaper(List<int> listIdRequest)
-        {
-            if(listIdRequest!=null)
-            {
-                string content = paperBo.GetContentListPaper(listIdRequest);
-                return Json(new { Result = content });
-            }
-            return null;
-        }
-        public ActionResult PrintListPaperByClass(int idReason,int idClass)
-        {
-            string content = paperBo.GetContentListPaperByClass(idReason,idClass);
-            return Json(new { Result = content });
-        }
-
-        public ActionResult EditPaper(int id)
-        {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "chinhsuagiayto")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            Paper paper = paperBo.GetPaper(id);
-            ViewBag.paper = paper;
-            return View("EditPaper");
-        }
-
-        public ActionResult DeletePaper(int idPaper)
-        {
-            paperBo.DeletePaper(idPaper);
-            return RedirectToAction("ListPaper");
-        }
         public ActionResult AddReasonRequest(int idPaper, string reason)
         {
             ReasonPaperBo reasonPaper = new ReasonPaperBo();
             Paper paper = reasonPaper.AddReasonRequest(idPaper, reason);
 
-            return PartialView("_AddReasonRequest", paper);
+            return this.PartialView("_AddReasonRequest", paper);
         }
 
+        public ActionResult AddRequestPaper(FormCollection form)
+        {
+            RequestPaperBo requestPaperBo = new RequestPaperBo();
+            int idAccount = Convert.ToInt32(this.Session["idAccount"]);
+            requestPaperBo.AddRequestPaper(idAccount, form);
+            return this.RedirectToAction("ListSendRequestPaper", "ManageRequest", new { page = 1 });
+        }
+
+        public ActionResult DeletePaper(int idPaper)
+        {
+            this.paperBo.DeletePaper(idPaper);
+            return this.RedirectToAction("ListPaper");
+        }
 
         public void DeleteReasonRequest(int idReason)
         {
@@ -95,40 +48,86 @@ namespace WEBPCTSV.Controllers
             reasonPaper.DeleteReasonRequest(idReason);
         }
 
-        [ValidateInput(false)]
-        public ActionResult UpdateContentPaper(string content, int idPaper)
+        public ActionResult DetailPaper(int id)
         {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "chinhsuagiayto")) return RedirectToAction("NotAccess", "ManageDecentralization");
-
-            if (paperBo.UpdatePaper(content, idPaper))
-            {
-                return Content("1", "text/plain");
-            }
-            else
-            {
-                return Content("0", "text/plain");
-            }
+            int idAccount = Convert.ToInt32(this.Session["idAccount"]);
+            Paper paper = this.paperBo.ReplacePaper(id, idAccount);
+            this.ViewBag.paper = paper;
+            return this.View("DetailPaper");
         }
 
-        public ActionResult UpdatePaper(int idPaper,FormCollection form)
+        public ActionResult DetailPrintPaper(int idPaper, int idAccountRequest, int numberPaper)
         {
-            new PaperBo().UpdatePaper(idPaper, form);
-            return RedirectToAction("EditPaper", new { id = idPaper });
+            string printPaper = this.paperBo.DetailPrintPaper(idPaper, idAccountRequest, numberPaper);
+            return this.Json(new { Result = printPaper });
         }
 
-        public ActionResult AddRequestPaper(FormCollection form)
+        public ActionResult EditPaper(int id)
         {
-            RequestPaperBo requestPaperBo = new RequestPaperBo();
-            int idAccount = Convert.ToInt32(Session["idAccount"]);
-            requestPaperBo.AddRequestPaper(idAccount,form);
-            return RedirectToAction("ListSendRequestPaper","ManageRequest", new { page = 1 });
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "chinhsuagiayto")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            Paper paper = this.paperBo.GetPaper(id);
+            this.ViewBag.paper = paper;
+            return this.View("EditPaper");
         }
 
         public ActionResult GetStringInfoReasonRequest(int idReason)
         {
             ReasonPaperBo reasonPaper = new ReasonPaperBo();
-            string info = ""; //reasonPaper.GetStringInfoReason(idReason);
-            return Content(info, "text/plain");
+            string info = string.Empty; // reasonPaper.GetStringInfoReason(idReason);
+            return this.Content(info, "text/plain");
+        }
+
+        // GET: ManagerPaper
+        public ActionResult Index()
+        {
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "themgiayto")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            return this.View("CreatePaper");
+        }
+
+        public ActionResult ListPaper()
+        {
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "chinhsuagiayto")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            List<Paper> listPaper = this.paperBo.GetListPaper();
+            this.ViewBag.listPaper = listPaper;
+            return this.View("ListPaper");
+        }
+
+        public ActionResult PrintListPaper(List<int> listIdRequest)
+        {
+            if (listIdRequest != null)
+            {
+                string content = this.paperBo.GetContentListPaper(listIdRequest);
+                return this.Json(new { Result = content });
+            }
+
+            return null;
+        }
+
+        public ActionResult PrintListPaperByClass(int idReason, int idClass)
+        {
+            string content = this.paperBo.GetContentListPaperByClass(idReason, idClass);
+            return this.Json(new { Result = content });
+        }
+
+        [ValidateInput(false)]
+        public ActionResult UpdateContentPaper(string content, int idPaper)
+        {
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "chinhsuagiayto")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+
+            if (this.paperBo.UpdatePaper(content, idPaper))
+            {
+                return this.Content("1", "text/plain");
+            }
+            else
+            {
+                return this.Content("0", "text/plain");
+            }
+        }
+
+        public ActionResult UpdatePaper(int idPaper, FormCollection form)
+        {
+            new PaperBo().UpdatePaper(idPaper, form);
+            return this.RedirectToAction("EditPaper", new { id = idPaper });
         }
     }
 }

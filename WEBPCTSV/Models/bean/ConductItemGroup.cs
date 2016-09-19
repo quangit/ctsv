@@ -1,22 +1,17 @@
 namespace WEBPCTSV.Models.bean
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     [Table("ConductItemGroup")]
     public partial class ConductItemGroup
     {
         public ConductItemGroup()
         {
-            ConductItemGroupRoles = new HashSet<ConductItemGroupRole>();
-            ConductItems = new HashSet<ConductItem>();
+            this.ConductItemGroupRoles = new HashSet<ConductItemGroupRole>();
+            this.ConductItems = new HashSet<ConductItem>();
         }
-
-        [Key]
-        public int IdConductItemGroup { get; set; }
 
         [Required]
         [StringLength(128)]
@@ -25,5 +20,8 @@ namespace WEBPCTSV.Models.bean
         public virtual ICollection<ConductItemGroupRole> ConductItemGroupRoles { get; set; }
 
         public virtual ICollection<ConductItem> ConductItems { get; set; }
+
+        [Key]
+        public int IdConductItemGroup { get; set; }
     }
 }

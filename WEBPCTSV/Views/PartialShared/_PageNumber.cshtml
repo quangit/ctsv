@@ -1,9 +1,10 @@
-﻿@model WEBPCTSV.Models.Support.PageNumber
+﻿@using WEBPCTSV.Models.Support
+@model WEBPCTSV.Models.Support.PageNumber
 
 @{
-    WEBPCTSV.Models.Support.PageNumber pageNumber = Model;
+    PageNumber pageNumber = Model;
     int totalPage = pageNumber.PageNumberTotal;
-    int endPage=1;
+    int endPage = 1;
     int curentPage = pageNumber.PageNumberCurrent;
     int beginPage = 1;
     int numberPageDisplay = 20;
@@ -16,7 +17,6 @@
         }
         else if (curentPage - beginPage < numberPageDisplay / 2)
         {
-            
             endPage = beginPage + numberPageDisplay;
         }
         else
@@ -24,14 +24,17 @@
             beginPage = curentPage - numberPageDisplay / 2;
             endPage = curentPage + numberPageDisplay / 2;
         }
-
     }
+
 }
-<div style="display:table; padding:0px">
+<div style="display: table; padding: 0px">
     @if (beginPage > 1)
     {
-        <ul class="pager" style="float:left">
-            <li><a href="@(pageNumber.Link+"1")"><span class="glyphicon glyphicon-arrow-left"></span></a></li>
+        <ul class="pager" style="float: left">
+            <li>
+                <a href="@(pageNumber.Link + "1")">
+                    <span class="glyphicon glyphicon-arrow-left"></span></a>
+            </li>
         </ul>
     }
     <ul class="pagination">
@@ -39,21 +42,26 @@
         {
             if (i == curentPage)
             {
-                <li class="active"><a href="@pageNumber.Link@i">@i</a></li>
+                <li class="active">
+                    <a href="@pageNumber.Link@i">@i</a>
+                </li>
             }
             else
             {
-                <li><a href="@pageNumber.Link@i">@i</a></li>
+                <li>
+                    <a href="@pageNumber.Link@i">@i</a>
+                </li>
             }
-
         }
     </ul>
     @if (endPage < totalPage)
     {
-        <ul class="pager" style="float:right">
-            <li><a href="@pageNumber.Link@totalPage"><span class="glyphicon glyphicon-arrow-right"></span></a></li>
+        <ul class="pager" style="float: right">
+            <li>
+                <a href="@pageNumber.Link@totalPage">
+                    <span class="glyphicon glyphicon-arrow-right"></span></a>
+            </li>
         </ul>
     }
 
 </div>
-

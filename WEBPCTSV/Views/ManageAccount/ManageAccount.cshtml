@@ -1,14 +1,15 @@
-﻿@{
+﻿@using WEBPCTSV.Models.bean
+@using WEBPCTSV.Models.Support
+@{
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
     ViewBag.Title = "ManageAccount";
 }
-@using WEBPCTSV.Models.bean;
 
-<link href="~/Content/ManageAccount.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/ManageAccount.css" rel="stylesheet" type="text/css"/>
 
 <h3 class="header-paper">Quản lý tài khoản</h3>
 <form action="/ManageAccount/GetListAccount?page=1" method="post">
-    <div class="input-group" style="width:400px;float:right;margin-right:20px;padding-bottom:5px">
+    <div class="input-group" style="float: right; margin-right: 20px; padding-bottom: 5px; width: 400px;">
         <input name="search" type="text" class="form-control">
         <input name="page" type="hidden" value="1">
         <div class="input-group-btn">
@@ -16,11 +17,11 @@
         </div>
     </div>
 </form>
-<hr style="clear:both" />
+<hr style="clear: both"/>
 <div class="container-layoutmanager">
     @{
         List<Account> listAccount = ViewBag.listAccount;
-        WEBPCTSV.Models.Support.PageNumber pageNumber = ViewBag.pageNumber;
+        PageNumber pageNumber = ViewBag.pageNumber;
     }
     @Html.Partial("_ListAccount", listAccount)
     @Html.Partial("~/Views/PartialShared/_PageNumber.cshtml", pageNumber)
@@ -68,5 +69,3 @@
     </div>
     
 </div>*@
-
-

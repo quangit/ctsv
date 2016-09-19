@@ -1,5 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
+﻿@using PagedList.Mvc
 @model PagedList.IPagedList<QUANTRI>
 
 @{
@@ -21,10 +20,15 @@
             {
                 <span>Quản lý Admin</span>
             }
+
         }
     </li>
-    <li><a href="ListTuVanVien?page=1&x=2">Quản lý tư vấn viên</a></li>
-    <li><a href="ListVienChuc?page=1&x=3" style="font-weight: bold!important">Quản lý cơ cấu nhân sự</a></li>
+    <li>
+        <a href="ListTuVanVien?page=1&x=2">Quản lý tư vấn viên</a>
+    </li>
+    <li>
+        <a href="ListVienChuc?page=1&x=3" style="font-weight: bold !important">Quản lý cơ cấu nhân sự</a>
+    </li>
 </ol>
 <div class="main-content">
     <div class="funtion-block">
@@ -32,18 +36,18 @@
             <i class="fa fa-plus-square"></i> Thêm mới
         </a>
     </div>
-    <hr />
+    <hr/>
     <div id="tbnoidung">
         <table class="table table-hover">
             <thead>
-                <tr class="tieude">
-                    <th>ID CNVC</th>
-                    <th>Họ Tên</th>
-                    <th>Chức vụ</th>
-                    <th>Điện Thoại</th>
-                    <th>Email</th>
-                    <th style="text-align: center;">Tùy Chọn</th>
-                </tr>
+            <tr class="tieude">
+                <th>ID CNVC</th>
+                <th>Họ Tên</th>
+                <th>Chức vụ</th>
+                <th>Điện Thoại</th>
+                <th>Email</th>
+                <th style="text-align: center;">Tùy Chọn</th>
+            </tr>
             </thead>
             @foreach (var tin in Model)
             {
@@ -71,4 +75,3 @@
         </div>
     </div>
 </div>
-

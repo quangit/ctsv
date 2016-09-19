@@ -1,12 +1,10 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
-@using WEBPCTSV.Helpers.Common;
-
+﻿@using WEBPCTSV.Helpers.Common
+@using WEBPCTSV.Models.bean
 @{
     AccountSession accountSession = (AccountSession)Session["AccountSession"];
 }
 <div class="listbox-content">
-    <br />
+    <br/>
     <div class="listbox-content">
         @if (ViewBag.error != null)
         {
@@ -31,7 +29,9 @@
                         string[] arrValue = pair.Split(':');
                         oldValue.Add(arrValue[0], arrValue[1]);
                     }
-                    catch { }
+                    catch
+                    {
+                    }
                 }
             }
 
@@ -48,41 +48,42 @@
                     </p>
                 </div>
                 <div class="conduct-evaluate-items">
-                    @using (Html.BeginForm("", "", FormMethod.Post, new { @id = "fConductEvaluate" }))
+                    @using (Html.BeginForm(string.Empty, string.Empty, FormMethod.Post, new { @id = "fConductEvaluate" }))
                     {
-                        <input type="hidden" name="idStudent" value="@student.IdStudent" />
-                        <input type="hidden" name="idSemester" value="@semester.IdSemester" />
+                        <input type="hidden" name="idStudent" value="@student.IdStudent"/>
+                        <input type="hidden" name="idSemester" value="@semester.IdSemester"/>
                         <table class="table table-triped table-bordered table-hover">
                             <thead>
-                                <tr>
-                                    <td class="col-md-8">Nội dung</td>
-                                    <td class="col-md-2">Tối đa</td>
-                                    <td class="col-md-2">Đánh giá</td>
-                                </tr>
+                            <tr>
+                                <td class="col-md-8">Nội dung</td>
+                                <td class="col-md-2">Tối đa</td>
+                                <td class="col-md-2">Đánh giá</td>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach (ConductItem conductItem in itemsByForm)
-                                {
-                                    <tr>
-                                        <td>
-                                            @if (@conductItem.ItemIndex.Length == 2 || @conductItem.ItemIndex.Length == 4)
-                                            {
-                                                <strong>@(StringExtension.GetListNumbering(conductItem.ItemIndex)) @conductItem.ItemName</strong>
-                                            }
-                                            else
-                                            {
-                                                <p>@(StringExtension.GetListNumbering(conductItem.ItemIndex)) @(conductItem.ItemName)</p>
-                                            }
-                                        </td>
-                                        <td><span class="P@(conductItem.IdConductItems)">@conductItem.MaxPoints</span></td>
-                                        <td>
-                                            @if (@conductItem.ItemIndex.Length == 4)
-                                            {
-                                                <input name="P@(conductItem.IdConductItems)" type="text" class="form-control" @(oldValue.Count != 0 ? "value=" + oldValue[conductItem.IdConductItems.ToString()] : "") />
-                                            }
-                                        </td>
-                                    </tr>
-                                }
+                            @foreach (ConductItem conductItem in itemsByForm)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (@conductItem.ItemIndex.Length == 2 || @conductItem.ItemIndex.Length == 4)
+                                        {
+                                            <strong>@(StringExtension.GetListNumbering(conductItem.ItemIndex)) @conductItem.ItemName</strong>
+                                        }
+                                        else
+                                        {
+                                            <p>@(StringExtension.GetListNumbering(conductItem.ItemIndex)) @(conductItem.ItemName)</p>
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="P@(conductItem.IdConductItems)">@conductItem.MaxPoints</span></td>
+                                    <td>
+                                        @if (@conductItem.ItemIndex.Length == 4)
+                                        {
+                                            <input name="P@(conductItem.IdConductItems)" type="text" class="form-control" @(oldValue.Count != 0 ? "value=" + oldValue[conductItem.IdConductItems.ToString()] : string.Empty)/>
+                                        }
+                                    </td>
+                                </tr>
+                            }
                             </tbody>
                         </table>
                         <div class="conduct-evaluate-summary">
@@ -103,36 +104,45 @@
     function refreshSummaryPoint() {
         total = 0;
         max = 0;
-        $('.conduct-evaluate-items input[type=text]').each(function (e) {
-            if ($(this).val().length != 0) {
-                total = total + parseInt($(this).val());
-            }
-            max += parseInt($("." + this.name).text());
-        });
+        $('.conduct-evaluate-items input[type=text]')
+            .each(function(e) {
+                if ($(this).val().length != 0) {
+                    total = total + parseInt($(this).val());
+                }
+                max += parseInt($("." + this.name).text());
+            });
         $('.conduct-evaluate-summary').html('Tổng điểm: <strong>' + total + '/' + max + '</strong>');
     }
+
     $(document)
-            .ready(
-                    function () {
-                        refreshSummaryPoint();
-                        $('.conduct-evaluate-items input').on("blur", function () {
+        .ready(
+            function() {
+                refreshSummaryPoint();
+                $('.conduct-evaluate-items input')
+                    .on("blur",
+                        function() {
                             refreshSummaryPoint();
                         });
-                        $('#fConductEvaluate')
-                                .validate(
-                                        {
-                                            submitHandler: function (form) {
-                                                submitEvaluate();
-                                            }
-                                        });
-                        $('.conduct-evaluate-items input').each(function (e) {
-                            $(this).rules("add", {
+                $('#fConductEvaluate')
+                    .validate(
+                    {
+                        submitHandler: function(form) {
+                            submitEvaluate();
+                        }
+                    });
+                $('.conduct-evaluate-items input')
+                    .each(function(e) {
+                        $(this)
+                            .rules("add",
+                            {
                                 digits: true,
                                 max: $("." + this.name).text(),
                                 min: 0,
                                 required: true
                             });
-                            $(this).rules("add", {
+                        $(this)
+                            .rules("add",
+                            {
                                 messages: {
                                     max: "Điểm tối đa là " + $("." + this.name).text(),
                                     min: "Điểm tối thiểu là 0",
@@ -140,35 +150,39 @@
                                     required: "Chưa nhập điểm"
                                 }
                             });
-                        });
                     });
+            });
+
     function submitEvaluate() {
         $.ajax({
             type: 'POST',
             data: $('#fConductEvaluate').serialize(),
             url: '/QuanLy/QuanLyRenLuyen/ChinhSua',
-            beforeSend: function () {
+            beforeSend: function() {
                 $('.modal-announcement-message').html("");
                 loadIconLoading($('.cssload-container-over'));
                 $('.cssload-container-over').append("Đang xử lý dữ liệu!");
                 $('.cssload-container-over').fadeIn();
                 $('#modal-announcement').appendTo('body').modal("show");
             },
-            success: function (response) {
+            success: function(response) {
                 $('.cssload-container-over').hide();
                 unloadIconLoading($('.cssload-container-over'));
                 $('.modal-announcement-message').html(response.responseText);
-                $('#modal-announcement .modal-dialog .modal-content .modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
+                $('#modal-announcement .modal-dialog .modal-content .modal-footer')
+                    .html('<button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
                 $('input').attr('readonly', true);
             },
-            error: function (result) {
+            error: function(result) {
                 $('.cssload-container-over').hide();
                 unloadIconLoading($('.modal-announcement-message'));
                 $('.modal-announcement-message').html('Lỗi trong quá trình cập nhật dữ liệu!');
-                $('#modal-announcement .modal-dialog .modal-content .modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
+                $('#modal-announcement .modal-dialog .modal-content .modal-footer')
+                    .html('<button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
             }
         });
     }
+
     function showClassDetail(idClass) {
         idSemester = $('#idSemester').val();
 
@@ -179,7 +193,7 @@
                 idSemester: idSemester
             },
             url: '/QuanLy/QuanLyRenLuyen/DanhGiaLop',
-            success: function (response) {
+            success: function(response) {
                 $('#tbnoidung').html(response);
             },
         });

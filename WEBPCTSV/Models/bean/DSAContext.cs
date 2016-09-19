@@ -1,9 +1,6 @@
 namespace WEBPCTSV.Models.bean
 {
-    using System;
     using System.Data.Entity;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
 
     public partial class DSAContext : DbContext
     {
@@ -13,87 +10,167 @@ namespace WEBPCTSV.Models.bean
         }
 
         public virtual DbSet<AcademicAchievement> AcademicAchievements { get; set; }
+
         public virtual DbSet<Account> Accounts { get; set; }
+
         public virtual DbSet<ActivityClub> ActivityClubs { get; set; }
+
         public virtual DbSet<Area> Areas { get; set; }
+
         public virtual DbSet<BloodGroup> BloodGroups { get; set; }
+
         public virtual DbSet<Borrowing> Borrowings { get; set; }
+
         public virtual DbSet<Class> Classes { get; set; }
+
         public virtual DbSet<Club> Clubs { get; set; }
+
         public virtual DbSet<ConditionStudentShipSchool> ConditionStudentShipSchools { get; set; }
+
         public virtual DbSet<ConductEvent> ConductEvents { get; set; }
+
         public virtual DbSet<ConductForm> ConductForms { get; set; }
-        public virtual DbSet<ConductItemGroup> ConductItemGroups { get; set; }
+
         public virtual DbSet<ConductItemGroupRole> ConductItemGroupRoles { get; set; }
+
+        public virtual DbSet<ConductItemGroup> ConductItemGroups { get; set; }
+
         public virtual DbSet<ConductItem> ConductItems { get; set; }
+
         public virtual DbSet<ConductResult> ConductResults { get; set; }
+
         public virtual DbSet<ConductSchedule> ConductSchedules { get; set; }
+
         public virtual DbSet<Course> Courses { get; set; }
-        public virtual DbSet<Decentralization> Decentralizations { get; set; }
+
         public virtual DbSet<DecentralizationGroup> DecentralizationGroups { get; set; }
+
+        public virtual DbSet<Decentralization> Decentralizations { get; set; }
+
         public virtual DbSet<District> Districts { get; set; }
+
         public virtual DbSet<Document> Documents { get; set; }
+
         public virtual DbSet<EmailSubscription> EmailSubscriptions { get; set; }
+
         public virtual DbSet<Ethnic> Ethnics { get; set; }
+
         public virtual DbSet<Faculty> Faculties { get; set; }
+
         public virtual DbSet<FamilyComposition> FamilyCompositions { get; set; }
+
         public virtual DbSet<Function> Functions { get; set; }
+
         public virtual DbSet<LearningOutCome> LearningOutComes { get; set; }
-        public virtual DbSet<Lecturer> Lecturers { get; set; }
-        public virtual DbSet<LecturerClass> LecturerClasses { get; set; }
+
         public virtual DbSet<LecturerClassDocument> LecturerClassDocuments { get; set; }
+
+        public virtual DbSet<LecturerClass> LecturerClasses { get; set; }
+
         public virtual DbSet<LecturerDocument> LecturerDocuments { get; set; }
+
         public virtual DbSet<LecturerDocumentSemester> LecturerDocumentSemesters { get; set; }
+
+        public virtual DbSet<Lecturer> Lecturers { get; set; }
+
         public virtual DbSet<MadeOfStudy> MadeOfStudies { get; set; }
+
         public virtual DbSet<MemberClub> MemberClubs { get; set; }
+
         public virtual DbSet<MemberPossition> MemberPossitions { get; set; }
+
         public virtual DbSet<Message> Messages { get; set; }
+
         public virtual DbSet<News> News { get; set; }
+
         public virtual DbSet<NewsEvent> NewsEvents { get; set; }
+
         public virtual DbSet<NewsJob> NewsJobs { get; set; }
+
         public virtual DbSet<NewsScholarship> NewsScholarships { get; set; }
+
         public virtual DbSet<OrganizationLevel> OrganizationLevels { get; set; }
+
         public virtual DbSet<Paper> Papers { get; set; }
+
         public virtual DbSet<PreferentialPolicyBeneficiary> PreferentialPolicyBeneficiaries { get; set; }
+
         public virtual DbSet<Province> Provinces { get; set; }
+
         public virtual DbSet<Question> Questions { get; set; }
+
         public virtual DbSet<RankingAcademic> RankingAcademics { get; set; }
+
         public virtual DbSet<ReasonRequest> ReasonRequests { get; set; }
+
         public virtual DbSet<Regency> Regencies { get; set; }
+
         public virtual DbSet<RegencyStudent> RegencyStudents { get; set; }
+
         public virtual DbSet<Relative> Relatives { get; set; }
+
         public virtual DbSet<Religion> Religions { get; set; }
+
         public virtual DbSet<RequestPaper> RequestPapers { get; set; }
+
         public virtual DbSet<RequestStatus> RequestStatus { get; set; }
+
         public virtual DbSet<Resource> Resources { get; set; }
+
         public virtual DbSet<RewardDiscipLine> RewardDiscipLines { get; set; }
+
         public virtual DbSet<SecondLanguage> SecondLanguages { get; set; }
+
         public virtual DbSet<SecondLanguageStudent> SecondLanguageStudents { get; set; }
+
         public virtual DbSet<Semester> Semesters { get; set; }
+
         public virtual DbSet<SemesterYear> SemesterYears { get; set; }
+
         public virtual DbSet<SocialActivity> SocialActivities { get; set; }
-        public virtual DbSet<SocialPolicyBeneficiariesStudent> SocialPolicyBeneficiariesStudents { get; set; }
+
         public virtual DbSet<SocialPolicyBeneficiary> SocialPolicyBeneficiaries { get; set; }
+
+        public virtual DbSet<SocialPolicyBeneficiariesStudent> SocialPolicyBeneficiariesStudents { get; set; }
+
         public virtual DbSet<Specialize> Specializes { get; set; }
-        public virtual DbSet<Staff> Staffs { get; set; }
+
         public virtual DbSet<StaffDepartmentOfStudentAffair> StaffDepartmentOfStudentAffairs { get; set; }
+
+        public virtual DbSet<Staff> Staffs { get; set; }
+
         public virtual DbSet<State> States { get; set; }
+
         public virtual DbSet<Student> Students { get; set; }
-        public virtual DbSet<StudentShipCLC> StudentShipCLCs { get; set; }
-        public virtual DbSet<StudentShipCompany> StudentShipCompanies { get; set; }
-        public virtual DbSet<StudentShipCompanyRegister> StudentShipCompanyRegisters { get; set; }
-        public virtual DbSet<StudentShipCompanyStudent> StudentShipCompanyStudents { get; set; }
-        public virtual DbSet<StudentShipSchool> StudentShipSchools { get; set; }
-        public virtual DbSet<StudentShipSchoolFaculty> StudentShipSchoolFaculties { get; set; }
-        public virtual DbSet<StudentShipSchoolStudent> StudentShipSchoolStudents { get; set; }
 
         public virtual DbSet<StudentshipApplication> StudentshipApplications { get; set; }
+
+        public virtual DbSet<StudentShipCLC> StudentShipCLCs { get; set; }
+
+        public virtual DbSet<StudentShipCompany> StudentShipCompanies { get; set; }
+
+        public virtual DbSet<StudentShipCompanyRegister> StudentShipCompanyRegisters { get; set; }
+
+        public virtual DbSet<StudentShipCompanyStudent> StudentShipCompanyStudents { get; set; }
+
+        public virtual DbSet<StudentShipSchoolFaculty> StudentShipSchoolFaculties { get; set; }
+
+        public virtual DbSet<StudentShipSchool> StudentShipSchools { get; set; }
+
+        public virtual DbSet<StudentShipSchoolStudent> StudentShipSchoolStudents { get; set; }
+
         public virtual DbSet<StudentSocialActivity> StudentSocialActivities { get; set; }
+
         public virtual DbSet<StudyingAboad> StudyingAboads { get; set; }
+
         public virtual DbSet<TypeInput> TypeInputs { get; set; }
+
         public virtual DbSet<TypePaper> TypePapers { get; set; }
+
         public virtual DbSet<TypePaperStudent> TypePaperStudents { get; set; }
+
         public virtual DbSet<Ward> Wards { get; set; }
+
         public virtual DbSet<Year> Years { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -141,10 +218,7 @@ namespace WEBPCTSV.Models.bean
                 .WithRequired(e => e.Club)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Club>()
-                .HasMany(e => e.MemberClubs)
-                .WithRequired(e => e.Club)
-                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<Club>().HasMany(e => e.MemberClubs).WithRequired(e => e.Club).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ConductEvent>()
                 .HasMany(e => e.ConductResults)
@@ -181,10 +255,7 @@ namespace WEBPCTSV.Models.bean
                 .WithRequired(e => e.ConductSchedule)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Course>()
-                .HasMany(e => e.Classes)
-                .WithRequired(e => e.Course)
-                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<Course>().HasMany(e => e.Classes).WithRequired(e => e.Course).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<DecentralizationGroup>()
                 .HasMany(e => e.Accounts)
@@ -256,15 +327,9 @@ namespace WEBPCTSV.Models.bean
                 .WithRequired(e => e.MemberPossition)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<News>()
-                .HasMany(e => e.NewsEvents)
-                .WithRequired(e => e.News)
-                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<News>().HasMany(e => e.NewsEvents).WithRequired(e => e.News).WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<News>()
-                .HasMany(e => e.NewsJobs)
-                .WithRequired(e => e.News)
-                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<News>().HasMany(e => e.NewsJobs).WithRequired(e => e.News).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<News>()
                 .HasMany(e => e.NewsScholarships)
@@ -301,13 +366,9 @@ namespace WEBPCTSV.Models.bean
                 .WithRequired(e => e.Regency)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Relative>()
-                .Property(e => e.LandlineNumberRelatives)
-                .HasPrecision(12, 0);
+            modelBuilder.Entity<Relative>().Property(e => e.LandlineNumberRelatives).HasPrecision(12, 0);
 
-            modelBuilder.Entity<Relative>()
-                .Property(e => e.CellphoneNumberRelatives)
-                .HasPrecision(12, 0);
+            modelBuilder.Entity<Relative>().Property(e => e.CellphoneNumberRelatives).HasPrecision(12, 0);
 
             modelBuilder.Entity<RequestStatus>()
                 .HasMany(e => e.RequestPapers)
@@ -393,19 +454,11 @@ namespace WEBPCTSV.Models.bean
                 .Property(e => e.IdentityCardNumber)
                 .HasPrecision(12, 0);
 
-            modelBuilder.Entity<StaffDepartmentOfStudentAffair>()
-                .Property(e => e.PhoneNumber)
-                .HasPrecision(12, 0);
+            modelBuilder.Entity<StaffDepartmentOfStudentAffair>().Property(e => e.PhoneNumber).HasPrecision(12, 0);
 
-            modelBuilder.Entity<State>()
-                .HasMany(e => e.Ethnics)
-                .WithRequired(e => e.State)
-                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<State>().HasMany(e => e.Ethnics).WithRequired(e => e.State).WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<State>()
-                .HasMany(e => e.Provinces)
-                .WithRequired(e => e.State)
-                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<State>().HasMany(e => e.Provinces).WithRequired(e => e.State).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Student>()
                 .HasMany(e => e.AcademicAchievements)
@@ -487,9 +540,7 @@ namespace WEBPCTSV.Models.bean
                 .WithRequired(e => e.Student)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<StudentShipCompany>()
-                .Property(e => e.Money)
-                .HasPrecision(15, 0);
+            modelBuilder.Entity<StudentShipCompany>().Property(e => e.Money).HasPrecision(15, 0);
 
             modelBuilder.Entity<StudentShipCompany>()
                 .HasMany(e => e.StudentShipCompanyRegisters)
@@ -521,10 +572,7 @@ namespace WEBPCTSV.Models.bean
                 .WithRequired(e => e.Typepaper)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Ward>()
-                .HasMany(e => e.Relatives)
-                .WithRequired(e => e.Ward)
-                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<Ward>().HasMany(e => e.Relatives).WithRequired(e => e.Ward).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Ward>()
                 .HasMany(e => e.StudentsHaveSameBirthPlace)
@@ -546,10 +594,7 @@ namespace WEBPCTSV.Models.bean
                 .WithOptional(e => e.WardPermanentResidence)
                 .HasForeignKey(e => e.IdWardPermanentResidence);
 
-            modelBuilder.Entity<Year>()
-                .HasMany(e => e.Semesters)
-                .WithRequired(e => e.Year)
-                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<Year>().HasMany(e => e.Semesters).WithRequired(e => e.Year).WillCascadeOnDelete(false);
         }
     }
 }

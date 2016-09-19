@@ -1,5 +1,5 @@
-﻿@using WEBPCTSV.Models.bean;
-@using WEBPCTSV.Models.Support;
+﻿@using WEBPCTSV.Models.bean
+@using WEBPCTSV.Models.Support
 @{
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
     ViewBag.Title = "ListAllRequest";
@@ -12,12 +12,12 @@
     PageNumber pageNumber = ViewBag.pageNumber;
 }
 <div class="container-layoutmanager" ng-controller="ListAllRequestPaper">
-    <div style="height:50px">
-        <div class="input-group" style="float:left;width:400px">
+    <div style="height: 50px">
+        <div class="input-group" style="float: left; width: 400px">
             <span class="input-group-btn">
                 <button class="btn btn-success" type="button">Chọn trạng thái yêu cầu: </button>
             </span>
-            <select id="selectRequestStatus" ng-init="requestStatus = '@ViewBag.idRequestStatus'" ng-model="requestStatus" ng-change="ChangeSelectRequestStatus()" class="form-control" style="width:150px">
+            <select id="selectRequestStatus" ng-init="requestStatus = '@ViewBag.idRequestStatus'" ng-model="requestStatus" ng-change="ChangeSelectRequestStatus()" class="form-control" style="width: 150px">
                 @foreach (RequestStatus requestStatus in ViewBag.listStatus)
                 {
                     <option value="@requestStatus.IdRequestStatus">@requestStatus.StatusName</option>
@@ -26,10 +26,12 @@
             </select>
         </div>
 
-        <a href="/ManageRequest/ChoosePaper"><label class="btn btn-success"><span class="glyphicon glyphicon-print" data-toggle="tooltip" title="In đơn !" onclick="PrintAllHtml('@ViewBag.idClass')"></span> In  giấy tờ theo lớp</label></a>
+        <a href="/ManageRequest/ChoosePaper">
+            <label class="btn btn-success"><span class="glyphicon glyphicon-print" data-toggle="tooltip" title="In đơn !" onclick="PrintAllHtml('@ViewBag.idClass')"></span> In giấy tờ theo lớp</label>
+        </a>
 
-        <form action="/ManageRequest/ListAllRequestPaper?value=@ViewBag.idRequestStatus&page=1" method="post" class="input-group" style="width:400px;float:right">
-            <input id="inputSearchRequestPaper" name="inputSearchRequestPaper" type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm!" />
+        <form action="/ManageRequest/ListAllRequestPaper?value=@ViewBag.idRequestStatus&page=1" method="post" class="input-group" style="float: right; width: 400px;">
+            <input id="inputSearchRequestPaper" name="inputSearchRequestPaper" type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm!"/>
             <span class="input-group-btn">
                 <button id="btnSearchRequestPaper" class=" btn btn-success"><span class="glyphicon glyphicon-search"></span> Tìm kiếm</button>
             </span>
@@ -37,10 +39,8 @@
     </div>
 
 
-    <hr />
+    <hr/>
     @Html.Partial("_ListAllRequest", listRequest)
-    <br />
+    <br/>
     @Html.Partial("~/Views/PartialShared/_PageNumber.cshtml", pageNumber)
 </div>
-
-

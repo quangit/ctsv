@@ -1,4 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
+﻿@using WEBPCTSV.Models.bean
 @{
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
     ViewBag.Title = "Class";
@@ -15,14 +15,14 @@
             <div class="col-lg-4">
                 <select id="selectSemester" name="selectSemester" ng-model="idSemester" ng-change="ChoiseSemester()" class="form-control">
                     <option value="">Chọn học kỳ </option>
-                    @foreach (WEBPCTSV.Models.bean.Semester semester in ViewBag.listSemester)
+                    @foreach (Semester semester in ViewBag.listSemester)
                     {
                         <option value="@semester.IdSemester">Học kỳ @semester.SemesterYear.SemesterYearName năm học @semester.Year.YearName</option>
                     }
                 </select>
             </div>
         </div>
-        <div class="form-group" style="display:none">
+        <div class="form-group" style="display: none">
             <label class="control-label col-lg-3" for="email">Tổng số tiền học bổng:</label>
             <div class="col-lg-4">
                 <div class="input-group">
@@ -39,4 +39,3 @@
         </div>
     </form>
 </div>
-

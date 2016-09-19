@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace WEBPCTSV.Helpers.Common
+﻿namespace WEBPCTSV.Helpers.Common
 {
     public static class DataExtension
     {
@@ -34,6 +29,7 @@ namespace WEBPCTSV.Helpers.Common
                 return "Kém";
             }
         }
+
         public static string GetGradeEvaluatedEN(int point)
         {
             if (point >= 90)

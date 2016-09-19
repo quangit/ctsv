@@ -3,7 +3,7 @@
  * (c) 2010-2016 Google, Inc. http://angularjs.org
  * License: MIT
  */
-(function(window, angular, undefined) {'use strict';
+(function(window, angular, undefined) {"use strict";
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *     Any commits to this file should be reviewed with security in mind.  *
@@ -16,7 +16,7 @@
  *     Or gives undesired access to variables likes document or window?    *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-var $sanitizeMinErr = angular.$$minErr('$sanitize');
+var $sanitizeMinErr = angular.$$minErr("$sanitize");
 
 /**
  * @ngdoc module
@@ -147,7 +147,7 @@ var $sanitizeMinErr = angular.$$minErr('$sanitize');
 function $SanitizeProvider() {
   var svgEnabled = false;
 
-  this.$get = ['$$sanitizeUri', function($$sanitizeUri) {
+  this.$get = ["$$sanitizeUri", function($$sanitizeUri) {
     if (svgEnabled) {
       angular.extend(validElements, svgElements);
     }
@@ -156,7 +156,7 @@ function $SanitizeProvider() {
       htmlParser(html, htmlSanitizeWriter(buf, function(uri, isImage) {
         return !/^unsafe:/.test($$sanitizeUri(uri, isImage));
       }));
-      return buf.join('');
+      return buf.join("");
     };
   }];
 
@@ -205,7 +205,7 @@ function sanitizeText(chars) {
   var buf = [];
   var writer = htmlSanitizeWriter(buf, angular.noop);
   writer.chars(chars);
-  return buf.join('');
+  return buf.join("");
 }
 
 
@@ -261,29 +261,29 @@ var validElements = angular.extend({},
 //Attributes that have href and hence need to be sanitized
 var uriAttrs = toMap("background,cite,href,longdesc,src,xlink:href");
 
-var htmlAttrs = toMap('abbr,align,alt,axis,bgcolor,border,cellpadding,cellspacing,class,clear,' +
-    'color,cols,colspan,compact,coords,dir,face,headers,height,hreflang,hspace,' +
-    'ismap,lang,language,nohref,nowrap,rel,rev,rows,rowspan,rules,' +
-    'scope,scrolling,shape,size,span,start,summary,tabindex,target,title,type,' +
-    'valign,value,vspace,width');
+var htmlAttrs = toMap("abbr,align,alt,axis,bgcolor,border,cellpadding,cellspacing,class,clear," +
+    "color,cols,colspan,compact,coords,dir,face,headers,height,hreflang,hspace," +
+    "ismap,lang,language,nohref,nowrap,rel,rev,rows,rowspan,rules," +
+    "scope,scrolling,shape,size,span,start,summary,tabindex,target,title,type," +
+    "valign,value,vspace,width");
 
 // SVG attributes (without "id" and "name" attributes)
 // https://wiki.whatwg.org/wiki/Sanitization_rules#svg_Attributes
-var svgAttrs = toMap('accent-height,accumulate,additive,alphabetic,arabic-form,ascent,' +
-    'baseProfile,bbox,begin,by,calcMode,cap-height,class,color,color-rendering,content,' +
-    'cx,cy,d,dx,dy,descent,display,dur,end,fill,fill-rule,font-family,font-size,font-stretch,' +
-    'font-style,font-variant,font-weight,from,fx,fy,g1,g2,glyph-name,gradientUnits,hanging,' +
-    'height,horiz-adv-x,horiz-origin-x,ideographic,k,keyPoints,keySplines,keyTimes,lang,' +
-    'marker-end,marker-mid,marker-start,markerHeight,markerUnits,markerWidth,mathematical,' +
-    'max,min,offset,opacity,orient,origin,overline-position,overline-thickness,panose-1,' +
-    'path,pathLength,points,preserveAspectRatio,r,refX,refY,repeatCount,repeatDur,' +
-    'requiredExtensions,requiredFeatures,restart,rotate,rx,ry,slope,stemh,stemv,stop-color,' +
-    'stop-opacity,strikethrough-position,strikethrough-thickness,stroke,stroke-dasharray,' +
-    'stroke-dashoffset,stroke-linecap,stroke-linejoin,stroke-miterlimit,stroke-opacity,' +
-    'stroke-width,systemLanguage,target,text-anchor,to,transform,type,u1,u2,underline-position,' +
-    'underline-thickness,unicode,unicode-range,units-per-em,values,version,viewBox,visibility,' +
-    'width,widths,x,x-height,x1,x2,xlink:actuate,xlink:arcrole,xlink:role,xlink:show,xlink:title,' +
-    'xlink:type,xml:base,xml:lang,xml:space,xmlns,xmlns:xlink,y,y1,y2,zoomAndPan', true);
+var svgAttrs = toMap("accent-height,accumulate,additive,alphabetic,arabic-form,ascent," +
+    "baseProfile,bbox,begin,by,calcMode,cap-height,class,color,color-rendering,content," +
+    "cx,cy,d,dx,dy,descent,display,dur,end,fill,fill-rule,font-family,font-size,font-stretch," +
+    "font-style,font-variant,font-weight,from,fx,fy,g1,g2,glyph-name,gradientUnits,hanging," +
+    "height,horiz-adv-x,horiz-origin-x,ideographic,k,keyPoints,keySplines,keyTimes,lang," +
+    "marker-end,marker-mid,marker-start,markerHeight,markerUnits,markerWidth,mathematical," +
+    "max,min,offset,opacity,orient,origin,overline-position,overline-thickness,panose-1," +
+    "path,pathLength,points,preserveAspectRatio,r,refX,refY,repeatCount,repeatDur," +
+    "requiredExtensions,requiredFeatures,restart,rotate,rx,ry,slope,stemh,stemv,stop-color," +
+    "stop-opacity,strikethrough-position,strikethrough-thickness,stroke,stroke-dasharray," +
+    "stroke-dashoffset,stroke-linecap,stroke-linejoin,stroke-miterlimit,stroke-opacity," +
+    "stroke-width,systemLanguage,target,text-anchor,to,transform,type,u1,u2,underline-position," +
+    "underline-thickness,unicode,unicode-range,units-per-em,values,version,viewBox,visibility," +
+    "width,widths,x,x-height,x1,x2,xlink:actuate,xlink:arcrole,xlink:role,xlink:show,xlink:title," +
+    "xlink:type,xml:base,xml:lang,xml:space,xmlns,xmlns:xlink,y,y1,y2,zoomAndPan", true);
 
 var validAttrs = angular.extend({},
                                 uriAttrs,
@@ -291,7 +291,7 @@ var validAttrs = angular.extend({},
                                 htmlAttrs);
 
 function toMap(str, lowercaseKeys) {
-  var obj = {}, items = str.split(','), i;
+  var obj = {}, items = str.split(","), i;
   for (i = 0; i < items.length; i++) {
     obj[lowercaseKeys ? angular.lowercase(items[i]) : items[i]] = true;
   }
@@ -304,17 +304,17 @@ var inertBodyElement;
   if (window.document && window.document.implementation) {
     doc = window.document.implementation.createHTMLDocument("inert");
   } else {
-    throw $sanitizeMinErr('noinert', "Can't create an inert html document");
+    throw $sanitizeMinErr("noinert", "Can't create an inert html document");
   }
   var docElement = doc.documentElement || doc.getDocumentElement();
-  var bodyElements = docElement.getElementsByTagName('body');
+  var bodyElements = docElement.getElementsByTagName("body");
 
   // usually there should be only one body element in the document, but IE doesn't have any, so we need to create one
   if (bodyElements.length === 1) {
     inertBodyElement = bodyElements[0];
   } else {
-    var html = doc.createElement('html');
-    inertBodyElement = doc.createElement('body');
+    var html = doc.createElement("html");
+    inertBodyElement = doc.createElement("body");
     html.appendChild(inertBodyElement);
     doc.appendChild(html);
   }
@@ -334,9 +334,9 @@ var inertBodyElement;
  */
 function htmlParser(html, handler) {
   if (html === null || html === undefined) {
-    html = '';
-  } else if (typeof html !== 'string') {
-    html = '' + html;
+    html = "";
+  } else if (typeof html !== "string") {
+    html = "" + html;
   }
   inertBodyElement.innerHTML = html;
 
@@ -344,7 +344,7 @@ function htmlParser(html, handler) {
   var mXSSAttempts = 5;
   do {
     if (mXSSAttempts === 0) {
-      throw $sanitizeMinErr('uinput', "Failed to sanitize html because the input is unstable");
+      throw $sanitizeMinErr("uinput", "Failed to sanitize html because the input is unstable");
     }
     mXSSAttempts--;
 
@@ -411,17 +411,17 @@ function attrToMap(attrs) {
  */
 function encodeEntities(value) {
   return value.
-    replace(/&/g, '&amp;').
+    replace(/&/g, "&amp;").
     replace(SURROGATE_PAIR_REGEXP, function(value) {
       var hi = value.charCodeAt(0);
       var low = value.charCodeAt(1);
-      return '&#' + (((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000) + ';';
+      return "&#" + (((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000) + ";";
     }).
     replace(NON_ALPHANUMERIC_REGEXP, function(value) {
-      return '&#' + value.charCodeAt(0) + ';';
+      return "&#" + value.charCodeAt(0) + ";";
     }).
-    replace(/</g, '&lt;').
-    replace(/>/g, '&gt;');
+    replace(/</g, "&lt;").
+    replace(/>/g, "&gt;");
 }
 
 /**
@@ -444,29 +444,29 @@ function htmlSanitizeWriter(buf, uriValidator) {
         ignoreCurrentElement = tag;
       }
       if (!ignoreCurrentElement && validElements[tag] === true) {
-        out('<');
+        out("<");
         out(tag);
         angular.forEach(attrs, function(value, key) {
           var lkey=angular.lowercase(key);
-          var isImage = (tag === 'img' && lkey === 'src') || (lkey === 'background');
+          var isImage = (tag === "img" && lkey === "src") || (lkey === "background");
           if (validAttrs[lkey] === true &&
             (uriAttrs[lkey] !== true || uriValidator(value, isImage))) {
-            out(' ');
+            out(" ");
             out(key);
             out('="');
             out(encodeEntities(value));
             out('"');
           }
         });
-        out('>');
+        out(">");
       }
     },
     end: function(tag) {
       tag = angular.lowercase(tag);
       if (!ignoreCurrentElement && validElements[tag] === true && voidElements[tag] !== true) {
-        out('</');
+        out("</");
         out(tag);
-        out('>');
+        out(">");
       }
       if (tag == ignoreCurrentElement) {
         ignoreCurrentElement = false;
@@ -494,7 +494,7 @@ function stripCustomNsAttrs(node) {
     for (var i = 0, l = attrs.length; i < l; i++) {
       var attrNode = attrs[i];
       var attrName = attrNode.name.toLowerCase();
-      if (attrName === 'xmlns:ns1' || attrName.indexOf('ns1:') === 0) {
+      if (attrName === "xmlns:ns1" || attrName.indexOf("ns1:") === 0) {
         node.removeAttributeNode(attrNode);
         i--;
         l--;
@@ -516,7 +516,7 @@ function stripCustomNsAttrs(node) {
 
 
 // define ngSanitize module and register $sanitize service
-angular.module('ngSanitize', []).provider('$sanitize', $SanitizeProvider);
+angular.module("ngSanitize", []).provider("$sanitize", $SanitizeProvider);
 
 /* global sanitizeText: false */
 
@@ -647,17 +647,17 @@ angular.module('ngSanitize', []).provider('$sanitize', $SanitizeProvider);
      </file>
    </example>
  */
-angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
+angular.module("ngSanitize").filter("linky", ["$sanitize", function($sanitize) {
   var LINKY_URL_REGEXP =
         /((ftp|https?):\/\/|(www\.)|(mailto:)?[A-Za-z0-9._%+-]+@)\S*[^\s.;,(){}<>"\u201d\u2019]/i,
       MAILTO_REGEXP = /^mailto:/i;
 
-  var linkyMinErr = angular.$$minErr('linky');
+  var linkyMinErr = angular.$$minErr("linky");
   var isString = angular.isString;
 
   return function(text, target, attributes) {
-    if (text == null || text === '') return text;
-    if (!isString(text)) throw linkyMinErr('notstring', 'Expected string but received: {0}', text);
+    if (text == null || text === "") return text;
+    if (!isString(text)) throw linkyMinErr("notstring", "Expected string but received: {0}", text);
 
     var match;
     var raw = text;
@@ -669,15 +669,15 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
       url = match[0];
       // if we did not match ftp/http/www/mailto then assume mailto
       if (!match[2] && !match[4]) {
-        url = (match[3] ? 'http://' : 'mailto:') + url;
+        url = (match[3] ? "http://" : "mailto:") + url;
       }
       i = match.index;
       addText(raw.substr(0, i));
-      addLink(url, match[0].replace(MAILTO_REGEXP, ''));
+      addLink(url, match[0].replace(MAILTO_REGEXP, ""));
       raw = raw.substring(i + match[0].length);
     }
     addText(raw);
-    return $sanitize(html.join(''));
+    return $sanitize(html.join(""));
 
     function addText(text) {
       if (!text) {
@@ -688,7 +688,7 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
 
     function addLink(url, text) {
       var key;
-      html.push('<a ');
+      html.push("<a ");
       if (angular.isFunction(attributes)) {
         attributes = attributes(url);
       }
@@ -699,16 +699,16 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
       } else {
         attributes = {};
       }
-      if (angular.isDefined(target) && !('target' in attributes)) {
+      if (angular.isDefined(target) && !("target" in attributes)) {
         html.push('target="',
                   target,
                   '" ');
       }
       html.push('href="',
-                url.replace(/"/g, '&quot;'),
+                url.replace(/"/g, "&quot;"),
                 '">');
       addText(text);
-      html.push('</a>');
+      html.push("</a>");
     }
   };
 }]);

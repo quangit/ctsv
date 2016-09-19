@@ -1,55 +1,53 @@
-﻿using WEBPCTSV.Models.bo;
-using WEBPCTSV.Models.Support;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace WEBPCTSV.Controllers
+﻿namespace WEBPCTSV.Controllers
 {
+    using System;
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Models.bo;
+    using WEBPCTSV.Models.Support;
+
     public class ManageStaffController : Controller
     {
-        // GET: ManageStaff
-        public ActionResult ListStaff()
-        {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlynhanvien")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            ViewBag.listStaff = new StaffBO().Get();
-            return View("ListStaff");
-        }
-
         public ActionResult AddStaff(FormCollection form)
         {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlynhanvien")) return RedirectToAction("NotAccess", "ManageDecentralization");
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlynhanvien")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
             new StaffBO().Insert(form);
-            return RedirectToAction("ListStaff");
-        }
-
-        public ActionResult UpdateStaff(FormCollection form)
-        {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlynhanvien")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            new StaffBO().Update(form);
-            return RedirectToAction("ListStaff");
-        }
-        public ActionResult UpdateStaffByPerson(FormCollection form)
-        {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlynhanvien")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            new StaffBO().Update(form);
-            return RedirectToAction("InfoStaff");
+            return this.RedirectToAction("ListStaff");
         }
 
         public ActionResult DeleteStaff(int idStaff)
         {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlynhanvien")) return RedirectToAction("NotAccess", "ManageDecentralization");
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlynhanvien")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
             new StaffBO().Delete(idStaff);
-            return RedirectToAction("ListStaff");
+            return this.RedirectToAction("ListStaff");
         }
 
         public ActionResult InfoStaff()
         {
-            ViewBag.staff = new StaffBO().GetByIdAccount(Convert.ToInt32(Session["idAccount"]));
-            return View("InfoStaff");
+            this.ViewBag.staff = new StaffBO().GetByIdAccount(Convert.ToInt32(this.Session["idAccount"]));
+            return this.View("InfoStaff");
         }
 
+        // GET: ManageStaff
+        public ActionResult ListStaff()
+        {
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlynhanvien")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            this.ViewBag.listStaff = new StaffBO().Get();
+            return this.View("ListStaff");
+        }
+
+        public ActionResult UpdateStaff(FormCollection form)
+        {
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlynhanvien")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            new StaffBO().Update(form);
+            return this.RedirectToAction("ListStaff");
+        }
+
+        public ActionResult UpdateStaffByPerson(FormCollection form)
+        {
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlynhanvien")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            new StaffBO().Update(form);
+            return this.RedirectToAction("InfoStaff");
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
+﻿@using WEBPCTSV.Models.bean
 @{
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
     ViewBag.Title = "AddStudent";
@@ -9,7 +9,7 @@
 <div class="container-layoutmanager">
     <form class="form-horizontal" action="/ManageStudent/AddNewStudent" method="post">
         <strong>Thông tin cơ bản:</strong>
-        <br />
+        <br/>
         <div class="form-group">
             <label class="control-label col-sm-3" for="lastname">Họ tên sinh viên:</label>
             <div class="col-sm-3">
@@ -66,14 +66,14 @@
         </div>
 
 
-        <hr />
+        <hr/>
 
         <strong>Thông tin bổ sung:</strong>
         <div class="form-group">
             <label class="control-label col-sm-3" for="studentNumber">Số điện thoại:</label>
             <div class="col-sm-6">
                 <input type="text" class="form-control" name="mobilePhoneNumber" id="mobilePhoneNumber" placeholder=" Di dộng ">
-                <br />
+                <br/>
                 <input type="text" class="form-control" name="landlinePhoneNumber" id="landlinePhoneNumber" placeholder=" Cố định ">
             </div>
         </div>
@@ -105,7 +105,7 @@
             </div>
             <label class="control-label col-sm-2" for="identityCardDate">Ngày cấp:</label>
             <div class="col-sm-2">
-                <input type="date" class="form-control" name="identityCardDate" id="identityCardDate"  placeholder=" dd/MM/yyyy ">
+                <input type="date" class="form-control" name="identityCardDate" id="identityCardDate" placeholder=" dd/MM/yyyy ">
             </div>
         </div>
 
@@ -122,13 +122,13 @@
             </div>
         </div>
 
-        <br />
+        <br/>
         <div class="form-group">
             <label class="control-label col-sm-3">
-                <input type="submit" value="Thêm sinh viên" class="btn btn-success control-label" />
+                <input type="submit" value="Thêm sinh viên" class="btn btn-success control-label"/>
             </label>
-            <div class="col-sm-6" style="padding-top:7px">
-                <input type="reset" value="reset" class="btn btn-warning" />
+            <div class="col-sm-6" style="padding-top: 7px">
+                <input type="reset" value="reset" class="btn btn-warning"/>
             </div>
         </div>
 
@@ -142,7 +142,7 @@
             url: "/ManageStudent/GetListClass",
             type: "post",
             data: { 'idFaculty': idFaculty, 'idCourse': idCourst },
-            success: function (result) {
+            success: function(result) {
                 $("#divClass").html(result);
             }
         });
@@ -155,7 +155,7 @@
             url: "/ManageStudent/GetListClass",
             type: "post",
             data: { 'idFaculty': idFaculty, 'idCourse': idCourst },
-            success: function (result) {
+            success: function(result) {
                 $("#divClass").html(result);
             }
         });

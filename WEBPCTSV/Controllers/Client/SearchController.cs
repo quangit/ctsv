@@ -1,33 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using WEBPCTSV.Models.bean;
-using WEBPCTSV.Models.bo;
-
-namespace WEBPCTSV.Controllers.Client
+﻿namespace WEBPCTSV.Controllers.Client
 {
+    using System.Linq;
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Models.bean;
+    using WEBPCTSV.Models.bo;
+
     public class SearchController : Controller
     {
-
-        private DSAContext dsaContext;
+        private readonly DSAContext dsaContext;
 
         public SearchController()
         {
-            dsaContext = new DSAContext();
-        }
-        public ActionResult SearchResult(string txtFind = "")
-        {
-            ViewBag.searchString = txtFind;
-            ViewBag.resultAnnoucements = (new NewsBO(dsaContext)).FindNews(txtFind, "ThongBao").Take(15).ToList();
-            ViewBag.resultNewsScholarships = (new NewsScholarshipBO(dsaContext)).FindNewsScholarship(txtFind).Take(15).ToList();
-            ViewBag.resultNewsEvents = (new NewsEventBO(dsaContext)).FindNewsEvent(txtFind).Take(15).ToList();
-            ViewBag.resultNewsJobs = (new NewsJobBO(dsaContext)).FindNewsJob(txtFind).Take(15).ToList();
-            ViewBag.documents = (new DocumentBO(dsaContext)).FindDocument(txtFind).Take(15).ToList();
-            ViewBag.questions = (new QuestionBO(dsaContext)).FindQuestion(txtFind).Take(15).ToList();
-            return View();
+            this.dsaContext = new DSAContext();
         }
 
+        public ActionResult SearchResult(string txtFind = "")
+        {
+            this.ViewBag.searchString = txtFind;
+            this.ViewBag.resultAnnoucements =
+                (new NewsBO(this.dsaContext)).FindNews(txtFind, "ThongBao").Take(15).ToList();
+            this.ViewBag.resultNewsScholarships =
+                (new NewsScholarshipBO(this.dsaContext)).FindNewsScholarship(txtFind).Take(15).ToList();
+            this.ViewBag.resultNewsEvents = (new NewsEventBO(this.dsaContext)).FindNewsEvent(txtFind).Take(15).ToList();
+            this.ViewBag.resultNewsJobs = (new NewsJobBO(this.dsaContext)).FindNewsJob(txtFind).Take(15).ToList();
+            this.ViewBag.documents = (new DocumentBO(this.dsaContext)).FindDocument(txtFind).Take(15).ToList();
+            this.ViewBag.questions = (new QuestionBO(this.dsaContext)).FindQuestion(txtFind).Take(15).ToList();
+            return this.View();
+        }
     }
 }

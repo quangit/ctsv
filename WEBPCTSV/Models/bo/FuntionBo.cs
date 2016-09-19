@@ -1,27 +1,26 @@
-﻿using WEBPCTSV.Models.bean;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace WEBPCTSV.Models.bo
+﻿namespace WEBPCTSV.Models.bo
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using WEBPCTSV.Models.bean;
+
     public class FuntionBo
     {
-        DSAContext context = new DSAContext();
-
-        public List<Function> GetListFuntion()
-        {
-            return context.Functions.ToList();
-        }
+        readonly DSAContext context = new DSAContext();
 
         public void AddFuntion(string idFuntion, string funtionName)
         {
             Function funtion = new Function();
             funtion.IdFunction = idFuntion;
             funtion.FunctionName = funtionName;
-            context.Functions.Add(funtion);
-            context.SaveChanges();
+            this.context.Functions.Add(funtion);
+            this.context.SaveChanges();
+        }
+
+        public List<Function> GetListFuntion()
+        {
+            return this.context.Functions.ToList();
         }
     }
 }

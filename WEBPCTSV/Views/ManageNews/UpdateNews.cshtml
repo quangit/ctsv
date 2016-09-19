@@ -1,7 +1,5 @@
-﻿@using WEBPCTSV.Models.bean;
-@using WEBPCTSV.Helpers;
-
-@model News
+﻿@using WEBPCTSV.Helpers
+@model WEBPCTSV.Models.bean.News
 
 @{
     ViewBag.Title = "Cập nhật tin tức";
@@ -13,50 +11,57 @@
 <script src="~/js/jquery.validate.js" type="text/javascript"></script>
 <script type="text/javascript">
     $(document)
-            .ready(
-                    function () {
+        .ready(
+            function() {
 
-                        $("#fAddInfo")
-                                .validate(
-                                        {
-                                            ignore: [],
-                                            rules: {
-                                                title: {
-                                                    required: true,
-                                                },
-                                                description: {
-                                                    required: true,
-                                                },
-                                                contentHtml: {
-                                                    required: function () {
-                                                        CKEDITOR.instances.NoiDung.updateElement();
-                                                    }
-                                                }
-                                            },
-                                            messages: {
-                                                title: {
-                                                    required: "Chưa nhập tiêu đề!",
-                                                },
-                                                description: {
-                                                    required: "Chưa nhập mô tả!",
-                                                },
-                                                contentHtml: {
-                                                    required: "Chưa nhập nội dung!",
-                                                }
-                                            },
+                $("#fAddInfo")
+                    .validate(
+                    {
+                        ignore: [],
+                        rules: {
+                            title: {
+                                required: true,
+                            },
+                            description: {
+                                required: true,
+                            },
+                            contentHtml: {
+                                required: function() {
+                                    CKEDITOR.instances.NoiDung.updateElement();
+                                }
+                            }
+                        },
+                        messages: {
+                            title: {
+                                required: "Chưa nhập tiêu đề!",
+                            },
+                            description: {
+                                required: "Chưa nhập mô tả!",
+                            },
+                            contentHtml: {
+                                required: "Chưa nhập nội dung!",
+                            }
+                        },
 
-                                            submitHandler: function (form) {
-                                                form.submit();
-                                            }
-                                        });
+                        submitHandler: function(form) {
+                            form.submit();
+                        }
                     });
+            });
 </script>
 <style type="text/css">
 
+    
+    
+    
 </style>
 <ol class="breadcrumb box-shadow">
-    <li><a href="TrangChu">Trang chủ</a></li>
-    <li><a href="~/QuanLy/QuanLyHocBong">Quản lý tin tức</a></li>
+    <li>
+        <a href="TrangChu">Trang chủ</a>
+    </li>
+    <li>
+        <a href="~/QuanLy/QuanLyHocBong">Quản lý tin tức</a>
+    </li>
     <li class="active">Cập nhật tin tức</li>
 </ol>
 
@@ -73,15 +78,15 @@
                     <label>Loại tin tức </label>
                     <select class="form-control" name="type">
                         <option value=""></option>
-                        <option value="ThongBao" @(Model.Type.Equals("ThongBao") ? "selected" : "")>@Define.typeNews["ThongBao"]</option>
-                        <option value="TinTuc" @(Model.Type.Equals("TinTuc") ? "selected" : "")>@Define.typeNews["TinTuc"]</option>
-                        <option value="LegalEducation" @(Model.Type.Equals("LegalEducation") ? "selected" : "")>@Define.typeNews["LegalEducation"]</option>
-                        <option value="MedicalStudent" @(Model.Type.Equals("MedicalStudent") ? "selected" : "")>@Define.typeNews["MedicalStudent"]</option>
-                        <option value="RelationCompany" @(Model.Type.Equals("RelationCompany") ? "selected" : "")>@Define.typeNews["RelationCompany"]</option>
+                        <option value="ThongBao" @(Model.Type.Equals("ThongBao") ? "selected" : string.Empty)>@Define.typeNews["ThongBao"]</option>
+                        <option value="TinTuc" @(Model.Type.Equals("TinTuc") ? "selected" : string.Empty)>@Define.typeNews["TinTuc"]</option>
+                        <option value="LegalEducation" @(Model.Type.Equals("LegalEducation") ? "selected" : string.Empty)>@Define.typeNews["LegalEducation"]</option>
+                        <option value="MedicalStudent" @(Model.Type.Equals("MedicalStudent") ? "selected" : string.Empty)>@Define.typeNews["MedicalStudent"]</option>
+                        <option value="RelationCompany" @(Model.Type.Equals("RelationCompany") ? "selected" : string.Empty)>@Define.typeNews["RelationCompany"]</option>
                     </select>
                 </div>
                 <div>
-                    <label><input type="checkbox" @(Model.IsPinned.Value ? "checked" : "") name="isPinned">Ghim tin quan trọng</label>
+                    <label><input type="checkbox" @(Model.IsPinned.Value ? "checked" : string.Empty) name="isPinned">Ghim tin quan trọng</label>
                 </div>
                 <div class="form-group">
                     <label>Tiêu đề</label>
@@ -98,7 +103,7 @@
                 <div class="form-group">
                     <label>Hình ảnh</label>
                     <div class="input-group">
-                        <input class="form-control" type="text" id="image" name="image" value="@Model.Image" />
+                        <input class="form-control" type="text" id="image" name="image" value="@Model.Image"/>
                         <div class="input-group-btn">
                             <button type="button" id="brow" class="btn btn-primary">
                                 <i class="fa fa-plus" aria-hidden="true"></i> Chọn ảnh
@@ -112,50 +117,61 @@
                     <button type="button" id="browfile" class="btn btn-primary btn-xs">
                         <i class="fa fa-plus" aria-hidden="true"></i> Thêm tệp
                     </button>
-                    <input type="hidden" id="attachedDocuments" name="attachedDocuments" placeholder="Chọn file đính kèm ..." value="@Model.AttachedDocuments" />
+                    <input type="hidden" id="attachedDocuments" name="attachedDocuments" placeholder="Chọn file đính kèm ..." value="@Model.AttachedDocuments"/>
                     <table>
                         <tbody id="table-file"></tbody>
                     </table>
                 </div>
-                <input class="btn btn-danger" type="submit" value="Hoàn tất" />
-                <input class="btn btn-warning" type="reset" value="Reset" />
+                <input class="btn btn-danger" type="submit" value="Hoàn tất"/>
+                <input class="btn btn-warning" type="reset" value="Reset"/>
             }
         </div>
     </div>
 </div>
 
 <script>
-    $(document).ready(function () {
-        showListAttachedDocument();
-        $("#brow").click(function () {
-            var ck = new CKFinder();
-            ck.selectActionFunction = function (fileUrl) {
-                $("#image").val(fileUrl);
-            };
-            ck.popup();
+    $(document)
+        .ready(function() {
+            showListAttachedDocument();
+            $("#brow")
+                .click(function() {
+                    var ck = new CKFinder();
+                    ck.selectActionFunction = function(fileUrl) {
+                        $("#image").val(fileUrl);
+                    };
+                    ck.popup();
+                });
+            $("#browfile")
+                .click(function() {
+                    var ck = new CKFinder();
+                    ck.selectActionFunction = function(fileUrl) {
+                        $("#attachedDocuments").val($("#attachedDocuments").val() + ':' + fileUrl);
+                        showListAttachedDocument();
+                    };
+                    ck.popup();
+                });
         });
-        $("#browfile").click(function () {
-            var ck = new CKFinder();
-            ck.selectActionFunction = function (fileUrl) {
-                $("#attachedDocuments").val($("#attachedDocuments").val() + ':' + fileUrl);
-                showListAttachedDocument();
-            };
-            ck.popup();
-        });
-    });
 
     function showListAttachedDocument() {
         $("#table-file").html("");
         var x = ($("#attachedDocuments").val()).substr(1);
         if (x != "") {
             var arrayFiles = x.split(":");
-            $.each(arrayFiles, function (index, file) {
-                $("#table-file").append('<tr>'
-                                    + '<td><i class="fa fa-file-text-o" aria-hidden="true"></i></td>'
-                                    + '<td id="table-file-' + index + '">' + decodeURI(file) + '</td>'
-                                    + '<td><i class="fa fa-times" aria-hidden="true" onclick="deleteFile(' + index + ')"></i></td>'
-                                        + '</tr>');
-            });
+            $.each(arrayFiles,
+                function(index, file) {
+                    $("#table-file")
+                        .append('<tr>' +
+                            '<td><i class="fa fa-file-text-o" aria-hidden="true"></i></td>' +
+                            '<td id="table-file-' +
+                            index +
+                            '">' +
+                            decodeURI(file) +
+                            '</td>' +
+                            '<td><i class="fa fa-times" aria-hidden="true" onclick="deleteFile(' +
+                            index +
+                            ')"></i></td>' +
+                            '</tr>');
+                });
         }
     }
 
@@ -168,10 +184,12 @@
     }
 
     var ckeditor;
+
     function createEditor(languageCode, id) {
         var editor = CKEDITOR.replace(id, { language: languageCode });
     };
-    $(function () {
+
+    $(function() {
         createEditor('vi', 'contentHtml');
     });
 </script>

@@ -1,62 +1,40 @@
-﻿using PagedList;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using WEBPCTSV.Models.bean;
-using WEBPCTSV.Models.bo;
-
-namespace WEBPCTSV.Controllers
+﻿namespace WEBPCTSV.Controllers
 {
+    using System.Web.Mvc;
+
+    using PagedList;
+
+    using WEBPCTSV.Models.bean;
+    using WEBPCTSV.Models.bo;
+
     public class ManageNewsEventController : Controller
     {
-        private DSAContext dsaContext;
-        private NewsEventBO newsEventBO;
+        private readonly DSAContext dsaContext;
+
+        private readonly NewsEventBO newsEventBO;
 
         public ManageNewsEventController()
         {
-            dsaContext = new DSAContext();
-            newsEventBO = new NewsEventBO(dsaContext);
+            this.dsaContext = new DSAContext();
+            this.newsEventBO = new NewsEventBO(this.dsaContext);
         }
 
-        #region View list news event
-        public ActionResult NewsEvent(int? page)
-        {
-            AccountSession accountSession = (AccountSession)Session["AccountSession"];
-            if (accountSession != null)
-            {
-                bool isGranted = (accountSession.Functions.IndexOf("ManageNewsEvent") != -1);
-                if (!isGranted)
-                {
-                    return View("~/Views/Shared/AdminDenyFunction.cshtml");
-                }
-                int pageview = page ?? 1;
-                IPagedList<NewsEvent> newsEvent = newsEventBO.GetListNewsEvent(page);
-                return View(newsEvent);
-            }
-            else
-            {
-                return Redirect("/QuanLy");
-            }
-        }
-        #endregion
-        #region Add news event
         public ActionResult AddNewsEvent()
         {
-            return View();
+            return this.View();
         }
+
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult AddNewsEvent(FormCollection col)
         {
-            AccountSession accountSession = (AccountSession)Session["AccountSession"];
+            AccountSession accountSession = (AccountSession)this.Session["AccountSession"];
             if (accountSession != null)
             {
-                bool isGranted = (accountSession.Functions.IndexOf("ManageNewsEvent") != -1);
+                bool isGranted = accountSession.Functions.IndexOf("ManageNewsEvent") != -1;
                 if (!isGranted)
                 {
-                    return View("~/Views/Shared/AdminDenyFunction.cshtml");
+                    return this.View("~/Views/Shared/AdminDenyFunction.cshtml");
                 }
                 else
                 {
@@ -69,43 +47,108 @@ namespace WEBPCTSV.Controllers
                     string contentHtml = col["contentHtml"];
                     string image = col["image"];
                     string requirement = col["requirement"];
-                    string attachedDocuments = col["attachedDocuments"] == null ? "" : col["attachedDocuments"];
+                    string attachedDocuments = col["attachedDocuments"] == null ? string.Empty : col["attachedDocuments"];
                     bool isPinned = (!string.IsNullOrWhiteSpace(col["isPinned"])) ? true : false;
-                    bool isSuccess = newsEventBO.AddNewsEvent(eventTime, eventVenue, requirement, beginDate, endDate, title, description, contentHtml, image, attachedDocuments, accountSession.FullName, isPinned);
+                    bool isSuccess = this.newsEventBO.AddNewsEvent(
+                        eventTime,
+                        eventVenue,
+                        requirement,
+                        beginDate,
+                        endDate,
+                        title,
+                        description,
+                        contentHtml,
+                        image,
+                        attachedDocuments,
+                        accountSession.FullName,
+                        isPinned);
                     if (isSuccess)
                     {
-                        TempData["success"] = "Thêm dữ liệu thành công!";
+                        this.TempData["success"] = "Thêm dữ liệu thành công!";
                     }
                     else
                     {
-                        TempData["error"] = "Thêm dữ liệu thất bại!";
+                        this.TempData["error"] = "Thêm dữ liệu thất bại!";
                     }
-                    return Redirect("/QuanLy/QuanLySuKien");
+
+                    return this.Redirect("/QuanLy/QuanLySuKien");
                 }
             }
             else
             {
-                return Redirect("/QuanLy");
+                return this.Redirect("/QuanLy");
             }
         }
-        #endregion
-        #region Update news event
+
+        public ActionResult DeleteNewsEvent(int? id)
+        {
+            AccountSession accountSession = (AccountSession)this.Session["AccountSession"];
+            if (accountSession != null)
+            {
+                bool isGranted = accountSession.Functions.IndexOf("ManageNewsEvent") != -1;
+                if (!isGranted)
+                {
+                    return this.View("~/Views/Shared/AdminDenyFunction.cshtml");
+                }
+                else
+                {
+                    // Granted
+                    bool isSuccess = this.newsEventBO.DeleteNewsEvent(id);
+                    if (isSuccess)
+                    {
+                        this.TempData["success"] = "Xóa dữ liệu thành công!";
+                    }
+                    else
+                    {
+                        this.TempData["error"] = "Xóa dữ liệu thất bại!";
+                    }
+
+                    return this.Redirect("/QuanLy/QuanLySuKien");
+                }
+            }
+            else
+            {
+                return this.Redirect("/QuanLy");
+            }
+        }
+
+        public ActionResult NewsEvent(int? page)
+        {
+            AccountSession accountSession = (AccountSession)this.Session["AccountSession"];
+            if (accountSession != null)
+            {
+                bool isGranted = accountSession.Functions.IndexOf("ManageNewsEvent") != -1;
+                if (!isGranted)
+                {
+                    return this.View("~/Views/Shared/AdminDenyFunction.cshtml");
+                }
+
+                int pageview = page ?? 1;
+                IPagedList<NewsEvent> newsEvent = this.newsEventBO.GetListNewsEvent(page);
+                return this.View(newsEvent);
+            }
+            else
+            {
+                return this.Redirect("/QuanLy");
+            }
+        }
+
         public ActionResult UpdateNewsEvent(int? id)
         {
-            return View(newsEventBO.GetNewsEvent(id));
+            return this.View(this.newsEventBO.GetNewsEvent(id));
         }
+
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult UpdateNewsEvent(FormCollection col)
         {
-            AccountSession accountSession = (AccountSession)Session["AccountSession"];
+            AccountSession accountSession = (AccountSession)this.Session["AccountSession"];
             if (accountSession != null)
             {
-                bool isGranted = (accountSession.Functions.IndexOf("ManageNewsEvent") != -1);
+                bool isGranted = accountSession.Functions.IndexOf("ManageNewsEvent") != -1;
                 if (!isGranted)
                 {
-                    return View("~/Views/Shared/AdminDenyFunction.cshtml");
-
+                    return this.View("~/Views/Shared/AdminDenyFunction.cshtml");
                 }
                 else
                 {
@@ -120,58 +163,38 @@ namespace WEBPCTSV.Controllers
                     string contentHtml = col["contentHtml"];
                     string image = col["image"];
                     string requirement = col["requirement"];
-                    string attachedDocuments = col["attachedDocuments"] == null ? "" : col["attachedDocuments"];
+                    string attachedDocuments = col["attachedDocuments"] == null ? string.Empty : col["attachedDocuments"];
                     bool isPinned = (!string.IsNullOrWhiteSpace(col["isPinned"])) ? true : false;
-                    bool isSuccess = newsEventBO.UpdateNewsEvent(idNewsEvent, eventTime, eventVenue, beginDate, endDate, requirement, title, description, contentHtml, image, attachedDocuments, accountSession.FullName, isPinned);
+                    bool isSuccess = this.newsEventBO.UpdateNewsEvent(
+                        idNewsEvent,
+                        eventTime,
+                        eventVenue,
+                        beginDate,
+                        endDate,
+                        requirement,
+                        title,
+                        description,
+                        contentHtml,
+                        image,
+                        attachedDocuments,
+                        accountSession.FullName,
+                        isPinned);
                     if (isSuccess)
                     {
-                        TempData["success"] = "Cập nhật dữ liệu thành công!";
+                        this.TempData["success"] = "Cập nhật dữ liệu thành công!";
                     }
                     else
                     {
-                        TempData["error"] = "Cập nhật dữ liệu thất bại!";
+                        this.TempData["error"] = "Cập nhật dữ liệu thất bại!";
                     }
-                    return Redirect("/QuanLy/QuanLySuKien");
-                }
-            }
-            else
-            {
-                return Redirect("/QuanLy");
-            }
-        }
-        #endregion
-        #region Delete news event
-        public ActionResult DeleteNewsEvent(int? id)
-        {
-            AccountSession accountSession = (AccountSession)Session["AccountSession"];
-            if (accountSession != null)
-            {
-                bool isGranted = (accountSession.Functions.IndexOf("ManageNewsEvent") != -1);
-                if (!isGranted)
-                {
-                    return View("~/Views/Shared/AdminDenyFunction.cshtml");
-                }
-                else
-                {
-                    // Granted
-                    bool isSuccess = newsEventBO.DeleteNewsEvent(id);
-                    if (isSuccess)
-                    {
-                        TempData["success"] = "Xóa dữ liệu thành công!";
-                    }
-                    else
-                    {
-                        TempData["error"] = "Xóa dữ liệu thất bại!";
-                    }
-                    return Redirect("/QuanLy/QuanLySuKien");
-                }
-            }
-            else
-            {
-                return Redirect("/QuanLy");
-            }
-        }
-        #endregion
 
+                    return this.Redirect("/QuanLy/QuanLySuKien");
+                }
+            }
+            else
+            {
+                return this.Redirect("/QuanLy");
+            }
+        }
     }
 }

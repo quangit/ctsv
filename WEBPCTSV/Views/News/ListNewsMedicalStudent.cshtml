@@ -1,7 +1,6 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
-@using WEBPCTSV.Helpers.Common;
-@model PagedList.IPagedList<News>
+﻿@using PagedList.Mvc
+@using WEBPCTSV.Helpers.Common
+@model PagedList.IPagedList<WEBPCTSV.Models.bean.News>
 
 @{
     ViewBag.Title = "Y tế học đường Phòng Công Tác Sinh Viên trường Đại Học Bách Khoa - Đại Học Đà Nẵng";
@@ -12,7 +11,9 @@
     <div id="maincontent-section1">
         <div class="maincontent-main listbox listbox-main">
             <ol class="breadcrumb box-shadow">
-                <li><a href="~/">Trang chủ</a></li>
+                <li>
+                    <a href="~/">Trang chủ</a>
+                </li>
                 <li>Sinh viên</li>
                 <li class="active">Y tế học đường</li>
             </ol>
@@ -21,7 +22,7 @@
                 {
                     <div class="listbox-content-item-sub">
                         <div class="col-xs-2">
-                            <img id="tbanh" src="@(StringExtension.IsNullOrWhiteSpace(x.Image) ? "/Images/logo.jpg" : x.Image)" />
+                            <img id="tbanh" src="@(StringExtension.IsNullOrWhiteSpace(x.Image) ? "/Images/logo.jpg" : x.Image)"/>
                         </div>
                         <div class="col-xs-10">
                             <div class="listbox-content-item-sub-title">
@@ -39,12 +40,12 @@
                                 <span class="listbox-content-item-moreinfo-comment date"><i class="fa fa-calendar"></i> @x.CreatedDate.Day/@x.CreatedDate.Month/@x.CreatedDate.Year</span>
                             </div>
                             <p>
-                                <span><a href="~/YTeHocDuong/ChiTiet?id=@x.IdNews">Xem tiếp</a></span>
+                            <span><a href="~/YTeHocDuong/ChiTiet?id=@x.IdNews">Xem tiếp</a></span>
                             <p>
                         </div>
                     </div>
                 }
-                <br />
+                <br/>
                 <div class="menuTrang">
                     @Html.PagedListPager(Model, page => Url.Action("../YTeHocDuong", new { page = page }))
                 </div>

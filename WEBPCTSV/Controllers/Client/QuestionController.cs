@@ -1,45 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using WEBPCTSV.Models.bean;
-using WEBPCTSV.Models.bo;
-using WEBPCTSV.Helpers.Common;
-namespace WEBPCTSV.Controllers.Client
+﻿namespace WEBPCTSV.Controllers.Client
 {
+    using System.Collections.Generic;
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Helpers.Common;
+    using WEBPCTSV.Models.bean;
+    using WEBPCTSV.Models.bo;
+
     public class QuestionController : Controller
     {
-        DSAContext dsaContext;
-        QuestionBO questionBO;
+        readonly DSAContext dsaContext;
+
+        readonly QuestionBO questionBO;
 
         public QuestionController()
         {
-            dsaContext = new DSAContext();
-            questionBO = new QuestionBO(dsaContext);
-        }
-        public ActionResult RandomQuestion(int count)
-        {
-            ViewBag.randomQuestion = questionBO.GetRandomQuestion(count);
-            return View();
+            this.dsaContext = new DSAContext();
+            this.questionBO = new QuestionBO(this.dsaContext);
         }
 
         public ActionResult CommonQuestion(int? page)
         {
-            return View(questionBO.GetCommonQuestion(page));
+            return this.View(this.questionBO.GetCommonQuestion(page));
         }
-        public ActionResult ListQuestion(int? page)
-        {
-            return View(questionBO.GetListQuestionReplied(page));
-        }
+
         public ActionResult DetailQuestion(int id)
         {
-            return View(questionBO.GetQuestion(id));
+            return this.View(this.questionBO.GetQuestion(id));
         }
+
+        public ActionResult ListQuestion(int? page)
+        {
+            return this.View(this.questionBO.GetListQuestionReplied(page));
+        }
+
+        public ActionResult RandomQuestion(int count)
+        {
+            this.ViewBag.randomQuestion = this.questionBO.GetRandomQuestion(count);
+            return this.View();
+        }
+
         public ActionResult RequestQuestion()
         {
-            return View();
+            return this.View();
         }
+
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult RequestQuestion(FormCollection col)
@@ -59,19 +64,28 @@ namespace WEBPCTSV.Controllers.Client
             bool result = bool.Parse(values.success.ToString());
             if (result)
             {
-                int idQuestion = questionBO.AddQuestion(typeRequest, information, name, email, field, title, contentHtml);
+                int idQuestion = this.questionBO.AddQuestion(
+                    typeRequest,
+                    information,
+                    name,
+                    email,
+                    field,
+                    title,
+                    contentHtml);
                 if (idQuestion != -1)
                 {
-                    return Content("Câu hỏi của bạn đã được ghi nhận! Nội dung câu trả lời sẽ được gửi sớm qua email cho bạn!");
+                    return
+                        this.Content(
+                            "Câu hỏi của bạn đã được ghi nhận! Nội dung câu trả lời sẽ được gửi sớm qua email cho bạn!");
                 }
                 else
                 {
-                    return Content("Lỗi xảy ra trong quá trình gửi câu hỏi! Vui lòng Kiểm tra lại thông tin.");
+                    return this.Content("Lỗi xảy ra trong quá trình gửi câu hỏi! Vui lòng Kiểm tra lại thông tin.");
                 }
             }
             else
             {
-                return Content("Nhập sai mã xác nhận! Vui lòng Kiểm tra lại thông tin.");
+                return this.Content("Nhập sai mã xác nhận! Vui lòng Kiểm tra lại thông tin.");
             }
         }
     }

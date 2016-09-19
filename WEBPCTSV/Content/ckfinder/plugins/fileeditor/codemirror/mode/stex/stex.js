@@ -131,7 +131,7 @@ CodeMirror.defineMode("stex", function() {
             }
             return "comment";
         }
-        else if (ch == '}' || ch == ']') {
+        else if (ch == "}" || ch == "]") {
             plug = peekCommand(state);
             if (plug) {
                 plug.closeBracket(ch);
@@ -140,7 +140,7 @@ CodeMirror.defineMode("stex", function() {
                 return "error";
             }
             return "bracket";
-        } else if (ch == '{' || ch == '[') {
+        } else if (ch == "{" || ch == "[") {
             plug = plugins["DEFAULT"];
             plug = new plug();
             pushCommand(state, plug);
@@ -153,7 +153,7 @@ CodeMirror.defineMode("stex", function() {
         else {
             source.eatWhile(/[\w\-_]/);
             plug = getMostPowerful(state);
-            if (plug.name == 'begin') {
+            if (plug.name == "begin") {
                 plug.argument = source.current();
             }
             return plug.styleIdentifier();
@@ -216,7 +216,7 @@ CodeMirror.defineMode("stex", function() {
 
     function beginParams(source, state) {
         var ch = source.peek(), lastPlug;
-        if (ch == '{' || ch == '[') {
+        if (ch == "{" || ch == "[") {
             lastPlug = peekCommand(state);
             lastPlug.openBracket(ch);
             source.eat(ch);

@@ -1,71 +1,71 @@
-﻿using PagedList;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using WEBPCTSV.Models.bean;
-using WEBPCTSV.Models.bo;
-
-namespace WEBPCTSV.Controllers
+﻿namespace WEBPCTSV.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Models.bean;
+    using WEBPCTSV.Models.bo;
+
     public class ManageResourceController : Controller
     {
-        private DSAContext dsaContext;
+        private readonly DSAContext dsaContext;
 
         public ManageResourceController()
         {
-            dsaContext = new DSAContext();
+            this.dsaContext = new DSAContext();
         }
 
-        #region infomation of alumni
         public ActionResult ManageResource()
         {
-            ResourceBO resourceBO = new ResourceBO(dsaContext);
-            ViewBag.functionAndDuty = resourceBO.getResourceObjectByAcronym("CNNV");
-            ViewBag.lecturerOperation = resourceBO.getResourceObjectByAcronym("HoatDongGVCN");
-            ViewBag.visionAndMission = resourceBO.getResourceObjectByAcronym("TNSM");
-            return View();
+            ResourceBO resourceBO = new ResourceBO(this.dsaContext);
+            this.ViewBag.functionAndDuty = resourceBO.getResourceObjectByAcronym("CNNV");
+            this.ViewBag.lecturerOperation = resourceBO.getResourceObjectByAcronym("HoatDongGVCN");
+            this.ViewBag.visionAndMission = resourceBO.getResourceObjectByAcronym("TNSM");
+            return this.View();
         }
+
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult ManageResource(FormCollection col)
         {
-                AccountSession accountSession = (AccountSession)Session["AccountSession"];
-                if (accountSession != null)
+            AccountSession accountSession = (AccountSession)this.Session["AccountSession"];
+            if (accountSession != null)
+            {
+                bool isGranted = accountSession.Functions.IndexOf("ManageConfigWebsite") != -1;
+                if (!isGranted)
                 {
-                    bool isGranted = (accountSession.Functions.IndexOf("ManageConfigWebsite") != -1);
-                    if (!isGranted)
-                    {
-                        return View("~/Views/Shared/AdminDenyFunction.cshtml");
-                    }
-                    else
-                    {
-                        // Granted
-                        ResourceBO resourceBO = new ResourceBO(dsaContext);
-                        Dictionary<String, String> conductTtemsParameter = col.AllKeys.ToDictionary(k => k, v => col[v]);
-                        foreach (KeyValuePair<string, String> itemDic in conductTtemsParameter)
-                        {
-                            int id;
-                            try
-                            {
-                                String idResource = (itemDic.Key.Split('_'))[1]; ;
-                                id = Int32.Parse(idResource);
-                                resourceBO.UpdateResource(id, itemDic.Value);
-                            }
-                            catch
-                            {
-                                continue;
-                            }
-                        }
-                        return Redirect("/QuanLy/CauHinhWebsite");
-                    }
+                    return this.View("~/Views/Shared/AdminDenyFunction.cshtml");
                 }
                 else
                 {
-                    return Redirect("/QuanLy");
+                    // Granted
+                    ResourceBO resourceBO = new ResourceBO(this.dsaContext);
+                    Dictionary<string, string> conductTtemsParameter = col.AllKeys.ToDictionary(k => k, v => col[v]);
+                    foreach (KeyValuePair<string, string> itemDic in conductTtemsParameter)
+                    {
+                        int id;
+                        try
+                        {
+                            string idResource = itemDic.Key.Split('_')[1];
+                            
+                            id = int.Parse(idResource);
+                            resourceBO.UpdateResource(id, itemDic.Value);
+                        }
+                        catch
+                        {
+                            continue;
+                        }
+                    }
+
+                    return this.Redirect("/QuanLy/CauHinhWebsite");
                 }
+            }
+            else
+            {
+                return this.Redirect("/QuanLy");
+            }
         }
-        #endregion
     }
 }

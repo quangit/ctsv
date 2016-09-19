@@ -21,6 +21,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -443,6 +444,7 @@
     <Compile Include="Models\Support\CheckDecentralization.cs" />
     <Compile Include="Models\Support\Configuration.cs" />
     <Compile Include="Models\Support\ConvertObject.cs" />
+    <Compile Include="Models\Support\ErrorImportExcel.cs" />
     <Compile Include="Models\Support\ManageFile.cs" />
     <Compile Include="Models\Support\PageNumber.cs" />
     <Compile Include="Models\Support\SelectPlaceSP.cs" />
@@ -2369,6 +2371,7 @@
     <Content Include="Views\ManageRequest\ListStudentByClass.cshtml" />
     <Content Include="Views\ManageRequest\_ListStudent.cshtml" />
     <Content Include="Views\ManagePaper\_KeyWord.cshtml" />
+    <Content Include="Views\PartialShared\_ListErrorImportExcel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

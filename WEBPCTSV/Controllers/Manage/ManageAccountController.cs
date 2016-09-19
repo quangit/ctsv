@@ -1,95 +1,99 @@
-﻿using WEBPCTSV.Models.bo;
-using WEBPCTSV.Models.Support;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.Helpers;
-using System.Web.Mvc;
-using WEBPCTSV.Models.bean;
-
-namespace WEBPCTSV.Controllers
+﻿namespace WEBPCTSV.Controllers
 {
+    using System;
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Models.bean;
+    using WEBPCTSV.Models.bo;
+    using WEBPCTSV.Models.Support;
+
     public class ManageAccountController : Controller
     {
-        AccountBO accountBo = new AccountBO();
-        // GET: ManageAccount
-        public ActionResult Index()
-        {
-            ViewBag.listAccount = accountBo.GetListAccount();
-            return View("ManageAccount");
-        }
-
-        public ActionResult UpdateAccount(FormCollection form)
-        {
-            accountBo.UpdateAccount(form);
-            return RedirectToAction("GetListAccount", new { page =1});
-        }
+        readonly AccountBO accountBo = new AccountBO();
 
         public ActionResult AccountInformation()
         {
-            AccountSession accountSession = (AccountSession)Session["AccountSession"];
+            AccountSession accountSession = (AccountSession)this.Session["AccountSession"];
             if (accountSession != null)
             {
                 try
                 {
-                    ViewBag.account = accountBo.GetAccount(Convert.ToInt32(Session["idAccount"]));
-                    return View("AccountInformation");
+                    this.ViewBag.account = this.accountBo.GetAccount(Convert.ToInt32(this.Session["idAccount"]));
+                    return this.View("AccountInformation");
                 }
                 catch
                 {
-                    return View("~/Views/Shared/Error.cshtml");
+                    return this.View("~/Views/Shared/Error.cshtml");
                 }
             }
             else
             {
-                return Redirect("/QuanLy");
+                return this.Redirect("/QuanLy");
             }
+        }
+
+        public ActionResult ChangeDecentralizationGroupAccount(int idAccount, int idGroup)
+        {
+            this.accountBo.ChangeDecentralizationGroup(idAccount, idGroup);
+            return this.Content("1", "text/plaint");
+        }
+
+        public ActionResult SaveEmail(string email)
+        {
+            this.accountBo.SaveAccount(Convert.ToInt32(this.Session["idAccount"]),email);
+            return this.Content("1", "text/plaint");
         }
 
         public ActionResult ChangePassword(string oldPassword, string newPassword)
         {
-            string ischangePassword = accountBo.ChangePassword(Convert.ToInt32(Session["idAccount"]), oldPassword, newPassword);
-            return Content(ischangePassword, "text/plain");
+            string ischangePassword = this.accountBo.ChangePassword(
+                Convert.ToInt32(this.Session["idAccount"]),
+                oldPassword,
+                newPassword);
+            return this.Content(ischangePassword, "text/plain");
         }
 
-        public ActionResult GetListAccount(int page,FormCollection form)
+        public ActionResult GetListAccount(int page, FormCollection form)
         {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlytaikhoan")) return RedirectToAction("NotAccess", "ManageDecentralization");
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlytaikhoan")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
             PageNumber pageNumber = new PageNumber();
             string search = form["search"];
             if (search == null)
             {
-                if (Session["searchaccount"] != null) search = Session["searchaccount"].ToString();
+                if (this.Session["searchaccount"] != null) search = this.Session["searchaccount"].ToString();
             }
             else
             {
-                Session["searchaccount"] = search;
+                this.Session["searchaccount"] = search;
             }
+
             DecentralizationGroupBo decentralizationGroupBo = new DecentralizationGroupBo();
-            ViewBag.listAccount = accountBo.GetListAccount(page,search);
-            pageNumber.PageNumberTotal = accountBo.TotalPage(search);
+            this.ViewBag.listAccount = this.accountBo.GetListAccount(page, search);
+            pageNumber.PageNumberTotal = this.accountBo.TotalPage(search);
             pageNumber.PageNumberCurrent = page;
             pageNumber.Link = "/ManageAccount/GetListAccount?page=";
-            ViewBag.pageNumber = pageNumber;
-            ViewBag.listGroup = decentralizationGroupBo.getListGroup();
-            return View("ManageAccount");
+            this.ViewBag.pageNumber = pageNumber;
+            this.ViewBag.listGroup = decentralizationGroupBo.getListGroup();
+            return this.View("ManageAccount");
         }
 
-        public ActionResult ChangeDecentralizationGroupAccount(int idAccount,int idGroup)
+        // GET: ManageAccount
+        public ActionResult Index()
         {
-            accountBo.ChangeDecentralizationGroup(idAccount, idGroup);
-            return Content("1", "text/plaint");
+            this.ViewBag.listAccount = this.accountBo.GetListAccount();
+            return this.View("ManageAccount");
         }
-
-        
 
         public ActionResult ResetPassword(int idAccount)
         {
-            accountBo.ResetPassword(idAccount);
-            return Content("1", "text/plain");
+            this.accountBo.ResetPassword(idAccount);
+            return this.Content("1", "text/plain");
         }
-   
+
+        public ActionResult UpdateAccount(FormCollection form)
+        {
+            this.accountBo.UpdateAccount(form);
+            return this.RedirectToAction("GetListAccount", new { page = 1 });
+        }
     }
 }

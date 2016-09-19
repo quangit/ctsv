@@ -1,7 +1,6 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
-@using WEBPCTSV.Helpers.Common;
-
+﻿@using PagedList.Mvc
+@using WEBPCTSV.Helpers.Common
+@using WEBPCTSV.Models.bean
 @model PagedList.IPagedList<News>
 
 @{
@@ -14,12 +13,14 @@
         <div class="maincontent-main listbox listbox-main">
             @if (Model == null)
             {
-                <div style="text-align:center; font-size:16px;margin-top:20px;">Không tìm thấy bài viết!</div>
+                <div style="font-size: 16px; margin-top: 20px; text-align: center;">Không tìm thấy bài viết!</div>
             }
             else
             {
                 <ol class="breadcrumb box-shadow">
-                    <li><a href="~/">Trang chủ</a></li>
+                    <li>
+                        <a href="~/">Trang chủ</a>
+                    </li>
                     <li class="active">Thông báo</li>
                 </ol>
                 <div class="listbox-content">
@@ -27,7 +28,7 @@
                     {
                         <div class="listbox-content-item-sub">
                             <div class="col-xs-2">
-                                <img src="@(StringExtension.IsNullOrWhiteSpace(x.Image) ? "/Images/logo.jpg" : x.Image)" alt="@x.Title" />
+                                <img src="@(StringExtension.IsNullOrWhiteSpace(x.Image) ? "/Images/logo.jpg" : x.Image)" alt="@x.Title"/>
                             </div>
                             <div class="col-xs-10">
                                 <div class="listbox-content-item-sub-title">
@@ -45,12 +46,12 @@
                                     <span class="listbox-content-item-moreinfo-comment date"><i class="fa fa-calendar"></i> @x.CreatedDate.Day/@x.CreatedDate.Month/@x.CreatedDate.Year</span>
                                 </div>
                                 <p>
-                                    <span><a href="../ThongBao/ChiTiet?id=@x.IdNews">Xem tiếp</a></span>
+                                <span><a href="../ThongBao/ChiTiet?id=@x.IdNews">Xem tiếp</a></span>
                                 <p>
                             </div>
                         </div>
                     }
-                    <br />
+                    <br/>
                     <div class="menuTrang">
                         @Html.PagedListPager(Model, page => Url.Action("../ThongBao", new { page = page }))
                     </div>
@@ -62,6 +63,6 @@
         </div>
     </div>
 </div>
-<div id="resultRegister" style="display:none;">
+<div id="resultRegister" style="display: none;">
 
 </div>

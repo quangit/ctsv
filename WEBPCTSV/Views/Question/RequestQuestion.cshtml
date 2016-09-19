@@ -1,7 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
-
-@{
+﻿@{
     ViewBag.Title = "Đặt câu hỏi đến Phòng Công Tác Sinh Viên trường đại học Bách Khoa Đà Nẵng";
     Layout = "~/Views/Shared/ClientMaster.cshtml";
     <link rel="stylesheet" href="~/css/style-metro.css">
@@ -9,70 +6,70 @@
 
 <script>
     $(document)
-            .ready(
-                    function () {
-                        $("#submit_question_form")
-                                .validate(
-                                        {
-                                            rules: {
-                                                Email: {
-                                                    required: true,
-                                                    email: true
-                                                },
-                                                TypeRequest: {
-                                                    required: true,
-                                                },
-                                                Information: {
-                                                    required: true,
-                                                },
-                                                Field: {
-                                                    required: true,
-                                                },
-                                                Name: {
-                                                    required: true,
-                                                },
-                                                Title: {
-                                                    required: true,
-                                                },
-                                                ContentHtml: {
-                                                    required: true,
-                                                }
-                                            },
-                                            messages: {
-                                                Email: {
-                                                    required: "Chưa nhập địa chỉ email!",
-                                                    email: "Nhập sai định dạng địa chỉ email!"
-                                                },
-                                                TypeRequest: {
-                                                    required: "Chưa chọn đối tượng!",
-                                                },
-                                                Information: {
-                                                    required: "Chưa nhập thông tin!",
-                                                },
-                                                Field: {
-                                                    required: "Chưa chọn lĩnh vực!",
-                                                },
-                                                Name: {
-                                                    required: "Chưa nhập tên!",
-                                                },
-                                                Title: {
-                                                    required: "Chưa nhập tiêu đề!",
-                                                },
-                                                ContentHtml: {
-                                                    required: "Chưa nhập nội dung câu hỏi!",
-                                                }
-                                            },
+        .ready(
+            function() {
+                $("#submit_question_form")
+                    .validate(
+                    {
+                        rules: {
+                            Email: {
+                                required: true,
+                                email: true
+                            },
+                            TypeRequest: {
+                                required: true,
+                            },
+                            Information: {
+                                required: true,
+                            },
+                            Field: {
+                                required: true,
+                            },
+                            Name: {
+                                required: true,
+                            },
+                            Title: {
+                                required: true,
+                            },
+                            ContentHtml: {
+                                required: true,
+                            }
+                        },
+                        messages: {
+                            Email: {
+                                required: "Chưa nhập địa chỉ email!",
+                                email: "Nhập sai định dạng địa chỉ email!"
+                            },
+                            TypeRequest: {
+                                required: "Chưa chọn đối tượng!",
+                            },
+                            Information: {
+                                required: "Chưa nhập thông tin!",
+                            },
+                            Field: {
+                                required: "Chưa chọn lĩnh vực!",
+                            },
+                            Name: {
+                                required: "Chưa nhập tên!",
+                            },
+                            Title: {
+                                required: "Chưa nhập tiêu đề!",
+                            },
+                            ContentHtml: {
+                                required: "Chưa nhập nội dung câu hỏi!",
+                            }
+                        },
 
-                                            submitHandler: function (form) {
-                                                var response = grecaptcha.getResponse();
-                                                if(response.length == 0) {
-                                                    $('#recaptcha-error').html("Chưa nhập mã xác nhận!")
-                                                }else {
-                                                    requestQuestion();
-                                                }
-                                            }
-                                        });
+                        submitHandler: function(form) {
+                            var response = grecaptcha.getResponse();
+                            if (response.length == 0) {
+                                $('#recaptcha-error').html("Chưa nhập mã xác nhận!")
+                            } else {
+                                requestQuestion();
+                            }
+                        }
                     });
+            });
 </script>
 
 
@@ -121,8 +118,8 @@
                             </div>
                             <div class="portlet-body">
                                 <h2>Đặt câu hỏi đến Phòng Công Tác Sinh Viên</h2>
-                                <hr />
-                                <h4 style="color: red; text-align:center;">@(ViewBag.error != null ? ViewBag.error : "")</h4>
+                                <hr/>
+                                <h4 style="color: red; text-align: center;">@(ViewBag.error != null ? ViewBag.error : string.Empty)</h4>
                                 <form id="submit_question_form" class="form-horizontal" action="/TuVan/DatCauHoi" method="post" role="form">
                                     <div class="form-body">
                                         <div class="form-group">
@@ -189,16 +186,16 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-3">Mã xác nhận</label>
                                             <div class="col-md-9">
-                                                <script src='https://www.google.com/recaptcha/api.js'></script>
+                                                <script src="https://www.google.com/recaptcha/api.js"></script>
                                                 <div id="recaptcha" class="g-recaptcha" data-sitekey="6LdUlR8TAAAAANyuAqiE6jf9PjMH9ko6CjIOhhhd"></div>
                                                 <label style="color: red;" id="recaptcha-error">
-                                                    @(ViewBag.error != null ? ViewBag.error : "")
+                                                    @(ViewBag.error != null ? ViewBag.error : string.Empty)
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-md-3">Lưu ý</label>
-                                            <div class="col-md-9" style="color:red;">
+                                            <div class="col-md-9" style="color: red;">
                                                 <p></p>
                                                 <p>- Kiểm tra thật kĩ nội dung câu hỏi trước khi gửi</p>
                                                 <p>- Câu hỏi hợp lệ là câu hỏi có đầy đủ thông tin (Họ tên, email và các thông tin kèm theo)</p>
@@ -210,7 +207,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="col-md-offset-3 col-md-9">
-                                                    <input name="question" type="hidden" value="1" />
+                                                    <input name="question" type="hidden" value="1"/>
                                                     <button type="submit" class="btn green"><i class="icon-ok"></i> Gửi <span class="loading"></span></button>
                                                 </div>
                                             </div>
@@ -235,12 +232,12 @@
             type: 'POST',
             data: $('#submit_question_form').serialize(),
             url: '/TuVan/DatCauHoi',
-            success: function (response) {
+            success: function(response) {
                 $('.modal-announcement-message').html(response);
                 $('#modal-announcement').modal('show');
             },
 
-            error: function (response) {
+            error: function(response) {
                 $('.modal-announcement-message').html('Lỗi trong quá trình gửi dữ liệu!');
                 $('#modal-announcement').modal('show');
             }

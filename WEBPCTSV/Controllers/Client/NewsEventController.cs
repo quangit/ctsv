@@ -1,37 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using WEBPCTSV.Models.bean;
-using WEBPCTSV.Models.bo;
-
-namespace WEBPCTSV.Controllers
+﻿namespace WEBPCTSV.Controllers
 {
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Models.bean;
+    using WEBPCTSV.Models.bo;
+
     public class NewsEventController : Controller
     {
-        DSAContext dsaContext;
-        NewsEventBO newsEventBO;
+        readonly DSAContext dsaContext;
+
+        readonly NewsEventBO newsEventBO;
+
         public NewsEventController()
         {
-            dsaContext = new DSAContext();
-            newsEventBO = new NewsEventBO(dsaContext);
+            this.dsaContext = new DSAContext();
+            this.newsEventBO = new NewsEventBO(this.dsaContext);
+        }
+
+        public ActionResult DetailNewsEvent(int id)
+        {
+            return this.View(this.newsEventBO.GetNewsEvent(id));
         }
 
         public ActionResult ListNewsEvent(int? page)
         {
-            return View(newsEventBO.GetListNewsEvent(page));
-        }
-        public ActionResult DetailNewsEvent(int id)
-        {
-            return View(newsEventBO.GetNewsEvent(id));
+            return this.View(this.newsEventBO.GetListNewsEvent(page));
         }
 
         public ActionResult TopNewsEvent(int count)
         {
-            ViewBag.topNewsEvent = newsEventBO.GetTopNewsEvent(count);
-            return View();
+            this.ViewBag.topNewsEvent = this.newsEventBO.GetTopNewsEvent(count);
+            return this.View();
         }
-
     }
 }

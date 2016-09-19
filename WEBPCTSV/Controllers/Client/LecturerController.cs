@@ -1,31 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using WEBPCTSV.Helpers.Common;
-using WEBPCTSV.Models.bean;
-using WEBPCTSV.Models.bo;
-
-namespace WEBPCTSV.Controllers
+﻿namespace WEBPCTSV.Controllers
 {
+    using System;
+    using System.Linq;
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Models.bean;
+    using WEBPCTSV.Models.bo;
+
     public class LecturerController : Controller
     {
-        DSAContext dsaContext;
-        LecturerBO lecturerBO;
+        readonly DSAContext dsaContext;
+
+        readonly LecturerBO lecturerBO;
 
         public LecturerController()
         {
-            dsaContext = new DSAContext();
-            lecturerBO = new LecturerBO(dsaContext);
+            this.dsaContext = new DSAContext();
+            this.lecturerBO = new LecturerBO(this.dsaContext);
         }
 
         public ActionResult LecturerList(int? page)
         {
-            ViewBag.classes = dsaContext.Classes.ToList();
-            ViewBag.semesters = from semester in dsaContext.Semesters select semester;
-            return View();
+            this.ViewBag.classes = this.dsaContext.Classes.ToList();
+            this.ViewBag.semesters = from semester in this.dsaContext.Semesters select semester;
+            return this.View();
         }
+
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult LecturerList(int? page, FormCollection col)
@@ -33,18 +33,24 @@ namespace WEBPCTSV.Controllers
             string searchBox = col["SearchBox"];
             string searchSemester = col["SearchSemester"];
             int idSemester;
-            try {
-                idSemester = Int32.Parse(col["SearchSemester"]);
-            } catch(Exception){
-                idSemester = new SemesterBO(dsaContext).GetSemesterCurrent().IdSemester;
+            try
+            {
+                idSemester = int.Parse(col["SearchSemester"]);
             }
-            ViewBag.IdSemester = idSemester;
-            return View("../PartialViews/PartialFilterLecturer", lecturerBO.GetListLecturer(page, searchBox, idSemester));
+            catch (Exception)
+            {
+                idSemester = new SemesterBO(this.dsaContext).GetSemesterCurrent().IdSemester;
+            }
+
+            this.ViewBag.IdSemester = idSemester;
+            return this.View(
+                "../PartialViews/PartialFilterLecturer",
+                this.lecturerBO.GetListLecturer(page, searchBox, idSemester));
         }
 
         public ActionResult LecturerOperation()
         {
-            return View();
+            return this.View();
         }
     }
 }

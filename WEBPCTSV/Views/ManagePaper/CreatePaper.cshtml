@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
     ViewBag.Title = "CreatePaper";
 }
@@ -13,26 +12,26 @@
             <span class="input-group-addon">Tên giấy tờ :</span>
             <input name="namePaper" type="text" class="form-control" required placeholder="nhập tên giấy tờ vào">
         </div>
-        <br />
-        <textarea name="notePaper" class="form-control" rows="4" placeholder="Nhập ghi chú" style="width:800px;"></textarea>
-        <br />
-        
+        <br/>
+        <textarea name="notePaper" class="form-control" rows="4" placeholder="Nhập ghi chú" style="width: 800px;"></textarea>
+        <br/>
+
 
         <textarea name="editor1" id="editor1"></textarea>
-        <br />
+        <br/>
         <div class="form-horizontal">
 
             <div class="form-group col-sm-6">
                 <label class="control-label col-sm-7" for="priceUrgency">Giá tiền khẩn cấp:</label>
                 <div class="input-group col-sm-5">
-                    <input class="form-control" id="priceUrgency" required value="0" name="priceUrgency" type="text" />
+                    <input class="form-control" id="priceUrgency" required value="0" name="priceUrgency" type="text"/>
                     <span class="input-group-addon"> VND </span>
                 </div>
             </div>
             <div class="form-group col-sm-6">
                 <label class="control-label col-sm-5" for="waittingPeriod">Thời gian chờ khẩn cấp:</label>
                 <div class="input-group col-sm-3">
-                    <input class="form-control" id="waittingPeriodUrgency" name="waittingPeriodUrgency" required value="0" type="text" />
+                    <input class="form-control" id="waittingPeriodUrgency" name="waittingPeriodUrgency" required value="0" type="text"/>
                     <span class="input-group-addon"> Ngày </span>
                 </div>
             </div>
@@ -40,22 +39,22 @@
             <div class="form-group col-sm-6">
                 <label class="control-label col-sm-7" for="priceNormal">Giá tiền bình thường:</label>
                 <div class="input-group col-sm-5">
-                    <input class="form-control" id="priceNormal" name="priceNormal" required value="0" type="text" />
+                    <input class="form-control" id="priceNormal" name="priceNormal" required value="0" type="text"/>
                     <span class="input-group-addon"> VND </span>
                 </div>
             </div>
             <div class="form-group col-sm-6">
                 <label class="control-label col-sm-5" for="waittingPeriodNormal">Thời gian chờ bình thường:</label>
                 <div class="input-group col-sm-3">
-                    <input class="form-control" id="waittingPeriodNormal" name="waittingPeriodNormal" required value="0" type="text" />
+                    <input class="form-control" id="waittingPeriodNormal" name="waittingPeriodNormal" required value="0" type="text"/>
                     <span class="input-group-addon"> Ngày </span>
                 </div>
             </div>
 
         </div>
-        <br />
-        <button type="submit" class="btn btn-primary" style="max-width:800px"><span class="glyphicon glyphicon-floppy-save"></span> Lưu lại</button>
-        <button style="margin-left:10px" type="button" class="btn btn-primary" data-toggle="modal" data-target="#KeyWord"><i class="fa fa-wordpress" aria-hidden="true"></i> Từ khóa </button>
+        <br/>
+        <button type="submit" class="btn btn-primary" style="max-width: 800px"><span class="glyphicon glyphicon-floppy-save"></span> Lưu lại</button>
+        <button style="margin-left: 10px" type="button" class="btn btn-primary" data-toggle="modal" data-target="#KeyWord"><i class="fa fa-wordpress" aria-hidden="true"></i> Từ khóa </button>
 
         <!-- Modal -->
         <div id="KeyWord" class="modal fade" role="dialog">
@@ -80,24 +79,25 @@
 </div>
 
 <script>
-    CKEDITOR.on('dialogDefinition', function (ev) {
-        var dialogName = ev.data.name;
-        var dialogDefinition = ev.data.definition;
-        if (dialogName == 'table') {
-            var info = dialogDefinition.getContents('info');
-            info.get('txtWidth')['default'] = '100%';       // Set default width to 100%
-            info.get('txtBorder')['default'] = '0';         // Set default border to 0
-        }
-    });
+    CKEDITOR.on('dialogDefinition',
+        function(ev) {
+            var dialogName = ev.data.name;
+            var dialogDefinition = ev.data.definition;
+            if (dialogName == 'table') {
+                var info = dialogDefinition.getContents('info');
+                info.get('txtWidth')['default'] = '100%'; // Set default width to 100%
+                info.get('txtBorder')['default'] = '0'; // Set default border to 0
+            }
+        });
     CKEDITOR.replace('editor1');
     CKEDITOR.config.width = 800;
-   // CKEDITOR.config.contentsCss = 'fontckeditor.css';
+    // CKEDITOR.config.contentsCss = 'fontckeditor.css';
     //the next line add the new font to the combobox in CKEditor
-   // CKEDITOR.config.font_names = 'Time new Roman edit' + CKEDITOR.config.font_names;
-    
-    $('#btnget').click(function () {
-        var data = CKEDITOR.instances.editor1.getData();
-        $('#showedit').html(data);
-    });
-</script>
+    // CKEDITOR.config.font_names = 'Time new Roman edit' + CKEDITOR.config.font_names;
 
+    $('#btnget')
+        .click(function() {
+            var data = CKEDITOR.instances.editor1.getData();
+            $('#showedit').html(data);
+        });
+</script>

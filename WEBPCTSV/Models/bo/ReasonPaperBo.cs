@@ -1,41 +1,39 @@
-﻿using WEBPCTSV.Models.bean;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace WEBPCTSV.Models.bo
+﻿namespace WEBPCTSV.Models.bo
 {
+    using System.Linq;
+
+    using WEBPCTSV.Models.bean;
+
     public class ReasonPaperBo
     {
-        DSAContext context = new DSAContext();
+        readonly DSAContext context = new DSAContext();
 
-        public ReasonRequest Get(int idReason)
-        {
-            return context.ReasonRequests.SingleOrDefault(r => r.IdReasonRequest == idReason);
-        }
-        public ReasonRequest GetReasonByIdRequest(int idRequest)
-        {
-            return context.RequestPapers.SingleOrDefault(r => r.IdRequestPaper == idRequest).Reasonrequest;
-        }
         public Paper AddReasonRequest(int idPaper, string reason)
         {
             ReasonRequest reasonRequest = new ReasonRequest();
             reasonRequest.IdPaper = idPaper;
             reasonRequest.Reason = reason;
-            context.ReasonRequests.Add(reasonRequest);
-            context.SaveChanges();
-            Paper paper = context.Papers.Single(pp => pp.IdPaper == idPaper);
+            this.context.ReasonRequests.Add(reasonRequest);
+            this.context.SaveChanges();
+            Paper paper = this.context.Papers.Single(pp => pp.IdPaper == idPaper);
             return paper;
         }
 
         public void DeleteReasonRequest(int idReason)
         {
-            ReasonRequest reason = context.ReasonRequests.Single(rs => rs.IdReasonRequest == idReason);
-            context.ReasonRequests.Remove(reason);
-            context.SaveChanges();
+            ReasonRequest reason = this.context.ReasonRequests.Single(rs => rs.IdReasonRequest == idReason);
+            this.context.ReasonRequests.Remove(reason);
+            this.context.SaveChanges();
         }
 
+        public ReasonRequest Get(int idReason)
+        {
+            return this.context.ReasonRequests.SingleOrDefault(r => r.IdReasonRequest == idReason);
+        }
 
+        public ReasonRequest GetReasonByIdRequest(int idRequest)
+        {
+            return this.context.RequestPapers.SingleOrDefault(r => r.IdRequestPaper == idRequest).Reasonrequest;
+        }
     }
 }

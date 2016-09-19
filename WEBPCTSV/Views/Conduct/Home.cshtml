@@ -1,7 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
-@using WEBPCTSV.Helpers.Common;
-
+﻿@using WEBPCTSV.Models.bean
 @model PagedList.IPagedList<News>
 
 @{
@@ -19,13 +16,14 @@
         </div>
         <div class="maincontent-main conduct-page" id="maincontent">
             <ol class="breadcrumb box-shadow">
-                <li><a href="~/DanhGiaRenLuyen">Đánh giá rèn luyện</a></li>
+                <li>
+                    <a href="~/DanhGiaRenLuyen">Đánh giá rèn luyện</a>
+                </li>
                 <li class="active">Thông báo</li>
             </ol>
             @{
                 List<ConductSchedule> currentSchedule = ViewBag.currentSchedule;
                 Semester currentSemester = ViewBag.currentSemester;
-
             }
             <div class="listbox-content">
                 @if (ViewBag.error != null)
@@ -41,21 +39,21 @@
                     <div class="conduct-schedule">
                         <table class="table table-bordered table-striped">
                             <thead>
-                                <tr>
-                                    <td>Đối tượng</td>
-                                    <td>Ngày bắt đầu</td>
-                                    <td>Ngày kết thúc</td>
-                                </tr>
+                            <tr>
+                                <td>Đối tượng</td>
+                                <td>Ngày bắt đầu</td>
+                                <td>Ngày kết thúc</td>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach (ConductSchedule conductSchedule in currentSchedule.OrderBy(s => s.BeginDateEvaluate))
-                                {
-                                    <tr class="@((DateTime.Now >= conductSchedule.BeginDateEvaluate && DateTime.Now <= conductSchedule.EndDateEvaluate) ? "active":"")">
-                                        <td>@conductSchedule.DecentralizationGroup.DecentralizationGroupName</td>
-                                        <td>@conductSchedule.BeginDateEvaluate.ToString("HH:mm dd/MM/yyyy")</td>
-                                        <td>@conductSchedule.EndDateEvaluate.ToString("HH:mm dd/MM/yyyy")</td>
-                                    </tr>
-                                }
+                            @foreach (ConductSchedule conductSchedule in currentSchedule.OrderBy(s => s.BeginDateEvaluate))
+                            {
+                                <tr class="@((DateTime.Now >= conductSchedule.BeginDateEvaluate && DateTime.Now <= conductSchedule.EndDateEvaluate) ? "active" : string.Empty)">
+                                    <td>@conductSchedule.DecentralizationGroup.DecentralizationGroupName</td>
+                                    <td>@conductSchedule.BeginDateEvaluate.ToString("HH:mm dd/MM/yyyy")</td>
+                                    <td>@conductSchedule.EndDateEvaluate.ToString("HH:mm dd/MM/yyyy")</td>
+                                </tr>
+                            }
                             </tbody>
                         </table>
                     </div>
@@ -64,6 +62,6 @@
         </div>
     </div>
 </div>
-<div id="resultRegister" style="display:none;">
+<div id="resultRegister" style="display: none;">
 
 </div>

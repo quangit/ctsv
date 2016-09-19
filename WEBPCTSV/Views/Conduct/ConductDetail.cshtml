@@ -1,7 +1,5 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
-@using WEBPCTSV.Helpers.Common;
-
+﻿@using WEBPCTSV.Helpers.Common
+@using WEBPCTSV.Models.bean
 @model PagedList.IPagedList<News>
 
 @{
@@ -21,11 +19,13 @@
         </div>
         <div class="maincontent-main conduct-page" id="maincontent">
             <ol class="breadcrumb box-shadow">
-                <li><a href="~/">Trang chủ</a></li>
+                <li>
+                    <a href="~/">Trang chủ</a>
+                </li>
                 <li class="active">Trang đánh giá kết quả rèn luyện</li>
             </ol>
             <div class="listbox-content">
-                <br />
+                <br/>
                 <div class="listbox-content">
                     @if (ViewBag.error != null)
                     {
@@ -56,67 +56,74 @@
                             </div>
                             <div class="conduct-evaluate-items">
                                 <div id="conduct-result">
-                                    <input type="hidden" name="isApproved" id="isApproved" />
+                                    <input type="hidden" name="isApproved" id="isApproved"/>
                                     <table class="table table-triped table-bordered table-hover">
                                         <thead>
-                                            <tr>
-                                                <td class="col-md-8 col-xs-8">Nội dung</td>
-                                                <td class="col-md-1 col-xs-1">Tối đa</td>
-                                                <td class="col-md-1 col-xs-1">Điểm (Sinh viên)</td>
-                                                <td class="col-md-1 col-xs-1">Điểm (Tập thể lớp)</td>
-                                                <td class="col-md-1 col-xs-1">Tổng kết</td>
-                                            </tr>
+                                        <tr>
+                                            <td class="col-md-8 col-xs-8">Nội dung</td>
+                                            <td class="col-md-1 col-xs-1">Tối đa</td>
+                                            <td class="col-md-1 col-xs-1">Điểm (Sinh viên)</td>
+                                            <td class="col-md-1 col-xs-1">Điểm (Tập thể lớp)</td>
+                                            <td class="col-md-1 col-xs-1">Tổng kết</td>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (ConductItem conductItem in itemsByForm)
+                                        @foreach (ConductItem conductItem in itemsByForm)
+                                        {
+                                            if (conductItem.ConductItemGroup.ConductItemGroupRoles.SingleOrDefault(role => role.IdDecentralizationGroup == accountSession.IdDecentralizationGroup) != null)
                                             {
-                                                if (conductItem.ConductItemGroup.ConductItemGroupRoles.SingleOrDefault(role => role.IdDecentralizationGroup == accountSession.IdDecentralizationGroup) != null)
-                                                {
-                                                    <tr>
-                                                        <td>
-                                                            @if (@conductItem.ItemIndex.Length == 2 || @conductItem.ItemIndex.Length == 4)
-                                                            {
-                                                                <strong>@(StringExtension.GetListNumbering(conductItem.ItemIndex)) @conductItem.ItemName</strong>
-                                                            }
-                                                            else
-                                                            {
-                                                                <p>@(StringExtension.GetListNumbering(conductItem.ItemIndex)) @(conductItem.ItemName)</p>
-                                                            }
-                                                        </td>
-                                                        <td><span class="P@(conductItem.IdConductItems)">@conductItem.MaxPoints</span></td>
-                                                        <td>
-                                                            @if (@conductItem.ItemIndex.Length == 4)
-                                                            {
-                                                                <span class="point-student"> @(pointStudent!=null && pointStudent.Count != 0 && pointStudent.ContainsKey(conductItem.IdConductItems.ToString()) ? pointStudent[conductItem.IdConductItems.ToString()] : "0")</span>
-                                                            }
-                                                        </td>
-                                                        <td>
-                                                            @if (@conductItem.ItemIndex.Length == 4)
-                                                            {
-                                                                <span class="point-lecturer"> @(pointLecturer != null && pointLecturer.Count != 0 && pointLecturer.ContainsKey(conductItem.IdConductItems.ToString()) ? pointLecturer[conductItem.IdConductItems.ToString()] : "0")</span>
-                                                            }
-                                                        </td>
-                                                        <td>
-                                                            @if (@conductItem.ItemIndex.Length == 4)
-                                                            {
-                                                                <span class="point-dsa"> @(pointDSA != null && pointDSA.Count != 0 && pointDSA.ContainsKey(conductItem.IdConductItems.ToString()) ? pointDSA[conductItem.IdConductItems.ToString()] : "0")</span>
-                                                            }
-                                                        </td>
-                                                    </tr>
-                                                }
+                                                <tr>
+                                                    <td>
+                                                        @if (@conductItem.ItemIndex.Length == 2 || @conductItem.ItemIndex.Length == 4)
+                                                        {
+                                                            <strong>@(StringExtension.GetListNumbering(conductItem.ItemIndex)) @conductItem.ItemName</strong>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p>@(StringExtension.GetListNumbering(conductItem.ItemIndex)) @(conductItem.ItemName)</p>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <span class="P@(conductItem.IdConductItems)">@conductItem.MaxPoints</span></td>
+                                                    <td>
+                                                        @if (@conductItem.ItemIndex.Length == 4)
+                                                        {
+                                                            <span class="point-student"> @(pointStudent != null && pointStudent.Count != 0 && pointStudent.ContainsKey(conductItem.IdConductItems.ToString()) ? pointStudent[conductItem.IdConductItems.ToString()] : "0")</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (@conductItem.ItemIndex.Length == 4)
+                                                        {
+                                                            <span class="point-lecturer"> @(pointLecturer != null && pointLecturer.Count != 0 && pointLecturer.ContainsKey(conductItem.IdConductItems.ToString()) ? pointLecturer[conductItem.IdConductItems.ToString()] : "0")</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (@conductItem.ItemIndex.Length == 4)
+                                                        {
+                                                            <span class="point-dsa"> @(pointDSA != null && pointDSA.Count != 0 && pointDSA.ContainsKey(conductItem.IdConductItems.ToString()) ? pointDSA[conductItem.IdConductItems.ToString()] : "0")</span>
+                                                        }
+                                                    </td>
+                                                </tr>
                                             }
-                                            <tr>
-                                                <td colspan="2" class="text-right">
-                                                    <strong>Điểm tổng kết</strong>
-                                                </td>
-                                                <td><strong class="conduct-total-student">0</strong></td>
-                                                <td><strong class="conduct-total-lecturer">0</strong></td>
-                                                <td><strong class="conduct-total-dsa">0</strong></td>
-                                            </tr>
+                                        }
+                                        <tr>
+                                            <td colspan="2" class="text-right">
+                                                <strong>Điểm tổng kết</strong>
+                                            </td>
+                                            <td>
+                                                <strong class="conduct-total-student">0</strong>
+                                            </td>
+                                            <td>
+                                                <strong class="conduct-total-lecturer">0</strong>
+                                            </td>
+                                            <td>
+                                                <strong class="conduct-total-dsa">0</strong>
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                     <div class="conduct-evaluate-summary">
-                                        Xếp loại: 
+                                        Xếp loại:
                                     </div>
                                 </div>
                             </div>
@@ -134,29 +141,31 @@
         student = 0;
         lecturer = 0;
         dsa = 0;
-        $('.conduct-evaluate-items tr').each(function (e) {
-            pointStudent = $(this).children('td').children('.point-student').text();
-            pointLecturer = $(this).children('td').children('.point-lecturer').text()
-            pointDSA = $(this).children('td').children('.point-dsa').text();
-            if (pointStudent.length != 0) {
-                student = student + parseInt(pointStudent);
-            }
-            if (pointLecturer.length != 0) {
-                lecturer = lecturer + parseInt(pointLecturer);
-            }
-            if (pointDSA.length != 0) {
-                dsa = dsa + parseInt(pointDSA);
-            }
-        });
+        $('.conduct-evaluate-items tr')
+            .each(function(e) {
+                pointStudent = $(this).children('td').children('.point-student').text();
+                pointLecturer = $(this).children('td').children('.point-lecturer').text()
+                pointDSA = $(this).children('td').children('.point-dsa').text();
+                if (pointStudent.length != 0) {
+                    student = student + parseInt(pointStudent);
+                }
+                if (pointLecturer.length != 0) {
+                    lecturer = lecturer + parseInt(pointLecturer);
+                }
+                if (pointDSA.length != 0) {
+                    dsa = dsa + parseInt(pointDSA);
+                }
+            });
         $('.conduct-total-student').html(student);
         $('.conduct-total-lecturer').html(lecturer);
         $('.conduct-total-dsa').html(dsa);
         $('.conduct-evaluate-summary').html('Xếp loại: <strong>' + GetGradeEvaluated(dsa) + '</strong>');
     }
+
     $(document)
-            .ready(
-                    function () {
-                        refreshSummaryPoint();
-                    });
+        .ready(
+            function() {
+                refreshSummaryPoint();
+            });
 
 </script>

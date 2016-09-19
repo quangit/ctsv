@@ -1,62 +1,41 @@
-﻿using PagedList;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using WEBPCTSV.Models.bean;
-using WEBPCTSV.Models.bo;
-
-namespace WEBPCTSV.Controllers
+﻿namespace WEBPCTSV.Controllers
 {
+    using System;
+    using System.Web.Mvc;
+
+    using PagedList;
+
+    using WEBPCTSV.Models.bean;
+    using WEBPCTSV.Models.bo;
+
     public class ManageQuestionController : Controller
     {
-        private DSAContext dsaContext;
-        private QuestionBO questionBO;
+        private readonly DSAContext dsaContext;
+
+        private readonly QuestionBO questionBO;
 
         public ManageQuestionController()
         {
-            dsaContext = new DSAContext();
-            questionBO = new QuestionBO(dsaContext);
+            this.dsaContext = new DSAContext();
+            this.questionBO = new QuestionBO(this.dsaContext);
         }
 
-        #region View list question
-        public ActionResult Question(int? page)
-        {
-            AccountSession accountSession = (AccountSession)Session["AccountSession"];
-            if (accountSession != null)
-            {
-                bool isGranted = (accountSession.Functions.IndexOf("ManageQuestion") != -1);
-                if (!isGranted)
-                {
-                    return View("~/Views/Shared/AdminDenyFunction.cshtml");
-                }
-                int pageview = page ?? 1;
-                IPagedList<Question> question = questionBO.GetListNewQuestion(page);
-                return View(question);
-            }
-            else
-            {
-                return Redirect("/QuanLy");
-            }
-        }
-        #endregion
-        #region Add question
         public ActionResult Add()
         {
-            return View();
+            return this.View();
         }
+
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult AddCommonQuestion(FormCollection col)
         {
-            AccountSession accountSession = (AccountSession)Session["AccountSession"];
+            AccountSession accountSession = (AccountSession)this.Session["AccountSession"];
             if (accountSession != null)
             {
-                bool isGranted = (accountSession.Functions.IndexOf("ManageQuestion") != -1);
+                bool isGranted = accountSession.Functions.IndexOf("ManageQuestion") != -1;
                 if (!isGranted)
                 {
-                    return View("~/Views/Shared/AdminDenyFunction.cshtml");
+                    return this.View("~/Views/Shared/AdminDenyFunction.cshtml");
                 }
                 else
                 {
@@ -69,48 +48,67 @@ namespace WEBPCTSV.Controllers
                     string information = "admin";
                     string name = "admin";
                     string email = "admin";
-                    int idQuestion = questionBO.AddQuestion(typeRequest, information, name, email, field, title, contentHtml);
+                    int idQuestion = this.questionBO.AddQuestion(
+                        typeRequest,
+                        information,
+                        name,
+                        email,
+                        field,
+                        title,
+                        contentHtml);
                     if (idQuestion != -1)
                     {
-                        bool isSuccess = questionBO.UpdateQuestion(idQuestion, typeRequest, information, name, email, field, title, contentHtml, reply, accountSession.FullName, false);
+                        bool isSuccess = this.questionBO.UpdateQuestion(
+                            idQuestion,
+                            typeRequest,
+                            information,
+                            name,
+                            email,
+                            field,
+                            title,
+                            contentHtml,
+                            reply,
+                            accountSession.FullName,
+                            false);
                         if (isSuccess)
                         {
-                            TempData["success"] = "Thêm câu hỏi thành công!";
+                            this.TempData["success"] = "Thêm câu hỏi thành công!";
                         }
                         else
                         {
-                            TempData["error"] = "Thêm câu hỏi thất bại!";
+                            this.TempData["error"] = "Thêm câu hỏi thất bại!";
                         }
                     }
                     else
                     {
-                        TempData["error"] = "Thêm câu hỏi thất bại!";
+                        this.TempData["error"] = "Thêm câu hỏi thất bại!";
                     }
-                    return Redirect("/QuanLy/QuanLyCauHoi");
+
+                    return this.Redirect("/QuanLy/QuanLyCauHoi");
                 }
             }
             else
             {
-                return Redirect("/QuanLy");
+                return this.Redirect("/QuanLy");
             }
         }
-        #endregion
-        #region Update question
+
         public ActionResult AnswerQuestion(int? id)
         {
-            return View(questionBO.GetQuestion(id));
+            return this.View(this.questionBO.GetQuestion(id));
         }
+
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult AnswerQuestion(FormCollection col)
         {
-            AccountSession accountSession = (AccountSession)Session["AccountSession"];
+            AccountSession accountSession = (AccountSession)this.Session["AccountSession"];
             if (accountSession != null)
             {
-                bool isGranted = (accountSession.Functions.IndexOf("ManageQuestion") != -1);
+                bool isGranted = accountSession.Functions.IndexOf("ManageQuestion") != -1;
                 if (!isGranted)
                 {
-                    return View("~/Views/Shared/AdminDenyFunction.cshtml");
+                    return this.View("~/Views/Shared/AdminDenyFunction.cshtml");
                 }
                 else
                 {
@@ -125,55 +123,87 @@ namespace WEBPCTSV.Controllers
                     string contentHtml = col["ContentHtml"];
                     string reply = col["Reply"];
                     bool isEdit = (!string.IsNullOrWhiteSpace(col["IsEdit"])) ? true : false;
-                    bool isSuccess = questionBO.UpdateQuestion(Int32.Parse(idQuestion), typeRequest, information, name, email, field, title, contentHtml, reply, accountSession.FullName, isEdit);
+                    bool isSuccess = this.questionBO.UpdateQuestion(
+                        int.Parse(idQuestion),
+                        typeRequest,
+                        information,
+                        name,
+                        email,
+                        field,
+                        title,
+                        contentHtml,
+                        reply,
+                        accountSession.FullName,
+                        isEdit);
                     if (isSuccess)
                     {
-                        TempData["success"] = "Cập nhật câu hỏi thành công!";
+                        this.TempData["success"] = "Cập nhật câu hỏi thành công!";
                     }
                     else
                     {
-                        TempData["error"] = "Cập nhật câu hỏi thất bại!";
+                        this.TempData["error"] = "Cập nhật câu hỏi thất bại!";
                     }
-                    return Redirect("/QuanLy/QuanLyCauHoi");
+
+                    return this.Redirect("/QuanLy/QuanLyCauHoi");
                 }
             }
             else
             {
-                return Redirect("/QuanLy");
+                return this.Redirect("/QuanLy");
             }
         }
-        #endregion
-        #region Delete news
+
         public ActionResult DeleteQuestion(int? id)
         {
-            AccountSession accountSession = (AccountSession)Session["AccountSession"];
+            AccountSession accountSession = (AccountSession)this.Session["AccountSession"];
             if (accountSession != null)
             {
-                bool isGranted = (accountSession.Functions.IndexOf("ManageQuestion") != -1);
+                bool isGranted = accountSession.Functions.IndexOf("ManageQuestion") != -1;
                 if (!isGranted)
                 {
-                    return View("~/Views/Shared/AdminDenyFunction.cshtml");
+                    return this.View("~/Views/Shared/AdminDenyFunction.cshtml");
                 }
                 else
                 {
                     // Granted
-                    bool isSuccess = questionBO.DeleteQuestion(id);
+                    bool isSuccess = this.questionBO.DeleteQuestion(id);
                     if (isSuccess)
                     {
-                        TempData["success"] = "Xóa dữ liệu thành công!";
+                        this.TempData["success"] = "Xóa dữ liệu thành công!";
                     }
                     else
                     {
-                        TempData["error"] = "Xóa dữ liệu thất bại!";
+                        this.TempData["error"] = "Xóa dữ liệu thất bại!";
                     }
-                    return Redirect("/QuanLy/QuanLyCauHoi");
+
+                    return this.Redirect("/QuanLy/QuanLyCauHoi");
                 }
             }
             else
             {
-                return Redirect("/QuanLy");
+                return this.Redirect("/QuanLy");
             }
         }
-        #endregion
+
+        public ActionResult Question(int? page)
+        {
+            AccountSession accountSession = (AccountSession)this.Session["AccountSession"];
+            if (accountSession != null)
+            {
+                bool isGranted = accountSession.Functions.IndexOf("ManageQuestion") != -1;
+                if (!isGranted)
+                {
+                    return this.View("~/Views/Shared/AdminDenyFunction.cshtml");
+                }
+
+                int pageview = page ?? 1;
+                IPagedList<Question> question = this.questionBO.GetListNewQuestion(page);
+                return this.View(question);
+            }
+            else
+            {
+                return this.Redirect("/QuanLy");
+            }
+        }
     }
 }

@@ -24,25 +24,25 @@
             settings = $.extend({}, $.fn.leanSlider.defaults, options);
 
             // Add inital classes
-            slider.addClass('lean-slider');
-            slides.addClass('lean-slider-slide');
+            slider.addClass("lean-slider");
+            slides.addClass("lean-slider-slide");
 
             currentSlide = settings.startSlide;
             if(settings.startSlide < 0 || settings.startSlide >= slides.length) currentSlide = 0;
-            $(slides[currentSlide]).addClass('current');
+            $(slides[currentSlide]).addClass("current");
 
             // Set up directionNav
             if(settings.directionNav && $(settings.directionNav).length){
-                var prevNav = $('<a href="#" class="lean-slider-prev">'+ settings.prevText +'</a>'),
-                    nextNav = $('<a href="#" class="lean-slider-next">'+ settings.nextText +'</a>');
+                var prevNav = $('<a href="#" class="lean-slider-prev">'+ settings.prevText +"</a>"),
+                    nextNav = $('<a href="#" class="lean-slider-next">'+ settings.nextText +"</a>");
                 if(settings.directionNavPrevBuilder) prevNav = $(settings.directionNavPrevBuilder.call(this, settings.prevText));
                 if(settings.directionNavNextBuilder) nextNav = $(settings.directionNavNextBuilder.call(this, settings.nextText));
 
-                prevNav.on('click', function(e){
+                prevNav.on("click", function(e){
                     e.preventDefault();
                     plugin.prev();
                 });
-                nextNav.on('click', function(e){
+                nextNav.on("click", function(e){
                     e.preventDefault();
                     plugin.next();
                 });
@@ -54,10 +54,10 @@
             // Set up controlNav
             if(settings.controlNav && $(settings.controlNav).length){
                 slides.each(function(i){
-                    var controlNav = $('<a href="#" class="lean-slider-control-nav">'+ (i + 1) +'</a>');
+                    var controlNav = $('<a href="#" class="lean-slider-control-nav">'+ (i + 1) +"</a>");
                     if(settings.controlNavBuilder) controlNav = $(settings.controlNavBuilder.call(this, i, $(slides[i])));
 
-                    controlNav.on('click', function(e){
+                    controlNav.on("click", function(e){
                         e.preventDefault();
                         plugin.show(i);
                     });
@@ -100,8 +100,8 @@
         var updateControlNav = function(){
         	testAnim("fadeInLeft");
             if(settings.controlNav){
-                $('.lean-slider-control-nav', settings.controlNav).removeClass('active');
-                $($('.lean-slider-control-nav', settings.controlNav).get(currentSlide)).addClass('active');
+                $(".lean-slider-control-nav", settings.controlNav).removeClass("active");
+                $($(".lean-slider-control-nav", settings.controlNav).get(currentSlide)).addClass("active");
             }
         };
 
@@ -112,8 +112,8 @@
 
             currentSlide--;
             if(currentSlide < 0) currentSlide = slides.length - 1;
-            slides.removeClass('current');
-            $(slides[currentSlide]).addClass('current');
+            slides.removeClass("current");
+            $(slides[currentSlide]).addClass("current");
             updateControlNav();
             doTimer();
 
@@ -127,8 +127,8 @@
             settings.beforeChange.call(this, currentSlide);
             currentSlide++;
             if(currentSlide >= slides.length) currentSlide = 0;
-            slides.removeClass('current');
-            $(slides[currentSlide]).addClass('current');
+            slides.removeClass("current");
+            $(slides[currentSlide]).addClass("current");
             updateControlNav();
             doTimer();
             // Trigger the afterChange callback
@@ -143,8 +143,8 @@
             currentSlide = index;
             if(currentSlide < 0) currentSlide = slides.length - 1;
             if(currentSlide >= slides.length) currentSlide = 0;
-            slides.removeClass('current');
-            $(slides[currentSlide]).addClass('current');
+            slides.removeClass("current");
+            $(slides[currentSlide]).addClass("current");
             updateControlNav();
             doTimer();
 
@@ -161,13 +161,13 @@
         pauseTime: 4000,
         pauseOnHover: true,
         startSlide: 0,
-        directionNav: '',
-        directionNavPrevBuilder: '',
-        directionNavNextBuilder: '',
-        controlNav: '',
-        controlNavBuilder: '',
-        prevText: 'Prev',
-        nextText: 'Next',
+        directionNav: "",
+        directionNavPrevBuilder: "",
+        directionNavNextBuilder: "",
+        controlNav: "",
+        controlNavBuilder: "",
+        prevText: "Prev",
+        nextText: "Next",
         beforeChange: function(){},
         afterChange: function(){},
         afterLoad: function(){}

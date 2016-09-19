@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using WEBPCTSV.Models.bean;
-
-namespace WEBPCTSV.Models.bo
+﻿namespace WEBPCTSV.Models.bo
 {
+    using System;
+    using System.Linq;
+
+    using WEBPCTSV.Models.bean;
+
     public class ResourceBO
     {
-        private DSAContext dsaContext;
+        private readonly DSAContext dsaContext;
 
         public ResourceBO(DSAContext dsaContext)
         {
@@ -17,23 +16,31 @@ namespace WEBPCTSV.Models.bo
 
         public string getResourceByAcronym(string resourceAcronym)
         {
-            try { return (dsaContext.Resources.SingleOrDefault(r => r.ResourceAcronym.Equals(resourceAcronym))).ResourceContent; }
-            catch { }
-            return "";
-            
+            try
+            {
+                return
+                    this.dsaContext.Resources.SingleOrDefault(r => r.ResourceAcronym.Equals(resourceAcronym))
+                        .ResourceContent;
+            }
+            catch
+            {
+            }
+
+            return string.Empty;
         }
+
         public Resource getResourceObjectByAcronym(string resourceAcronym)
         {
-            return (dsaContext.Resources.SingleOrDefault(r => r.ResourceAcronym.Equals(resourceAcronym)));
+            return this.dsaContext.Resources.SingleOrDefault(r => r.ResourceAcronym.Equals(resourceAcronym));
         }
 
         public bool UpdateResource(int idResource, string contentResource)
         {
             try
             {
-                Resource rs = dsaContext.Resources.Find(idResource);
+                Resource rs = this.dsaContext.Resources.Find(idResource);
                 rs.ResourceContent = contentResource;
-                dsaContext.SaveChanges();
+                this.dsaContext.SaveChanges();
                 return true;
             }
             catch (Exception)

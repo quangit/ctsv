@@ -1,54 +1,67 @@
-﻿using WEBPCTSV.Models.bean;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace WEBPCTSV.Models.bo
+﻿namespace WEBPCTSV.Models.bo
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Models.bean;
+
     public class YearBo
     {
-        DSAContext context = new DSAContext();
-        public List<Year> Get()
-        {
-            return context.Years.ToList();
-        }
+        readonly DSAContext context = new DSAContext();
 
-        public bool Insert( FormCollection form)
+        public bool Delete(string id)
         {
-            try {
-                Year year = new Year();
-                year.YearName = form["YearName"];
-                year.IdYear =Convert.ToInt32(form["IdYear"]);
-                context.Years.Add(year);
+            try
+            {
+                Year year = this.context.Years.Single(s => s.IdYear.Equals(id));
+                this.context.Years.Remove(year);
+                this.context.SaveChanges();
                 return true;
             }
-            catch { }
+            catch
+            {
+            }
+
+            return false;
+        }
+
+        public List<Year> Get()
+        {
+            return this.context.Years.ToList();
+        }
+
+        public bool Insert(FormCollection form)
+        {
+            try
+            {
+                Year year = new Year();
+                year.YearName = form["YearName"];
+                year.IdYear = Convert.ToInt32(form["IdYear"]);
+                this.context.Years.Add(year);
+                return true;
+            }
+            catch
+            {
+            }
+
             return false;
         }
 
         public bool Update(string id, FormCollection form)
         {
-            try {
-                Year year = context.Years.Single(s => s.IdYear.Equals(id));
+            try
+            {
+                Year year = this.context.Years.Single(s => s.IdYear.Equals(id));
                 year.YearName = form["YearName"];
-                context.SaveChanges();
+                this.context.SaveChanges();
                 return true;
             }
-            catch { }
-            return false;
-        }
+            catch
+            {
+            }
 
-        public bool Delete( string id)
-        {
-            try {
-                Year year = context.Years.Single(s => s.IdYear.Equals(id));
-                context.Years.Remove(year);
-                context.SaveChanges();
-                return true;
-            }
-            catch { }
             return false;
         }
     }

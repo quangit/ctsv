@@ -1,7 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
-@using WEBPCTSV.Helpers.Common;
-
+﻿@using WEBPCTSV.Models.bean
 <link rel="stylesheet" href="/assets/css/dataTables.bootstrap.min.css">
 <script type="text/javascript" src="/assets/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="/assets/js/dataTables.bootstrap.min.js"></script>
@@ -35,56 +32,56 @@
         <div class="conduct-schedule table-responsive">
             <table id="myTable" class="table table-bordered table-striped">
                 <thead>
-                    <tr>
-                        <td>STT</td>
-                        <td>MSSV</td>
-                        <td>Họ tên</td>
-                        <td>@lastConductSchedule.DecentralizationGroup.DecentralizationGroupName ĐG</td>
-                        <td width="80px">Thao tác</td>
-                    </tr>
+                <tr>
+                    <td>STT</td>
+                    <td>MSSV</td>
+                    <td>Họ tên</td>
+                    <td>@lastConductSchedule.DecentralizationGroup.DecentralizationGroupName ĐG</td>
+                    <td width="80px">Thao tác</td>
+                </tr>
                 </thead>
                 <tfoot>
-                    <tr>
-                        <th>STT</th>
-                        <th>MSSV</th>
-                        <th>Họ tên</th>
-                        <th>@lastConductSchedule.DecentralizationGroup.DecentralizationGroupName ĐG</th>
-                        <th width="80px">Thao tác</th>
-                    </tr>
+                <tr>
+                    <th>STT</th>
+                    <th>MSSV</th>
+                    <th>Họ tên</th>
+                    <th>@lastConductSchedule.DecentralizationGroup.DecentralizationGroupName ĐG</th>
+                    <th width="80px">Thao tác</th>
+                </tr>
                 </tfoot>
                 <tbody>
-                    @foreach (Student student in listStudent)
+                @foreach (Student student in listStudent)
+                {
+                    ConductResult conductResult = student.ConductResults.SingleOrDefault(c => c.IdConductEvent == currentEvent.IdConductEvent && c.IdConductSchedule == lastConductSchedule.IdConductSchedule);
+                    int total = 0;
+                    if (conductResult != null)
                     {
-                        ConductResult conductResult = student.ConductResults.SingleOrDefault(c => c.IdConductEvent == currentEvent.IdConductEvent && c.IdConductSchedule == lastConductSchedule.IdConductSchedule);
-                        int total = 0;
-                        if (conductResult != null)
+                        string[] arrPairValue = conductResult.PartialPoint.Split(';');
+                        foreach (string pair in arrPairValue)
                         {
-                            string[] arrPairValue = conductResult.PartialPoint.Split(';');
-                            foreach (string pair in arrPairValue)
+                            try
                             {
-                                try
-                                {
-                                    total += Int32.Parse(pair.Split(':')[1]);
-                                }
-                                catch (Exception)
-                                {
-
-                                }
+                                total += int.Parse(pair.Split(':')[1]);
+                            }
+                            catch (Exception)
+                            {
                             }
                         }
-                        string isPrefect = (student.Account.IdDecentralizationGroup == 3) ? " (" + student.Account.DecentralizationGroup.DecentralizationGroupName + ")" : "";
-                        if (student.IsReserved.Value == true || student.IsExpelled.Value == true || student.IsGraduated == true)
-                        {
-                            continue;
-                        }
-                        
-                        <tr class="@((total == 0) ? "color-danger" : "") SV-@student.IdStudent">
-                            <td>@(++index)</td>
-                            <td>@(student.StudentNumber)</td>
-                            <td>@(student.LastNameStudent + " " + student.FirstNameStudent)@isPrefect</td>
-                            <td>
-                                <span class="conduct-point-new">@total</span>
-                                <span class="conduct-icon-status">
+                    }
+
+                    string isPrefect = (student.Account.IdDecentralizationGroup == 3) ? " (" + student.Account.DecentralizationGroup.DecentralizationGroupName + ")" : string.Empty;
+                    if (student.IsReserved.Value == true || student.IsExpelled.Value == true || student.IsGraduated == true)
+                    {
+                        continue;
+                    }
+
+                    <tr class="@((total == 0) ? "color-danger" : string.Empty) SV-@student.IdStudent">
+                        <td>@(++index)</td>
+                        <td>@(student.StudentNumber)</td>
+                        <td>@(student.LastNameStudent + " " + student.FirstNameStudent)@isPrefect</td>
+                        <td>
+                            <span class="conduct-point-new">@total</span>
+                            <span class="conduct-icon-status">
                                     @if (conductResult != null && conductResult.IsApproved)
                                     {
                                         <i class="fa fa-check color-success" aria-hidden="true" title="Đã được duyệt"></i>
@@ -94,14 +91,14 @@
                                         <i class="fa fa-floppy-o" aria-hidden="true" title="Chỉ lưu chưa được duyệt"></i>
                                     }
                                 </span>
-                            </td>
-                            <td>
-                                <span class="conduct-icon-action">
+                        </td>
+                        <td>
+                            <span class="conduct-icon-action">
                                     <span onclick="EditStudent(@student.IdStudent)" class="label label-primary label-link">Chỉnh sửa</span>
                                 </span>
-                            </td>
-                        </tr>
-                    }
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>
@@ -118,32 +115,38 @@
                 idSemester: idSemester
             },
             url: '/QuanLy/QuanLyRenLuyen/ChinhSuaSinhVien',
-            success: function (response) {
+            success: function(response) {
                 $('#tbnoidung').html(response);
             },
         });
     }
-    $(document).ready(function () {
-        // Setup - add a text input to each footer cell
-        $('#myTable tfoot th').each(function () {
-            var title = $(this).text();
-            $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+
+    $(document)
+        .ready(function() {
+            // Setup - add a text input to each footer cell
+            $('#myTable tfoot th')
+                .each(function() {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+                });
+
+            // DataTable
+            var table = $('#myTable').DataTable();
+
+            // Apply the search
+            table.columns()
+                .every(function() {
+                    var that = this;
+
+                    $('input', this.footer())
+                        .on('keyup change',
+                            function() {
+                                if (that.search() !== this.value) {
+                                    that
+                                        .search(this.value)
+                                        .draw();
+                                }
+                            });
+                });
         });
-
-        // DataTable
-        var table = $('#myTable').DataTable();
-
-        // Apply the search
-        table.columns().every(function () {
-            var that = this;
-
-            $('input', this.footer()).on('keyup change', function () {
-                if (that.search() !== this.value) {
-                    that
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-    });
 </script>

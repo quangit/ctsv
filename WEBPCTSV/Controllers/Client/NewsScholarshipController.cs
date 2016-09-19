@@ -1,40 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using WEBPCTSV.Models.bean;
-using WEBPCTSV.Models.bo;
-
-namespace WEBPCTSV.Controllers
+﻿namespace WEBPCTSV.Controllers
 {
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Models.bean;
+    using WEBPCTSV.Models.bo;
+
     public class NewsScholarshipController : Controller
     {
-        DSAContext dsaContext;
-        NewsScholarshipBO newsScholarshipBO;
+        readonly DSAContext dsaContext;
+
+        readonly NewsScholarshipBO newsScholarshipBO;
 
         public NewsScholarshipController()
         {
-            dsaContext = new DSAContext();
-            newsScholarshipBO = new NewsScholarshipBO(dsaContext);
+            this.dsaContext = new DSAContext();
+            this.newsScholarshipBO = new NewsScholarshipBO(this.dsaContext);
         }
+
+        public ActionResult DetailNewsScholarship(int id)
+        {
+            return this.View(this.newsScholarshipBO.GetNewsScholarship(id));
+        }
+
         public ActionResult ListNewsScholarship(int? page, string type = null)
         {
             if (type == null || string.IsNullOrEmpty(type))
             {
                 type = "HocBong";
             }
-            ViewBag.type = type;
-            return View(newsScholarshipBO.GetListNewsScholarship(page, type));
+
+            this.ViewBag.type = type;
+            return this.View(this.newsScholarshipBO.GetListNewsScholarship(page, type));
         }
-        public ActionResult DetailNewsScholarship(int id)
-        {
-            return View(newsScholarshipBO.GetNewsScholarship(id));
-        }
+
         public ActionResult TopNewsScholarship(int count)
         {
-            ViewBag.topNewsScholarship = newsScholarshipBO.GetTopNewsScholarship(count);
-            return View();
+            this.ViewBag.topNewsScholarship = this.newsScholarshipBO.GetTopNewsScholarship(count);
+            return this.View();
         }
     }
 }

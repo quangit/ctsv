@@ -1,7 +1,5 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
-@using WEBPCTSV.Helpers.Common;
-
+﻿@using WEBPCTSV.Helpers.Common
+@using WEBPCTSV.Models.bean
 @model PagedList.IPagedList<News>
 
 @{
@@ -28,7 +26,7 @@
         evaluatedValue = new Dictionary<string, string>();
         if (conductResult != null)
         {
-            //Load saved value
+            // Load saved value
             string[] arrPairValue = conductResult.PartialPoint.Split(';');
             foreach (string pair in arrPairValue)
             {
@@ -36,9 +34,10 @@
                 oldValue.Add(arrValue[0], arrValue[1]);
             }
         }
+
         if (conductResultEvaluated != null)
         {
-            //Load evaluated value
+            // Load evaluated value
             string[] arrPairValue = conductResultEvaluated.PartialPoint.Split(';');
             foreach (string pair in arrPairValue)
             {
@@ -46,11 +45,15 @@
                 try
                 {
                     string[] arrValue = pair.Split(':');
-                    evaluatedValue.Add(arrValue[0], arrValue[1]);  
-                }catch(Exception){}
+                    evaluatedValue.Add(arrValue[0], arrValue[1]);
+                }
+                catch (Exception)
+                {
+                }
             }
         }
     }
+
     <div id="maincontent">
         <div id="maincontent-section1">
             <div class="conduct-menu">
@@ -61,10 +64,14 @@
             </div>
             <div class="maincontent-main conduct-page" id="maincontent">
                 <ol class="breadcrumb box-shadow">
-                    <li><a href="~/DanhGiaRenLuyen">Đánh giá rèn luyện</a></li>
+                    <li>
+                        <a href="~/DanhGiaRenLuyen">Đánh giá rèn luyện</a>
+                    </li>
                     @if (TempData["faculty"] != null)
                     {
-                        <li><a href="~/DanhGiaRenLuyen/DanhSachLop?idFaculty=@TempData["faculty"]">@TempData["facultyName"]</a></li>
+                        <li>
+                            <a href="~/DanhGiaRenLuyen/DanhSachLop?idFaculty=@TempData["faculty"]">@TempData["facultyName"]</a>
+                        </li>
                         TempData["faculty"] = TempData["faculty"];
                         TempData["facultyName"] = TempData["facultyName"];
                     }
@@ -93,7 +100,7 @@
                     <button class="btn btn-success btn-sm" onclick="clonePoint()" type="button"><i class="fa fa-clone" aria-hidden="true"></i> Sao chép điểm nhận xét</button>
                 </div>
                 <div class="listbox-content">
-                    <br />
+                    <br/>
 
                     <div class="listbox-content">
                         @if (ViewBag.error != null)
@@ -119,58 +126,65 @@
                                 <div class="conduct-evaluate-items">
                                     @using (Html.BeginForm("DanhGiaSinhVien", "DanhGiaRenLuyen", FormMethod.Post, new { @id = "fConductEvaluate" }))
                                     {
-                                        <input type="hidden" name="isApproved" id="isApproved" />
-                                        <input type="hidden" name="old" value="@(conductResultEvaluated!=null?conductResultEvaluated.PartialPoint:"")" readonly />
-                                        <input type="hidden" name="idStudent" value="@student.IdStudent" />
-                                        <input type="hidden" name="idClass" value="@student.Class.IdClass" />
+                                        <input type="hidden" name="isApproved" id="isApproved"/>
+                                        <input type="hidden" name="old" value="@(conductResultEvaluated != null ? conductResultEvaluated.PartialPoint : string.Empty)" readonly/>
+                                        <input type="hidden" name="idStudent" value="@student.IdStudent"/>
+                                        <input type="hidden" name="idClass" value="@student.Class.IdClass"/>
                                         <table class="table table-triped table-bordered table-hover">
                                             <thead>
-                                                <tr>
-                                                    <td class="col-md-9">Nội dung</td>
-                                                    <td class="col-md-1">Tối đa</td>
-                                                    <td class="col-md-1">@(conductResultEvaluated!=null?conductResultEvaluated.ConductSchedule.DecentralizationGroup.DecentralizationGroupName+" ĐG":"Điểm đã ĐG")</td>
-                                                    <td class="col-md-1">Đánh giá</td>
-                                                </tr>
+                                            <tr>
+                                                <td class="col-md-9">Nội dung</td>
+                                                <td class="col-md-1">Tối đa</td>
+                                                <td class="col-md-1">@(conductResultEvaluated != null ? conductResultEvaluated.ConductSchedule.DecentralizationGroup.DecentralizationGroupName + " ĐG" : "Điểm đã ĐG")</td>
+                                                <td class="col-md-1">Đánh giá</td>
+                                            </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach (ConductItem conductItem in itemsByForm)
+                                            @foreach (ConductItem conductItem in itemsByForm)
+                                            {
+                                                if (conductItem.ConductItemGroup.ConductItemGroupRoles.SingleOrDefault(role => role.IdDecentralizationGroup == accountSession.IdDecentralizationGroup) != null)
                                                 {
-                                                    if (conductItem.ConductItemGroup.ConductItemGroupRoles.SingleOrDefault(role => role.IdDecentralizationGroup == accountSession.IdDecentralizationGroup) != null)
-                                                    {
-                                                        <tr>
-                                                            <td>
-                                                                @if (@conductItem.ItemIndex.Length == 2 || @conductItem.ItemIndex.Length == 4)
-                                                                {
-                                                                    <strong>@(StringExtension.GetListNumbering(conductItem.ItemIndex)) @conductItem.ItemName</strong>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <p>@(StringExtension.GetListNumbering(conductItem.ItemIndex)) @(conductItem.ItemName)</p>
-                                                                }
-                                                            </td>
-                                                            <td><span class="P@(conductItem.IdConductItems)">@conductItem.MaxPoints</span></td>
-                                                            <td>
-                                                                @if (@conductItem.ItemIndex.Length == 4)
-                                                                {
-                                                                    <span class="EP@(conductItem.IdConductItems)"> @(evaluatedValue.Count != 0 ? evaluatedValue[conductItem.IdConductItems.ToString()] : "")</span>
-                                                                }
-                                                            </td>
-                                                            <td>
-                                                                @if (@conductItem.ItemIndex.Length == 4)
-                                                                {
-                                                                    <input name="P@(conductItem.IdConductItems)" type="text" class="form-control" @(oldValue.ContainsKey(conductItem.IdConductItems.ToString()) ? "value=" + oldValue[conductItem.IdConductItems.ToString()] : "") />
-                                                                }
-                                                            </td>
-                                                        </tr>
-                                                    }
+                                                    <tr>
+                                                        <td>
+                                                            @if (@conductItem.ItemIndex.Length == 2 || @conductItem.ItemIndex.Length == 4)
+                                                            {
+                                                                <strong>@(StringExtension.GetListNumbering(conductItem.ItemIndex)) @conductItem.ItemName</strong>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p>@(StringExtension.GetListNumbering(conductItem.ItemIndex)) @(conductItem.ItemName)</p>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <span class="P@(conductItem.IdConductItems)">@conductItem.MaxPoints</span></td>
+                                                        <td>
+                                                            @if (@conductItem.ItemIndex.Length == 4)
+                                                            {
+                                                                <span class="EP@(conductItem.IdConductItems)"> @(evaluatedValue.Count != 0 ? evaluatedValue[conductItem.IdConductItems.ToString()] : string.Empty)</span>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @if (@conductItem.ItemIndex.Length == 4)
+                                                            {
+                                                                <input name="P@(conductItem.IdConductItems)" type="text" class="form-control" @(oldValue.ContainsKey(conductItem.IdConductItems.ToString()) ? "value=" + oldValue[conductItem.IdConductItems.ToString()] : string.Empty)/>
+                                                            }
+                                                        </td>
+                                                    </tr>
                                                 }
-                                                <tr>
-                                                    <td colspan="2" class="text-right">
-                                                        <span>Điểm tổng kết</span>
-                                                    </td>
-                                                    <td><strong><span class="conduct-student">0</span></strong></td>
-                                                    <td><strong><span class="conduct-total">0</span></strong></td>
-                                                </tr>
+                                            }
+                                            <tr>
+                                                <td colspan="2" class="text-right">
+                                                    <span>Điểm tổng kết</span>
+                                                </td>
+                                                <td>
+                                                    <strong>
+                                                        <span class="conduct-student">0</span></strong>
+                                                </td>
+                                                <td>
+                                                    <strong>
+                                                        <span class="conduct-total">0</span></strong>
+                                                </td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                         <div class="conduct-evaluate-summary">
@@ -196,42 +210,50 @@
         total = 0;
         max = 0;
         totalStudent = 0;
-        $('.conduct-evaluate-items input[type=text]').each(function (e) {
-            if ($(this).val().length != 0) {
-                total = total + parseInt($(this).val());
-            }
-            if ($(".E" + this.name).text().trim().length != 0) {
-                totalStudent += parseInt($(".E" + this.name).text().trim());
-            }
-            max += parseInt($("." + this.name).text());
-        });
+        $('.conduct-evaluate-items input[type=text]')
+            .each(function(e) {
+                if ($(this).val().length != 0) {
+                    total = total + parseInt($(this).val());
+                }
+                if ($(".E" + this.name).text().trim().length != 0) {
+                    totalStudent += parseInt($(".E" + this.name).text().trim());
+                }
+                max += parseInt($("." + this.name).text());
+            });
         $('.conduct-evaluate-summary').html('Xếp loại: ' + '<strong>' + GetGradeEvaluated(total) + '</strong>');
         $('.conduct-total').html(total);
         $('.conduct-student').html(totalStudent);
     }
 
     $(document)
-            .ready(
-                    function () {
-                        refreshSummaryPoint();
-                        $('.conduct-evaluate-items input').on("blur", function () {
+        .ready(
+            function() {
+                refreshSummaryPoint();
+                $('.conduct-evaluate-items input')
+                    .on("blur",
+                        function() {
                             refreshSummaryPoint();
                         });
-                        $('#fConductEvaluate')
-                                .validate(
-                                        {
-                                            submitHandler: function (form) {
-                                                submitForm();
-                                            }
-                                        });
-                        $('.conduct-evaluate-items input').each(function (e) {
-                            $(this).rules("add", {
+                $('#fConductEvaluate')
+                    .validate(
+                    {
+                        submitHandler: function(form) {
+                            submitForm();
+                        }
+                    });
+                $('.conduct-evaluate-items input')
+                    .each(function(e) {
+                        $(this)
+                            .rules("add",
+                            {
                                 digits: true,
                                 max: $("." + this.name).text(),
                                 min: 0,
                                 required: true
                             });
-                            $(this).rules("add", {
+                        $(this)
+                            .rules("add",
+                            {
                                 messages: {
                                     max: "Điểm tối đa là " + $("." + this.name).text(),
                                     min: "Điểm tối thiểu là 0",
@@ -239,58 +261,67 @@
                                     required: "Chưa nhập điểm"
                                 }
                             });
-                        });
                     });
+            });
 
     function evaluateConduct(isApproved) {
         $('#isApproved').val(isApproved);
         $("#fConductEvaluate").submit();
     }
+
     function submitForm() {
         isApproved = $('#isApproved').val();
         if (isApproved == 'true') {
-            $('.modal-announcement-message').html('Kiểm tra kỹ lại thông tin trước khi gửi! </br>Khi đã xác nhận điểm sẽ không thể chỉnh sửa được nữa.');
-            $('#modal-announcement .modal-dialog .modal-content .modal-footer').html('<button type="button" onclick="submitEvaluate()" class="btn btn-success">Xác nhận</button>  <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
+            $('.modal-announcement-message')
+                .html('Kiểm tra kỹ lại thông tin trước khi gửi! </br>Khi đã xác nhận điểm sẽ không thể chỉnh sửa được nữa.');
+            $('#modal-announcement .modal-dialog .modal-content .modal-footer')
+                .html('<button type="button" onclick="submitEvaluate()" class="btn btn-success">Xác nhận</button>  <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
             $('#modal-announcement').modal('show');
         } else {
-            $('.modal-announcement-message').html('Hết hạn đánh giá nếu bạn chưa thực hiện gửi kết quả điểm rèn luyện, kết quả đánh giá điểm rèn luyện của bạn sẽ bị hủy!');
-            $('#modal-announcement .modal-dialog .modal-content .modal-footer').html('<button type="button" onclick="submitEvaluate()" class="btn btn-success">Lưu kết quả</button>  <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
+            $('.modal-announcement-message')
+                .html('Hết hạn đánh giá nếu bạn chưa thực hiện gửi kết quả điểm rèn luyện, kết quả đánh giá điểm rèn luyện của bạn sẽ bị hủy!');
+            $('#modal-announcement .modal-dialog .modal-content .modal-footer')
+                .html('<button type="button" onclick="submitEvaluate()" class="btn btn-success">Lưu kết quả</button>  <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
             $('#modal-announcement').modal('show');
         }
     }
+
     function submitEvaluate() {
         $.ajax({
             type: 'POST',
             data: $('#fConductEvaluate').serialize(),
             url: '/DanhGiaRenLuyen/DanhGiaSinhVien',
-            beforeSend: function () {
+            beforeSend: function() {
                 $('.modal-announcement-message').html("");
                 loadIconLoading($('.cssload-container-over'));
                 $('.cssload-container-over').append("Đang xử lý dữ liệu!");
                 $('.cssload-container-over').fadeIn();
             },
-            success: function (response) {
+            success: function(response) {
                 $('.cssload-container-over').hide();
                 unloadIconLoading($('.cssload-container-over'));
                 $('.modal-announcement-message').html(response.responseText);
-                $('#modal-announcement .modal-dialog .modal-content .modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
+                $('#modal-announcement .modal-dialog .modal-content .modal-footer')
+                    .html('<button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
                 if ($('#isApproved').val() == 'true') {
                     $('input').attr('readonly', true);
                 }
             },
-            error: function (result) {
+            error: function(result) {
                 $('.cssload-container-over').hide();
                 unloadIconLoading($('.modal-announcement-message'));
                 $('.modal-announcement-message').html('Lỗi trong quá trình cập nhật dữ liệu!');
-                $('#modal-announcement .modal-dialog .modal-content .modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
+                $('#modal-announcement .modal-dialog .modal-content .modal-footer')
+                    .html('<button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
             }
         });
     }
 
     function clonePoint() {
-        $('.conduct-evaluate-items input[type=text]').each(function (e) {
-            $(this).val($(".E" + this.name).text().trim());
-        });
+        $('.conduct-evaluate-items input[type=text]')
+            .each(function(e) {
+                $(this).val($(".E" + this.name).text().trim());
+            });
         refreshSummaryPoint();
     }
 </script>

@@ -1,5 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
-@model News
+﻿@model WEBPCTSV.Models.bean.News
 @{
     ViewBag.Title = "cập nhật hình ảnh";
     ViewBag.Active = "SlideAnh";
@@ -10,62 +9,64 @@
 <script src="~/Content/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
     $(document)
-            .ready(
-                    function () {
+        .ready(
+            function() {
 
-                        $("#fAddInfo")
-                                .validate(
-                                        {
-                                            ignore: [],
-                                            rules: {
-                                                title: {
-                                                    required: true,
-                                                },
-                                                description: {
-                                                    required: true,
-                                                },
-                                                attachedDocuments: {
-                                                    url: true,
-                                                },
-                                                image: {
-                                                    required: true,
-                                                }
-                                            },
-                                            messages: {
-                                                title: {
-                                                    required: "Chưa nhập tiêu đề!",
-                                                },
-                                                description: {
-                                                    required: "Chưa nhập mô tả!",
-                                                },
-                                                attachedDocuments: {
-                                                    url: "Nhập sai định dạng link",
-                                                },
-                                                image: {
-                                                    required: "Chưa chọn ảnh hiển thị!",
-                                                }
-                                            },
+                $("#fAddInfo")
+                    .validate(
+                    {
+                        ignore: [],
+                        rules: {
+                            title: {
+                                required: true,
+                            },
+                            description: {
+                                required: true,
+                            },
+                            attachedDocuments: {
+                                url: true,
+                            },
+                            image: {
+                                required: true,
+                            }
+                        },
+                        messages: {
+                            title: {
+                                required: "Chưa nhập tiêu đề!",
+                            },
+                            description: {
+                                required: "Chưa nhập mô tả!",
+                            },
+                            attachedDocuments: {
+                                url: "Nhập sai định dạng link",
+                            },
+                            image: {
+                                required: "Chưa chọn ảnh hiển thị!",
+                            }
+                        },
 
-                                            submitHandler: function (form) {
-                                                form.submit();
-                                            }
-                                        });
+                        submitHandler: function(form) {
+                            form.submit();
+                        }
                     });
+            });
 </script>
 <style type="text/css">
-    label.error {
-        color: #FF0000;
-    }
+    label.error { color: #FF0000; }
 
     input.error {
         border: 2px solid #FF0000;
-        color: #0000FF;
         border-style: ridge;
+        color: #0000FF;
     }
 </style>
 <ol class="breadcrumb box-shadow">
-    <li><a href="~/">Trang chủ</a></li>
-    <li><a href="~/QuanLy/QuanLyBanner">Quản lý hình ảnh</a></li>
+    <li>
+        <a href="~/">Trang chủ</a>
+    </li>
+    <li>
+        <a href="~/QuanLy/QuanLyBanner">Quản lý hình ảnh</a>
+    </li>
     <li class="active">Cập nhật</li>
 </ol>
 <div class="main-content">
@@ -82,7 +83,7 @@
                     <input type="text" class="form-control" placeholder="Tiêu đề banner" name="title" value="@Model.Title">
                 </div>
                 <div>
-                    <label><input type="checkbox" @(Model.IsPinned.Value ? "checked" : "") name="isPinned">Ghim tin lên trang chủ</label>
+                    <label><input type="checkbox" @(Model.IsPinned.Value ? "checked" : string.Empty) name="isPinned">Ghim tin lên trang chủ</label>
                 </div>
                 <div class="form-group">
                     <label>Mô tả</label>
@@ -90,12 +91,12 @@
                 </div>
                 <div class="form-group">
                     <label>Link dẫn bài viết</label>
-                    <input type="text" name="attachedDocuments" value="@Model.AttachedDocuments" class="form-control" placeholder="Link dẫn đến bài viết của banner" />
+                    <input type="text" name="attachedDocuments" value="@Model.AttachedDocuments" class="form-control" placeholder="Link dẫn đến bài viết của banner"/>
                 </div>
                 <div class="form-group">
                     <label>Hình ảnh</label>
                     <div class="input-group">
-                        <input class="form-control" type="text" id="image" name="image" value="@Model.Image" />
+                        <input class="form-control" type="text" id="image" name="image" value="@Model.Image"/>
                         <div class="input-group-btn">
                             <button type="button" id="brow" class="btn btn-primary">
                                 <i class="fa fa-plus" aria-hidden="true"></i> Chọn ảnh
@@ -103,28 +104,29 @@
                         </div>
                     </div>
                     <p class="help-block">Chọn file ảnh làm banner kích cỡ 1035x460</p>
-                    <div style="width:1035px; height:460px">
-                        <embed src="~/images/placeholderBanner.jpg" title="View" style="-o-object-fit:cover; width: 100%; height: 100%;" id="view" />
+                    <div style="height: 460px; width: 1035px;">
+                        <embed src="~/images/placeholderBanner.jpg" title="View" style="-o-object-fit: cover; height: 100%; width: 100%;" id="view"/>
                     </div>
                 </div>
 
-                <input class="btn btn-danger" type="submit" value="Cập nhật" />
-                <input class="btn btn-warning" type="reset" value="Reset" />
+                <input class="btn btn-danger" type="submit" value="Cập nhật"/>
+                <input class="btn btn-warning" type="reset" value="Reset"/>
             }
         </div>
     </div>
 </div>
 
 <script language="javascript" type="text/javascript">
-    $(function () {
+    $(function() {
         $("#view").attr('src', $("#image").val());
-        $("#brow").click(function () {
-            var ck = new CKFinder();
-            ck.selectActionFunction = function (fileUrl) {
-                $("#image").val(fileUrl);
-                $("#view").attr('src', fileUrl);
-            };
-            ck.popup();
-        });
+        $("#brow")
+            .click(function() {
+                var ck = new CKFinder();
+                ck.selectActionFunction = function(fileUrl) {
+                    $("#image").val(fileUrl);
+                    $("#view").attr('src', fileUrl);
+                };
+                ck.popup();
+            });
     });
 </script>

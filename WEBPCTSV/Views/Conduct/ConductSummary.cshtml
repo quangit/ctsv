@@ -1,7 +1,5 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
-@using WEBPCTSV.Helpers.Common;
-
+﻿@using WEBPCTSV.Helpers.Common
+@using WEBPCTSV.Models.bean
 @model PagedList.IPagedList<News>
 
 @{
@@ -21,7 +19,9 @@
         </div>
         <div class="maincontent-main conduct-page" id="maincontent">
             <ol class="breadcrumb box-shadow">
-                <li><a href="~/DanhGiaRenLuyen">Đánh giá rèn luyện</a></li>
+                <li>
+                    <a href="~/DanhGiaRenLuyen">Đánh giá rèn luyện</a>
+                </li>
                 <li class="active">Điểm tổng kết</li>
             </ol>
             @{
@@ -33,25 +33,26 @@
                 <div class="conduct-schedule">
                     <table class="table table-triped table-bordered table-hover">
                         <thead>
-                            <tr>
-                                <td width="80px">Học kỳ</td>
-                                <td>Năm học</td>
-                                <td class="col-xs-1 col-md-2">Điểm rèn luyện</td>
-                                <td>Xếp loại</td>
-                                <td width="100px"></td>
-                            </tr>
+                        <tr>
+                            <td width="80px">Học kỳ</td>
+                            <td>Năm học</td>
+                            <td class="col-xs-1 col-md-2">Điểm rèn luyện</td>
+                            <td>Xếp loại</td>
+                            <td width="100px"></td>
+                        </tr>
                         </thead>
                         <tbody>
-                            @foreach (ConductResultSemester conductResultSemester in listResult)
-                            {
-                                <tr>
-                                    <td>@(++index)</td>
-                                    <td>HK@(conductResultSemester.SemesterName)/@(conductResultSemester.SemesterYear)</td>
-                                    <td class="point">@conductResultSemester.Point</td>
-                                    <td>@DataExtension.GetGradeEvaluated(conductResultSemester.Point)</td>
-                                    <td><span class="label label-info label-link" onclick="detail(@conductResultSemester.IdSemester)">Chi tiết</span></td>
-                                </tr>
-                            }
+                        @foreach (ConductResultSemester conductResultSemester in listResult)
+                        {
+                            <tr>
+                                <td>@(++index)</td>
+                                <td>HK@(conductResultSemester.SemesterName)/@(conductResultSemester.SemesterYear)</td>
+                                <td class="point">@conductResultSemester.Point</td>
+                                <td>@DataExtension.GetGradeEvaluated(conductResultSemester.Point)</td>
+                                <td>
+                                    <span class="label label-info label-link" onclick="detail(@conductResultSemester.IdSemester)">Chi tiết</span></td>
+                            </tr>
+                        }
                         </tbody>
                     </table>
                     <div class="col-xs-12" style="text-align: right;">
@@ -76,22 +77,23 @@
     }
 
     $(document)
-            .ready(
-                    function () {
-                        total = 0;
-                        count = 0;
-                        $('.point').each(function () {
-                            console.log(total);
-                            total += parseInt($(this).text().trim());
-                            count++;
-                        });
-                        result = parseFloat(total / count, 3).toFixed(2);
-                        if (isNaN(result)) {
-                            $('.average-point').text('0');
-                            $('.conduct-grade').text(GetGradeEvaluated($('.average-point').text()));
-                        } else {
-                            $('.average-point').text(result);
-                            $('.conduct-grade').text(GetGradeEvaluated($('.average-point').text()));
-                        }
+        .ready(
+            function() {
+                total = 0;
+                count = 0;
+                $('.point')
+                    .each(function() {
+                        console.log(total);
+                        total += parseInt($(this).text().trim());
+                        count++;
                     });
+                result = parseFloat(total / count, 3).toFixed(2);
+                if (isNaN(result)) {
+                    $('.average-point').text('0');
+                    $('.conduct-grade').text(GetGradeEvaluated($('.average-point').text()));
+                } else {
+                    $('.average-point').text(result);
+                    $('.conduct-grade').text(GetGradeEvaluated($('.average-point').text()));
+                }
+            });
 </script>

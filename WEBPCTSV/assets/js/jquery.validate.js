@@ -31,16 +31,16 @@ $.extend($.fn, {
 		}
 
 		// check if a validator for this form was already created
-		var validator = $.data(this[0], 'validator');
+		var validator = $.data(this[0], "validator");
 		if ( validator ) {
 			return validator;
 		}
 
 		// Add novalidate tag if HTML5.
-		this.attr('novalidate', 'novalidate');
+		this.attr("novalidate", "novalidate");
 
 		validator = new $.validator( options, this[0] );
-		$.data(this[0], 'validator', validator);
+		$.data(this[0], "validator", validator);
 
 		if ( validator.settings.onsubmit ) {
 
@@ -49,7 +49,7 @@ $.extend($.fn, {
 					validator.submitButton = ev.target;
 				}
 				// allow suppressing validation by adding a cancel class to the submit button
-				if ( $(ev.target).hasClass('cancel') ) {
+				if ( $(ev.target).hasClass("cancel") ) {
 					validator.cancelSubmit = true;
 				}
 			});
@@ -99,7 +99,7 @@ $.extend($.fn, {
 	},
 	// http://docs.jquery.com/Plugins/Validation/valid
 	valid: function() {
-		if ( $(this[0]).is('form')) {
+		if ( $(this[0]).is("form")) {
 			return this.validate().form();
 		} else {
 			var valid = true;
@@ -125,7 +125,7 @@ $.extend($.fn, {
 		var element = this[0];
 
 		if (command) {
-			var settings = $.data(element.form, 'validator').settings;
+			var settings = $.data(element.form, "validator").settings;
 			var staticRules = settings.rules;
 			var existingRules = $.validator.staticRules(element);
 			switch(command) {
@@ -239,7 +239,7 @@ $.extend($.validator, {
 			}
 		},
 		onkeyup: function(element, event) {
-			if ( event.which === 9 && this.elementValue(element) === '' ) {
+			if ( event.which === 9 && this.elementValue(element) === "" ) {
 				return;
 			} else if ( element.name in this.submitted || element === this.lastActive ) {
 				this.element(element);
@@ -256,14 +256,14 @@ $.extend($.validator, {
 			}
 		},
 		highlight: function(element, errorClass, validClass) {
-			if (element.type === 'radio') {
+			if (element.type === "radio") {
 				this.findByName(element.name).addClass(errorClass).removeClass(validClass);
 			} else {
 				$(element).addClass(errorClass).removeClass(validClass);
 			}
 		},
 		unhighlight: function(element, errorClass, validClass) {
-			if (element.type === 'radio') {
+			if (element.type === "radio") {
 				this.findByName(element.name).removeClass(errorClass).addClass(validClass);
 			} else {
 				$(element).removeClass(errorClass).addClass(validClass);
@@ -492,7 +492,7 @@ $.extend($.validator, {
 		},
 
 		errors: function() {
-			var errorClass = this.settings.errorClass.replace(' ', '.');
+			var errorClass = this.settings.errorClass.replace(" ", ".");
 			return $( this.settings.errorElement + "." + errorClass, this.errorContext );
 		},
 
@@ -516,14 +516,14 @@ $.extend($.validator, {
 		},
 
 		elementValue: function( element ) {
-			var type = $(element).attr('type'),
+			var type = $(element).attr("type"),
 				val = $(element).val();
 
-			if ( type === 'radio' || type === 'checkbox' ) {
-				return $('input[name="' + $(element).attr('name') + '"]:checked').val();
+			if ( type === "radio" || type === "checkbox" ) {
+				return $('input[name="' + $(element).attr("name") + '"]:checked').val();
 			}
 
-			if ( typeof val === 'string' ) {
+			if ( typeof val === "string" ) {
 				return val.replace(/\r/g, "");
 			}
 			return val;
@@ -589,7 +589,7 @@ $.extend($.validator, {
 		// return the custom message for the given element and validation method
 		// specified in the element's HTML5 data attribute
 		customDataMessage: function(element, method) {
-			return $(element).data('msg-' + method.toLowerCase()) || (element.attributes && $(element).attr('data-msg-' + method.toLowerCase()));
+			return $(element).data("msg-" + method.toLowerCase()) || (element.attributes && $(element).attr("data-msg-" + method.toLowerCase()));
 		},
 
 		// return the custom message for the given element name and validation method
@@ -626,7 +626,7 @@ $.extend($.validator, {
 			if ( typeof message === "function" ) {
 				message = message.call(this, rule.parameters, element);
 			} else if (theregex.test(message)) {
-				message = $.validator.format(message.replace(theregex, '{$1}'), rule.parameters);
+				message = $.validator.format(message.replace(theregex, "{$1}"), rule.parameters);
 			}
 			this.errorList.push({
 				message: message,
@@ -724,7 +724,7 @@ $.extend($.validator, {
 		errorsFor: function(element) {
 			var name = this.idOrName(element);
 			return this.errors().filter(function() {
-				return $(this).attr('for') === name;
+				return $(this).attr("for") === name;
 			});
 		},
 
@@ -750,11 +750,11 @@ $.extend($.validator, {
 
 		getLength: function(value, element) {
 			switch( element.nodeName.toLowerCase() ) {
-			case 'select':
+			case "select":
 				return $("option:selected", element).length;
-			case 'input':
+			case "input":
 				if( this.checkable( element) ) {
-					return this.findByName(element.name).filter(':checked').length;
+					return this.findByName(element.name).filter(":checked").length;
 				}
 			}
 			return value.length;
@@ -835,9 +835,9 @@ $.extend($.validator, {
 
 	classRules: function(element) {
 		var rules = {};
-		var classes = $(element).attr('class');
+		var classes = $(element).attr("class");
 		if ( classes ) {
-			$.each(classes.split(' '), function() {
+			$.each(classes.split(" "), function() {
 				if (this in $.validator.classRuleSettings) {
 					$.extend(rules, $.validator.classRuleSettings[this]);
 				}
@@ -854,7 +854,7 @@ $.extend($.validator, {
 			var value;
 
 			// support for <input required> in both html5 and older browsers
-			if (method === 'required') {
+			if (method === "required") {
 				value = $element.get(0).getAttribute(method);
 				// Some browsers return an empty string for the required attribute
 				// and non-HTML5 browsers might have required="" markup
@@ -887,7 +887,7 @@ $.extend($.validator, {
 			return {};
 		}
 
-		var meta = $.data(element.form, 'validator').settings.meta;
+		var meta = $.data(element.form, "validator").settings.meta;
 		return meta ?
 			$(element).metadata()[meta] :
 			$(element).metadata();
@@ -895,7 +895,7 @@ $.extend($.validator, {
 
 	staticRules: function(element) {
 		var rules = {};
-		var validator = $.data(element.form, 'validator');
+		var validator = $.data(element.form, "validator");
 		if (validator.settings.rules) {
 			rules = $.validator.normalizeRule(validator.settings.rules[element.name]) || {};
 		}
@@ -934,12 +934,12 @@ $.extend($.validator, {
 		});
 
 		// clean number parameters
-		$.each(['minlength', 'maxlength', 'min', 'max'], function() {
+		$.each(["minlength", "maxlength", "min", "max"], function() {
 			if (rules[this]) {
 				rules[this] = Number(rules[this]);
 			}
 		});
-		$.each(['rangelength', 'range'], function() {
+		$.each(["rangelength", "range"], function() {
 			if (rules[this]) {
 				rules[this] = [Number(rules[this][0]), Number(rules[this][1])];
 			}
@@ -1225,8 +1225,8 @@ $.format = $.validator.format;
 	// TODO verify if jQuery 1.4's implementation is compatible with older jQuery special-event APIs
 	if (!jQuery.event.special.focusin && !jQuery.event.special.focusout && document.addEventListener) {
 		$.each({
-			focus: 'focusin',
-			blur: 'focusout'
+			focus: "focusin",
+			blur: "focusout"
 		}, function( original, fix ){
 			$.event.special[fix] = {
 				setup:function() {

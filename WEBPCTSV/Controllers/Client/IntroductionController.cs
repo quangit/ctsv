@@ -1,29 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using WEBPCTSV.Models.bean;
-using WEBPCTSV.Models.bo;
-
-namespace WEBPCTSV.Controllers
+﻿namespace WEBPCTSV.Controllers
 {
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Models.bean;
+    using WEBPCTSV.Models.bo;
+
     public class IntroductionController : Controller
     {
-        DSAContext dsaContext;
+        readonly DSAContext dsaContext;
+
         public IntroductionController()
         {
-            dsaContext = new DSAContext();
+            this.dsaContext = new DSAContext();
         }
+
         public ActionResult FunctionAndDuty()
         {
-            return View();
+            return this.View();
         }
 
         public ActionResult HumanResource()
         {
-            StaffBO staffBO = new StaffBO(dsaContext);
-            return View(staffBO.getListStaff());
+            StaffBO staffBO = new StaffBO(this.dsaContext);
+            return this.View(staffBO.getListStaff());
         }
     }
 }

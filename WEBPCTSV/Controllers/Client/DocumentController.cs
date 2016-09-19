@@ -1,36 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using WEBPCTSV.Models.bean;
-using WEBPCTSV.Models.bo;
-
-namespace WEBPCTSV.Controllers
+﻿namespace WEBPCTSV.Controllers
 {
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Models.bean;
+    using WEBPCTSV.Models.bo;
+
     public class DocumentController : Controller
     {
-        DSAContext dsaContext;
-        DocumentBO documentBO;
+        readonly DocumentBO documentBO;
+
+        readonly DSAContext dsaContext;
 
         public DocumentController()
         {
-            dsaContext = new DSAContext();
-            documentBO = new DocumentBO(dsaContext);
+            this.dsaContext = new DSAContext();
+            this.documentBO = new DocumentBO(this.dsaContext);
         }
-        public ActionResult ListDocument(int? page, string type = null)
-        {
-            ViewBag.type = type;
-            return View(documentBO.GetListDocument(page, type));
-        }
+
         public ActionResult DetailDocument(int id)
         {
-            return View(documentBO.GetDocument(id));
+            return this.View(this.documentBO.GetDocument(id));
         }
+
+        public ActionResult ListDocument(int? page, string type = null)
+        {
+            this.ViewBag.type = type;
+            return this.View(this.documentBO.GetListDocument(page, type));
+        }
+
         public ActionResult TopDocument(int count)
         {
-            ViewBag.topDocument = documentBO.GetTopDocument(count);
-            return View();
+            this.ViewBag.topDocument = this.documentBO.GetTopDocument(count);
+            return this.View();
         }
     }
 }

@@ -1,9 +1,7 @@
-﻿@using WEBPCTSV.Models.bean;
-@using WEBPCTSV.Helpers.Common;
-@using WEBPCTSV.Helpers;
-@using PagedList.Mvc;
-
-@model PagedList.IPagedList<Document>
+﻿@using PagedList.Mvc
+@using WEBPCTSV.Helpers
+@using WEBPCTSV.Helpers.Common
+@model PagedList.IPagedList<WEBPCTSV.Models.bean.Document>
 
 @{
     ViewBag.Title = "Văn bản biễu mẫu Phòng Công Tác Sinh Viên trường Đại Học Bách Khoa - Đại Học Đà Nẵng";
@@ -14,25 +12,39 @@
     <div id="maincontent-section1">
         <div class="maincontent-main listbox listbox-main">
             <ol class="breadcrumb box-shadow">
-                <li><a href="~/">Trang chủ</a></li>
+                <li>
+                    <a href="~/">Trang chủ</a>
+                </li>
                 <li class="!/VanBanBieuMau">Văn Bản Biểu Mẫu</li>
-                <li class="active">@Define.typeDocument[(ViewBag.type == null ? "" : (ViewBag.type))]</li>
+                <li class="active">@Define.typeDocument[ViewBag.type == null ? string.Empty : (ViewBag.type)]</li>
             </ol>
             <div class="listbox-content row" style="min-height: 300px;">
                 <div class="listbox-content-section">
                     <div class="dropdown">
                         <button class="btn btn-default dropdown-toggle btn-sm" type="button" data-toggle="dropdown" aria-expanded="false">Lọc theo loại văn bản <span class="caret"></span></button>
                         <ul class="dropdown-menu">
-                            <li><a href="/VanBanBieuMau">Tất cả</a></li>
+                            <li>
+                                <a href="/VanBanBieuMau">Tất cả</a>
+                            </li>
                             <li class="divider"></li>
                             <li class="dropdown-header">Văn bản</li>
-                            <li><a href="/VanBanBieuMau?type=VanBanBo">@Define.typeDocument["VanBanBo"]</a></li>
-                            <li><a href="/VanBanBieuMau?type=VanBanDHDN">@Define.typeDocument["VanBanDHDN"]</a></li>
-                            <li><a href="/VanBanBieuMau?type=VanBanTruong">@Define.typeDocument["VanBanTruong"]</a></li>
-                            <li><a href="/VanBanBieuMau?type=VanBanCTSV">@Define.typeDocument["VanBanCTSV"]</a></li>
+                            <li>
+                                <a href="/VanBanBieuMau?type=VanBanBo">@Define.typeDocument["VanBanBo"]</a>
+                            </li>
+                            <li>
+                                <a href="/VanBanBieuMau?type=VanBanDHDN">@Define.typeDocument["VanBanDHDN"]</a>
+                            </li>
+                            <li>
+                                <a href="/VanBanBieuMau?type=VanBanTruong">@Define.typeDocument["VanBanTruong"]</a>
+                            </li>
+                            <li>
+                                <a href="/VanBanBieuMau?type=VanBanCTSV">@Define.typeDocument["VanBanCTSV"]</a>
+                            </li>
                             <li class="divider"></li>
                             <li class="dropdown-header">Biểu mẫu</li>
-                            <li><a href="/VanBanBieuMau?type=BieuMau">@Define.typeDocument["BieuMau"]</a></li>
+                            <li>
+                                <a href="/VanBanBieuMau?type=BieuMau">@Define.typeDocument["BieuMau"]</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -90,7 +102,7 @@
     </div>
 </div>
 
-<div id="resultRegister" style="display:none;">
+<div id="resultRegister" style="display: none;">
 
 </div>
 <script>

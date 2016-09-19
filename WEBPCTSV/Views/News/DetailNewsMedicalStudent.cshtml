@@ -1,7 +1,6 @@
-﻿@using WEBPCTSV.Models.bean;
-@model News
+﻿@model WEBPCTSV.Models.bean.News
 @{
-    ViewBag.Title = (Model != null ? Model.Title + " - Tin y tế Phòng Công Tác Sinh Viên trường Đại Học Bách Khoa - Đại Học Đà Nẵng" : "Chi tiết y tế phòng Công tác sinh viên - Đại Học Bách Khoa - Đại Học Đà Nẵng");
+    ViewBag.Title = Model != null ? Model.Title + " - Tin y tế Phòng Công Tác Sinh Viên trường Đại Học Bách Khoa - Đại Học Đà Nẵng" : "Chi tiết y tế phòng Công tác sinh viên - Đại Học Bách Khoa - Đại Học Đà Nẵng";
     Layout = "~/Views/Shared/ClientMaster.cshtml";
 }
 
@@ -10,13 +9,17 @@
         <div class="maincontent-main listbox listbox-main">
             @if (Model == null)
             {
-                <div style="text-align:center; font-size:16px;margin-top:20px;">Không tìm thấy bài viết!</div>
+                <div style="font-size: 16px; margin-top: 20px; text-align: center;">Không tìm thấy bài viết!</div>
             }
             else
             {
                 <ol class="breadcrumb box-shadow">
-                    <li><a href="~/">Trang chủ</a></li>
-                    <li><a href="~/GiaoDucPhapLuat">Giáo dục pháp luật</a></li>
+                    <li>
+                        <a href="~/">Trang chủ</a>
+                    </li>
+                    <li>
+                        <a href="~/GiaoDucPhapLuat">Giáo dục pháp luật</a>
+                    </li>
                     <li class="active">@(Model.Title) </li>
                 </ol>
                 <div class="news-detail">
@@ -28,15 +31,15 @@
                         @Html.Raw(HttpUtility.HtmlDecode(Model.ContentHtml))
                         @if (Model.AttachedDocuments != null)
                         {
-                            if (!(WEBPCTSV.Helpers.Common.StringExtension.IsNullOrWhiteSpace(Model.AttachedDocuments)))
+                            if (!WEBPCTSV.Helpers.Common.StringExtension.IsNullOrWhiteSpace(Model.AttachedDocuments))
                             {
-                                String link = Model.AttachedDocuments.Substring(1);
-                                String[] arrlink = link.Split(':');
-                                <p style="font-weight :bold;">Các tệp tin đính kèm:</p>
+                                string link = Model.AttachedDocuments.Substring(1);
+                                string[] arrlink = link.Split(':');
+                                <p style="font-weight: bold;">Các tệp tin đính kèm:</p>
                                 <div id="file-download">
-                                    @foreach (String nLink in arrlink)
+                                    @foreach (string nLink in arrlink)
                                     {
-                                        String[] fileName = nLink.Split('/');
+                                        string[] fileName = nLink.Split('/');
                                         <p class="itemFileDownload">
                                             <i id="icon1" class="fa fa-file-text-o"></i>
                                             <a id="link1" href="@nLink">
@@ -50,7 +53,7 @@
                                         </p>
                                     }
                                 </div>
-                                <div id="pdfViewer" style="display:none; margin-top:5px;">
+                                <div id="pdfViewer" style="display: none; margin-top: 5px;">
                                 </div>
                             }
                         }
@@ -68,9 +71,14 @@
 <script language="javascript">
     function viewPdf(link) {
         $('#pdfViewer').attr("style", "margin-top:5px;");
-        $('#pdfViewer').html("<iframe src='//docs.google.com/viewer?url=http://ctsv.dut.udn.vn:8081" + link + "&amp;hl=vi&amp;embedded=true' class='gde-frame' style='width:100%; height:500px; border: none;' scrolling='no' data-proportion='NaN'></iframe>");
-        $('html, body').animate({
-            scrollTop: $('#pdfViewer').offset().top - 70
-        }, 1000);
+        $('#pdfViewer')
+            .html("<iframe src='//docs.google.com/viewer?url=http://ctsv.dut.udn.vn:8081" +
+                link +
+                "&amp;hl=vi&amp;embedded=true' class='gde-frame' style='width:100%; height:500px; border: none;' scrolling='no' data-proportion='NaN'></iframe>");
+        $('html, body')
+            .animate({
+                    scrollTop: $('#pdfViewer').offset().top - 70
+                },
+                1000);
     }
 </script>

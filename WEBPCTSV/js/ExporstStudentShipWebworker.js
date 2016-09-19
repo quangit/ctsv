@@ -7,7 +7,7 @@
 function GetData() {
     try {
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/StudentShip/GetProgressExportStudentShip', false);
+        xhr.open("GET", "/StudentShip/GetProgressExportStudentShip", false);
         xhr.setRequestHeader("Content-Type",
         "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function () {

@@ -2,149 +2,134 @@
  * generic neo slide home elements
  ************************************/
 .neoslideshow img {
-    width: 1000px;
     height: 450px;
     position: absolute;
+    width: 1000px;
     z-index: 0;
 }
 
 .neoslideshow {
     background: white;
-    padding: 2px 0px 0px 0px;
     border-top: 1px dashed #ccc;
-    width: 1000px;
     height: 450px;
+    padding: 2px 0px 0px 0px;
+    width: 1000px;
     width: 1000px;
 }
 
 
 .als-container {
     background: white;
+    margin: 0px auto;
     position: relative;
     width: 100%;
-    margin: 0px auto;
     z-index: 0;
 }
 
 .als-viewport {
+    margin: 0px auto;
+    overflow: hidden;
     padding: 0px 20px;
     position: relative;
-    overflow: hidden;
-    margin: 0px auto;
 }
 
 .als-wrapper {
-    position: relative;
     list-style: none;
+    position: relative;
 }
 
 .als-next, .als-prev {
-    position: absolute;
-    cursor: pointer;
+    -moz-transition: all .5s ease-out;
+    -ms-transition: all .5s ease-out;
+    -webkit-transition: all .5s ease-out;
     clear: both;
-    z-index: 1;
+    cursor: pointer;
     height: 100%;
-    top: 0%;
-    width: 30px;
-    padding: 0px 5px;
     margin-left: -15px;
     margin-right: -5px;
     opacity: 0.7;
-    -webkit-transition: all .5s ease-out;
-    -moz-transition: all .5s ease-out;
-    -ms-transition: all .5s ease-out;
+    padding: 0px 5px;
+    position: absolute;
+    top: 0%;
+    width: 30px;
+    z-index: 1;
 }
 
-    .als-prev img {
-        padding: 75px 0px 0px 2px;
-    }
+.als-prev img { padding: 75px 0px 0px 2px; }
 
-    .als-next img {
-        padding: 75px 0px 0px 10px;
-    }
+.als-next img { padding: 75px 0px 0px 10px; }
 
 
 #demo1 .als-item {
-    position: relative;
-    display: block;
-    cursor: pointer;
-    float: left;
     background: white;
-    width: 175px;
     border-radius: 4px;
+    cursor: pointer;
+    display: block;
+    float: left;
+    height: 195px;
     margin: 5px 10px;
-    padding: 0px;
     min-height: 100px;
     min-width: 145px;
-    height: 195px;
+    padding: 0px;
+    position: relative;
+    width: 175px;
 }
 
-    #demo1 .als-item img {
-        display: block;
-        margin: 0 auto;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .slider-img-group {
-        border-radius: 3px;
-        overflow: hidden;
-        width: 175px;
-        height: 120px;
-    }
-#demo1 .als-prev {
-    left: 5px;
+#demo1 .als-item img {
+    display: block;
+    height: 100%;
+    margin: 0 auto;
+    object-fit: cover;
+    width: 100%;
 }
+
+.slider-img-group {
+    border-radius: 3px;
+    height: 120px;
+    overflow: hidden;
+    width: 175px;
+}
+
+#demo1 .als-prev { left: 5px; }
 
 
 .als-next:hover, .als-prev:hover {
-    opacity: 1;
-    -webkit-transition: all .2s ease-out;
     -moz-transition: all .2s ease-out;
     -ms-transition: all .2s ease-out;
+    -webkit-transition: all .2s ease-out;
+    opacity: 1;
 }
 
 
 
-#demo1 .als-next {
-    right: 5px;
-}
+#demo1 .als-next { right: 5px; }
 
-.als-item #title {
-    font-weight: bold;
-}
+.als-item #title { font-weight: bold; }
 
-.als-item #descript {
-    color: #555;
-}
+.als-item #descript { color: #555; }
 
 
 
 
-#slidetuyendung .als-container {
-    background: white;
-}
+#slidetuyendung .als-container { background: white; }
 
 #slidetuyendung .als-item img {
-    width: 240px;
     height: 170px;
     position: relative;
-}
-
-#slidetuyendung .als-item {
     width: 240px;
 }
 
-    #slidetuyendung .als-item #title {
-        position: absolute;
-        width: 240px;
-        bottom: 0px;
-        line-height: 195%;
-    }
+#slidetuyendung .als-item { width: 240px; }
 
-        #slidetuyendung .als-item #title span {
-            background: url('../images/bg_opacity.png');
-            padding: 5px 5px;
-            font-weight: bold;
-        }
+#slidetuyendung .als-item #title {
+    bottom: 0px;
+    line-height: 195%;
+    position: absolute;
+    width: 240px;
+}
+
+#slidetuyendung .als-item #title span {
+    background: url('../images/bg_opacity.png');
+    font-weight: bold;
+    padding: 5px 5px;
+}

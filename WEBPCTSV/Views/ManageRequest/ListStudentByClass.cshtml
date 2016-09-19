@@ -1,5 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
-@using WEBPCTSV.Models.Support;
+﻿@using WEBPCTSV.Models.bean
 @{
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
     ViewBag.Title = "ListAllRequest";
@@ -12,63 +11,79 @@
 <div class="container-layoutmanager" ng-controller="listStudentByClass">
     <table class="table table-hover">
         <thead>
-            <tr>
-                <th>STT</th>
-                <th>Tên sinh viên</th>
-                <th><button type="button" class="btn btn-success" style="margin-left:5px" data-toggle="tooltip" title="In đơn !" onclick="PrintAllHtml('@ViewBag.idReason','@ViewBag.idClass')"><span class="glyphicon glyphicon-print"></span><strong> In tất cả </strong></button></th>
-            </tr>
+        <tr>
+            <th>STT</th>
+            <th>Tên sinh viên</th>
+            <th>
+                <button type="button" class="btn btn-success" style="margin-left: 5px" data-toggle="tooltip" title="In đơn !" onclick="PrintAllHtml('@ViewBag.idReason', '@ViewBag.idClass')">
+                    <span class="glyphicon glyphicon-print"></span><strong> In tất cả </strong>
+                </button>
+            </th>
+        </tr>
         </thead>
         <tbody>
-            @{int stt = 1;
-            
+        @{
+            int stt = 1;
+
             foreach (Student student in ViewBag.student)
             {
                 RequestPaper request = listRequestPaper.Where(r => r.AccountRequest.Students.FirstOrDefault().IdStudent == student.IdStudent).LastOrDefault();
                 <tr>
-                    <td><p class="form-control-static">@stt</p></td>
-                    <td><p class="form-control-static">@(student.LastNameStudent + " " + student.FirstNameStudent)</p></td>
+                    <td>
+                        <p class="form-control-static">@stt</p>
+                    </td>
+                    <td>
+                        <p class="form-control-static">@(student.LastNameStudent + " " + student.FirstNameStudent)</p>
+                    </td>
                     @if (request == null)
                     {
                         <td id="ListButton_@student.IdStudent">
-                            <div class="input-group" style="width:100px">
-                                <input id="numberPaper_@student.IdStudent" placeholder="SL" type="number" min="1" max="20" step="1" class="form-control" />
+                            <div class="input-group" style="width: 100px">
+                                <input id="numberPaper_@student.IdStudent" placeholder="SL" type="number" min="1" max="20" step="1" class="form-control"/>
                                 <div class="input-group-btn">
-                                    <button class="btn btn-primary" ng-click="AddRequest('@student.IdStudent','@ViewBag.idReason','numberPaper_@student.IdStudent','ListButton_@student.IdStudent')" data-toggle="tooltip" title="Thêm yêu cầu!"><span class="glyphicon glyphicon-save "></span></button>
+                                    <button class="btn btn-primary" ng-click="AddRequest('@student.IdStudent','@ViewBag.idReason','numberPaper_@student.IdStudent','ListButton_@student.IdStudent')" data-toggle="tooltip" title="Thêm yêu cầu!">
+                                        <span class="glyphicon glyphicon-save "></span></button>
                                 </div>
                             </div>
-                            
+
                         </td>
                     }
                     else
                     {
                         <td id="ListButton_@student.IdStudent">
-                            <div class="input-group" style="width:100px;float:left">
-                                <input id="updatenumberPaper_@student.IdStudent" type="number" min="1" max="20" step="1" value="@request.NumberPaper" class="form-control" />
+                            <div class="input-group" style="float: left; width: 100px;">
+                                <input id="updatenumberPaper_@student.IdStudent" type="number" min="1" max="20" step="1" value="@request.NumberPaper" class="form-control"/>
                                 <div class="input-group-btn">
-                                    <button class="btn btn-info" onclick="UpdateRequest('@request.IdRequestPaper','updatenumberPaper_@student.IdStudent')" data-toggle="tooltip" title="Cập nhật số lượng giấy tờ !"><span class="glyphicon glyphicon-pencil "></span></button>
+                                    <button class="btn btn-info" onclick="UpdateRequest('@request.IdRequestPaper',
+    'updatenumberPaper_@student.IdStudent')" data-toggle="tooltip" title="Cập nhật số lượng giấy tờ !">
+                                        <span class="glyphicon glyphicon-pencil "></span></button>
                                 </div>
                             </div>
                             @if (request.IdRequestStatus != 3)
                             {
-                                <button type="button" class="btn btn-success" style="margin-left:5px" data-toggle="tooltip" title="In đơn !" onclick="PrintHtml('@request.Reasonrequest.IdPaper','@request.IdAccountRequest',@request.NumberPaper)"><span class="glyphicon glyphicon-print"></span></button>
+                                <button type="button" class="btn btn-success" style="margin-left: 5px" data-toggle="tooltip" title="In đơn !" onclick="PrintHtml('@request.Reasonrequest.IdPaper',    '@request.IdAccountRequest',
+    @request.NumberPaper)">
+                                    <span class="glyphicon glyphicon-print"></span></button>
                             }
 
                             @if (request.IdRequestStatus == 1 || request.IdRequestStatus == 2)
                             {
-                                <label class="btn btn-danger" data-toggle="tooltip" title="Hủy yêu cầu!" onclick="UpdateStatusCancelRequest('@request.IdRequestPaper')"><a class="glyphicon glyphicon-remove" style="color:white"></a></label>
+                                <label class="btn btn-danger" data-toggle="tooltip" title="Hủy yêu cầu!" onclick="UpdateStatusCancelRequest('@request.IdRequestPaper')">
+                                    <a class="glyphicon glyphicon-remove" style="color: white"></a>
+                                </label>
                             }
                         </td>
-
                     }
 
                 </tr>
-                    stt++;
+                stt++;
             }
-            }
+
+        }
 
         </tbody>
     </table>
-    
+
 </div>
 <script>
     function PrintHtml(idPaper, idAccountRequest, number) {
@@ -85,9 +100,9 @@
             url: "/ManagePaper/DetailPrintPaper",
             type: "post",
             data: { 'idPaper': idPaper, 'idAccountRequest': idAccountRequest, 'numberPaper': number },
-            success: function (data) {          
+            success: function(data) {
                 var originalContents = document.body.innerHTML;
-                document.body.innerHTML = data.Result;                
+                document.body.innerHTML = data.Result;
                 window.print();
                 document.body.innerHTML = originalContents;
                 location.reload();
@@ -104,13 +119,13 @@
 
     }
 
-    function PrintAllHtml(idReason,idClass) {
+    function PrintAllHtml(idReason, idClass) {
 
         $.ajax({
             url: "/ManagePaper/PrintListPaperByClass",
             type: "post",
-            data: { "idReason":idReason,"idClass": idClass },
-            success: function (data) {
+            data: { "idReason": idReason, "idClass": idClass },
+            success: function(data) {
                 var originalContents = document.body.innerHTML;
                 document.body.innerHTML = data.Result;
                 document.body.innerHTML += "<div class='divFooter'>'@ViewBag.inforFooter'</div>";
@@ -128,20 +143,19 @@
             url: "/ManageRequest/UpdateStatusProcessRequest",
             type: "post",
             data: { 'idRequestPaper': idRequest },
-            success: function (result) {
+            success: function(result) {
                 location.reload();
             }
         });
     }
 
     function UpdateStatusCancelRequest(idRequest) {
-        if(confirm("Bạn có muốn xóa yêu cầu!"))
-        {
+        if (confirm("Bạn có muốn xóa yêu cầu!")) {
             $.ajax({
                 url: "/ManageRequest/UpdateStatusCancelRequest",
                 type: "post",
                 data: { 'idRequestPaper': idRequest },
-                success: function (result) {
+                success: function(result) {
                     location.reload();
                 }
             });
@@ -155,7 +169,7 @@
             url: "/ManageRequest/UpdateRequest",
             type: "post",
             data: { "idRequest": idRequest, "numberPaper": numberPaper },
-            success: function (result) {
+            success: function(result) {
                 alert("Bạn đã cập nhật thành công!");
             }
         });

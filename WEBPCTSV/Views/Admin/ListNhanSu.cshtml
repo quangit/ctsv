@@ -1,5 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
+﻿@using PagedList.Mvc
 @model PagedList.IPagedList<QUANTRI>
 
 @{
@@ -9,9 +8,15 @@
 }
 
 <ol class="breadcrumb box-shadow">
-    <li><a href="ListNhanSu?page=1&x=1" style="font-weight: bold!important">Quản lý Admin</a></li>
-    <li><a href="ListTuVanVien?page=1&x=2">Quản lý tư vấn viên</a></li>
-    <li><a href="ListVienChuc?page=1&x=3">Quản lý cơ cấu nhân sự</a></li>
+    <li>
+        <a href="ListNhanSu?page=1&x=1" style="font-weight: bold !important">Quản lý Admin</a>
+    </li>
+    <li>
+        <a href="ListTuVanVien?page=1&x=2">Quản lý tư vấn viên</a>
+    </li>
+    <li>
+        <a href="ListVienChuc?page=1&x=3">Quản lý cơ cấu nhân sự</a>
+    </li>
 </ol>
 <div class="main-content">
     <div class="funtion-block">
@@ -19,24 +24,26 @@
             <i class="fa fa-plus-square"></i> Thêm mới
         </a>
     </div>
-    <hr />
+    <hr/>
     <div id="tbnoidung">
         <table class="table table-hover">
             <thead>
-                <tr class="tieude">
-                    <th>Tài Khoản</th>
-                    <th>Họ Tên</th>
-                    <th>Điện Thoại</th>
-                    <th>Email</th>
-                    <th style="text-align: center;">Tùy Chọn</th>
-                </tr>
+            <tr class="tieude">
+                <th>Tài Khoản</th>
+                <th>Họ Tên</th>
+                <th>Điện Thoại</th>
+                <th>Email</th>
+                <th style="text-align: center;">Tùy Chọn</th>
+            </tr>
             </thead>
             @foreach (var tin in Model)
             {
                 <tr class="noidung">
                     <td>@tin.TenDangNhap</td>
                     <td>@tin.HoTen</td>
-                    <td><p class="mota"> @tin.DienThoai </p></td>
+                    <td>
+                        <p class="mota"> @tin.DienThoai </p>
+                    </td>
                     <td>@tin.Email</td>
                     <td style="width: 20%">
                         <span class="label label-warning">

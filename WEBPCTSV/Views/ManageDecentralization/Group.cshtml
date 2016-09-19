@@ -1,4 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
+﻿@using WEBPCTSV.Models.bean
 @{
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
     ViewBag.Title = "Group";
@@ -9,23 +9,25 @@
 @{
     List<DecentralizationGroup> listGroup = ViewBag.listGroup;
 }
-<button class="btn btn-success" data-toggle="modal" data-target="#ModalAddGroup" style="margin-left:10px"><span class="glyphicon glyphicon-plus"></span> Thêm nhóm phân quyền</button>
-<hr />
-<div class="container-layoutmanager" >
-    
+<button class="btn btn-success" data-toggle="modal" data-target="#ModalAddGroup" style="margin-left: 10px"><span class="glyphicon glyphicon-plus"></span> Thêm nhóm phân quyền</button>
+<hr/>
+<div class="container-layoutmanager">
+
     <table class="table table-hover">
         <thead>
-            <tr>
-                <th>Tên nhóm</th>
-            </tr>
+        <tr>
+            <th>Tên nhóm</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (DecentralizationGroup group in listGroup)
-            {
-                <tr>
-                    <td><a href="/ManageDecentralization/DecentralizationGroup?idgroup=@group.IdDecentralizationGroup&&nameGroup=@group.DecentralizationGroupName">@group.DecentralizationGroupName</a></td>
-                </tr>
-            }
+        @foreach (DecentralizationGroup group in listGroup)
+        {
+            <tr>
+                <td>
+                    <a href="/ManageDecentralization/DecentralizationGroup?idgroup=@group.IdDecentralizationGroup&&nameGroup=@group.DecentralizationGroupName">@group.DecentralizationGroupName</a>
+                </td>
+            </tr>
+        }
         </tbody>
     </table>
 </div>
@@ -38,8 +40,8 @@
                 <h4 class="modal-title">Thêm nhóm</h4>
             </div>
             <div class="modal-body">
-                <input id="inputNameGroup" ng-model="inputNameGroup" type="text" class="form-control" placeholder="nhâp tên nhóm" />
-                <button class="btn btn-success" style="margin-top:10px" data-dismiss="modal" ng-click="AddGroup()">Thêm</button>
+                <input id="inputNameGroup" ng-model="inputNameGroup" type="text" class="form-control" placeholder="nhâp tên nhóm"/>
+                <button class="btn btn-success" style="margin-top: 10px" data-dismiss="modal" ng-click="AddGroup()">Thêm</button>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -48,10 +50,3 @@
     </div>
 
 </div>
-
-
-
-
-
-
-

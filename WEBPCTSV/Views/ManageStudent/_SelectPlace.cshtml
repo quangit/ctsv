@@ -1,23 +1,24 @@
-﻿@model SelectPlaceSP
-@using WEBPCTSV.Models.Support;
+﻿@using WEBPCTSV.Models.bean
+@using WEBPCTSV.Models.Support
+@model SelectPlaceSP
 @{
     SelectPlaceSP place = Model;
-    WEBPCTSV.Models.bean.Province province = null;
-    WEBPCTSV.Models.bean.District district = null;
-    if(place.ward!=null)
+    Province province = null;
+    District district = null;
+    if (place.ward != null)
     {
         province = place.ward.District.Province;
         district = place.ward.District;
     }
-    
+
 }
 <div class="form-group" ng-controller="selectPlace">
     <label class="control-label col-sm-3">@place.note:</label>
     <div class="col-sm-2">
-        <select id="selectProvive_@place.name" ng-init="selectProvive_@place.name = '@((place.ward!=null)?province.IdProvince:"")'" ng-model="selectProvive_@place.name" ng-change="SelectProvince('selectProvive_@place.name','selectDistrict_@place.name')" class="form-control">
+        <select id="selectProvive_@place.name" ng-init="selectProvive_@place.name = '@((place.ward != null) ? province.IdProvince : string.Empty)'" ng-model="selectProvive_@place.name" ng-change="SelectProvince('selectProvive_@place.name','selectDistrict_@place.name')" class="form-control">
 
             <option value="">Chọn tỉnh</option>
-            @foreach (WEBPCTSV.Models.bean.Province provinceItem in ViewBag.listProvince)
+            @foreach (Province provinceItem in ViewBag.listProvince)
             {
                 <option value="@provinceItem.IdProvince">@provinceItem.ProvinceName</option>
             }
@@ -25,13 +26,17 @@
 
     </div>
     <div class="col-sm-2">
-        <select id="selectDistrict_@place.name" ng-init="selectDistrict_@place.name = '@((place.ward!=null)?district.IdDistrict:"")'" ng-model="selectDistrict_@place.name" ng-change="SelectDistrict('selectDistrict_@place.name','selectWard_@place.name')" class="form-control">
+        <select id="selectDistrict_@place.name" ng-init="selectDistrict_@place.name = '@((place.ward != null) ? district.IdDistrict : string.Empty)'" ng-model="selectDistrict_@place.name" ng-change="SelectDistrict('selectDistrict_@place.name','selectWard_@place.name')" class="form-control">
             @if (place.ward != null)
             {
-                foreach (WEBPCTSV.Models.bean.District districtItem in province.Districts)
+                foreach (District districtItem in province.Districts)
                 {
                     string selected = "selected";
-                    <option @if (district.IdDistrict == districtItem.IdDistrict) { @selected    } value="@districtItem.IdDistrict">@districtItem.DistrictName</option>
+                    <option @if (district.IdDistrict == districtItem.IdDistrict)
+                            {
+                                @selected
+                            } value="@districtItem.IdDistrict">
+                        @districtItem.DistrictName</option>
                 }
             }
             else
@@ -45,19 +50,21 @@
         <select name="selectWard_@place.name" id="selectWard_@place.name" class="form-control">
             @if (place.ward != null)
             {
-                foreach (WEBPCTSV.Models.bean.Ward ward in district.Wards)
+                foreach (Ward ward in district.Wards)
                 {
                     string selected = "selected";
-                    <option @if(place.ward.IdWard==ward.IdWard){@selected} value="@ward.IdWard">@ward.WardName</option>
+                    <option @if (place.ward.IdWard == ward.IdWard)
+                            {
+                                @selected
+                            } value="@ward.IdWard">
+                        @ward.WardName</option>
                 }
             }
             else
             {
                 <option value="">Chọn xã</option>
             }
-            
+
         </select>
     </div>
 </div>
-
-

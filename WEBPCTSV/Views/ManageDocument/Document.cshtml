@@ -1,6 +1,5 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
-@model PagedList.IPagedList<Document>
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<WEBPCTSV.Models.bean.Document>
 
 @{
     ViewBag.Title = "Văn bản biểu mẫu";
@@ -9,7 +8,9 @@
 }
 
 <ol class="breadcrumb box-shadow">
-    <li><a href="TrangChu">Trang chủ</a></li>
+    <li>
+        <a href="TrangChu">Trang chủ</a>
+    </li>
     <li class="active">Quản lý văn bản biểu mẫu</li>
 </ol>
 <div class="main-content">
@@ -18,7 +19,7 @@
             <i class="fa fa-plus-square"></i> Thêm mới
         </a>
     </div>
-    <hr />
+    <hr/>
     <div class="alert-result">
         @if (TempData["success"] != null)
         {
@@ -36,21 +37,25 @@
     <div id="tbnoidung">
         <table class="table table-hover">
             <thead>
-                <tr class="tieude">
-                    <th>ID</th>
-                    <th width="30%">Tiêu đề</th>
-                    <th>Mã văn bản</th>
-                    <th>Loại văn bản</th>
-                    <th width="11%">Tùy Chọn</th>
-                </tr>
+            <tr class="tieude">
+                <th>ID</th>
+                <th width="30%">Tiêu đề</th>
+                <th>Mã văn bản</th>
+                <th>Loại văn bản</th>
+                <th width="11%">Tùy Chọn</th>
+            </tr>
             </thead>
             @foreach (var news in Model)
             {
                 <tr class="noidung">
                     <td>@news.IdDocument</td>
                     <td>@news.News.Title</td>
-                    <td><p> @news.DocumentNumber </p></td>
-                    <td><p> @WEBPCTSV.Helpers.Define.typeNews[news.News.Type] </p></td>
+                    <td>
+                        <p> @news.DocumentNumber </p>
+                    </td>
+                    <td>
+                        <p> @WEBPCTSV.Helpers.Define.typeNews[news.News.Type] </p>
+                    </td>
                     <td>
                         <a href="../QuanLy/QuanLyVanBan/CapNhat?id=@news.IdDocument">
                             <span data-tooltip="true" title="Chỉnh sửa" class="btn btn-warning btn-sm">

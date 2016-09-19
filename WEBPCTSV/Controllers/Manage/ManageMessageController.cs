@@ -1,72 +1,84 @@
-﻿using WEBPCTSV.Models.bo;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using WEBPCTSV.Models.bean;
-
-namespace WEBPCTSV.Controllers
+﻿namespace WEBPCTSV.Controllers
 {
+    using System;
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Models.bean;
+    using WEBPCTSV.Models.bo;
+
     public class ManageMessageController : Controller
     {
+        public ActionResult ChangeIsReaded(int idMessage)
+        {
+            new MessageBo().ChangeIsReaded(idMessage);
+            return this.Content("1", "text/plain");
+        }
+
+        public ActionResult GetCountMessageReceiveUnRead()
+        {
+            if (this.Session["numberMessagerUnread"] == null) this.Session["numberMessagerUnread"] = 0;
+            int numberMessagerUnread =
+                new MessageBo().GetCountMessageReceiveUnRead(Convert.ToInt32(this.Session["idAccount"]));
+            return this.Content(numberMessagerUnread.ToString(), "text/plain");
+        }
+
+        public ActionResult GetLastMessageReceiveUnRead()
+        {
+            Message message = new MessageBo().GetLastMessageReceiveUnRead(Convert.ToInt32(this.Session["idAccount"]));
+            if (message == null) return null;
+            return
+                this.Json(
+                    new
+                        {
+                            data = message.TextSummary,
+                            title = message.TitleMessage,
+                            image = message.AccountSender.Avatar
+                        });
+        }
+
         // GET: ManageMessage
         public ActionResult Index()
         {
-            return View();
+            return this.View();
+        }
+
+        public ActionResult MessageReceiveReaded(int page)
+        {
+            if (this.Session["idAccount"] == null) return this.RedirectToAction("Index", "Home");
+            this.ViewBag.Message =
+                new MessageBo().GetMessageReceiveReadedByPage(Convert.ToInt32(this.Session["idAccount"]), page);
+            this.ViewBag.pageNumber =
+                new MessageBo().TotalPagenumberReceiveReaded(Convert.ToInt32(this.Session["idAccount"]), page);
+            return this.View("MessageReaded");
+        }
+
+        public ActionResult MessageReceiveUnRead(int page)
+        {
+            if (this.Session["idAccount"] == null) return this.RedirectToAction("Index", "Home");
+            this.ViewBag.Message =
+                new MessageBo().GetMessageReceiveUnReadByPage(Convert.ToInt32(this.Session["idAccount"]), page);
+            this.ViewBag.pageNumber =
+                new MessageBo().TotalPagenumberReceiveUnRead(Convert.ToInt32(this.Session["idAccount"]), page);
+            return this.View("MessageUnRead");
+        }
+
+        public ActionResult MessageSended(int page)
+        {
+            if (this.Session["idAccount"] == null) return this.RedirectToAction("Index", "Home");
+            this.ViewBag.Message = new MessageBo().GetMessageSendByPage(
+                Convert.ToInt32(this.Session["idAccount"]),
+                page);
+            this.ViewBag.pageNumber = new MessageBo().TotalPagenumberSend(
+                Convert.ToInt32(this.Session["idAccount"]),
+                page);
+            return this.View("MessageSended");
         }
 
         [ValidateInput(false)]
         public ActionResult SendMessage(FormCollection form)
         {
-
-            new MessageBo().SendMessage(Convert.ToInt32(Session["idAccount"]), form);
-            return RedirectToAction("MessageReceiveUnRead", new { page = 1 });
-        }
-
-        public ActionResult MessageReceiveUnRead(int page)
-        {
-            if(Session["idAccount"] == null) return RedirectToAction("Index", "Home");
-            ViewBag.Message = new MessageBo().GetMessageReceiveUnReadByPage(Convert.ToInt32(Session["idAccount"]), page);
-            ViewBag.pageNumber = new MessageBo().TotalPagenumberReceiveUnRead(Convert.ToInt32(Session["idAccount"]), page);
-            return View("MessageUnRead");
-        }
-
-        public ActionResult GetCountMessageReceiveUnRead()
-        {
-            if (Session["numberMessagerUnread"] == null)
-                Session["numberMessagerUnread"] = 0;
-            int numberMessagerUnread = new MessageBo().GetCountMessageReceiveUnRead(Convert.ToInt32(Session["idAccount"]));
-            return Content(numberMessagerUnread.ToString(), "text/plain");
-        }
-
-        public ActionResult GetLastMessageReceiveUnRead()
-        {
-            Message message = new MessageBo().GetLastMessageReceiveUnRead(Convert.ToInt32(Session["idAccount"]));
-            if (message == null) return null;
-            return Json(new { data = message.TextSummary, title = message.TitleMessage, image = message.AccountSender.Avatar });
-        }
-
-
-        public ActionResult MessageReceiveReaded(int page)
-        {
-            if (Session["idAccount"] == null) return RedirectToAction("Index", "Home");
-            ViewBag.Message = new MessageBo().GetMessageReceiveReadedByPage(Convert.ToInt32(Session["idAccount"]), page);
-            ViewBag.pageNumber = new MessageBo().TotalPagenumberReceiveReaded(Convert.ToInt32(Session["idAccount"]), page);
-            return View("MessageReaded");
-        }
-        public ActionResult MessageSended(int page)
-        {
-            if (Session["idAccount"] == null) return RedirectToAction("Index", "Home");
-            ViewBag.Message = new MessageBo().GetMessageSendByPage(Convert.ToInt32(Session["idAccount"]), page);
-            ViewBag.pageNumber = new MessageBo().TotalPagenumberSend(Convert.ToInt32(Session["idAccount"]), page);
-            return View("MessageSended");
-        }
-
-        public ActionResult ChangeIsReaded(int idMessage)
-        {
-            new MessageBo().ChangeIsReaded(idMessage);
-            return Content("1", "text/plain");
+            new MessageBo().SendMessage(Convert.ToInt32(this.Session["idAccount"]), form);
+            return this.RedirectToAction("MessageReceiveUnRead", new { page = 1 });
         }
     }
 }

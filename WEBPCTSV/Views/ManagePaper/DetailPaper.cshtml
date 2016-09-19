@@ -1,4 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
+﻿@using WEBPCTSV.Models.bean
 @{
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
     ViewBag.Title = "DetailPaper";
@@ -10,32 +10,32 @@
     Paper paper = ViewBag.paper;
     List<ReasonRequest> listReason = paper.ReasonRequests.ToList();
 }
-<div style="width:100%;padding:10px" ng-controller="detailPaper">
+<div style="padding: 10px; width: 100%;" ng-controller="detailPaper">
     {{data.title}}
     @if (listReason.Count > 0)
     {
         <form action="/ManagePaper/AddRequestPaper" method="post">
             <h4>Chọn lý do gửi yêu cầu :</h4>
-            <select ng-model="selectReason" ng-change="changeselect()" name="selectReason" id="selectReasonDetail" class="form-control" style="width:80%">
+            <select ng-model="selectReason" ng-change="changeselect()" name="selectReason" id="selectReasonDetail" class="form-control" style="width: 80%">
                 <option value="">Chọn lý do</option>
                 @foreach (ReasonRequest reason in listReason)
                 {
                     <option value="@reason.IdReasonRequest">@reason.Reason </option>
                 }
             </select>
-            <br />
+            <br/>
 
-            <input type="radio" name="isImportant" value="false"><strong> Bình thường</strong> (lệ phí :@paper.PriceNormal VNĐ  thời gian chờ :@paper.WaittingPeriodNormal ngày)<br>
-            <input type="radio" name="isImportant" value="true" checked> <strong>Khẩn cấp</strong> (lệ phí :@paper.PriceUrgency VNĐ  thời gian chờ :@paper.WaittingPeriodUrgency ngày)<br>
-            
+            <input type="radio" name="isImportant" value="false"><strong> Bình thường</strong> (lệ phí :@paper.PriceNormal VNĐ thời gian chờ :@paper.WaittingPeriodNormal ngày)<br>
+            <input type="radio" name="isImportant" value="true" checked> <strong>Khẩn cấp</strong> (lệ phí :@paper.PriceUrgency VNĐ thời gian chờ :@paper.WaittingPeriodUrgency ngày)<br>
+
             <div ng-bind-html="divReasonDetail" id="divReasonDetail">
 
                 @if (listReason.First().Reason.Equals("khác"))
                 {
-                    <textarea name="otherReason" class="form-control" style="width:80%;margin-top:10px" placeholder="nhập lý do khác"></textarea>
+                    <textarea name="otherReason" class="form-control" style="margin-top: 10px; width: 80%;" placeholder="nhập lý do khác"></textarea>
                 }
             </div>
-            <div  class="input-group col-sm-3" style="margin-top:10px">
+            <div class="input-group col-sm-3" style="margin-top: 10px">
                 <span class="input-group-btn">
                     <label class="btn btn-default"> Số lượng : </label>
                 </span>
@@ -45,22 +45,20 @@
                 </span>
             </div>
         </form>
-
-
     }
     else
     {
         <strong>Giấy này chưa sẳn sàng</strong>
     }
-    
-    <hr />
+
+    <hr/>
     <h4>Mẩu đơn :</h4>
-    <div id="printPaper" style="width:800px;padding:20px;background-color:#ffffff" class="well" >
+    <div id="printPaper" style="background-color: #ffffff; padding: 20px; width: 800px;" class="well">
         @Html.Raw(paper.ContentPaper)
     </div>
 </div>
 <script>
-    
+
 
     function printDiv(divName) {
         var printContents = document.getElementById(divName).innerHTML;
@@ -75,8 +73,3 @@
     }
 
 </script>
-
-
-
-
-

@@ -1,13 +1,13 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.Owin;
-using Owin;
-using Hangfire;
+﻿using Microsoft.Owin;
 
 [assembly: OwinStartup(typeof(WEBPCTSV.Startup))]
 
 namespace WEBPCTSV
 {
+    using Hangfire;
+
+    using Owin;
+
     public class Startup
     {
         public void Configuration(IAppBuilder app)

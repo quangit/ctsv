@@ -1,39 +1,44 @@
-﻿using WEBPCTSV.Models.bean;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using WEBPCTSV.Models.Support;
-
-namespace WEBPCTSV.Models.bo
+﻿namespace WEBPCTSV.Models.bo
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Models.bean;
+    using WEBPCTSV.Models.Support;
+
     public class RankingAcademicBo
     {
-        DSAContext context = new DSAContext();
+        readonly DSAContext context = new DSAContext();
 
         public List<RankingAcademic> Get()
         {
-            return context.RankingAcademics.ToList();
+            return this.context.RankingAcademics.ToList();
         }
 
         public bool Update(FormCollection form)
         {
-            try {
-                RankingAcademic rankingAcademic = context.RankingAcademics.Single(r => r.IdRankingAcademic.Equals("suatsac"));
+            try
+            {
+                RankingAcademic rankingAcademic =
+                    this.context.RankingAcademics.Single(r => r.IdRankingAcademic.Equals("suatsac"));
                 rankingAcademic.MoneyStudentShip = ConvertObject.ConvertCurrencyToString(form["MoneyExcellent"]);
 
-                RankingAcademic rankingAcademic2 = context.RankingAcademics.Single(r => r.IdRankingAcademic.Equals("gioi"));
+                RankingAcademic rankingAcademic2 =
+                    this.context.RankingAcademics.Single(r => r.IdRankingAcademic.Equals("gioi"));
                 rankingAcademic2.MoneyStudentShip = ConvertObject.ConvertCurrencyToString(form["MoneyVeryGood"]);
 
-                RankingAcademic rankingAcademic3 = context.RankingAcademics.Single(r => r.IdRankingAcademic.Equals("kha"));
+                RankingAcademic rankingAcademic3 =
+                    this.context.RankingAcademics.Single(r => r.IdRankingAcademic.Equals("kha"));
                 rankingAcademic3.MoneyStudentShip = ConvertObject.ConvertCurrencyToString(form["MoneyGood"]);
 
-                context.SaveChanges();
+                this.context.SaveChanges();
                 return true;
-
             }
-            catch { }
+            catch
+            {
+            }
+
             return false;
         }
     }

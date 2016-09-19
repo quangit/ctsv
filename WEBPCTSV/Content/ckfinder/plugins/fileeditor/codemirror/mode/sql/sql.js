@@ -45,7 +45,7 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
       // numbers
       // ref: http://dev.mysql.com/doc/refman/5.5/en/number-literals.html
           stream.match(/^[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?/);
-      support.decimallessFloat == true && stream.eat('.');
+      support.decimallessFloat == true && stream.eat(".");
       return "number";
     } else if (ch == "?" && (stream.eatSpace() || stream.eol() || stream.eat(";"))) {
       // placeholders
@@ -93,7 +93,7 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
       // operators
       stream.eatWhile(operatorChars);
       return null;
-    } else if (ch == '{' &&
+    } else if (ch == "{" &&
         (stream.match(/^( )*(d|D|t|T|ts|TS)( )*'[^']*'( )*}/) || stream.match(/^( )*(d|D|t|T|ts|TS)( )*"[^"]*"( )*}/))) {
       // dates (weird ODBC syntax)
       // ref: http://dev.mysql.com/doc/refman/5.5/en/date-and-time-literals.html

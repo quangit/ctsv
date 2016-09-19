@@ -1,5 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
-@using WEBPCTSV.Models.Support;
+﻿@using WEBPCTSV.Models.bean
 @{
     ViewBag.Title = "ChooseClass";
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
@@ -10,19 +9,19 @@
 
 <h3 class="header-paper">Chọn Lớp</h3>
 <div class="container-layoutmanager" ng-controller="chooseClass">
-    <div style="height:50px">
-        <div class="input-group" style="float:left;width:500px">
+    <div style="height: 50px">
+        <div class="input-group" style="float: left; width: 500px">
             <div class="btn-group dropdown">
                 <label class="btn btn-default">
                     <b>
                         Khoa: @if (ViewBag.idFaculty == 1)
-                        {
-                            @listFaculty.FirstOrDefault().FacultyName
-                        }
-                        else
-                        {
-                            @listFaculty.SingleOrDefault(f => f.IdFaculty == ViewBag.idFaculty).FacultyName
-                        }
+                              {
+                                  @listFaculty.FirstOrDefault().FacultyName
+                              }
+                              else
+                              {
+                                  @listFaculty.SingleOrDefault(f => f.IdFaculty == ViewBag.idFaculty).FacultyName
+                              }
                     </b>
                 </label>
                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
@@ -32,7 +31,9 @@
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                     @foreach (Faculty faculty in listFaculty)
                     {
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/ManageRequest/ChooseClass?idReason=@ViewBag.idReason&idFaculty=@faculty.IdFaculty">@faculty.FacultyName</a></li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="/ManageRequest/ChooseClass?idReason=@ViewBag.idReason&idFaculty=@faculty.IdFaculty">@faculty.FacultyName</a>
+                        </li>
                     }
                 </ul>
             </div>
@@ -41,26 +42,35 @@
     @{
         List<Class> listClass = ViewBag.listClass;
     }
-    <table class="table table-hover" style="width:500px">
+    <table class="table table-hover" style="width: 500px">
         <thead>
-            <tr>
-                <th>STT</th>
-                <th>Tên Lớp</th>
-                <th></th>
-            </tr>
+        <tr>
+            <th>STT</th>
+            <th>Tên Lớp</th>
+            <th></th>
+        </tr>
         </thead>
         <tbody>
-            @{
-                int stt = 1;
-                foreach (Class cl in listClass)
-                {
-                    <tr >
-                        <td><p class="form-control-static">@stt</p></td>
-                        <td><p class="form-control-static">@cl.ClassName</p></td>
-                        <td><a href="/ManageRequest/ListStudent?idReason=@ViewBag.idReason&idClass=@cl.IdClass"><label class="btn btn-primary"> Chọn </label></a></td>
-                    </tr>
-                }
+        @{
+            int stt = 1;
+            foreach (Class cl in listClass)
+            {
+                <tr >
+                    <td>
+                        <p class="form-control-static">@stt</p>
+                    </td>
+                    <td>
+                        <p class="form-control-static">@cl.ClassName</p>
+                    </td>
+                    <td>
+                        <a href="/ManageRequest/ListStudent?idReason=@ViewBag.idReason&idClass=@cl.IdClass">
+                            <label class="btn btn-primary"> Chọn </label>
+                        </a>
+                    </td>
+                </tr>
             }
+
+        }
 
         </tbody>
     </table>
@@ -84,5 +94,5 @@
 
         </div>
     </div>*@
-    <hr />
+    <hr/>
 </div>

@@ -1,19 +1,18 @@
 namespace WEBPCTSV.Models.bean
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     [Table("District")]
     public partial class District
     {
         public District()
         {
-            Students = new HashSet<Student>();
-            Wards = new HashSet<Ward>();
+            this.Students = new HashSet<Student>();
+            this.Wards = new HashSet<Ward>();
         }
+
         public District(string idDistrict, string districtName, string idProvince)
         {
             this.IdDistrict = idDistrict;
@@ -21,11 +20,11 @@ namespace WEBPCTSV.Models.bean
             this.IdProvince = idProvince;
         }
 
+        public string DistrictName { get; set; }
+
         [Key]
         [StringLength(5)]
         public string IdDistrict { get; set; }
-
-        public string DistrictName { get; set; }
 
         [Required]
         [StringLength(5)]

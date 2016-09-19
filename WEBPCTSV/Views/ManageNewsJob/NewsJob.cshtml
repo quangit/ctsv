@@ -1,6 +1,5 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
-@model PagedList.IPagedList<NewsJob>
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<WEBPCTSV.Models.bean.NewsJob>
 
 @{
     ViewBag.Title = "Tuyển dụng";
@@ -10,7 +9,9 @@
 
 
 <ol class="breadcrumb box-shadow">
-    <li><a href="TrangChu">Trang chủ</a></li>
+    <li>
+        <a href="TrangChu">Trang chủ</a>
+    </li>
     <li class="active">Quản lý tuyển dụng</li>
 </ol>
 <div class="main-content">
@@ -19,7 +20,7 @@
             <i class="fa fa-plus-square"></i> Thêm mới
         </a>
     </div>
-    <hr />
+    <hr/>
     <div class="alert-result">
         @if (TempData["success"] != null)
         {
@@ -37,20 +38,22 @@
     <div id="tbnoidung">
         <table class="table table-hover">
             <thead>
-                <tr class="tieude">
-                    <th>ID</th>
-                    <th>Tiêu đề</th>
-                    <th width="30%">Mô tả</th>
-                    <th>Nhà tuyển dụng</th>
-                    <th width="11%">Tùy Chọn</th>
-                </tr>
+            <tr class="tieude">
+                <th>ID</th>
+                <th>Tiêu đề</th>
+                <th width="30%">Mô tả</th>
+                <th>Nhà tuyển dụng</th>
+                <th width="11%">Tùy Chọn</th>
+            </tr>
             </thead>
             @foreach (var news in Model)
             {
                 <tr class="noidung">
                     <td>@news.IdNewsJob</td>
                     <td>@news.News.Title</td>
-                    <td><p class="mota"> @news.News.Description </p></td>
+                    <td>
+                        <p class="mota"> @news.News.Description </p>
+                    </td>
                     <td>@news.Company</td>
                     <td>
 

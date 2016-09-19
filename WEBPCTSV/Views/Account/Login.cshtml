@@ -1,5 +1,4 @@
-﻿@using WEBPCTSV.Helpers.Common;
-
+﻿@using WEBPCTSV.Helpers.Common
 @{
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/ClientMaster.cshtml";
@@ -7,7 +6,9 @@
 <div id="maincontent">
     <div id="maincontent-section1" class="maincontent-main col-xs-12">
         <ol class="breadcrumb box-shadow">
-            <li><a href="~/">Trang chủ</a></li>
+            <li>
+                <a href="~/">Trang chủ</a>
+            </li>
             <li class="active">Đăng nhập hệ thống</li>
         </ol>
         <div>
@@ -20,14 +21,14 @@
                 }
                 @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @id = "fLogin" }))
                 {
-                    <input type="hidden" name="returnPage" value="TrangChu" />
+                    <input type="hidden" name="returnPage" value="TrangChu"/>
                     <div class="form-group">
                         <label>Tên đăng nhập </label>
-                        <input type="text" name="userName" class="form-control" placeholder="Tên đăng nhập" />
+                        <input type="text" name="userName" class="form-control" placeholder="Tên đăng nhập"/>
                     </div>
                     <div class="form-group">
                         <label>Mật khẩu </label>
-                        <input type="password" name="password" class="form-control" placeholder="Mật  khẩu" />
+                        <input type="password" name="password" class="form-control" placeholder="Mật  khẩu"/>
                     </div>
                     <button class="btn btn-success" type="submit"><i class="fa fa-sign-in" aria-hidden="true"></i> Đăng nhập</button>
                 }
@@ -35,5 +36,3 @@
         </div>
     </div>
 </div>
-
-

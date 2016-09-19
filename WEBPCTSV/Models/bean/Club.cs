@@ -1,29 +1,27 @@
 namespace WEBPCTSV.Models.bean
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     [Table("Club")]
     public partial class Club
     {
         public Club()
         {
-            ActivityClubs = new HashSet<ActivityClub>();
-            MemberClubs = new HashSet<MemberClub>();
+            this.ActivityClubs = new HashSet<ActivityClub>();
+            this.MemberClubs = new HashSet<MemberClub>();
         }
+
+        public virtual ICollection<ActivityClub> ActivityClubs { get; set; }
+
+        public string ClubName { get; set; }
 
         [Key]
         public int IdClub { get; set; }
 
-        public string ClubName { get; set; }
+        public virtual ICollection<MemberClub> MemberClubs { get; set; }
 
         public string Note { get; set; }
-
-        public virtual ICollection<ActivityClub> ActivityClubs { get; set; }
-
-        public virtual ICollection<MemberClub> MemberClubs { get; set; }
     }
 }

@@ -1,5 +1,5 @@
-﻿@using WEBPCTSV.Models.bean;
-@using WEBPCTSV.Helpers.Common;
+﻿@using WEBPCTSV.Helpers.Common
+@using WEBPCTSV.Models.bean
 @{
     ViewBag.Title = "Kết quả tìm kiếm thông tin";
     Layout = "~/Views/Shared/ClientMaster.cshtml";
@@ -9,7 +9,9 @@
     <div id="maincontent-section1">
         <div class="maincontent-main listbox listbox-main">
             <ol class="breadcrumb box-shadow">
-                <li><a href="~/">Trang chủ</a></li>
+                <li>
+                    <a href="~/">Trang chủ</a>
+                </li>
                 <li class="active">Kết quả tìm kiếm</li>
             </ol>
             <div class="listbox-content">
@@ -22,7 +24,7 @@
                     {
                         <div class="listbox-content-item-sub">
                             <div class="col-xs-2">
-                                <img id="tbanh" src="@(StringExtension.IsNullOrWhiteSpace(x.Image) ? "/Images/logo.jpg" : x.Image)" />
+                                <img id="tbanh" src="@(StringExtension.IsNullOrWhiteSpace(x.Image) ? "/Images/logo.jpg" : x.Image)"/>
                             </div>
                             <div class="col-xs-10">
                                 <div class="listbox-content-item-sub-title">
@@ -32,7 +34,7 @@
                                     <span class="listbox-content-item-moreinfo-comment date"><i class="fa fa-calendar"></i> @x.CreatedDate.Day/@x.CreatedDate.Month/@x.CreatedDate.Year</span>
                                 </div>
                                 <p>
-                                    <span><a href="../ThongBao/ChiTiet?id=@x.IdNews">Xem tiếp</a></span>
+                                <span><a href="../ThongBao/ChiTiet?id=@x.IdNews">Xem tiếp</a></span>
                                 <p>
                             </div>
                         </div>
@@ -45,7 +47,7 @@
                     {
                         <div class="listbox-content-item-sub">
                             <div class="col-xs-2">
-                                <img src="@(StringExtension.IsNullOrWhiteSpace(x.News.Image) ? "/Images/logo.jpg" : x.News.Image)" />
+                                <img src="@(StringExtension.IsNullOrWhiteSpace(x.News.Image) ? "/Images/logo.jpg" : x.News.Image)"/>
                             </div>
                             <div class="col-xs-10">
                                 <div class="listbox-content-item-sub-title">
@@ -57,7 +59,7 @@
                                     <span class="listbox-content-item-moreinfo-comment date"><i class="fa fa-mortar-board"></i> @x.Sponsor</span>
                                 </div>
                                 <p>
-                                    <span><a href="../HocBong/ChiTiet?id=@x.IdNewsScholarship">Xem tiếp</a></span>
+                                <span><a href="../HocBong/ChiTiet?id=@x.IdNewsScholarship">Xem tiếp</a></span>
                                 <p>
                             </div>
                         </div>
@@ -71,7 +73,7 @@
                     {
                         <div class="listbox-content-item-sub">
                             <div class="col-xs-2">
-                                <img src="@(StringExtension.IsNullOrWhiteSpace(x.News.Image)? "/Images/logo.jpg" : x.News.Image)" />
+                                <img src="@(StringExtension.IsNullOrWhiteSpace(x.News.Image) ? "/Images/logo.jpg" : x.News.Image)"/>
                             </div>
                             <div class="col-xs-10">
                                 <div class="listbox-content-item-sub-title">
@@ -82,7 +84,7 @@
                                     <span class="listbox-content-item-moreinfo-comment date"><i class="fa fa-calendar"></i> @x.News.CreatedDate.Day/@x.News.CreatedDate.Month/@x.News.CreatedDate.Year</span>
                                 </div>
                                 <p>
-                                    <span><a href="../TuyenDung/ChiTiet?id=@x.IdNewsJob">Xem tiếp</a></span>
+                                <span><a href="../TuyenDung/ChiTiet?id=@x.IdNewsJob">Xem tiếp</a></span>
                                 <p>
                             </div>
                         </div>
@@ -126,7 +128,7 @@
                     {
                         <div class="listbox-content-item-sub">
                             <div class="col-xs-2">
-                                <img id="tbanh" src="~/assets/images/icon/PlaceholderDocument.png" />
+                                <img id="tbanh" src="~/assets/images/icon/PlaceholderDocument.png"/>
                             </div>
                             <div class="col-xs-10">
                                 <div class="listbox-content-item-sub-title">
@@ -154,7 +156,7 @@
                     {
                         <div class="listbox-content-item-sub">
                             <div class="col-xs-2">
-                                <img id="tbanh" src="~/assets/images/icon/HelpIcon.png" />
+                                <img id="tbanh" src="~/assets/images/icon/HelpIcon.png"/>
                             </div>
                             <div class="col-xs-10">
                                 <div class="listbox-content-item-sub-title">
@@ -164,7 +166,7 @@
                                     <span class="listbox-content-item-moreinfo-comment date">@x.Field</span>
                                 </div>
                                 <p>
-                                    <span><a href="../TuVan/DanhSachCauHoi/ChiTiet?id=@x.IdQuestion">Xem tiếp</a></span>
+                                <span><a href="../TuVan/DanhSachCauHoi/ChiTiet?id=@x.IdQuestion">Xem tiếp</a></span>
                                 <p>
                             </div>
                         </div>

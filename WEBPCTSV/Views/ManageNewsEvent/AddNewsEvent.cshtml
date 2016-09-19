@@ -1,5 +1,4 @@
-﻿@using WEBPCTSV.Helpers;
-@{
+﻿@{
     ViewBag.Title = "Thêm sự kiện";
     ViewBag.Active = "SuKien";
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
@@ -9,106 +8,114 @@
 <script src="~/js/jquery.validate.js" type="text/javascript"></script>
 <script type="text/javascript">
     $(document)
-            .ready(
-                    function () {
-                        jQuery.validator.addMethod("greaterThan", function (value, element, params) {
-                            if ($(params[0]).val() != '') {
-                                if (!/Invalid|NaN/.test(new Date(value))) {
-                                    return new Date(value) >= new Date($(params[0]).val());
+        .ready(
+            function() {
+                jQuery.validator.addMethod("greaterThan",
+                    function(value, element, params) {
+                        if ($(params[0]).val() != '') {
+                            if (!/Invalid|NaN/.test(new Date(value))) {
+                                return new Date(value) >= new Date($(params[0]).val());
+                            }
+                            return isNaN(value) && isNaN($(params[0]).val()) ||
+                            (Number(value) >= Number($(params[0]).val()));
+                        };
+                        return true;
+                    },
+                    'Giá trị ngày phải lớn hơn {1}.');
+                jQuery.validator.addMethod("smallerThan",
+                    function(value, element, params) {
+                        if ($(params[0]).val() != '') {
+                            if (!/Invalid|NaN/.test(new Date(value))) {
+                                return new Date(value) <= new Date($(params[0]).val());
+                            }
+                            return isNaN(value) && isNaN($(params[0]).val()) ||
+                            (Number(value) <= Number($(params[0]).val()));
+                        };
+                        return true;
+                    },
+                    'Giá trị ngày phải bé hơn {1}.');
+                $("#fAddInfo")
+                    .validate(
+                    {
+                        ignore: [],
+                        rules: {
+                            title: {
+                                required: true,
+                            },
+                            description: {
+                                required: true,
+                            },
+                            beginDate: {
+                                required: true,
+                                date: true,
+                                smallerThan: ['#endDate', 'ngày kết thúc']
+                            },
+                            endDate: {
+                                required: true,
+                                date: true,
+                                greaterThan: ['#beginDate', 'ngày bắt đầu']
+                            },
+                            eventTime: {
+                                required: true,
+                            },
+                            eventVenue: {
+                                required: true,
+                            },
+                            contentHtml: {
+                                required: function() {
+                                    CKEDITOR.instances.contentHtml.updateElement();
                                 }
-                                return isNaN(value) && isNaN($(params[0]).val()) || (Number(value) >= Number($(params[0]).val()));
-                            };
-                            return true;
-                        }, 'Giá trị ngày phải lớn hơn {1}.');
-                        jQuery.validator.addMethod("smallerThan", function (value, element, params) {
-                            if ($(params[0]).val() != '') {
-                                if (!/Invalid|NaN/.test(new Date(value))) {
-                                    return new Date(value) <= new Date($(params[0]).val());
-                                }
-                                return isNaN(value) && isNaN($(params[0]).val()) || (Number(value) <= Number($(params[0]).val()));
-                            };
-                            return true;
-                        }, 'Giá trị ngày phải bé hơn {1}.');
-                        $("#fAddInfo")
-                                .validate(
-                                        {
-                                            ignore: [],
-                                            rules: {
-                                                title: {
-                                                    required: true,
-                                                },
-                                                description: {
-                                                    required: true,
-                                                },
-                                                beginDate: {
-                                                    required: true,
-                                                    date: true,
-                                                    smallerThan: ['#endDate','ngày kết thúc']
-                                                },
-                                                endDate: {
-                                                    required: true,
-                                                    date: true,
-                                                    greaterThan: ['#beginDate','ngày bắt đầu']
-                                                },
-                                                eventTime: {
-                                                    required: true,
-                                                },
-                                                eventVenue: {
-                                                    required: true,
-                                                },
-                                                contentHtml: {
-                                                    required: function () {
-                                                        CKEDITOR.instances.contentHtml.updateElement();
-                                                    }
-                                                },
-                                            },
-                                            messages: {
-                                                title: {
-                                                    required: "Chưa nhập tiêu đề!",
-                                                },
-                                                description: {
-                                                    required: "Chưa nhập mô tả!",
-                                                },
-                                                beginDate: {
-                                                    required: "Chưa nhập ngày bắt đầu!",
-                                                    date: "Nhập sai định dạng ngày."
-                                                },
-                                                endDate: {
-                                                    required: "Chưa nhập ngày kết thúc!",
-                                                    date: "Nhập sai định dạng ngày."
-                                                },
-                                                eventTime: {
-                                                    required: "Chưa nhập thời gian diễn ra!",
-                                                },
-                                                eventVenue: {
-                                                    required: "Chưa nhập địa điểm tổ chức!",
-                                                },
-                                                contentHtml: {
-                                                    required: "Chưa nhập nội dung!",
-                                                },
-                                            },
+                            },
+                        },
+                        messages: {
+                            title: {
+                                required: "Chưa nhập tiêu đề!",
+                            },
+                            description: {
+                                required: "Chưa nhập mô tả!",
+                            },
+                            beginDate: {
+                                required: "Chưa nhập ngày bắt đầu!",
+                                date: "Nhập sai định dạng ngày."
+                            },
+                            endDate: {
+                                required: "Chưa nhập ngày kết thúc!",
+                                date: "Nhập sai định dạng ngày."
+                            },
+                            eventTime: {
+                                required: "Chưa nhập thời gian diễn ra!",
+                            },
+                            eventVenue: {
+                                required: "Chưa nhập địa điểm tổ chức!",
+                            },
+                            contentHtml: {
+                                required: "Chưa nhập nội dung!",
+                            },
+                        },
 
-                                            submitHandler: function (form) {
-                                                form.submit();
-                                            }
-                                        });
+                        submitHandler: function(form) {
+                            form.submit();
+                        }
                     });
+            });
 </script>
 <style type="text/css">
-    label.error {
-        color: #FF0000;
-    }
+    label.error { color: #FF0000; }
 
     input.error {
         border: 2px solid #FF0000;
-        color: #0000FF;
         border-style: ridge;
+        color: #0000FF;
     }
 </style>
 
 <ol class="breadcrumb box-shadow">
-    <li><a href="TrangChu">Trang chủ</a></li>
-    <li><a href="~/QuanLy/QuanLySuKien">Quản lý sự kiện</a></li>
+    <li>
+        <a href="TrangChu">Trang chủ</a>
+    </li>
+    <li>
+        <a href="~/QuanLy/QuanLySuKien">Quản lý sự kiện</a>
+    </li>
     <li class="active">Thêm mới</li>
 </ol>
 
@@ -130,14 +137,14 @@
                     <label>Mô tả</label>
                     <textarea id="description" name="description" class="form-control" rows="3" placeholder="Nội dung mô tả"></textarea>
                 </div>
-                <div class="col-xs-6" style="padding-left:0px; padding-bottom:15px;">
+                <div class="col-xs-6" style="padding-bottom: 15px; padding-left: 0px;">
                     <label>Ngày bắt đầu</label>
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon2"><i class="fa fa-calendar"></i></span>
                         <input type="date" class="form-control" placeholder="Ngày bắt đầu" name="beginDate" id="beginDate">
                     </div>
                 </div>
-                <div class="col-xs-6" style="padding-left:30px; padding-bottom:15px;">
+                <div class="col-xs-6" style="padding-bottom: 15px; padding-left: 30px;">
                     <label>Ngày kết thúc</label>
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon2"><i class="fa fa-calendar"></i></span>
@@ -149,7 +156,7 @@
                     <input type="text" class="form-control" placeholder="Thời gian diễn ra" name="eventTime">
                 </div>
                 <div class="form-group">
-                    <label>Địa điểm tổ chức	</label>
+                    <label>Địa điểm tổ chức </label>
                     <input type="text" class="form-control" placeholder="Địa điểm tổ chức" name="eventVenue">
                 </div>
                 <div class="form-group">
@@ -159,7 +166,7 @@
                 <div class="form-group">
                     <label>Hình ảnh</label>
                     <div class="input-group">
-                        <input class="form-control" type="text" id="image" name="image" />
+                        <input class="form-control" type="text" id="image" name="image"/>
                         <div class="input-group-btn">
                             <button type="button" id="brow" class="btn btn-primary">
                                 <i class="fa fa-plus" aria-hidden="true"></i> Chọn ảnh
@@ -173,49 +180,60 @@
                     <button type="button" id="browfile" class="btn btn-primary btn-xs">
                         <i class="fa fa-plus" aria-hidden="true"></i> Thêm tệp
                     </button>
-                    <input type="hidden" id="attachedDocuments" name="attachedDocuments" placeholder="Chọn file đính kèm ..." />
+                    <input type="hidden" id="attachedDocuments" name="attachedDocuments" placeholder="Chọn file đính kèm ..."/>
                     <table>
                         <tbody id="table-file"></tbody>
                     </table>
                 </div>
-                <input class="btn btn-danger" type="submit" value="Hoàn tất" />
-                <input class="btn btn-warning" type="reset" value="Reset" />
+                <input class="btn btn-danger" type="submit" value="Hoàn tất"/>
+                <input class="btn btn-warning" type="reset" value="Reset"/>
             }
         </div>
     </div>
 </div>
 <script>
-    $(document).ready(function () {
-        showListAttachedDocument();
-        $("#brow").click(function () {
-            var ck = new CKFinder();
-            ck.selectActionFunction = function (fileUrl) {
-                $("#image").val(fileUrl);
-            };
-            ck.popup();
+    $(document)
+        .ready(function() {
+            showListAttachedDocument();
+            $("#brow")
+                .click(function() {
+                    var ck = new CKFinder();
+                    ck.selectActionFunction = function(fileUrl) {
+                        $("#image").val(fileUrl);
+                    };
+                    ck.popup();
+                });
+            $("#browfile")
+                .click(function() {
+                    var ck = new CKFinder();
+                    ck.selectActionFunction = function(fileUrl) {
+                        $("#attachedDocuments").val($("#attachedDocuments").val() + ':' + fileUrl);
+                        showListAttachedDocument();
+                    };
+                    ck.popup();
+                });
         });
-        $("#browfile").click(function () {
-            var ck = new CKFinder();
-            ck.selectActionFunction = function (fileUrl) {
-                $("#attachedDocuments").val($("#attachedDocuments").val() + ':' + fileUrl);
-                showListAttachedDocument();
-            };
-            ck.popup();
-        });
-    });
 
     function showListAttachedDocument() {
         $("#table-file").html("");
         var x = ($("#attachedDocuments").val()).substr(1);
         if (x != "") {
             var arrayFiles = x.split(":");
-            $.each(arrayFiles, function (index, file) {
-                $("#table-file").append('<tr>'
-                                    + '<td><i class="fa fa-file-text-o" aria-hidden="true"></i></td>'
-                                    + '<td id="table-file-' + index + '">' + decodeURI(file) + '</td>'
-                                    + '<td><i class="fa fa-times" aria-hidden="true" onclick="deleteFile(' + index + ')"></i></td>'
-                                        + '</tr>');
-            });
+            $.each(arrayFiles,
+                function(index, file) {
+                    $("#table-file")
+                        .append('<tr>' +
+                            '<td><i class="fa fa-file-text-o" aria-hidden="true"></i></td>' +
+                            '<td id="table-file-' +
+                            index +
+                            '">' +
+                            decodeURI(file) +
+                            '</td>' +
+                            '<td><i class="fa fa-times" aria-hidden="true" onclick="deleteFile(' +
+                            index +
+                            ')"></i></td>' +
+                            '</tr>');
+                });
         }
     }
 
@@ -228,10 +246,12 @@
     }
 
     var ckeditor;
+
     function createEditor(languageCode, id) {
         var editor = CKEDITOR.replace(id, { language: languageCode });
     };
-    $(function () {
+
+    $(function() {
         createEditor('vi', 'contentHtml');
     });
 </script>

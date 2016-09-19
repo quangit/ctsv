@@ -74,21 +74,21 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
 
   var codeDepth = 0;
 
-  var header   = 'header'
-  ,   code     = 'comment'
-  ,   quote    = 'quote'
-  ,   list1    = 'variable-2'
-  ,   list2    = 'variable-3'
-  ,   list3    = 'keyword'
-  ,   hr       = 'hr'
-  ,   image    = 'tag'
-  ,   formatting = 'formatting'
-  ,   linkinline = 'link'
-  ,   linkemail = 'link'
-  ,   linktext = 'link'
-  ,   linkhref = 'string'
-  ,   em       = 'em'
-  ,   strong   = 'strong';
+  var header   = "header"
+  ,   code     = "comment"
+  ,   quote    = "quote"
+  ,   list1    = "variable-2"
+  ,   list2    = "variable-3"
+  ,   list3    = "keyword"
+  ,   hr       = "hr"
+  ,   image    = "tag"
+  ,   formatting = "formatting"
+  ,   linkinline = "link"
+  ,   linkemail = "link"
+  ,   linktext = "link"
+  ,   linkhref = "string"
+  ,   em       = "em"
+  ,   strong   = "strong";
 
   var hrRE = /^([*\-=_])(?:\s*\1){2,}\s*$/
   ,   ulRE = /^[*\-+]\s+/
@@ -163,27 +163,27 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       state.f = state.inline;
       return getType(state);
     } else if (state.prevLineHasContent && (match = stream.match(setextHeaderRE))) {
-      state.header = match[0].charAt(0) == '=' ? 1 : 2;
+      state.header = match[0].charAt(0) == "=" ? 1 : 2;
       if (modeCfg.highlightFormatting) state.formatting = "header";
       state.f = state.inline;
       return getType(state);
-    } else if (stream.eat('>')) {
+    } else if (stream.eat(">")) {
       state.indentation++;
       state.quote = sol ? 1 : state.quote + 1;
       if (modeCfg.highlightFormatting) state.formatting = "quote";
       stream.eatSpace();
       return getType(state);
-    } else if (stream.peek() === '[') {
+    } else if (stream.peek() === "[") {
       return switchInline(stream, state, footnoteLink);
     } else if (stream.match(hrRE, true)) {
       return hr;
     } else if ((!state.prevLineHasContent || prevLineIsList) && (stream.match(ulRE, false) || stream.match(olRE, false))) {
       var listType = null;
       if (stream.match(ulRE, true)) {
-        listType = 'ul';
+        listType = "ul";
       } else {
         stream.match(olRE, true);
-        listType = 'ol';
+        listType = "ol";
       }
       state.indentation += 4;
       state.list = true;
@@ -266,16 +266,16 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
 
     if (state.taskOpen) {
       styles.push("meta");
-      return styles.length ? styles.join(' ') : null;
+      return styles.length ? styles.join(" ") : null;
     }
     if (state.taskClosed) {
       styles.push("property");
-      return styles.length ? styles.join(' ') : null;
+      return styles.length ? styles.join(" ") : null;
     }
 
     if (state.linkHref) {
       styles.push(linkhref);
-      return styles.length ? styles.join(' ') : null;
+      return styles.length ? styles.join(" ") : null;
     }
 
     if (state.strong) { styles.push(strong); }
@@ -315,7 +315,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       styles.push("trailing-space-" + (state.trailingSpace % 2 ? "a" : "b"));
     }
 
-    return styles.length ? styles.join(' ') : null;
+    return styles.length ? styles.join(" ") : null;
   }
 
   function handleText(stream, state) {
@@ -327,7 +327,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
 
   function inlineNormal(stream, state) {
     var style = state.text(stream, state);
-    if (typeof style !== 'undefined')
+    if (typeof style !== "undefined")
       return style;
 
     if (state.list) { // List marker (*, +, -, 1., etc)
@@ -362,7 +362,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       return getType(state);
     }
 
-    if (ch === '\\') {
+    if (ch === "\\") {
       if (modeCfg.highlightFormatting) state.formatting = "escape";
       state.escape = true;
       return getType(state);
@@ -372,23 +372,23 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
     if (state.linkTitle) {
       state.linkTitle = false;
       var matchCh = ch;
-      if (ch === '(') {
-        matchCh = ')';
+      if (ch === "(") {
+        matchCh = ")";
       }
-      matchCh = (matchCh+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
-      var regex = '^\\s*(?:[^' + matchCh + '\\\\]+|\\\\\\\\|\\\\.)' + matchCh;
+      matchCh = (matchCh+"").replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+      var regex = "^\\s*(?:[^" + matchCh + "\\\\]+|\\\\\\\\|\\\\.)" + matchCh;
       if (stream.match(new RegExp(regex), true)) {
         return linkhref;
       }
     }
 
     // If this block is changed, it may need to be updated in GFM mode
-    if (ch === '`') {
+    if (ch === "`") {
       var previousFormatting = state.formatting;
       if (modeCfg.highlightFormatting) state.formatting = "code";
       var t = getType(state);
       var before = stream.pos;
-      stream.eatWhile('`');
+      stream.eatWhile("`");
       var difference = 1 + stream.pos - before;
       if (!state.code) {
         codeDepth = difference;
@@ -406,19 +406,19 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       return getType(state);
     }
 
-    if (ch === '!' && stream.match(/\[[^\]]*\] ?(?:\(|\[)/, false)) {
+    if (ch === "!" && stream.match(/\[[^\]]*\] ?(?:\(|\[)/, false)) {
       stream.match(/\[[^\]]*\]/);
       state.inline = state.f = linkHref;
       return image;
     }
 
-    if (ch === '[' && stream.match(/.*\](\(| ?\[)/, false)) {
+    if (ch === "[" && stream.match(/.*\](\(| ?\[)/, false)) {
       state.linkText = true;
       if (modeCfg.highlightFormatting) state.formatting = "link";
       return getType(state);
     }
 
-    if (ch === ']' && state.linkText) {
+    if (ch === "]" && state.linkText) {
       if (modeCfg.highlightFormatting) state.formatting = "link";
       var type = getType(state);
       state.linkText = false;
@@ -426,7 +426,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       return type;
     }
 
-    if (ch === '<' && stream.match(/^(https?|ftps?):\/\/(?:[^\\>]|\\.)+>/, false)) {
+    if (ch === "<" && stream.match(/^(https?|ftps?):\/\/(?:[^\\>]|\\.)+>/, false)) {
       state.f = state.inline = linkInline;
       if (modeCfg.highlightFormatting) state.formatting = "link";
       var type = getType(state);
@@ -438,7 +438,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       return type + linkinline;
     }
 
-    if (ch === '<' && stream.match(/^[^> \\]+@(?:[^\\>]|\\.)+>/, false)) {
+    if (ch === "<" && stream.match(/^[^> \\]+@(?:[^\\>]|\\.)+>/, false)) {
       state.f = state.inline = linkInline;
       if (modeCfg.highlightFormatting) state.formatting = "link";
       var type = getType(state);
@@ -450,7 +450,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       return type + linkemail;
     }
 
-    if (ch === '<' && stream.match(/^\w/, false)) {
+    if (ch === "<" && stream.match(/^\w/, false)) {
       if (stream.string.indexOf(">") != -1) {
         var atts = stream.string.substring(1,stream.string.indexOf(">"));
         if (/markdown\s*=\s*('|"){0,1}1('|"){0,1}/.test(atts)) {
@@ -462,25 +462,25 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       return switchBlock(stream, state, htmlBlock);
     }
 
-    if (ch === '<' && stream.match(/^\/\w*?>/)) {
+    if (ch === "<" && stream.match(/^\/\w*?>/)) {
       state.md_inside = false;
       return "tag";
     }
 
     var ignoreUnderscore = false;
     if (!modeCfg.underscoresBreakWords) {
-      if (ch === '_' && stream.peek() !== '_' && stream.match(/(\w)/, false)) {
+      if (ch === "_" && stream.peek() !== "_" && stream.match(/(\w)/, false)) {
         var prevPos = stream.pos - 2;
         if (prevPos >= 0) {
           var prevCh = stream.string.charAt(prevPos);
-          if (prevCh !== '_' && prevCh.match(/(\w)/, false)) {
+          if (prevCh !== "_" && prevCh.match(/(\w)/, false)) {
             ignoreUnderscore = true;
           }
         }
       }
     }
-    if (ch === '*' || (ch === '_' && !ignoreUnderscore)) {
-      if (sol && stream.peek() === ' ') {
+    if (ch === "*" || (ch === "_" && !ignoreUnderscore)) {
+      if (sol && stream.peek() === " ") {
         // Do nothing, surrounded by newline and space
       } else if (state.strong === ch && stream.eat(ch)) { // Remove STRONG
         if (modeCfg.highlightFormatting) state.formatting = "strong";
@@ -501,9 +501,9 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
         if (modeCfg.highlightFormatting) state.formatting = "em";
         return getType(state);
       }
-    } else if (ch === ' ') {
-      if (stream.eat('*') || stream.eat('_')) { // Probably surrounded by spaces
-        if (stream.peek() === ' ') { // Surrounded by spaces, ignore
+    } else if (ch === " ") {
+      if (stream.eat("*") || stream.eat("_")) { // Probably surrounded by spaces
+        if (stream.peek() === " ") { // Surrounded by spaces, ignore
           return getType(state);
         } else { // Not surrounded by spaces, back up pointer
           stream.backUp(1);
@@ -511,7 +511,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       }
     }
 
-    if (ch === ' ') {
+    if (ch === " ") {
       if (stream.match(/ +$/, false)) {
         state.trailingSpace++;
       } else if (state.trailingSpace) {
@@ -548,13 +548,13 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       return null;
     }
     var ch = stream.next();
-    if (ch === '(' || ch === '[') {
+    if (ch === "(" || ch === "[") {
       state.f = state.inline = getLinkHrefInside(ch === "(" ? ")" : "]");
       if (modeCfg.highlightFormatting) state.formatting = "link-string";
       state.linkHref = true;
       return getType(state);
     }
-    return 'error';
+    return "error";
   }
 
   function getLinkHrefInside(endChar) {
@@ -624,10 +624,10 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
   function inlineRE(endChar) {
     if (!savedInlineRE[endChar]) {
       // Escape endChar for RegExp (taken from http://stackoverflow.com/a/494122/526741)
-      endChar = (endChar+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+      endChar = (endChar+"").replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
       // Match any non-endChar, escaped character, as well as the closing
       // endChar.
-      savedInlineRE[endChar] = new RegExp('^(?:[^\\\\]|\\\\.)*?(' + endChar + ')');
+      savedInlineRE[endChar] = new RegExp("^(?:[^\\\\]|\\\\.)*?(" + endChar + ")");
     }
     return savedInlineRE[endChar];
   }
@@ -729,7 +729,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
         state.trailingSpaceNewLine = false;
 
         state.f = state.block;
-        var indentation = stream.match(/^\s*/, true)[0].replace(/\t/g, '    ').length;
+        var indentation = stream.match(/^\s*/, true)[0].replace(/\t/g, "    ").length;
         var difference = Math.floor((indentation - state.indentation) / 4) * 4;
         if (difference > 4) difference = 4;
         var adjustedIndentation = state.indentation + difference;

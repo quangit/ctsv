@@ -4003,7 +4003,7 @@
         var vspace = Math.max(display.wrapper.clientHeight, this.doc.height),
         hspace = Math.max(display.sizer.clientWidth, display.lineSpace.clientWidth);
         // Default to positioning above (if specified and possible); otherwise default to positioning below
-        if ((vert == 'above' || pos.bottom + node.offsetHeight > vspace) && pos.top > node.offsetHeight)
+        if ((vert == "above" || pos.bottom + node.offsetHeight > vspace) && pos.top > node.offsetHeight)
           top = pos.top - node.offsetHeight;
         else if (pos.bottom + node.offsetHeight <= vspace)
           top = pos.bottom;
@@ -6958,7 +6958,7 @@
     // There is *some* kind of drag-and-drop support in IE6-8, but I
     // couldn't get it to work yet.
     if (ie_upto8) return false;
-    var div = elt('div');
+    var div = elt("div");
     return "draggable" in div || "dragDrop" in div;
   }();
 

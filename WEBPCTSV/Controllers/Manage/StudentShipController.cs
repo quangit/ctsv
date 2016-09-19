@@ -1,180 +1,15 @@
-﻿using WEBPCTSV.Models.bean;
-using WEBPCTSV.Models.bo;
-using WEBPCTSV.Models.Support;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace WEBPCTSV.Controllers
+﻿namespace WEBPCTSV.Controllers
 {
+    using System;
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Models.bean;
+    using WEBPCTSV.Models.bo;
+    using WEBPCTSV.Models.Support;
+
     public class StudentShipController : Controller
     {
-        LearningOutComeBo learningOutComeBo = new LearningOutComeBo();
-
-        // GET: StudentShip
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult ImportScoteStudent()
-        {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlyhocbong")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            ViewBag.listSemester = new SemesterBO().Get();
-            return View("ImportScoteStudent");
-        }
-
-        public ActionResult ResetPercentProgress()
-        {
-            LearningOutComeBo.percentProgress = 0;
-            return Content("", "text/plain");
-        }
-        public ActionResult ListStudentShip(int page, FormCollection form)
-        {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlyhocbong")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            ViewBag.listSemester = new SemesterBO().Get();
-            ViewBag.listLearningOutCome = learningOutComeBo.Get(page, form);
-            ViewBag.pageNumber = learningOutComeBo.TotalPage(page, form);
-            return View("ListConsiderStudentShip");
-        }
-
-        public ActionResult ListScoteStudent(int idSemester, int page, FormCollection form)
-        {
-            string search = form["search"];
-            if (search == null)
-            {
-                if (Session["searchship"] != null) search = Session["searchship"].ToString();
-            }
-            else
-            {
-                Session["searchship"] = search;
-            }
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlyhocbong")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            ViewBag.listSemester = new SemesterBO().Get();
-            ViewBag.Semester = idSemester; 
-            ViewBag.listLearningOutCome = learningOutComeBo.Get(idSemester, page,search);
-            PageNumber pagenumber = learningOutComeBo.TotalPage(idSemester, page,search,"");
-            ViewBag.pageNumber = pagenumber;
-            return View("ListScoteStudent");
-        }
-
-        public ActionResult ListStudentShipSchoolFaculty(int idStudentShipSchoolFaculty,int page,FormCollection form)
-        {
-            string search = form["search"];
-            if(search==null)
-            {
-                if (Session["search"]!=null) search = Session["search"].ToString();
-            }
-            else {
-                Session["search"] = search;
-            }
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlyhocbong")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            ViewBag.StudentShipSchoolFaculty = new StudentShipSchoolFacultyBo().GetById(idStudentShipSchoolFaculty);
-            ViewBag.listLearningOutCome = learningOutComeBo.GetByIdFaculty(page, idStudentShipSchoolFaculty,search);
-            ViewBag.pageNumber = learningOutComeBo.TotalPage(page, idStudentShipSchoolFaculty,search);
-            ViewBag.ConditionStudentShip = new ConditionStudentShipSchoolBo().Get(idStudentShipSchoolFaculty);
-            ViewBag.RankingAcademic = new RankingAcademicBo().Get();
-            ViewBag.SURPLUSMoney = learningOutComeBo.GetSURPLUSMoney(idStudentShipSchoolFaculty);
-            ViewBag.CountStudentShip = learningOutComeBo.GetCountStudentShip(idStudentShipSchoolFaculty);
-            return View("ListConsiderStudentShip");
-        }
-        public ActionResult ListStudentShipSchoolFacultyCLC(int idStudentShipSchoolFaculty, int page,FormCollection form)
-        {
-            string search = form["search"];
-            if (search == null)
-            {
-                if (Session["search"] != null) search = Session["search"].ToString();
-            }
-            else
-            {
-                Session["search"] = search;
-            }
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlyhocbong")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            ViewBag.StudentShipSchoolFaculty = new StudentShipSchoolFacultyBo().GetById(idStudentShipSchoolFaculty);
-            ViewBag.listLearningOutCome = learningOutComeBo.GetByIdFacultyCLC(page, idStudentShipSchoolFaculty,search);
-            ViewBag.pageNumber = learningOutComeBo.TotalPage(page, idStudentShipSchoolFaculty,search);
-            ViewBag.ConditionStudentShip = new ConditionStudentShipSchoolBo().Get(idStudentShipSchoolFaculty);
-            ViewBag.SURPLUSMoney = learningOutComeBo.GetSURPLUSMoney(idStudentShipSchoolFaculty);
-            ViewBag.CountStudentShip = learningOutComeBo.GetCountStudentShipCLC(idStudentShipSchoolFaculty);
-            ViewBag.top1 = new StudentShipCLCBo().GetTop1();
-            ViewBag.top2 = new StudentShipCLCBo().GetTop2();          
-            return View("ListConsiderStudentShipCLC");
-        }
-
-        public ActionResult GetMoneyByCountStudentShip(int idStudentShipSchoolFaculty,int countStudentShip)
-        {
-            string totalMoney = learningOutComeBo.GetMoneyByCount(idStudentShipSchoolFaculty, countStudentShip);
-            return Content(totalMoney, "text/Plain");
-        }
-
-        public ActionResult ChangeConditionStudentShip(int idStudentShipSchoolFaculty, FormCollection form)
-        {
-            new ConditionStudentShipSchoolBo().Update(idStudentShipSchoolFaculty, form);
-            return RedirectToAction("ListStudentShipSchoolFaculty", new { idStudentShipSchoolFaculty = idStudentShipSchoolFaculty, page = 1 });
-        }
-
-        public ActionResult ChangeMoneyRankingAcademic(int idStudentShipSchoolFaculty, FormCollection form)
-        {
-            new RankingAcademicBo().Update(form);
-            return RedirectToAction("ListStudentShipSchoolFaculty", new { idStudentShipSchoolFaculty = idStudentShipSchoolFaculty, page = 1 });
-        }
-
-        public ActionResult UpdateMoneyStudentShipFaculty(int idStudentShipSchoolFaculty, FormCollection form)
-        {
-            new StudentShipSchoolFacultyBo().Update(idStudentShipSchoolFaculty, form);
-            return RedirectToAction("ListStudentShipSchoolFaculty", new { idStudentShipSchoolFaculty = idStudentShipSchoolFaculty, page = 1 });
-
-        }
-        public ActionResult UpdateMoneyStudentShipFacultyCLC(int idStudentShipSchoolFaculty, FormCollection form)
-        {
-            new StudentShipSchoolFacultyBo().Update(idStudentShipSchoolFaculty, form);
-            return RedirectToAction("ListStudentShipSchoolFacultyCLC", new { idStudentShipSchoolFaculty = idStudentShipSchoolFaculty, page = 1 });
-
-        }
-
-
-        public ActionResult StudentShipFaculty(int idSemester)
-        {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlyhocbong")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            StudentShipSchool studentShipSchool = new StudentShipSchoolBo().Get(idSemester);
-            ViewBag.studentShipSchool = studentShipSchool;
-            ViewBag.Faculty = new FacultyBO().GetListFaculty();
-            ViewBag.listStudentShipSchoolFaculty = new StudentShipSchoolFacultyBo().Get(studentShipSchool.IdStudentShipSchool);
-            ViewBag.surplus = new StudentShipSchoolFacultyBo().GetSURPLUS(studentShipSchool.IdStudentShipSchool);
-            return View("StudentShipFaculty");
-        }
-        public ActionResult StudentShipFacultyCLC(int idSemester)
-        {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlyhocbong")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            StudentShipSchool studentShipSchool = new StudentShipSchoolBo().Get(idSemester);
-            ViewBag.studentShipSchool = studentShipSchool;
-            ViewBag.ClassCLC = new ClassBO().GetClassCLC();
-            ViewBag.listStudentShipSchoolFaculty = new StudentShipSchoolFacultyBo().Get(studentShipSchool.IdStudentShipSchool);
-            ViewBag.surplus = new StudentShipSchoolFacultyBo().GetSURPLUS(studentShipSchool.IdStudentShipSchool);
-            return View("StudentShipFacultyCLC");
-        }
-
-        public ActionResult SelectSemester()
-        {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlyhocbong")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            ViewBag.listSemester = new SemesterBO().Get();
-            return View("SelectSemester");
-        }
-        public ActionResult SelectSemesterScoteStudent()
-        {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlyhocbong")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            ViewBag.listSemester = new SemesterBO().Get();
-            return View("SelectSemesterScoteStudent");
-        }
-
-        public ActionResult GetMoneyStudentShipSchool(int idSemester)
-        {
-
-            string money = new StudentShipSchoolBo().GetMoney(idSemester);
-            return Content(money, "text/plain");
-        }
+        readonly LearningOutComeBo learningOutComeBo = new LearningOutComeBo();
 
         /// <summary>
         /// 
@@ -185,85 +20,308 @@ namespace WEBPCTSV.Controllers
         {
             int idSemester = Convert.ToInt32(form["selectSemester"]);
             new StudentShipSchoolBo().Insert(form);
-            return RedirectToAction("StudentShipFaculty", new { idSemester = idSemester });
+            return this.RedirectToAction("StudentShipFaculty", new { idSemester = idSemester });
         }
 
-        public ActionResult UpdateMoneyStudentShipShoolFaculty(int idFaculty, int idStudentShipSchool, string totalMoney)
+        public ActionResult AddStudentShipApplication(int selectSemester)
         {
-            new StudentShipSchoolFacultyBo().InsertStudentShipFaculty(idStudentShipSchool, idFaculty, null, ConvertObject.ConvertCurrencyToString(totalMoney), null);
-            new StudentShipSchoolBo().UpdateMoney(idStudentShipSchool);
-            return Content("1", "text/plain");
+            Student student = new StudentBO().GetStudentByIdAccount(Convert.ToInt32(this.Session["idAccount"]));
+            new StudentshipApplicationBo().Add(selectSemester, student.IdStudent);
+            return this.RedirectToAction("SendStudentShipApplication");
         }
 
-        public ActionResult UpdateMoneyStudentShipShoolFacultyCLC(int idClass, int idStudentShipSchool, string totalMoney, string tuitionFee)
+        public ActionResult ChangeConditionStudentShip(int idStudentShipSchoolFaculty, FormCollection form)
         {
-            new StudentShipSchoolFacultyBo().InsertStudentShipFaculty(idStudentShipSchool, null, idClass, ConvertObject.ConvertCurrencyToString(totalMoney), ConvertObject.ConvertCurrencyToString(tuitionFee));
-            new StudentShipSchoolBo().UpdateMoney(idStudentShipSchool);
-            return Content("1", "text/plain");
+            new ConditionStudentShipSchoolBo().Update(idStudentShipSchoolFaculty, form);
+            return this.RedirectToAction(
+                "ListStudentShipSchoolFaculty",
+                new { idStudentShipSchoolFaculty = idStudentShipSchoolFaculty, page = 1 });
         }
 
-        public ActionResult ListStudentShipSchoolStudent(int idStudentShipSchoolFaculty)
+        public ActionResult ChangeMoneyRankingAcademic(int idStudentShipSchoolFaculty, FormCollection form)
         {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlyhocbong")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            ViewBag.StudentShipSchoolFaculty = new StudentShipSchoolFacultyBo().GetById(idStudentShipSchoolFaculty);
-            ViewBag.listStudentShipSchoolStudent = new StudentShipSchoolStudentBo().GetList(idStudentShipSchoolFaculty);
-            return View("ListStudentShipSchoolStudent");
+            new RankingAcademicBo().Update(form);
+            return this.RedirectToAction(
+                "ListStudentShipSchoolFaculty",
+                new { idStudentShipSchoolFaculty = idStudentShipSchoolFaculty, page = 1 });
         }
 
-        public ActionResult SaveStudentShipSchoolStudent(int idStudentShipSchoolFaculty)
+        public ActionResult GetMoneyByCountStudentShip(int idStudentShipSchoolFaculty, int countStudentShip)
         {
-            learningOutComeBo.SaveStudentShipSchoolStudent(idStudentShipSchoolFaculty);
-            return RedirectToAction("ListStudentShipSchoolStudent", new { idStudentShipSchoolFaculty = idStudentShipSchoolFaculty });
+            string totalMoney = this.learningOutComeBo.GetMoneyByCount(idStudentShipSchoolFaculty, countStudentShip);
+            return this.Content(totalMoney, "text/Plain");
         }
 
-        public ActionResult SaveStudentShipSchoolStudentCLC(int idStudentShipSchoolFaculty)
+        public ActionResult GetMoneyStudentShipSchool(int idSemester)
         {
-            learningOutComeBo.SaveStudentShipSchoolStudentCLC(idStudentShipSchoolFaculty);
-            return RedirectToAction("ListStudentShipSchoolStudent", new { idStudentShipSchoolFaculty = idStudentShipSchoolFaculty });
-        }
-
-        public ActionResult GetProgressSaveStudentShipSchoolStudent()
-        {
-            int progress = StudentShipSchoolStudentBo.percentProgress;
-            return Content(progress + "", "text/plain");
+            string money = new StudentShipSchoolBo().GetMoney(idSemester);
+            return this.Content(money, "text/plain");
         }
 
         public ActionResult GetProgressExportStudentShip()
         {
             int progress = StudentShipSchoolBo.percentProgress;
-            return Content(progress + "", "text/plain");
+            return this.Content(progress + string.Empty, "text/plain");
         }
 
-
-        public ActionResult UpdateIsAcceptConsider(int idLearningOutCome) {
-            learningOutComeBo.UpdateIsAcceptConsider(idLearningOutCome);
-            return Content("1", "text/plain");
-        }
-
-        public ActionResult UpdateIsDisEnableConsider(int idLearningOutCome)
+        public ActionResult GetProgressSaveStudentShipSchoolStudent()
         {
-            learningOutComeBo.UpdateIsDisEnableConsider(idLearningOutCome);
-            return Content("1", "text/plain");
+            int progress = StudentShipSchoolStudentBo.percentProgress;
+            return this.Content(progress + string.Empty, "text/plain");
+        }
+
+        public ActionResult ImportScoteStudent()
+        {
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlyhocbong")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            this.ViewBag.listSemester = new SemesterBO().Get();
+            return this.View("ImportScoteStudent");
+        }
+
+
+        public ActionResult GetListErrorImportScote()
+        {
+            return this.PartialView(
+                "~/Views/PartialShared/_ListErrorImportExcel.cshtml",
+                new LearningOutComeBo().GetListErrorImportExcel());
+        }
+
+        public ActionResult GetCountListErrorImportScote()
+        {
+            return this.Content("" + new LearningOutComeBo().GetCountListErrorImportExcel(), "text/plain");
+        }
+
+        // GET: StudentShip
+        public ActionResult Index()
+        {
+            return this.View();
+        }
+
+        public ActionResult ListScoteStudent(int idSemester, int page, FormCollection form)
+        {
+            string search = form["search"];
+            if (search == null)
+            {
+                if (this.Session["searchship"] != null) search = this.Session["searchship"].ToString();
+            }
+            else
+            {
+                this.Session["searchship"] = search;
+            }
+
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlyhocbong")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            this.ViewBag.listSemester = new SemesterBO().Get();
+            this.ViewBag.Semester = idSemester;
+            this.ViewBag.listLearningOutCome = this.learningOutComeBo.Get(idSemester, page, search);
+            PageNumber pagenumber = this.learningOutComeBo.TotalPage(idSemester, page, search, string.Empty);
+            this.ViewBag.pageNumber = pagenumber;
+            return this.View("ListScoteStudent");
+        }
+
+        public ActionResult ListStudentShip(int page, FormCollection form)
+        {
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlyhocbong")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            this.ViewBag.listSemester = new SemesterBO().Get();
+            this.ViewBag.listLearningOutCome = this.learningOutComeBo.Get(page, form);
+            this.ViewBag.pageNumber = this.learningOutComeBo.TotalPage(page, form);
+            return this.View("ListConsiderStudentShip");
+        }
+
+        public ActionResult ListStudentShipSchoolFaculty(int idStudentShipSchoolFaculty, int page, FormCollection form)
+        {
+            string search = form["search"];
+            if (search == null)
+            {
+                if (this.Session["search"] != null) search = this.Session["search"].ToString();
+            }
+            else
+            {
+                this.Session["search"] = search;
+            }
+
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlyhocbong")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            this.ViewBag.StudentShipSchoolFaculty = new StudentShipSchoolFacultyBo().GetById(idStudentShipSchoolFaculty);
+            this.ViewBag.listLearningOutCome = this.learningOutComeBo.GetByIdFaculty(
+                page,
+                idStudentShipSchoolFaculty,
+                search);
+            this.ViewBag.pageNumber = this.learningOutComeBo.TotalPage(page, idStudentShipSchoolFaculty, search);
+            this.ViewBag.ConditionStudentShip = new ConditionStudentShipSchoolBo().Get(idStudentShipSchoolFaculty);
+            this.ViewBag.RankingAcademic = new RankingAcademicBo().Get();
+            this.ViewBag.SURPLUSMoney = this.learningOutComeBo.GetSURPLUSMoney(idStudentShipSchoolFaculty);
+            this.ViewBag.CountStudentShip = this.learningOutComeBo.GetCountStudentShip(idStudentShipSchoolFaculty);
+            return this.View("ListConsiderStudentShip");
+        }
+
+        public ActionResult ListStudentShipSchoolFacultyCLC(
+            int idStudentShipSchoolFaculty,
+            int page,
+            FormCollection form)
+        {
+            string search = form["search"];
+            if (search == null)
+            {
+                if (this.Session["search"] != null) search = this.Session["search"].ToString();
+            }
+            else
+            {
+                this.Session["search"] = search;
+            }
+
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlyhocbong")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            this.ViewBag.StudentShipSchoolFaculty = new StudentShipSchoolFacultyBo().GetById(idStudentShipSchoolFaculty);
+            this.ViewBag.listLearningOutCome = this.learningOutComeBo.GetByIdFacultyCLC(
+                page,
+                idStudentShipSchoolFaculty,
+                search);
+            this.ViewBag.pageNumber = this.learningOutComeBo.TotalPage(page, idStudentShipSchoolFaculty, search);
+            this.ViewBag.ConditionStudentShip = new ConditionStudentShipSchoolBo().Get(idStudentShipSchoolFaculty);
+            this.ViewBag.SURPLUSMoney = this.learningOutComeBo.GetSURPLUSMoney(idStudentShipSchoolFaculty);
+            this.ViewBag.CountStudentShip = this.learningOutComeBo.GetCountStudentShipCLC(idStudentShipSchoolFaculty);
+            this.ViewBag.top1 = new StudentShipCLCBo().GetTop1();
+            this.ViewBag.top2 = new StudentShipCLCBo().GetTop2();
+            return this.View("ListConsiderStudentShipCLC");
+        }
+
+        public ActionResult ListStudentShipSchoolStudent(int idStudentShipSchoolFaculty)
+        {
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlyhocbong")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            this.ViewBag.StudentShipSchoolFaculty = new StudentShipSchoolFacultyBo().GetById(idStudentShipSchoolFaculty);
+            this.ViewBag.listStudentShipSchoolStudent =
+                new StudentShipSchoolStudentBo().GetList(idStudentShipSchoolFaculty);
+            return this.View("ListStudentShipSchoolStudent");
         }
 
         public ActionResult MoveMoneyStudentShip(string money, int idStudentShipSchoolFaculty)
         {
             new StudentShipSchoolFacultyBo().MoveMoneyStudentShip(money, idStudentShipSchoolFaculty);
-            return RedirectToAction("ListStudentShipSchoolFacultyCLC", new { idStudentShipSchoolFaculty = idStudentShipSchoolFaculty, page = 1 });
+            return this.RedirectToAction(
+                "ListStudentShipSchoolFacultyCLC",
+                new { idStudentShipSchoolFaculty = idStudentShipSchoolFaculty, page = 1 });
+        }
+
+        public ActionResult ResetPercentProgress()
+        {
+            LearningOutComeBo.percentProgress = 0;
+            return this.Content(string.Empty, "text/plain");
+        }
+
+        public ActionResult SaveStudentShipSchoolStudent(int idStudentShipSchoolFaculty)
+        {
+            this.learningOutComeBo.SaveStudentShipSchoolStudent(idStudentShipSchoolFaculty);
+            return this.RedirectToAction(
+                "ListStudentShipSchoolStudent",
+                new { idStudentShipSchoolFaculty = idStudentShipSchoolFaculty });
+        }
+
+        public ActionResult SaveStudentShipSchoolStudentCLC(int idStudentShipSchoolFaculty)
+        {
+            this.learningOutComeBo.SaveStudentShipSchoolStudentCLC(idStudentShipSchoolFaculty);
+            return this.RedirectToAction(
+                "ListStudentShipSchoolStudent",
+                new { idStudentShipSchoolFaculty = idStudentShipSchoolFaculty });
+        }
+
+        public ActionResult SelectSemester()
+        {
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlyhocbong")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            this.ViewBag.listSemester = new SemesterBO().Get();
+            return this.View("SelectSemester");
+        }
+
+        public ActionResult SelectSemesterScoteStudent()
+        {
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlyhocbong")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            this.ViewBag.listSemester = new SemesterBO().Get();
+            return this.View("SelectSemesterScoteStudent");
         }
 
         public ActionResult SendStudentShipApplication()
         {
-            ViewBag.listSemester = new SemesterBO().Get();
-            return View("SendStudentshipApplication");
+            this.ViewBag.listSemester = new SemesterBO().Get();
+            return this.View("SendStudenshipApplication");
         }
 
-        public ActionResult AddStudentShipApplication(int selectSemester)
+        public ActionResult StudentShipFaculty(int idSemester)
         {
-            Student student = new StudentBO().GetStudentByIdAccount(Convert.ToInt32(Session["idAccount"]));
-            new StudentshipApplicationBo().Add(selectSemester, student.IdStudent);
-            return RedirectToAction("SendStudentShipApplication");
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlyhocbong")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            StudentShipSchool studentShipSchool = new StudentShipSchoolBo().Get(idSemester);
+            this.ViewBag.studentShipSchool = studentShipSchool;
+            this.ViewBag.Faculty = new FacultyBO().GetListFaculty();
+            this.ViewBag.listStudentShipSchoolFaculty =
+                new StudentShipSchoolFacultyBo().Get(studentShipSchool.IdStudentShipSchool);
+            this.ViewBag.surplus = new StudentShipSchoolFacultyBo().GetSURPLUS(studentShipSchool.IdStudentShipSchool);
+            return this.View("StudentShipFaculty");
         }
 
+        public ActionResult StudentShipFacultyCLC(int idSemester)
+        {
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlyhocbong")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            StudentShipSchool studentShipSchool = new StudentShipSchoolBo().Get(idSemester);
+            this.ViewBag.studentShipSchool = studentShipSchool;
+            this.ViewBag.ClassCLC = new ClassBO().GetClassCLC();
+            this.ViewBag.listStudentShipSchoolFaculty =
+                new StudentShipSchoolFacultyBo().Get(studentShipSchool.IdStudentShipSchool);
+            this.ViewBag.surplus = new StudentShipSchoolFacultyBo().GetSURPLUS(studentShipSchool.IdStudentShipSchool);
+            return this.View("StudentShipFacultyCLC");
+        }
+
+        public ActionResult UpdateIsAcceptConsider(int idLearningOutCome)
+        {
+            this.learningOutComeBo.UpdateIsAcceptConsider(idLearningOutCome);
+            return this.Content("1", "text/plain");
+        }
+
+        public ActionResult UpdateIsDisEnableConsider(int idLearningOutCome)
+        {
+            this.learningOutComeBo.UpdateIsDisEnableConsider(idLearningOutCome);
+            return this.Content("1", "text/plain");
+        }
+
+        public ActionResult UpdateMoneyStudentShipFaculty(int idStudentShipSchoolFaculty, FormCollection form)
+        {
+            new StudentShipSchoolFacultyBo().Update(idStudentShipSchoolFaculty, form);
+            return this.RedirectToAction(
+                "ListStudentShipSchoolFaculty",
+                new { idStudentShipSchoolFaculty = idStudentShipSchoolFaculty, page = 1 });
+        }
+
+        public ActionResult UpdateMoneyStudentShipFacultyCLC(int idStudentShipSchoolFaculty, FormCollection form)
+        {
+            new StudentShipSchoolFacultyBo().Update(idStudentShipSchoolFaculty, form);
+            return this.RedirectToAction(
+                "ListStudentShipSchoolFacultyCLC",
+                new { idStudentShipSchoolFaculty = idStudentShipSchoolFaculty, page = 1 });
+        }
+
+        public ActionResult UpdateMoneyStudentShipShoolFaculty(
+            int idFaculty,
+            int idStudentShipSchool,
+            string totalMoney)
+        {
+            new StudentShipSchoolFacultyBo().InsertStudentShipFaculty(
+                idStudentShipSchool,
+                idFaculty,
+                null,
+                ConvertObject.ConvertCurrencyToString(totalMoney),
+                null);
+            new StudentShipSchoolBo().UpdateMoney(idStudentShipSchool);
+            return this.Content("1", "text/plain");
+        }
+
+        public ActionResult UpdateMoneyStudentShipShoolFacultyCLC(
+            int idClass,
+            int idStudentShipSchool,
+            string totalMoney,
+            string tuitionFee)
+        {
+            new StudentShipSchoolFacultyBo().InsertStudentShipFaculty(
+                idStudentShipSchool,
+                null,
+                idClass,
+                ConvertObject.ConvertCurrencyToString(totalMoney),
+                ConvertObject.ConvertCurrencyToString(tuitionFee));
+            new StudentShipSchoolBo().UpdateMoney(idStudentShipSchool);
+            return this.Content("1", "text/plain");
+        }
     }
 }

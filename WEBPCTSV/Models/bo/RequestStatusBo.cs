@@ -1,18 +1,17 @@
-﻿using WEBPCTSV.Models.bean;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace WEBPCTSV.Models.bo
+﻿namespace WEBPCTSV.Models.bo
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using WEBPCTSV.Models.bean;
+
     public class RequestStatusBo
     {
-        DSAContext context = new DSAContext();
+        readonly DSAContext context = new DSAContext();
+
         public List<RequestStatus> GetRequestStatus()
         {
-            return context.RequestStatus.ToList();
-
+            return this.context.RequestStatus.ToList();
         }
     }
 }

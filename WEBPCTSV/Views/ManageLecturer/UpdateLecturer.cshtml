@@ -1,83 +1,85 @@
-﻿@model Lecturer
-@using WEBPCTSV.Models.bean;
+﻿@using WEBPCTSV.Models.bean
+@model Lecturer
 
 @{
     ViewBag.Title = "Chi tiết giảng viên chủ nhiệm";
     ViewBag.Active = "UpdateLecturer";
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
 }
-<link href="~/css/select2.min.css" rel="stylesheet" />
+<link href="~/css/select2.min.css" rel="stylesheet"/>
 <script src="~/js/select2.min.js"></script>
 
 <script src="~/js/jquery.validate.js" type="text/javascript"></script>
 <script type="text/javascript">
     $(document)
-            .ready(
-                    function () {
-                        $("#fUpdateLecturer")
-                                .validate(
-                                        {
-                                            rules: {
-                                                FirstName: {
-                                                    required: true,
-                                                },
-                                                LastName: {
-                                                    required: true,
-                                                },
-                                                LecturerNumber: {
-                                                    required: true,
-                                                },
-                                                PhoneNumber: {
-                                                    digits: true,
-                                                },
-                                                Email: {
-                                                    email: true
-                                                },
-                                                Faculty: {
-                                                    required: true,
-                                                }
-                                            },
-                                            messages: {
-                                                FirstName: {
-                                                    required: "Chưa nhập tên giảng viên!",
-                                                },
-                                                LastName: {
-                                                    required: "Chưa nhập họ giảng viên!",
-                                                },
-                                                LecturerNumber: {
-                                                    required: "Chưa nhập mã số giảng viên!",
-                                                },
-                                                PhoneNumber: {
-                                                    digits: "Nhập sai định dạng số điện thoại!",
-                                                },
-                                                Email: {
-                                                    email: "Nhập sai định dạng email!"
-                                                },
-                                                Faculty: {
-                                                    required: "Chưa chọn khoa!",
-                                                }
-                                            },
-                                            submitHandler: function (form) {
-                                                updateLecturerInformation();
-                                            }
-                                        });
+        .ready(
+            function() {
+                $("#fUpdateLecturer")
+                    .validate(
+                    {
+                        rules: {
+                            FirstName: {
+                                required: true,
+                            },
+                            LastName: {
+                                required: true,
+                            },
+                            LecturerNumber: {
+                                required: true,
+                            },
+                            PhoneNumber: {
+                                digits: true,
+                            },
+                            Email: {
+                                email: true
+                            },
+                            Faculty: {
+                                required: true,
+                            }
+                        },
+                        messages: {
+                            FirstName: {
+                                required: "Chưa nhập tên giảng viên!",
+                            },
+                            LastName: {
+                                required: "Chưa nhập họ giảng viên!",
+                            },
+                            LecturerNumber: {
+                                required: "Chưa nhập mã số giảng viên!",
+                            },
+                            PhoneNumber: {
+                                digits: "Nhập sai định dạng số điện thoại!",
+                            },
+                            Email: {
+                                email: "Nhập sai định dạng email!"
+                            },
+                            Faculty: {
+                                required: "Chưa chọn khoa!",
+                            }
+                        },
+                        submitHandler: function(form) {
+                            updateLecturerInformation();
+                        }
                     });
+            });
 </script>
 <style type="text/css">
-    label.error {
-        color: #FF0000;
-    }
+    label.error { color: #FF0000; }
 
     input.error {
         border: 2px solid #FF0000;
-        color: #0000FF;
         border-style: ridge;
+        color: #0000FF;
     }
 </style>
 
 <ol class="breadcrumb box-shadow">
-    <li><a href="TrangChu">Trang chủ</a></li>
-    <li><a href="~/QuanLy/QuanLyGVCN">Công tác giảng viên chủ nhiệm</a></li>
+    <li>
+        <a href="TrangChu">Trang chủ</a>
+    </li>
+    <li>
+        <a href="~/QuanLy/QuanLyGVCN">Công tác giảng viên chủ nhiệm</a>
+    </li>
     <li class="active">Cập nhật thông tin chủ nhiệm</li>
 </ol>
 
@@ -86,7 +88,7 @@
         <div class="main-form">
             @using (Html.BeginForm("CapNhat", "QuanLy/QuanLyGVCN", FormMethod.Post, new { @id = "fUpdateLecturer", @class = "form-horizontal" }))
             {
-                <input class="hidden form-idLecturer" name="IdLecturer" value="@Model.IdLecturer" />
+                <input class="hidden form-idLecturer" name="IdLecturer" value="@Model.IdLecturer"/>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Mã giảng viên</label>
                     <div class="col-sm-4">
@@ -95,11 +97,11 @@
                     <label class="control-label col-sm-2">Mã ngạch</label>
                     <div class="col-sm-4">
                         <select class="form-control" name="Type">
-                            <option value="GV" @(Model.Type.Equals("GV") ? "selected" : "")>Giảng viên</option>
-                            <option value="GVC" @(Model.Type.Equals("GVC") ? "selected" : "")>Giảng viên chính</option>
-                            <option value="GVCC" @(Model.Type.Equals("GVCC") ? "selected" : "")>Giảng viên cao cấp</option>
-                            <option value="CBPV" @(Model.Type.Equals("CBPV") ? "selected" : "")>Cán bộ phục vụ</option>
-                            <option value="Trợ giảng" @(Model.Type.Equals("Trợ giảng") ? "selected" : "")>Trợ giảng</option>
+                            <option value="GV" @(Model.Type.Equals("GV") ? "selected" : string.Empty)>Giảng viên</option>
+                            <option value="GVC" @(Model.Type.Equals("GVC") ? "selected" : string.Empty)>Giảng viên chính</option>
+                            <option value="GVCC" @(Model.Type.Equals("GVCC") ? "selected" : string.Empty)>Giảng viên cao cấp</option>
+                            <option value="CBPV" @(Model.Type.Equals("CBPV") ? "selected" : string.Empty)>Cán bộ phục vụ</option>
+                            <option value="Trợ giảng" @(Model.Type.Equals("Trợ giảng") ? "selected" : string.Empty)>Trợ giảng</option>
                         </select>
                     </div>
                 </div>
@@ -118,19 +120,19 @@
                     <div class="col-sm-4">
                         <select class="form-control" name="AcademicTitle">
                             <option value="">Chọn học hàm</option>
-                            <option value="PGS" @(Model.AcademicTitle.Equals("PGS") ? "selected" : "")>Phó giáo sư</option>
-                            <option value="GS" @(Model.AcademicTitle.Equals("GS") ? "selected" : "")>Giáo sư</option>
+                            <option value="PGS" @(Model.AcademicTitle.Equals("PGS") ? "selected" : string.Empty)>Phó giáo sư</option>
+                            <option value="GS" @(Model.AcademicTitle.Equals("GS") ? "selected" : string.Empty)>Giáo sư</option>
                         </select>
                     </div>
                     <label class="control-label col-sm-2">Học vị</label>
                     <div class="col-sm-4">
                         <select class="form-control" name="Degree">
                             <option value="">Chọn học vị</option>
-                            <option value="CN" @(Model.Degree.Equals("CN") ? "selected" : "")>Cử nhân</option>
-                            <option value="KS" @(Model.Degree.Equals("KS") ? "selected" : "")>Kỹ sư</option>
-                            <option value="ThS" @(Model.Degree.Equals("ThS") ? "selected" : "")>Thạc sĩ</option>
-                            <option value="TS" @(Model.Degree.Equals("TS") ? "selected" : "")>Tiến sĩ</option>
-                            <option value="TSKH" @(Model.Degree.Equals("TSKH") ? "selected" : "")>Tiến sĩ khoa học</option>
+                            <option value="CN" @(Model.Degree.Equals("CN") ? "selected" : string.Empty)>Cử nhân</option>
+                            <option value="KS" @(Model.Degree.Equals("KS") ? "selected" : string.Empty)>Kỹ sư</option>
+                            <option value="ThS" @(Model.Degree.Equals("ThS") ? "selected" : string.Empty)>Thạc sĩ</option>
+                            <option value="TS" @(Model.Degree.Equals("TS") ? "selected" : string.Empty)>Tiến sĩ</option>
+                            <option value="TSKH" @(Model.Degree.Equals("TSKH") ? "selected" : string.Empty)>Tiến sĩ khoa học</option>
                         </select>
                     </div>
                 </div>
@@ -146,7 +148,7 @@
                             <option value="">Chọn khoa</option>
                             @foreach (Faculty faculty in ViewBag.faculties)
                             {
-                                <option @(@Model.Faculty.IdFaculty == @faculty.IdFaculty ? "selected" : "") value="@faculty.IdFaculty">@faculty.FacultyName</option>
+                                <option @(@Model.Faculty.IdFaculty == @faculty.IdFaculty ? "selected" : string.Empty) value="@faculty.IdFaculty">@faculty.FacultyName</option>
                             }
                         </select>
                         <div class="hide faculty-acronym">
@@ -182,25 +184,27 @@
                     <div class="col-sm-10">
                         <table class="table table-hover table-striped table-bordered">
                             <thead>
-                                <tr>
-                                    <td>Kỳ học</td>
-                                    <td>Lớp chủ nhiệm</td>
-                                </tr>
+                            <tr>
+                                <td>Kỳ học</td>
+                                <td>Lớp chủ nhiệm</td>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach (var classowner in Model.LecturerClasses.GroupBy(g => new { g.IdSemester, g.Semester }).Select(g => new { g.Key }))
-                                {
-                                    <tr>
-                                        <td class="hidden"><input name="" /></td>
-                                        <td>Kỳ @classowner.Key.Semester.SemesterYear.SemesterYearName Năm @classowner.Key.Semester.Year.YearName</td>
-                                        <td>
-                                            @foreach (LecturerClass classIterate in Model.LecturerClasses.Where(c => c.IdSemester.Equals(classowner.Key.IdSemester)))
-                                            {
-                                                <span class="lecturer-class" onclick="detailClass('@classIterate.IdLecturerClass')">@classIterate.Class.ClassName </span>
-                                            }
-                                        </td>
-                                    </tr>
-                                }
+                            @foreach (var classowner in Model.LecturerClasses.GroupBy(g => new { g.IdSemester, g.Semester }).Select(g => new { g.Key }))
+                            {
+                                <tr>
+                                    <td class="hidden">
+                                        <input name=""/>
+                                    </td>
+                                    <td>Kỳ @classowner.Key.Semester.SemesterYear.SemesterYearName Năm @classowner.Key.Semester.Year.YearName</td>
+                                    <td>
+                                        @foreach (LecturerClass classIterate in Model.LecturerClasses.Where(c => c.IdSemester.Equals(classowner.Key.IdSemester)))
+                                        {
+                                            <span class="lecturer-class" onclick="detailClass('@classIterate.IdLecturerClass')">@classIterate.Class.ClassName </span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
                             </tbody>
                         </table>
                     </div>
@@ -232,7 +236,7 @@
             <div class="modal-body">
                 <div class="form-horizontal">
                     <form id="modal-form-classowner">
-                        <input class="hidden" name="idLecturerClass" id="idLecturerClass" />
+                        <input class="hidden" name="idLecturerClass" id="idLecturerClass"/>
                         <div class="form-group">
                             <label class="control-label col-sm-3">
                                 Học kỳ
@@ -316,7 +320,10 @@
             <div class="modal-footer">
                 <div class="btn btn-success" onclick="addClassOwner()">Thêm lớp</div>
                 <div class="btn btn-primary" style="display: none" onclick="updateClassOwner()">Cập nhật</div>
-                <div class="btn btn-danger" style="display: none" onclick="removeClassOwner()">Xóa</div>
+                <div class="btn btn-danger" style="display: none" onclick="
+removeClassOwner()">
+                    Xóa
+                </div>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
             </div>
         </div>
@@ -326,19 +333,22 @@
 
 
 <script>
-    $(document).ready(function () {
-        $('.Faculty').select2();
-        $('.Class').select2();
-        $('.add-classowner').on('click', function () {
-            $('.modal-footer .btn-success').removeAttr('style');
-            $('.modal-footer .btn-danger').attr('style', 'display: none');
-            $('.modal-footer .btn-primary').attr('style', 'display: none');
-            $('#modal-classowner').appendTo("body").modal('show');
-            $('#idLecturerClass').val('');
-            $('input[type=checkbox]').prop("checked", false);
+    $(document)
+        .ready(function() {
+            $('.Faculty').select2();
+            $('.Class').select2();
+            $('.add-classowner')
+                .on('click',
+                    function() {
+                        $('.modal-footer .btn-success').removeAttr('style');
+                        $('.modal-footer .btn-danger').attr('style', 'display: none');
+                        $('.modal-footer .btn-primary').attr('style', 'display: none');
+                        $('#modal-classowner').appendTo("body").modal('show');
+                        $('#idLecturerClass').val('');
+                        $('input[type=checkbox]').prop("checked", false);
+                    });
+            changeSemester();
         });
-        changeSemester();
-    });
 
     function updateLecturerInformation() {
         $.ajax({
@@ -346,15 +356,16 @@
             data: $('#fUpdateLecturer').serialize(),
             url: '/QuanLy/QuanLyGVCN/CapNhat',
 
-            success: function (response) {
+            success: function(response) {
                 alert(response.responseText);
             },
 
-            error: function (response) {
+            error: function(response) {
                 alert(response.responseText);
             }
         });
     }
+
     function changeFaculty() {
         //alert(($('#lecturernumber').val()));
         if ($('#lecturernumber').val().length > 3) {
@@ -362,6 +373,7 @@
             $('#lecturernumber').val($('.faculty-acronym .F' + $('.Faculty').val()).text() + username);
         }
     }
+
     function changeSemester() {
         idSemester = $('#modal-input-semester').val();
         $('.modal-enddate').val($('.S' + idSemester).text());
@@ -373,26 +385,46 @@
                 idSemester: idSemester
             },
             url: '/QuanLy/QuanLyGVCN/GiayToNopTrongKy',
-            success: function (response) {
+            success: function(response) {
                 // Check get data
                 //alert(response.listDocument);
                 var htmlListDocumentFirst = '<label class="control-label col-sm-3 ">Hồ sơ lần 1</label>';
                 var htmlListDocumentSecond = '<label class="control-label col-sm-3 ">Hồ sơ lần 2</label>';
-                $.each(response.listDocument, function (index, data) {
-                    if (data.phase == 1) {
-                        htmlListDocumentFirst += '<div class="checkbox col-sm-9"><label><input type="checkbox" value="' + data.idDocumentSemester + '" name="D' + data.idDocumentSemester + '" id="D' + data.idDocumentSemester + '">' + data.documentName + '</label></div><label class="control-label col-sm-3"></label>';
-                    } else {
-                        htmlListDocumentSecond += '<div class="checkbox col-sm-9"><label><input type="checkbox" value="' + data.idDocumentSemester + '" name="D' + data.idDocumentSemester + '" id="D' + data.idDocumentSemester + '">' + data.documentName + '</label></div><label class="control-label col-sm-3"></label>';
-                    }
-                });
+                $.each(response.listDocument,
+                    function(index, data) {
+                        if (data.phase == 1) {
+                            htmlListDocumentFirst +=
+                                '<div class="checkbox col-sm-9"><label><input type="checkbox" value="' +
+                                data.idDocumentSemester +
+                                '" name="D' +
+                                data.idDocumentSemester +
+                                '" id="D' +
+                                data.idDocumentSemester +
+                                '">' +
+                                data.documentName +
+                                '</label></div><label class="control-label col-sm-3"></label>';
+                        } else {
+                            htmlListDocumentSecond +=
+                                '<div class="checkbox col-sm-9"><label><input type="checkbox" value="' +
+                                data.idDocumentSemester +
+                                '" name="D' +
+                                data.idDocumentSemester +
+                                '" id="D' +
+                                data.idDocumentSemester +
+                                '">' +
+                                data.documentName +
+                                '</label></div><label class="control-label col-sm-3"></label>';
+                        }
+                    });
                 $('.document-submit-first').html(htmlListDocumentFirst);
                 $('.document-submit-second').html(htmlListDocumentSecond);
             },
-            error: function (response) {
+            error: function(response) {
                 alert(response.responseText);
             }
         });
     }
+
     function detailClass(id) {
         // Get data
         $.ajax({
@@ -401,7 +433,7 @@
                 idLecturerClass: id
             },
             url: '/QuanLy/QuanLyGVCN/ChiTietLopChuNhiem',
-            success: function (response) {
+            success: function(response) {
                 if (response.success == true) {
                     classDetail = response.lecturerClass;
                     $('#idLecturerClass').val(classDetail.idLecturerClass);
@@ -417,31 +449,51 @@
                     // Load list document semester
                     var htmlListDocumentFirst = '<label class="control-label col-sm-3 ">Hồ sơ lần 1</label>';
                     var htmlListDocumentSecond = '<label class="control-label col-sm-3 ">Hồ sơ lần 2</label>';
-                    $.each(classDetail.listDocumentSemester, function (index, data) {
-                        if (data.phase == 1) {
-                            htmlListDocumentFirst += '<div class="checkbox col-sm-9"><label><input type="checkbox" value="' + data.idDocumentSemester + '" name="D' + data.idDocumentSemester + '" id="D' + data.idDocumentSemester + '">' + data.documentName + '</label></div><label class="control-label col-sm-3"></label>';
-                        } else {
-                            htmlListDocumentSecond += '<div class="checkbox col-sm-9"><label><input type="checkbox" value="' + data.idDocumentSemester + '" name="D' + data.idDocumentSemester + '" id="D' + data.idDocumentSemester + '">' + data.documentName + '</label></div><label class="control-label col-sm-3"></label>';
-                        }
-                    });
+                    $.each(classDetail.listDocumentSemester,
+                        function(index, data) {
+                            if (data.phase == 1) {
+                                htmlListDocumentFirst +=
+                                    '<div class="checkbox col-sm-9"><label><input type="checkbox" value="' +
+                                    data.idDocumentSemester +
+                                    '" name="D' +
+                                    data.idDocumentSemester +
+                                    '" id="D' +
+                                    data.idDocumentSemester +
+                                    '">' +
+                                    data.documentName +
+                                    '</label></div><label class="control-label col-sm-3"></label>';
+                            } else {
+                                htmlListDocumentSecond +=
+                                    '<div class="checkbox col-sm-9"><label><input type="checkbox" value="' +
+                                    data.idDocumentSemester +
+                                    '" name="D' +
+                                    data.idDocumentSemester +
+                                    '" id="D' +
+                                    data.idDocumentSemester +
+                                    '">' +
+                                    data.documentName +
+                                    '</label></div><label class="control-label col-sm-3"></label>';
+                            }
+                        });
                     $('.document-submit-first').html(htmlListDocumentFirst);
                     $('.document-submit-second').html(htmlListDocumentSecond);
 
                     //Reset all data of documents
                     $('#modal-classowner input[type=checkbox]').prop("checked", false);
                     var docs = classDetail.documents;
-                    $.each(docs, function (index, data) {
-                        if (data.isApproved != null && data.isApproved == true) {
-                            $('#D' + data.idDocumentSemester).prop("checked", true);
-                        }
-                    });
+                    $.each(docs,
+                        function(index, data) {
+                            if (data.isApproved != null && data.isApproved == true) {
+                                $('#D' + data.idDocumentSemester).prop("checked", true);
+                            }
+                        });
                     $('.modal-footer .btn-danger').removeAttr('style');
                     $('.modal-footer .btn-primary').removeAttr('style');
                     $('.modal-footer .btn-success').attr('style', 'display: none');
                     $('#modal-classowner').appendTo("body").modal('show');
                 }
             },
-            error: function (response) {
+            error: function(response) {
                 alert(response.responseText);
             }
         });
@@ -454,14 +506,15 @@
             type: 'POST',
             data: data,
             url: '/QuanLy/QuanLyGVCN/CapNhatLopChuNhiem',
-            success: function (response) {
+            success: function(response) {
                 alert(response.responseText);
             },
-            error: function (response) {
+            error: function(response) {
                 alert(response.responseText);
             }
         });
     }
+
     function removeClassOwner() {
         $.ajax({
             type: 'POST',
@@ -470,17 +523,18 @@
                 idLecturer: $('.form-idLecturer').val()
             },
             url: '/QuanLy/QuanLyGVCN/XoaLopChuNhiem',
-            success: function (response) {
+            success: function(response) {
                 alert(response.responseText);
                 if (response.success == true) {
                     document.location.href = "/QuanLy/QuanLyGVCN/CapNhat?idLecturer=" + response.idLecturer;
                 }
             },
-            error: function (response) {
+            error: function(response) {
                 alert(response.responseText);
             }
         });
     }
+
     function addClassOwner() {
         var data = $("#modal-form-classowner").serializeArray();
         data.push({ name: 'idLecturer', value: $('.form-idLecturer').val() });
@@ -488,13 +542,13 @@
             type: 'POST',
             data: data,
             url: '/QuanLy/QuanLyGVCN/ThemLopChuNhiem',
-            success: function (response) {
+            success: function(response) {
                 alert(response.responseText);
                 if (response.success == true) {
                     document.location.href = "/QuanLy/QuanLyGVCN/CapNhat?idLecturer=" + response.idLecturer;
                 }
             },
-            error: function (response) {
+            error: function(response) {
                 alert(response.responseText);
             }
         });

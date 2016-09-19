@@ -1,13 +1,13 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
-
+﻿@using WEBPCTSV.Models.bean
 @{
     ViewBag.Title = "Quản lý điểm rèn luyện";
     ViewBag.Active = "RenLuyen";
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
 }
 <ol class="breadcrumb box-shadow">
-    <li><a href="TrangChu">Trang chủ</a></li>
+    <li>
+        <a href="TrangChu">Trang chủ</a>
+    </li>
     <li class="active">Quản lý điểm rèn luyện</li>
 </ol>
 
@@ -41,7 +41,7 @@
             </div>
         </div>
     </div>
-    <hr />
+    <hr/>
     <div id="tbnoidung">
     </div>
 </div>
@@ -59,9 +59,9 @@
             @using (Html.BeginForm("ImportConductResult", "QuanLy/QuanLyRenLuyen", FormMethod.Post, new { enctype = "multipart/form-data", @id = "fImportExcel", @class = "form-horizontal" }))
             {
                 <div class="modal-body">
-                    <div class="modal-message" style="display:none;">
+                    <div class="modal-message" style="display: none;">
                     </div>
-                    <div class="modal-loading alert alert-info" style="display:none;">
+                    <div class="modal-loading alert alert-info" style="display: none;">
 
                     </div>
                     <div class="form-group">
@@ -78,7 +78,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-3">Chọn tệp</label>
                         <div class="col-md-9">
-                            <input class="form-control" type="file" id="UploadedFile" name="UploadedFile" />
+                            <input class="form-control" type="file" id="UploadedFile" name="UploadedFile"/>
                         </div>
                         <label class="control-label col-md-3"></label>
                         <div class="col-md-9">
@@ -107,37 +107,42 @@
                 idSemester: idSemester
             },
             url: '/QuanLy/QuanLyRenLuyen/DanhSachLop',
-            success: function (response) {
+            success: function(response) {
                 $('#tbnoidung').html(response);
             },
         });
     }
-    $(document).ready(function () {
-        $('.add-excel').on('click', function () {
-            $('#modal-excel').modal('show');
-        });
 
-        $('#fImportExcel').ajaxForm({
-            // Return text to avoid auto download file json in old browser.
-            dataType: 'text',
-            beforeSend: function () {
-                $('.modal-message').html("");
-                //loadIconLoading($('.modal-loading'));
-                //$('.modal-loading').fadeIn();
-            },
-            success: function (data) {
-                // Returned data is text: status;content
-                //$.when($('.modal-loading').fadeOut()).then(function () {
-                //unloadIconLoading($('.modal-loading'));
-                var response = data.split(';');
-                if (response[0] == "true") {
-                    $('.modal-message').html('<div class="alert alert-success">' + response[1] + '</div>')
-                } else {
-                    $('.modal-message').html('<div class="alert alert-danger">' + response[1] + '</div>')
-                }
-                $('.modal-message').fadeIn();
-                //});
-            }
+    $(document)
+        .ready(function() {
+            $('.add-excel')
+                .on('click',
+                    function() {
+                        $('#modal-excel').modal('show');
+                    });
+
+            $('#fImportExcel')
+                .ajaxForm({
+                    // Return text to avoid auto download file json in old browser.
+                    dataType: 'text',
+                    beforeSend: function() {
+                        $('.modal-message').html("");
+                        //loadIconLoading($('.modal-loading'));
+                        //$('.modal-loading').fadeIn();
+                    },
+                    success: function(data) {
+                        // Returned data is text: status;content
+                        //$.when($('.modal-loading').fadeOut()).then(function () {
+                        //unloadIconLoading($('.modal-loading'));
+                        var response = data.split(';');
+                        if (response[0] == "true") {
+                            $('.modal-message').html('<div class="alert alert-success">' + response[1] + '</div>')
+                        } else {
+                            $('.modal-message').html('<div class="alert alert-danger">' + response[1] + '</div>')
+                        }
+                        $('.modal-message').fadeIn();
+                        //});
+                    }
+                });
         });
-    });
 </script>

@@ -1,4 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
+﻿@using WEBPCTSV.Models.bean
 @{
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
     ViewBag.Title = "Regence";
@@ -6,11 +6,10 @@
 
 <h3 class="header-paper">Quản lý chức vụ</h3>
 @{
-
     int stt = 1;
 }
 <div class="container-layoutmanager">
-    <button class="btn btn-primary" data-toggle="modal" data-target="#modalRegency" style="margin-bottom:5px"><i class="fa fa-plus" aria-hidden="true"></i> Thêm chức vụ</button>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#modalRegency" style="margin-bottom: 5px"><i class="fa fa-plus" aria-hidden="true"></i> Thêm chức vụ</button>
     <div id="modalRegency" class="modal fade" role="dialog">
         <div class="modal-dialog ">
 
@@ -26,32 +25,32 @@
                         <div class="form-group">
                             <label class="control-label col-sm-3" for="email"> Mã chức vụ:</label>
                             <div class="col-sm-8">
-                                <input name="IdRegency" type="text" class="form-control" />
+                                <input name="IdRegency" type="text" class="form-control"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-3" for="email"> Tên chức vụ:</label>
                             <div class="col-sm-8">
-                                <input name="RegencyName" type="text" class="form-control" />
+                                <input name="RegencyName" type="text" class="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-3" for="email"> Điểm ưu tiên:</label>
                             <div class="col-sm-8">
-                                <input name="PriorityPoint" type="text" class="form-control" />
+                                <input name="PriorityPoint" type="text" class="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-3" for="email"> Điểm cộng:</label>
                             <div class="col-sm-8">
-                                <input name="PlusPoint" type="text" class="form-control" />
+                                <input name="PlusPoint" type="text" class="form-control"/>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" style="float:left"> Thêm  </button>
+                    <button type="submit" class="btn btn-primary" style="float: left"> Thêm </button>
                     <button type="button" class="btn btn-default" onclick="window.location.reload();" data-dismiss="modal">Đóng</button>
                 </div>
             </form>
@@ -60,79 +59,79 @@
     </div>
 
 
-
-    <table class="table table-hover" style="width:600px">
+    <table class="table table-hover" style="width: 600px">
         <thead>
-            <tr>
-                <th>STT</th>
-                <th>Mã chức vụ</th>
-                <th>Chức vụ</th>
-                <th>Điểm ưu tiên</th>
-                <th>Điểm cộng</th>
-                <th></th>
-            </tr>
+        <tr>
+            <th>STT</th>
+            <th>Mã chức vụ</th>
+            <th>Chức vụ</th>
+            <th>Điểm ưu tiên</th>
+            <th>Điểm cộng</th>
+            <th></th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (Regency regency in ViewBag.Regency)
-            {
-                <tr>
-                    <td>@stt</td>
-                    <td>@regency.IdRegency</td>
-                    <td>@regency.RegencyName</td>
-                    <td>@regency.PriorityPoint</td>
-                    <td>@regency.PlusPoint</td>
-                    <td>
-                        <label class="label label-success" data-toggle="modal" data-target="#modalRegency_@regency.IdRegency">Chi tiết</label>
-                        <div id="modalRegency_@regency.IdRegency" class="modal fade" role="dialog">
-                            <div class="modal-dialog">
+        @foreach (Regency regency in ViewBag.Regency)
+        {
+            <tr>
+                <td>@stt</td>
+                <td>@regency.IdRegency</td>
+                <td>@regency.RegencyName</td>
+                <td>@regency.PriorityPoint</td>
+                <td>@regency.PlusPoint</td>
+                <td>
+                    <label class="label label-success" data-toggle="modal" data-target="#modalRegency_@regency.IdRegency">Chi tiết</label>
+                    <div id="modalRegency_@regency.IdRegency" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
 
-                                <!-- Modal content-->
-                                <form class="modal-content" action="/ManageCommonSystem/UpdateRegency?idRegency=@regency.IdRegency" method="post">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Chỉnh sửa chức vụ</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="form-horizontal">
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-3" for="email"> Tên chức vụ:</label>
-                                                <div class="col-sm-8">
-                                                    <input name="RegencyName" value="@regency.RegencyName" type="text" class="form-control" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-3" for="email"> Điểm ưu tiên:</label>
-                                                <div class="col-sm-8">
-                                                    <input name="PriorityPoint" value="@regency.PriorityPoint" type="text" class="form-control" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-3" for="email"> Điểm cộng:</label>
-                                                <div class="col-sm-8">
-                                                    <input name="PlusPoint" value="@regency.PlusPoint" type="text" class="form-control" />
-                                                </div>
+                            <!-- Modal content-->
+                            <form class="modal-content" action="/ManageCommonSystem/UpdateRegency?idRegency=@regency.IdRegency" method="post">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Chỉnh sửa chức vụ</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3" for="email"> Tên chức vụ:</label>
+                                            <div class="col-sm-8">
+                                                <input name="RegencyName" value="@regency.RegencyName" type="text" class="form-control"/>
                                             </div>
                                         </div>
-
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3" for="email"> Điểm ưu tiên:</label>
+                                            <div class="col-sm-8">
+                                                <input name="PriorityPoint" value="@regency.PriorityPoint" type="text" class="form-control"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3" for="email"> Điểm cộng:</label>
+                                            <div class="col-sm-8">
+                                                <input name="PlusPoint" value="@regency.PlusPoint" type="text" class="form-control"/>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary" style="float:left"> Lưu chỉnh sửa  </button>
-                                        <a href="/ManageCommonSystem/DeleteRegency?idRegency=@regency.IdRegency"><label class="btn btn-danger" style="float:left;margin-left:10px"> Xóa</label></a>
-                                        <button type="button" class="btn btn-default" onclick="window.location.reload();" data-dismiss="modal"> Đóng</button>
-                                    </div>
-                                </form>
 
-                            </div> 
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" style="float: left"> Lưu chỉnh sửa </button>
+                                    <a href="/ManageCommonSystem/DeleteRegency?idRegency=@regency.IdRegency">
+                                        <label class="btn btn-danger" style="float: left; margin-left: 10px"> Xóa</label>
+                                    </a>
+                                    <button type="button" class="btn btn-default" onclick="window.location.reload();" data-dismiss="modal"> Đóng</button>
+                                </div>
+                            </form>
+
                         </div>
-                    </td>
-                </tr>
-                stt++;
-            }
+                    </div>
+                </td>
+            </tr>
+            stt++;
+        }
         </tbody>
     </table>
-    <a href="/ManageCommonSystem/ImportRegency" style="cursor:pointer"><strong><i class="fa fa-upload" aria-hidden="true"></i> Import dữ liệu chức vụ sinh viên</strong></a>
+    <a href="/ManageCommonSystem/ImportRegency" style="cursor: pointer">
+        <strong><i class="fa fa-upload" aria-hidden="true"></i> Import dữ liệu chức vụ sinh viên</strong>
+    </a>
 
 </div>
-
-
-

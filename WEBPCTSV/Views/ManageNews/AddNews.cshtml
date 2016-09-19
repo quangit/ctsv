@@ -1,4 +1,4 @@
-﻿@using WEBPCTSV.Helpers;
+﻿@using WEBPCTSV.Helpers
 @{
     ViewBag.Title = "Thêm tin tức";
     ViewBag.Active = "TinTuc";
@@ -9,65 +9,67 @@
 <script src="~/js/jquery.validate.js" type="text/javascript"></script>
 <script type="text/javascript">
     $(document)
-            .ready(
-                    function () {
+        .ready(
+            function() {
 
-                        $("#fAddInfo")
-                                .validate(
-                                        {
-                                            ignore: [],
-                                            rules: {
-                                                title: {
-                                                    required: true,
-                                                },
-                                                description: {
-                                                    required: true,
-                                                },
-                                                contentHtml: {
-                                                    required: function () {
-                                                        CKEDITOR.instances.contentHtml.updateElement();
-                                                    }
-                                                },
-                                                type: {
-                                                    required: true,
-                                                }
-                                            },
-                                            messages: {
-                                                title: {
-                                                    required: "Chưa nhập tiêu đề!",
-                                                },
-                                                description: {
-                                                    required: "Chưa nhập mô tả!",
-                                                },
-                                                contentHtml: {
-                                                    required: "Chưa nhập nội dung!",
-                                                },
-                                                type: {
-                                                    required: "Chưa chọn loại tin tức!",
-                                                }
-                                            },
+                $("#fAddInfo")
+                    .validate(
+                    {
+                        ignore: [],
+                        rules: {
+                            title: {
+                                required: true,
+                            },
+                            description: {
+                                required: true,
+                            },
+                            contentHtml: {
+                                required: function() {
+                                    CKEDITOR.instances.contentHtml.updateElement();
+                                }
+                            },
+                            type: {
+                                required: true,
+                            }
+                        },
+                        messages: {
+                            title: {
+                                required: "Chưa nhập tiêu đề!",
+                            },
+                            description: {
+                                required: "Chưa nhập mô tả!",
+                            },
+                            contentHtml: {
+                                required: "Chưa nhập nội dung!",
+                            },
+                            type: {
+                                required: "Chưa chọn loại tin tức!",
+                            }
+                        },
 
-                                            submitHandler: function (form) {
-                                                form.submit();
-                                            }
-                                        });
+                        submitHandler: function(form) {
+                            form.submit();
+                        }
                     });
+            });
 </script>
 <style type="text/css">
-    label.error {
-        color: #FF0000;
-    }
+    label.error { color: #FF0000; }
 
     input.error {
         border: 2px solid #FF0000;
-        color: #0000FF;
         border-style: ridge;
+        color: #0000FF;
     }
 </style>
 
 <ol class="breadcrumb box-shadow">
-    <li><a href="TrangChu">Trang chủ</a></li>
-    <li><a href="~/QuanLy/QuanLyTinTuc">Quản lý tin tức</a></li>
+    <li>
+        <a href="TrangChu">Trang chủ</a>
+    </li>
+    <li>
+        <a href="~/QuanLy/QuanLyTinTuc">Quản lý tin tức</a>
+    </li>
     <li class="active">Thêm mới tin tức</li>
 </ol>
 
@@ -107,7 +109,7 @@
                 <div class="form-group">
                     <label>Hình ảnh</label>
                     <div class="input-group">
-                        <input class="form-control" type="text" id="image" name="image" />
+                        <input class="form-control" type="text" id="image" name="image"/>
                         <div class="input-group-btn">
                             <button type="button" id="brow" class="btn btn-primary">
                                 <i class="fa fa-plus" aria-hidden="true"></i> Chọn ảnh
@@ -121,49 +123,60 @@
                     <button type="button" id="browfile" class="btn btn-primary btn-xs">
                         <i class="fa fa-plus" aria-hidden="true"></i> Thêm tệp
                     </button>
-                    <input type="hidden" id="attachedDocuments" name="attachedDocuments" placeholder="Chọn file đính kèm ..." />
+                    <input type="hidden" id="attachedDocuments" name="attachedDocuments" placeholder="Chọn file đính kèm ..."/>
                     <table>
                         <tbody id="table-file"></tbody>
                     </table>
                 </div>
-                <input class="btn btn-danger" type="submit" value="Hoàn tất" />
-                <input class="btn btn-warning" type="reset" value="Reset" />
+                <input class="btn btn-danger" type="submit" value="Hoàn tất"/>
+                <input class="btn btn-warning" type="reset" value="Reset"/>
             }
         </div>
     </div>
 </div>
 <script>
-    $(document).ready(function () {
-        showListAttachedDocument();
-        $("#brow").click(function () {
-            var ck = new CKFinder();
-            ck.selectActionFunction = function (fileUrl) {
-                $("#image").val(fileUrl);
-            };
-            ck.popup();
+    $(document)
+        .ready(function() {
+            showListAttachedDocument();
+            $("#brow")
+                .click(function() {
+                    var ck = new CKFinder();
+                    ck.selectActionFunction = function(fileUrl) {
+                        $("#image").val(fileUrl);
+                    };
+                    ck.popup();
+                });
+            $("#browfile")
+                .click(function() {
+                    var ck = new CKFinder();
+                    ck.selectActionFunction = function(fileUrl) {
+                        $("#attachedDocuments").val($("#attachedDocuments").val() + ':' + fileUrl);
+                        showListAttachedDocument();
+                    };
+                    ck.popup();
+                });
         });
-        $("#browfile").click(function () {
-            var ck = new CKFinder();
-            ck.selectActionFunction = function (fileUrl) {
-                $("#attachedDocuments").val($("#attachedDocuments").val() + ':' + fileUrl);
-                showListAttachedDocument();
-            };
-            ck.popup();
-        });
-    });
 
     function showListAttachedDocument() {
         $("#table-file").html("");
         var x = ($("#attachedDocuments").val()).substr(1);
         if (x != "") {
             var arrayFiles = x.split(":");
-            $.each(arrayFiles, function (index, file) {
-                $("#table-file").append('<tr>'
-                                    + '<td><i class="fa fa-file-text-o" aria-hidden="true"></i></td>'
-                                    + '<td id="table-file-' + index + '">' + decodeURI(file) + '</td>'
-                                    + '<td><i class="fa fa-times" aria-hidden="true" onclick="deleteFile(' + index + ')"></i></td>'
-                                        + '</tr>');
-            });
+            $.each(arrayFiles,
+                function(index, file) {
+                    $("#table-file")
+                        .append('<tr>' +
+                            '<td><i class="fa fa-file-text-o" aria-hidden="true"></i></td>' +
+                            '<td id="table-file-' +
+                            index +
+                            '">' +
+                            decodeURI(file) +
+                            '</td>' +
+                            '<td><i class="fa fa-times" aria-hidden="true" onclick="deleteFile(' +
+                            index +
+                            ')"></i></td>' +
+                            '</tr>');
+                });
         }
     }
 
@@ -176,10 +189,12 @@
     }
 
     var ckeditor;
+
     function createEditor(languageCode, id) {
         var editor = CKEDITOR.replace(id, { language: languageCode });
     };
-    $(function () {
+
+    $(function() {
         createEditor('vi', 'contentHtml');
     });
 </script>

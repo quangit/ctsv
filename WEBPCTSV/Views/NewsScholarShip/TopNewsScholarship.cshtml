@@ -1,5 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
-
+﻿@using WEBPCTSV.Models.bean
 @{
     Layout = null;
 }
@@ -16,7 +15,9 @@
         {
             <div class="listbox-content-item">
                 <div class="listbox-content-item-title">
-                    <p><a href="../HocBong/ChiTiet?id=@x.IdNewsScholarship" title="@x.News.Title">@WEBPCTSV.Helpers.Common.StringExtension.GetLimitSubString(@x.News.Title, 10)</a></p>
+                    <p>
+                        <a href="../HocBong/ChiTiet?id=@x.IdNewsScholarship" title="@x.News.Title">@WEBPCTSV.Helpers.Common.StringExtension.GetLimitSubString(@x.News.Title, 10)</a>
+                    </p>
                 </div>
                 <div class="listbox-content-item-moreinfo">
                     <span class="listbox-content-item-moreinfo-comment date"><i class="fa fa-calendar"></i> @x.News.CreatedDate.Day/@x.News.CreatedDate.Month/@x.News.CreatedDate.Year</span>
@@ -26,4 +27,3 @@
         }
     </div>
 </div>
-

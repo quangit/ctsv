@@ -1,12 +1,13 @@
-﻿@using WEBPCTSV.Models.bean;
-
+﻿@using WEBPCTSV.Models.bean
 @{
     ViewBag.Title = "Thông tin tài khoản";
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
 }
 
 <ol class="breadcrumb box-shadow">
-    <li><a href="TrangChu">Trang chủ</a></li>
+    <li>
+        <a href="TrangChu">Trang chủ</a>
+    </li>
     <li class="active">Thông tin tài khoản</li>
 </ol>
 @{
@@ -32,7 +33,7 @@
                 <label>Mật khẩu mới</label>
                 <input type="password" class="form-control" id="matkhau" name="matkhau" value="">
             </div>
-            <input class="btn btn-danger" style="float: right;" type="submit" value="Cập nhật" />
+            <input class="btn btn-danger" style="float: right;" type="submit" value="Cập nhật"/>
         </div>
     </div>
 </div>

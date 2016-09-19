@@ -1,18 +1,16 @@
 namespace WEBPCTSV.Models.bean
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     [Table("ConductForm")]
     public partial class ConductForm
     {
         public ConductForm()
         {
-            ConductEvents = new HashSet<ConductEvent>();
-            ConductItems = new HashSet<ConductItem>();
+            this.ConductEvents = new HashSet<ConductEvent>();
+            this.ConductItems = new HashSet<ConductItem>();
         }
 
         public ConductForm(string name, string note)
@@ -20,6 +18,10 @@ namespace WEBPCTSV.Models.bean
             this.Name = name;
             this.Note = note;
         }
+
+        public virtual ICollection<ConductEvent> ConductEvents { get; set; }
+
+        public virtual ICollection<ConductItem> ConductItems { get; set; }
 
         [Key]
         public int IdConductForm { get; set; }
@@ -30,9 +32,5 @@ namespace WEBPCTSV.Models.bean
 
         [StringLength(128)]
         public string Note { get; set; }
-
-        public virtual ICollection<ConductEvent> ConductEvents { get; set; }
-
-        public virtual ICollection<ConductItem> ConductItems { get; set; }
     }
 }

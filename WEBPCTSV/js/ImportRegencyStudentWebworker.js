@@ -7,7 +7,7 @@
 function GetData() {
     try {
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/File/GetInforProgressImportRegency', false);
+        xhr.open("GET", "/File/GetInforProgressImportRegency", false);
         xhr.setRequestHeader("Content-Type",
         "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function () {

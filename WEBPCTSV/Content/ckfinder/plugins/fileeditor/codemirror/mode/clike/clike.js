@@ -148,7 +148,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
         while (ctx.type == "statement") ctx = popContext(state);
       }
       else if (curPunc == ctx.type) popContext(state);
-      else if (((ctx.type == "}" || ctx.type == "top") && curPunc != ';') || (ctx.type == "statement" && curPunc == "newstatement"))
+      else if (((ctx.type == "}" || ctx.type == "top") && curPunc != ";") || (ctx.type == "statement" && curPunc == "newstatement"))
         pushContext(state, stream.column(), "statement");
       state.startOfLine = false;
       return style;

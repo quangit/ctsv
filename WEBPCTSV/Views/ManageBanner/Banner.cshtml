@@ -1,6 +1,5 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
-@model PagedList.IPagedList<News>
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<WEBPCTSV.Models.bean.News>
 
 @{
     ViewBag.Title = "Quản lý slide ảnh";
@@ -9,7 +8,9 @@
 }
 
 <ol class="breadcrumb box-shadow">
-    <li><a href="TrangChu">Trang chủ</a></li>
+    <li>
+        <a href="TrangChu">Trang chủ</a>
+    </li>
     <li class="active">Quản lý Slide ảnh</li>
 </ol>
 
@@ -19,7 +20,7 @@
             <i class="fa fa-plus-square"></i> Thêm mới
         </a>
     </div>
-    <hr />
+    <hr/>
     <div class="alert-result">
         @if (TempData["success"] != null)
         {
@@ -37,27 +38,33 @@
     <div id="tbnoidung">
         <table class="table table-hover">
             <thead>
-                <tr class="tieude">
-                    <th>ID</th>
-                    <th>Tiêu đề</th>
-                    <th>Ngày đăng</th>
-                    <th width="12%">Hiển thị</th>
-                    <th width="8%">Tùy Chọn</th>
-                </tr>
+            <tr class="tieude">
+                <th>ID</th>
+                <th>Tiêu đề</th>
+                <th>Ngày đăng</th>
+                <th width="12%">Hiển thị</th>
+                <th width="8%">Tùy Chọn</th>
+            </tr>
             </thead>
             @foreach (var news in Model)
             {
                 <tr class="noidung">
                     <td>@news.IdNews</td>
                     <td>@news.Title</td>
-                    <td><p class="mota"> @news.UpdatedDate.ToString("dd/MM/yyyy") </p></td>
+                    <td>
+                        <p class="mota"> @news.UpdatedDate.ToString("dd/MM/yyyy") </p>
+                    </td>
                     @if (news.IsPinned.Value)
                     {
-                        <td><input type="checkbox" id="pin-to-top" checked onchange="PinToTop(@news.IdNews)" /></td>
+                        <td>
+                            <input type="checkbox" id="pin-to-top" checked onchange="PinToTop(@news.IdNews)"/>
+                        </td>
                     }
                     else
                     {
-                        <td><input type="checkbox" id="pin-to-top" onchange="PinToTop(@news.IdNews)" /></td>
+                        <td>
+                            <input type="checkbox" id="pin-to-top" onchange="PinToTop(@news.IdNews)"/>
+                        </td>
                     }
                     <td>
                         <a href="../QuanLy/QuanLyBanner/CapNhat?id=@news.IdNews">
@@ -89,7 +96,7 @@
             data: {
                 idNews: idNews
             },
-            success: function (result) {
+            success: function(result) {
                 alert(result);
             }
         });

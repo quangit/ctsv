@@ -1,11 +1,10 @@
 ﻿@using WEBPCTSV.Models.bean
-
 <!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link href="~/css/AdminStyle.css" rel="stylesheet" />
+    <link href="~/css/AdminStyle.css" rel="stylesheet"/>
     <title>@ViewBag.Title</title>
     <script src="~/js/jquery-1.9.1.min.js"></script>
     <script src="~/Content/ckfinder/ckfinder.js"></script>
@@ -14,12 +13,13 @@
     <script src="~/Scripts/MicrosoftMvcValidation.js"></script>
     @*Slide out menu*@
     <script src="~/js/slidebars.min.js"></script>
-    <link href="~/css/slidebars.min.css" rel="stylesheet" />
+    <link href="~/css/slidebars.min.css" rel="stylesheet"/>
     <script>
-        (function ($) {
-            $(document).ready(function () {
-                $.slidebars();
-            });
+        (function($) {
+            $(document)
+                .ready(function() {
+                    $.slidebars();
+                });
         })(jQuery);
     </script>
     <link rel="stylesheet" href="~/css/bootstrap.min.css">
@@ -29,270 +29,329 @@
     AccountSession accountSession = (AccountSession)Session["AccountSession"];
 }
 <body>
-    <div class="row row-custom">
-        <div class="sb-slidebar sb-left">
-            <div class="sidebar-menu box-shadow">
-                <div class="logo">
-                    <a href="~/QuanLy">
-                        <img src="~/images/logo.jpg" width="70px" style="padding-top:5px;" />
-                    </a>
-                </div>
-                <div class="list-block">
-                    <br />
-                    <ul>
-                        <li class="@(@ViewBag.Active== "TrangChu" ? "active" : "xx")">
-                            <a href="~/QuanLy" class="item-content item-link">
-                                <div class="item-inner">
-                                    <div class="item-title"><i class="fa fa-home"></i>Trang chủ</div>
-                                </div>
-                            </a>
-                        </li>
-                        @if(accountSession.Functions.IndexOf("ManageQuestion") != -1){
-                        <li class="@(@ViewBag.Active=="TuVan"?"active":"")">
-                            <a href="~/QuanLy/QuanLyCauHoi" class="item-content item-link">
-                                <div class="item-inner">
-                                    <div class="item-title">
-                                        <i class="fa fa-question-circle"></i>Quản lý tư vấn
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        }
-                        @if(accountSession.Functions.IndexOf("ManageBanner") != -1){
-                        <li class="@(@ViewBag.Active=="SlideAnh"?"active":"")">
-                            <a href="~/QuanLy/QuanLyBanner" class="item-content item-link">
-                                <div class="item-inner">
-                                    <div class="item-title"><i class="fa fa-picture-o"></i>Quản lý slide ảnh</div>
-                                </div>
-                            </a>
-                        </li>
-                        }
-                        @if(accountSession.Functions.IndexOf("ManageDocument") != -1){
-                        <li class="@(@ViewBag.Active=="VanBanBieuMau"?"active":"")">
-                            <a href="~/QuanLy/QuanLyVanBan" class="item-content item-link">
-                                <div class="item-inner">
-                                    <div class="item-title"><i class="fa fa-newspaper-o"></i>Văn bản biểu mẫu</div>
-                                </div>
-                            </a>
-                        </li>
-                        }
-                        @if(accountSession.Functions.IndexOf("ManageNews") != -1){
-                        <li class="@(@ViewBag.Active == "TinTuc" || @ViewBag.Active == "SuKien" || @ViewBag.Active == "HocBong" || @ViewBag.Active == "TuyenDung" ? "active" : "")">
-                            <a href="javascript:;" data-toggle="collapse" data-target="#collapse-news" class="item-content item-link">
-                                <div class="item-inner">
-                                    <div class="item-title"><i class="fa fa-newspaper-o"></i>Quản lý tin tức <i class="fa fa-fw fa-caret-down"></i></div>
-                                </div>
-                            </a>
-                            <ul id="collapse-news" class="collapse">
-                                <li class="@(@ViewBag.Active=="TinTuc"?"child-active":"inactive")">
-                                    <a href="~/QuanLy/QuanLyTinTuc" class="item-content item-link">
-                                        <div class="item-inner item-child">
-                                            <div class="item-title"><i class="fa fa-newspaper-o"></i>Quản lý thông báo</div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="@(@ViewBag.Active == "SuKien" ? "child-active" : "inactive")">
-                                    <a href="~/QuanLy/QuanLySuKien" class="item-content item-link">
-                                        <div class="item-inner item-child">
-                                            <div class="item-title"><i class="fa fa-flag-checkered"></i>Quản lý sự kiện</div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="@(@ViewBag.Active == "HocBong" ? "child-active" : "inactive")">
-                                    <a href="~/QuanLy/QuanLyHocBong" class="item-content item-link">
-                                        <div class="item-inner item-child">
-                                            <div class="item-title"><i class="fa fa-graduation-cap"></i>Quản lý học bổng</div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="@(@ViewBag.Active == "TuyenDung" ? "child-active" : "inactive")">
-                                    <a href="~/QuanLy/QuanLyTuyenDung" class="item-content item-link">
-                                        <div class="item-inner item-child">
-                                            <div class="item-title"><i class="fa fa-user-plus"></i>Quản lý tuyển dụng</div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        }
-                        @if(accountSession.Functions.IndexOf("ManageAlumni") != -1){
-                        <li class="@(@ViewBag.Active == "AlumniInfo" || @ViewBag.Active == "AlumniNewsList" ? "active" : "")">
-                            <a href="javascript:;" data-toggle="collapse" data-target="#collapse-alumni" class="item-content item-link">
-                                <div class="item-inner">
-                                    <div class="item-title"><i class="fa fa-newspaper-o"></i>Cựu sinh viên <i class="fa fa-fw fa-caret-down"></i></div>
-                                </div>
-                            </a>
-                            <ul id="collapse-alumni" class="collapse">
-                                <li class="@(@ViewBag.Active=="AlumniInfo"?"child-active":"inactive")">
-                                    <a href="~/QuanLy/ThongTinCSV" class="item-content item-link">
-                                        <div class="item-inner item-child">
-                                            <div class="item-title"><i class="fa fa-newspaper-o"></i>Thông tin Cựu sinh viên</div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="@(@ViewBag.Active == "AlumniNewsList" ? "child-active" : "inactive")">
-                                    <a href="~/QuanLy/QuanLyCuuSinhVien" class="item-content item-link">
-                                        <div class="item-inner item-child">
-                                            <div class="item-title"><i class="fa fa-flag-checkered"></i>Quản lý bài viết</div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        }
-                        @if(accountSession.Functions.IndexOf("ManageLecturer") != -1){
-                        <li class="@(@ViewBag.Active == "CongTacGVCN" ? "active" : "")">
-                            <a href="javascript:;" data-toggle="collapse" data-target="#collapse-lecturer" class="item-content item-link">
-                                <div class="item-inner">
-                                    <div class="item-title"><i class="fa fa-newspaper-o"></i>Công tác GVCN <i class="fa fa-fw fa-caret-down"></i></div>
-                                </div>
-                            </a>
-                            <ul id="collapse-lecturer" class="collapse">
-                                <li class="@(@ViewBag.Active=="AlumniInfo"?"child-active":"inactive")">
-                                    <a href="~/QuanLy/QuanLyGVCN" class="item-content item-link">
-                                        <div class="item-inner item-child">
-                                            <div class="item-title"><i class="fa fa-newspaper-o"></i>Giảng viên chủ nhiệm</div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="@(@ViewBag.Active == "AlumniNewsList" ? "child-active" : "inactive")">
-                                    <a href="~/QuanLy/QuanLyGiayTo" class="item-content item-link">
-                                        <div class="item-inner item-child">
-                                            <div class="item-title"><i class="fa fa-flag-checkered"></i>Quản lý giấy tờ</div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        }
-                        @if (accountSession.Functions.IndexOf("ManageConduct") != -1)
-                        {
-                            <li class="@(@ViewBag.Active == "RenLuyen" ? "active" : "")">
-                                <a href="javascript:;" data-toggle="collapse" data-target="#collapse-conduct" class="item-content item-link">
-                                    <div class="item-inner">
-                                        <div class="item-title"><i class="fa fa-newspaper-o"></i>Quản lý rèn luyện <i class="fa fa-fw fa-caret-down"></i></div>
-                                    </div>
-                                </a>
-                                <ul id="collapse-conduct" class="collapse">
-                                    <li class="@(@ViewBag.Active == "RenLuyen" ? "child-active" : "inactive")">
-                                        <a href="~/QuanLy/QuanLyRenLuyen" class="item-content item-link">
-                                            <div class="item-inner item-child">
-                                                <div class="item-title"><i class="fa fa-newspaper-o"></i>Đánh giá rèn luyện</div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="@(@ViewBag.Active == "DotRenLuyen" ? "child-active" : "inactive")">
-                                        <a href="~/QuanLy/QuanLyRenLuyen/DotXetRenLuyen" class="item-content item-link">
-                                            <div class="item-inner item-child">
-                                                <div class="item-title"><i class="fa fa-newspaper-o"></i>Đợt xét rèn luyện</div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="@(@ViewBag.Active == "MauRenLuyen" ? "child-active" : "inactive")">
-                                        <a href="~/QuanLy/QuanLyRenLuyen/MauXetRenLuyen" class="item-content item-link">
-                                            <div class="item-inner item-child">
-                                                <div class="item-title"><i class="fa fa-newspaper-o"></i>Mẫu xét rèn luyện</div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        }
-                        @if(accountSession.Functions.IndexOf("ManageAccount") != -1){
-                        <li class="@(@ViewBag.Active == "ThanhVien" ? "active" : "")">
-                            <a href="javascript:;" data-toggle="collapse" data-target="#collapse-account" class="item-content item-link">
-                                <div class="item-inner">
-                                    <div class="item-title"><i class="fa fa-newspaper-o"></i>Quản lý thành viên <i class="fa fa-fw fa-caret-down"></i></div>
-                                </div>
-                            </a>
-                            <ul id="collapse-account" class="collapse">
-                                <li class="@(@ViewBag.Active == "AlumniNewsList" ? "child-active" : "inactive")">
-                                    <a href="~/QuanLy/QuanLyTuVanVien" class="item-content item-link">
-                                        <div class="item-inner item-child">
-                                            <div class="item-title"><i class="fa fa-flag-checkered"></i>Quản lý tư vấn viên</div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="@(@ViewBag.Active=="AlumniInfo"?"child-active":"inactive")">
-                                    <a href="~/QuanLy/QuanLyNhanSu" class="item-content item-link">
-                                        <div class="item-inner item-child">
-                                            <div class="item-title"><i class="fa fa-newspaper-o"></i>Cơ cấu nhân sự</div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        }
-                        @if(accountSession.Functions.IndexOf("ManageConfigWebsite") != -1){
-                        <li class="@(@ViewBag.Active == "ConfigWebsite" ? "active" : "")">
-                            <a href="/QuanLy/CauHinhWebsite" class="item-content item-link">
-                                <div class="item-inner">
-                                    <div class="item-title"><i class="fa fa-cogs"></i>Cấu hình website</div>
-                                </div>
-                            </a>
-                        </li>
-                        }
-                        <li>
-                            <a href="~/Logout" class="item-content item-link close-panel">
-                                <div class="item-inner">
-                                    <div class="item-title"><i class="fa fa-power-off"></i>Thoát</div>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                @*<div class="footer">
-                    <p class="text-center">Copyright © 2016 - BKĐN.</p>
-                </div>*@
+<div class="row row-custom">
+<div class="sb-slidebar sb-left">
+<div class="sidebar-menu box-shadow">
+<div class="logo">
+    <a href="~/QuanLy">
+        <img src="~/images/logo.jpg" width="70px" style="padding-top: 5px;"/>
+    </a>
+</div>
+<div class="list-block">
+<br/>
+<ul>
+<li class="@(@ViewBag.Active == "TrangChu" ? "active" : "xx")">
+    <a href="~/QuanLy" class="item-content item-link">
+        <div class="item-inner">
+            <div class="item-title">
+                <i class="fa fa-home"></i>Trang chủ
             </div>
         </div>
-        <div id="sb-site">
-            <div id="wrapper-content" class="col-xs-12 col-sm-12">
-                <div class="header-content box-shadow">
-                    <a href="#menu" class="sb-toggle-left">&#9776;</a>
-                    <h3 class="title"> </h3>
-                    <div class="account-info pull-right">
-                        <a href="~/QuanLy/ThongTin"><i class="fa fa-user"></i> @(accountSession.FullName + "-" + accountSession.UserName)</a>
-                    </div>
+    </a>
+</li>
+@if (accountSession.Functions.IndexOf("ManageQuestion") != -1)
+{
+    <li class="@(@ViewBag.Active == "TuVan" ? "active" : string.Empty)">
+        <a href="~/QuanLy/QuanLyCauHoi" class="item-content item-link">
+            <div class="item-inner">
+                <div class="item-title">
+                    <i class="fa fa-question-circle"></i>Quản lý tư vấn
                 </div>
-                @RenderBody()
             </div>
-        </div>
-        <div class="clearfix"></div>
-        <div id="modal-announcement" class="modal fade" role="dialog">
-            <div class="modal-dialog modal-sm">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="alert cssload-container-over" style="display:none;"></div>
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">THÔNG BÁO</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="modal-announcement-message">
-
+        </a>
+    </li>
+}
+@if (accountSession.Functions.IndexOf("ManageBanner") != -1)
+{
+    <li class="@(@ViewBag.Active == "SlideAnh" ? "active" : string.Empty)">
+        <a href="~/QuanLy/QuanLyBanner" class="item-content item-link">
+            <div class="item-inner">
+                <div class="item-title">
+                    <i class="fa fa-picture-o"></i>Quản lý slide ảnh
+                </div>
+            </div>
+        </a>
+    </li>
+}
+@if (accountSession.Functions.IndexOf("ManageDocument") != -1)
+{
+    <li class="@(@ViewBag.Active == "VanBanBieuMau" ? "active" : string.Empty)">
+        <a href="~/QuanLy/QuanLyVanBan" class="item-content item-link">
+            <div class="item-inner">
+                <div class="item-title">
+                    <i class="fa fa-newspaper-o"></i>Văn bản biểu mẫu
+                </div>
+            </div>
+        </a>
+    </li>
+}
+@if (accountSession.Functions.IndexOf("ManageNews") != -1)
+{
+    <li class="@(@ViewBag.Active == "TinTuc" || @ViewBag.Active == "SuKien" || @ViewBag.Active == "HocBong" || @ViewBag.Active == "TuyenDung" ? "active" : string.Empty)">
+        <a href="javascript:;" data-toggle="collapse" data-target="#collapse-news" class="item-content item-link">
+            <div class="item-inner">
+                <div class="item-title">
+                    <i class="fa fa-newspaper-o"></i>Quản lý tin tức <i class="fa fa-fw fa-caret-down"></i>
+                </div>
+            </div>
+        </a>
+        <ul id="collapse-news" class="collapse">
+            <li class="@(@ViewBag.Active == "TinTuc" ? "child-active" : "inactive")">
+                <a href="~/QuanLy/QuanLyTinTuc" class="item-content item-link">
+                    <div class="item-inner item-child">
+                        <div class="item-title">
+                            <i class="fa fa-newspaper-o"></i>Quản lý thông báo
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                </a>
+            </li>
+            <li class="@(@ViewBag.Active == "SuKien" ? "child-active" : "inactive")">
+                <a href="~/QuanLy/QuanLySuKien" class="item-content item-link">
+                    <div class="item-inner item-child">
+                        <div class="item-title">
+                            <i class="fa fa-flag-checkered"></i>Quản lý sự kiện
+                        </div>
                     </div>
+                </a>
+            </li>
+            <li class="@(@ViewBag.Active == "HocBong" ? "child-active" : "inactive")">
+                <a href="~/QuanLy/QuanLyHocBong" class="item-content item-link">
+                    <div class="item-inner item-child">
+                        <div class="item-title">
+                            <i class="fa fa-graduation-cap"></i>Quản lý học bổng
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="@(@ViewBag.Active == "TuyenDung" ? "child-active" : "inactive")">
+                <a href="~/QuanLy/QuanLyTuyenDung" class="item-content item-link">
+                    <div class="item-inner item-child">
+                        <div class="item-title">
+                            <i class="fa fa-user-plus"></i>Quản lý tuyển dụng
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </li>
+}
+@if (accountSession.Functions.IndexOf("ManageAlumni") != -1)
+{
+    <li class="@(@ViewBag.Active == "AlumniInfo" || @ViewBag.Active == "AlumniNewsList" ? "active" : string.Empty)">
+        <a href="javascript:;" data-toggle="collapse" data-target="#collapse-alumni" class="item-content item-link">
+            <div class="item-inner">
+                <div class="item-title">
+                    <i class="fa fa-newspaper-o"></i>Cựu sinh viên <i class="fa fa-fw fa-caret-down"></i>
                 </div>
+            </div>
+        </a>
+        <ul id="collapse-alumni" class="collapse">
+            <li class="@(@ViewBag.Active == "AlumniInfo" ? "child-active" : "inactive")">
+                <a href="~/QuanLy/ThongTinCSV" class="item-content item-link">
+                    <div class="item-inner item-child">
+                        <div class="item-title">
+                            <i class="fa fa-newspaper-o"></i>Thông tin Cựu sinh viên
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="@(@ViewBag.Active == "AlumniNewsList" ? "child-active" : "inactive")">
+                <a href="~/QuanLy/QuanLyCuuSinhVien" class="item-content item-link">
+                    <div class="item-inner item-child">
+                        <div class="item-title">
+                            <i class="fa fa-flag-checkered"></i>Quản lý bài viết
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </li>
+}
+@if (accountSession.Functions.IndexOf("ManageLecturer") != -1)
+{
+    <li class="@(@ViewBag.Active == "CongTacGVCN" ? "active" : string.Empty)">
+        <a href="javascript:;" data-toggle="collapse" data-target="#collapse-lecturer" class="item-content item-link">
+            <div class="item-inner">
+                <div class="item-title">
+                    <i class="fa fa-newspaper-o"></i>Công tác GVCN <i class="fa fa-fw fa-caret-down"></i>
+                </div>
+            </div>
+        </a>
+        <ul id="collapse-lecturer" class="collapse">
+            <li class="@(@ViewBag.Active == "AlumniInfo" ? "child-active" : "inactive")">
+                <a href="~/QuanLy/QuanLyGVCN" class="item-content item-link">
+                    <div class="item-inner item-child">
+                        <div class="item-title">
+                            <i class="fa fa-newspaper-o"></i>Giảng viên chủ nhiệm
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="@(@ViewBag.Active == "AlumniNewsList" ? "child-active" : "inactive")">
+                <a href="~/QuanLy/QuanLyGiayTo" class="item-content item-link">
+                    <div class="item-inner item-child">
+                        <div class="item-title">
+                            <i class="fa fa-flag-checkered"></i>Quản lý giấy tờ
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </li>
+}
+@if (accountSession.Functions.IndexOf("ManageConduct") != -1)
+{
+    <li class="@(@ViewBag.Active == "RenLuyen" ? "active" : string.Empty)">
+        <a href="javascript:;" data-toggle="collapse" data-target="#collapse-conduct" class="item-content item-link">
+            <div class="item-inner">
+                <div class="item-title">
+                    <i class="fa fa-newspaper-o"></i>Quản lý rèn luyện <i class="fa fa-fw fa-caret-down"></i>
+                </div>
+            </div>
+        </a>
+        <ul id="collapse-conduct" class="collapse">
+            <li class="@(@ViewBag.Active == "RenLuyen" ? "child-active" : "inactive")">
+                <a href="~/QuanLy/QuanLyRenLuyen" class="item-content item-link">
+                    <div class="item-inner item-child">
+                        <div class="item-title">
+                            <i class="fa fa-newspaper-o"></i>Đánh giá rèn luyện
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="@(@ViewBag.Active == "DotRenLuyen" ? "child-active" : "inactive")">
+                <a href="~/QuanLy/QuanLyRenLuyen/DotXetRenLuyen" class="item-content item-link">
+                    <div class="item-inner item-child">
+                        <div class="item-title">
+                            <i class="fa fa-newspaper-o"></i>Đợt xét rèn luyện
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="@(@ViewBag.Active == "MauRenLuyen" ? "child-active" : "inactive")">
+                <a href="~/QuanLy/QuanLyRenLuyen/MauXetRenLuyen" class="item-content item-link">
+                    <div class="item-inner item-child">
+                        <div class="item-title">
+                            <i class="fa fa-newspaper-o"></i>Mẫu xét rèn luyện
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </li>
+}
+@if (accountSession.Functions.IndexOf("ManageAccount") != -1)
+{
+    <li class="@(@ViewBag.Active == "ThanhVien" ? "active" : string.Empty)">
+        <a href="javascript:;" data-toggle="collapse" data-target="#collapse-account" class="item-content item-link">
+            <div class="item-inner">
+                <div class="item-title">
+                    <i class="fa fa-newspaper-o"></i>Quản lý thành viên <i class="fa fa-fw fa-caret-down"></i>
+                </div>
+            </div>
+        </a>
+        <ul id="collapse-account" class="collapse">
+            <li class="@(@ViewBag.Active == "AlumniNewsList" ? "child-active" : "inactive")">
+                <a href="~/QuanLy/QuanLyTuVanVien" class="item-content item-link">
+                    <div class="item-inner item-child">
+                        <div class="item-title">
+                            <i class="fa fa-flag-checkered"></i>Quản lý tư vấn viên
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="@(@ViewBag.Active == "AlumniInfo" ? "child-active" : "inactive")">
+                <a href="~/QuanLy/QuanLyNhanSu" class="item-content item-link">
+                    <div class="item-inner item-child">
+                        <div class="item-title">
+                            <i class="fa fa-newspaper-o"></i>Cơ cấu nhân sự
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </li>
+}
+@if (accountSession.Functions.IndexOf("ManageConfigWebsite") != -1)
+{
+    <li class="@(@ViewBag.Active == "ConfigWebsite" ? "active" : string.Empty)">
+        <a href="/QuanLy/CauHinhWebsite" class="item-content item-link">
+            <div class="item-inner">
+                <div class="item-title">
+                    <i class="fa fa-cogs"></i>Cấu hình website
+                </div>
+            </div>
+        </a>
+    </li>
+}
+<li>
+    <a href="~/Logout" class="item-content item-link close-panel">
+        <div class="item-inner">
+            <div class="item-title">
+                <i class="fa fa-power-off"></i>Thoát
+            </div>
+        </div>
+    </a>
+</li>
+</ul>
+</div>
+@*<div class="footer">
+                    <p class="text-center">Copyright © 2016 - BKĐN.</p>
+                </div>*@
+</div>
+</div>
+<div id="sb-site">
+    <div id="wrapper-content" class="col-xs-12 col-sm-12">
+        <div class="header-content box-shadow">
+            <a href="#menu" class="sb-toggle-left">&#9776;</a>
+            <h3 class="title"> </h3>
+            <div class="account-info pull-right">
+                <a href="~/QuanLy/ThongTin">
+                    <i class="fa fa-user"></i> @(accountSession.FullName + "-" + accountSession.UserName)
+                </a>
+            </div>
+        </div>
+        @RenderBody()
+    </div>
+</div>
+<div class="clearfix"></div>
+<div id="modal-announcement" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="alert cssload-container-over" style="display: none;"></div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">THÔNG BÁO</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-announcement-message">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
             </div>
         </div>
     </div>
-    <script src="~/js/bootstrap.min.js"></script>
-    <script>
-        function loadIconLoading(element) {
-            // Load icon when do ajax request
-            element.html('<div class="cssload-spin-box"></div>');
-        }
-        function unloadIconLoading(element) {
-            // Load icon when do ajax request
-            element.html('');
-        }
-        $(document).ready(function () {
+</div>
+</div>
+<script src="~/js/bootstrap.min.js"></script>
+<script>
+    function loadIconLoading(element) {
+        // Load icon when do ajax request
+        element.html('<div class="cssload-spin-box"></div>');
+    }
+
+    function unloadIconLoading(element) {
+        // Load icon when do ajax request
+        element.html('');
+    }
+
+    $(document)
+        .ready(function() {
             $('[data-tooltip="true"]').tooltip();
         });
-    </script>
+</script>
 </body>
 </html>

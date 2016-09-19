@@ -1,45 +1,44 @@
-﻿using WEBPCTSV.Models.bean;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace WEBPCTSV.Models.bo
+﻿namespace WEBPCTSV.Models.bo
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using WEBPCTSV.Models.bean;
+
     public class DecentralizationBo
     {
-        DSAContext context = new DSAContext();
-        public List<Decentralization> listDecentralization()
-        {
-            return context.Decentralizations.ToList();
-        }
+        readonly DSAContext context = new DSAContext();
 
-        public List<Decentralization> listDecentralizationHaveGroup(int idGroup)
-        {
-            List<Decentralization> list = context.Decentralizations.Where(d=>d.IdDecentralizationGroup==idGroup).ToList();
-            return list;
-        }
-
-        public int AddDecentralization(int idGroup,string idFuntion)
+        public int AddDecentralization(int idGroup, string idFuntion)
         {
             Decentralization decentralization = new Decentralization();
             decentralization.IdDecentralizationGroup = idGroup;
             decentralization.IdFunction = idFuntion;
-            decentralization.IsAccept = true; ;
-            context.Decentralizations.Add(decentralization);
-            context.SaveChanges();
+            decentralization.IsAccept = true;
+            
+            this.context.Decentralizations.Add(decentralization);
+            this.context.SaveChanges();
             return decentralization.IdDecentralization;
+        }
+
+        public List<Decentralization> listDecentralization()
+        {
+            return this.context.Decentralizations.ToList();
+        }
+
+        public List<Decentralization> listDecentralizationHaveGroup(int idGroup)
+        {
+            List<Decentralization> list =
+                this.context.Decentralizations.Where(d => d.IdDecentralizationGroup == idGroup).ToList();
+            return list;
         }
 
         public void UpdateIsAccept(int idDecentralization)
         {
-            Decentralization decentralization = context.Decentralizations.Single(d => d.IdDecentralization == idDecentralization);
+            Decentralization decentralization =
+                this.context.Decentralizations.Single(d => d.IdDecentralization == idDecentralization);
             decentralization.IsAccept = !decentralization.IsAccept;
-            context.SaveChanges();
+            this.context.SaveChanges();
         }
-
-        
-
-        
     }
 }

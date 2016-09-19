@@ -1,16 +1,31 @@
-﻿using OfficeOpenXml;
-using WEBPCTSV.Models.bean;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace WEBPCTSV.Models.bo
+﻿namespace WEBPCTSV.Models.bo
 {
+    using System.Linq;
+
+    using OfficeOpenXml;
+
+    using WEBPCTSV.Models.bean;
+
     public class RegencyStudentBo
     {
-        DSAContext context = new DSAContext();
         public static int percentProgress;
+
+        readonly DSAContext context = new DSAContext();
+
+        public RegencyStudent Get(string idRegency, int idStudent)
+        {
+            try
+            {
+                return
+                    this.context.RegencyStudents.Single(r => r.IdRegency.Equals(idRegency) && r.IdStudent == idStudent);
+            }
+            catch
+            {
+            }
+
+            return null;
+        }
+
         public void ImportRegencyStudent(ExcelPackage package)
         {
             var currentSheet = package.Workbook.Worksheets;
@@ -26,24 +41,13 @@ namespace WEBPCTSV.Models.bo
                     string studentNumber = workSheet.Cells[rowIterator, 2].Value.ToString();
                     Student student = new StudentBO().GetStudentByStudentNumber(studentNumber);
                     string idRegency = workSheet.Cells[rowIterator, 6].Value.ToString();
-                    if(Get(idRegency,student.IdStudent)==null)Insert(idRegency, student.IdStudent);
+                    if (this.Get(idRegency, student.IdStudent) == null) this.Insert(idRegency, student.IdStudent);
                     percentProgress = (int)(((double)rowIterator / maxRow) * 100);
                 }
-                catch { }
+                catch
+                {
+                }
             }
-        }
-        public RegencyStudent Get(string idRegency, int idStudent)
-        {
-            try {
-                return context.RegencyStudents.Single(r => r.IdRegency.Equals(idRegency) && r.IdStudent == idStudent);
-            }
-            catch { }
-            return null;
-        }
-
-        public void ResetProgress()
-        {
-            percentProgress = 0;
         }
 
         public void Insert(string idRegency, int idStudent)
@@ -51,28 +55,34 @@ namespace WEBPCTSV.Models.bo
             try
             {
                 RegencyStudent regencyStudent = new RegencyStudent();
-                Regency regency = context.Regencies.Single(r => r.IdRegency.Equals(idRegency));
+                Regency regency = this.context.Regencies.Single(r => r.IdRegency.Equals(idRegency));
                 regencyStudent.IdRegency = regency.IdRegency;
                 regencyStudent.IdStudent = idStudent;
-                context.RegencyStudents.Add(regencyStudent);
-                context.SaveChanges();
+                this.context.RegencyStudents.Add(regencyStudent);
+                this.context.SaveChanges();
             }
-            catch { }
+            catch
+            {
+            }
+        }
+
+        public void ResetProgress()
+        {
+            percentProgress = 0;
         }
 
         public void Update(string idRegency, int idRegencyStudent)
         {
             try
             {
-                RegencyStudent regencyStudent = context.RegencyStudents.Single(r => r.IdRegencyStudent == idRegencyStudent);
+                RegencyStudent regencyStudent =
+                    this.context.RegencyStudents.Single(r => r.IdRegencyStudent == idRegencyStudent);
                 regencyStudent.IdRegency = idRegency;
-                context.SaveChanges();
+                this.context.SaveChanges();
             }
-            catch { }
+            catch
+            {
+            }
         }
-
-        
-
-        
     }
 }

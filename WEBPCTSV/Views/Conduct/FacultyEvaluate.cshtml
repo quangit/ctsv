@@ -1,7 +1,5 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
-@using WEBPCTSV.Helpers.Common;
-
+﻿@using WEBPCTSV.Helpers.Common
+@using WEBPCTSV.Models.bean
 <script src="~/js/jquery.form.js"></script>
 
 @{
@@ -23,7 +21,9 @@
         </div>
         <div class="maincontent-main conduct-page" id="maincontent">
             <ol class="breadcrumb box-shadow">
-                <li><a href="~/DanhGiaRenLuyen">Đánh giá rèn luyện</a></li>
+                <li>
+                    <a href="~/DanhGiaRenLuyen">Đánh giá rèn luyện</a>
+                </li>
                 <li class="active">Danh sách các khoa</li>
             </ol>
             <div class="listbox-content">
@@ -41,25 +41,25 @@
                     <div class="conduct-schedule">
                         <table class="table table-bordered table-striped">
                             <thead>
-                                <tr>
-                                    <td width="20px">STT</td>
-                                    <td width="80px">Mã khoa</td>
-                                    <td>Tên khoa</td>
-                                    <td width="80px">Chi Tiết</td>
-                                </tr>
+                            <tr>
+                                <td width="20px">STT</td>
+                                <td width="80px">Mã khoa</td>
+                                <td>Tên khoa</td>
+                                <td width="80px">Chi Tiết</td>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach (Faculty faculty in faculties)
-                                {
-                                    <tr>
-                                        <td>@(++index)</td>
-                                        <td>@(faculty.NumberFaculty)</td>
-                                        <td>@(faculty.FacultyName)</td>
-                                        <td>
-                                            <a href="../DanhGiaRenLuyen/DanhSachLop?idFaculty=@faculty.IdFaculty" class="label label-success label-link">Chi tiết</a>
-                                        </td>
-                                    </tr>
-                                }
+                            @foreach (Faculty faculty in faculties)
+                            {
+                                <tr>
+                                    <td>@(++index)</td>
+                                    <td>@(faculty.NumberFaculty)</td>
+                                    <td>@(faculty.FacultyName)</td>
+                                    <td>
+                                        <a href="../DanhGiaRenLuyen/DanhSachLop?idFaculty=@faculty.IdFaculty" class="label label-success label-link">Chi tiết</a>
+                                    </td>
+                                </tr>
+                            }
                             </tbody>
                         </table>
                     </div>
@@ -80,9 +80,9 @@
             @using (Html.BeginForm("Importexcel", "Conduct/ImportListStudent", FormMethod.Post, new { enctype = "multipart/form-data", @id = "fImportExcel", @class = "form-horizontal" }))
             {
                 <div class="modal-body">
-                    <div class="modal-message" style="display:none;">
+                    <div class="modal-message" style="display: none;">
                     </div>
-                    <div class="modal-loading alert alert-info" style="display:none;">
+                    <div class="modal-loading alert alert-info" style="display: none;">
 
                     </div>
                     <div class="form-group">
@@ -91,7 +91,7 @@
                             <select class="form-control" id="modal-input-semester" name="IdItem">
                                 @foreach (ConductItem conductItem in ViewBag.listItem)
                                 {
-                                    <option value="@conductItem.IdConductItems" title="@conductItem.ItemName">@(Int32.Parse(conductItem.ItemIndex.Substring(0,2))).@(Int32.Parse(conductItem.ItemIndex.Substring(2, 2))) @(StringExtension.GetLimitSubString(conductItem.ItemName, 20))</option>
+                                    <option value="@conductItem.IdConductItems" title="@conductItem.ItemName">@int.Parse(conductItem.ItemIndex.Substring(0, 2)) .@int.Parse(conductItem.ItemIndex.Substring(2, 2)) @(StringExtension.GetLimitSubString(conductItem.ItemName, 20))</option>
                                 }
                             </select>
                         </div>
@@ -99,7 +99,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-3">Chọn tệp</label>
                         <div class="col-md-9">
-                            <input class="form-control" type="file" id="UploadedFile" name="UploadedFile" />
+                            <input class="form-control" type="file" id="UploadedFile" name="UploadedFile"/>
                         </div>
                         <label class="control-label col-md-3"></label>
                         <div class="col-md-9">
@@ -118,28 +118,32 @@
 </div>
 
 <script>
-    $(document).ready(function () {
-        // Bring model to main layout
-        $('.add-excel').on('click', function () {
-            $('#modal-excel').modal('show');
+    $(document)
+        .ready(function() {
+            // Bring model to main layout
+            $('.add-excel')
+                .on('click',
+                    function() {
+                        $('#modal-excel').modal('show');
+                    });
+            // Form ajax
+            $('#fImportExcel')
+                .ajaxForm({
+                    // Return text to avoid auto download file json in old browser.
+                    dataType: 'text',
+                    beforeSend: function() {
+                        $('.modal-message').html("");
+                    },
+                    success: function(data) {
+                        // Returned data is text: status;content
+                        var response = data.split(';');
+                        if (response[0] == "true") {
+                            $('.modal-message').html('<div class="alert alert-success">' + response[1] + '</div>')
+                        } else {
+                            $('.modal-message').html('<div class="alert alert-danger">' + response[1] + '</div>')
+                        }
+                        $('.modal-message').fadeIn();
+                    }
+                });
         });
-        // Form ajax
-        $('#fImportExcel').ajaxForm({
-            // Return text to avoid auto download file json in old browser.
-            dataType: 'text',
-            beforeSend: function () {
-                $('.modal-message').html("");
-            },
-            success: function (data) {
-                // Returned data is text: status;content
-                var response = data.split(';');
-                if (response[0] == "true") {
-                    $('.modal-message').html('<div class="alert alert-success">' + response[1] + '</div>')
-                } else {
-                    $('.modal-message').html('<div class="alert alert-danger">' + response[1] + '</div>')
-                }
-                $('.modal-message').fadeIn();
-            }
-        });
-    });
 </script>

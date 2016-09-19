@@ -1,106 +1,110 @@
-﻿using WEBPCTSV.Models.bean;
-using WEBPCTSV.Models.bo;
-using WEBPCTSV.Models.Support;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace WEBPCTSV.Controllers
+﻿namespace WEBPCTSV.Controllers
 {
+    using System;
+    using System.Web.Mvc;
+
+    using WEBPCTSV.Models.bo;
+    using WEBPCTSV.Models.Support;
+
     public class ManageCommonSystemController : Controller
     {
-        // GET: ManageCommonSystem
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-
-        public ActionResult SecondLanguage()
-        {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlyngoaingu")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            ViewBag.SecondLanguage = new SecondLanguageBo().GetListSecondLanguage();
-            return View("SecondLanguage");
-        }
-        public ActionResult ImportRegency()
-        {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlychucvu")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            ViewBag.SecondLanguage = new SecondLanguageBo().GetListSecondLanguage();
-            return View("ImportRegency");
-        }
-        public ActionResult AddSecondLanguage(FormCollection form)
-        {
-            new SecondLanguageBo().Insert(form);
-            return RedirectToAction("SecondLanguage");
-        }
-        public ActionResult UpdateSecondLanguage(string idSecondLanguage, FormCollection form)
-        {
-            new SecondLanguageBo().Update(idSecondLanguage, form);
-            return RedirectToAction("SecondLanguage");
-        }
-        public ActionResult DeleteSecondLanguage(string idSecondLanguage)
-        {
-            new SecondLanguageBo().Delete(idSecondLanguage);
-            return RedirectToAction("SecondLanguage");
-        }
-
-
-        public ActionResult Regency()
-        {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlychucvu")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            ViewBag.Regency = new RegencyBo().GetListRegency();
-            return View("Regency");
-        }
         public ActionResult AddRegency(FormCollection form)
         {
             new RegencyBo().Insert(form);
-            return RedirectToAction("Regency");
-        }
-        public ActionResult UpdateRegency(string idRegency, FormCollection form)
-        {
-            new RegencyBo().Update(idRegency, form);
-            return RedirectToAction("Regency");
-        }
-        public ActionResult ResetProgressImportRegency()
-        {
-            new RegencyStudentBo().ResetProgress();
-            return Content("1", "text/plain");
-        }
-        public ActionResult DeleteRegency(string idRegency)
-        {
-            new RegencyBo().Delete(idRegency);
-            return RedirectToAction("Regency");
+            return this.RedirectToAction("Regency");
         }
 
-
-        public ActionResult Semester()
+        public ActionResult AddSecondLanguage(FormCollection form)
         {
-            if (!CheckDecentralization.Check(Convert.ToInt32(Session["idDecenTralizationGroup"]), "quanlyhocky")) return RedirectToAction("NotAccess", "ManageDecentralization");
-            ViewBag.Semester = new SemesterBO().Get();
-            return View("Semester");
+            new SecondLanguageBo().Insert(form);
+            return this.RedirectToAction("SecondLanguage");
         }
+
         public ActionResult AddSemester()
         {
             new SemesterBO().Insert();
-            return RedirectToAction("Semester");
+            return this.RedirectToAction("Semester");
         }
-        public ActionResult UpdateSemester(int idSemester, FormCollection form)
+
+        public ActionResult DeleteRegency(string idRegency)
         {
-            new SemesterBO().Update(idSemester, form);
-            return RedirectToAction("Semester");
+            new RegencyBo().Delete(idRegency);
+            return this.RedirectToAction("Regency");
         }
+
+        public ActionResult DeleteSecondLanguage(string idSecondLanguage)
+        {
+            new SecondLanguageBo().Delete(idSecondLanguage);
+            return this.RedirectToAction("SecondLanguage");
+        }
+
         public ActionResult DeleteSemester(int idSemester)
         {
             new SemesterBO().Delete(idSemester);
-            return RedirectToAction("Semester");
+            return this.RedirectToAction("Semester");
+        }
+
+        public ActionResult ImportRegency()
+        {
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlychucvu")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            this.ViewBag.SecondLanguage = new SecondLanguageBo().GetListSecondLanguage();
+            return this.View("ImportRegency");
+        }
+
+        // GET: ManageCommonSystem
+        public ActionResult Index()
+        {
+            return this.View();
+        }
+
+        public ActionResult Regency()
+        {
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlychucvu")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            this.ViewBag.Regency = new RegencyBo().GetListRegency();
+            return this.View("Regency");
+        }
+
+        public ActionResult ResetProgressImportRegency()
+        {
+            new RegencyStudentBo().ResetProgress();
+            return this.Content("1", "text/plain");
+        }
+
+        public ActionResult SecondLanguage()
+        {
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlyngoaingu")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            this.ViewBag.SecondLanguage = new SecondLanguageBo().GetListSecondLanguage();
+            return this.View("SecondLanguage");
+        }
+
+        public ActionResult Semester()
+        {
+            if (!CheckDecentralization.Check(Convert.ToInt32(this.Session["idDecenTralizationGroup"]), "quanlyhocky")) return this.RedirectToAction("NotAccess", "ManageDecentralization");
+            this.ViewBag.Semester = new SemesterBO().Get();
+            return this.View("Semester");
         }
 
         public ActionResult test()
         {
-            return View("test");
+            return this.View("test");
         }
 
+        public ActionResult UpdateRegency(string idRegency, FormCollection form)
+        {
+            new RegencyBo().Update(idRegency, form);
+            return this.RedirectToAction("Regency");
+        }
+
+        public ActionResult UpdateSecondLanguage(string idSecondLanguage, FormCollection form)
+        {
+            new SecondLanguageBo().Update(idSecondLanguage, form);
+            return this.RedirectToAction("SecondLanguage");
+        }
+
+        public ActionResult UpdateSemester(int idSemester, FormCollection form)
+        {
+            new SemesterBO().Update(idSemester, form);
+            return this.RedirectToAction("Semester");
+        }
     }
 }

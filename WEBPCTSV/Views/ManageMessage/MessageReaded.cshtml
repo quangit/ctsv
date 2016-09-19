@@ -1,4 +1,5 @@
-﻿
+﻿@using WEBPCTSV.Models.bean
+@using WEBPCTSV.Models.Support
 @{
     ViewBag.Title = "MessageReaded";
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
@@ -7,17 +8,23 @@
 <h3 class="header-paper">Hộp thư</h3>
 
 
-    @Html.Partial("_SendMessage")
+@Html.Partial("_SendMessage")
 
-    <ul class="nav nav-tabs" style="margin-top:20px">
-        <li style="margin-left:10px"><a href="/ManageMessage/MessageReceiveUnRead?page=1">Tin nhắn chưa đọc </a></li>
-        <li class="active"><a href="/ManageMessage/MessageReceiveReaded?page=1"> Tin nhắn đã đọc </a></li>
-        <li><a href="/ManageMessage/MessageSended?page=1"> Tin nhắn đã gửi </a></li>
-    </ul>
+<ul class="nav nav-tabs" style="margin-top: 20px">
+    <li style="margin-left: 10px">
+        <a href="/ManageMessage/MessageReceiveUnRead?page=1">Tin nhắn chưa đọc </a>
+    </li>
+    <li class="active">
+        <a href="/ManageMessage/MessageReceiveReaded?page=1"> Tin nhắn đã đọc </a>
+    </li>
+    <li>
+        <a href="/ManageMessage/MessageSended?page=1"> Tin nhắn đã gửi </a>
+    </li>
+</ul>
 <div class="container-layoutmanager">
     @{
-        List<WEBPCTSV.Models.bean.Message> listMessage = ViewBag.Message;
-        WEBPCTSV.Models.Support.PageNumber pageNumber = ViewBag.pageNumber;
+        List<Message> listMessage = ViewBag.Message;
+        PageNumber pageNumber = ViewBag.pageNumber;
     }
     @Html.Partial("_ListMessage2", listMessage)
     @Html.Partial("~/Views/PartialShared/_PageNumber.cshtml", pageNumber)

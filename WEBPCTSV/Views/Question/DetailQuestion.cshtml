@@ -1,5 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
-@model Question
+﻿@model WEBPCTSV.Models.bean.Question
 
 @{
     ViewBag.Title = "Chi tiết câu hỏi";
@@ -32,10 +31,10 @@
                             </div>
                             <div class="portlet-body">
                                 <h2>Phản hồi của tư vấn viên</h2>
-                                <hr />
+                                <hr/>
                                 <div class="form-body">
                                     <div class="cauhoi">
-                                        <img id="iconRequest" src="~/images/hoi.png" />
+                                        <img id="iconRequest" src="~/images/hoi.png"/>
                                         <div id="contentRequest">@Html.Raw(HttpUtility.HtmlDecode(Model.ContentHtml))</div>
                                         <div style="clear: both"></div>
                                     </div>
@@ -43,7 +42,7 @@
                                         <div id="contentResponse">
                                             @Html.Raw(HttpUtility.HtmlDecode(Model.Reply))
                                         </div>
-                                        <img id="iconResponse" src="~/images/dap.png" />
+                                        <img id="iconResponse" src="~/images/dap.png"/>
                                         <div style="clear: both"></div>
                                     </div>
                                 </div>

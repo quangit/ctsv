@@ -1,33 +1,27 @@
-﻿
-.image-preview-input {
-    position: relative;
-	overflow: hidden;
-	margin: 0px;    
-    color: #333;
+﻿.image-preview-input {
     background-color: #fff;
-    border-color: #ccc;    
+    border-color: #ccc;
+    color: #333;
+    margin: 0px;
+    overflow: hidden;
+    position: relative;
 }
 
-.image-preview-input-process {
-    margin-left:5px
-}
+.image-preview-input-process { margin-left: 5px }
 
 
 .image-preview-input input[type=file] {
-	position: absolute;
-	top: 0;
-	right: 0;
-	margin: 0;
-	padding: 0;
-	font-size: 20px;
-	cursor: pointer;
-	opacity: 0;
-	filter: alpha(opacity=0);
-}
-.image-preview-input-title {
-    margin-left:2px;
+    cursor: pointer;
+    filter: alpha(opacity=0);
+    font-size: 20px;
+    margin: 0;
+    opacity: 0;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
-.header-paper{
-    margin-left:10px;
-}
+.image-preview-input-title { margin-left: 2px; }
+
+.header-paper { margin-left: 10px; }

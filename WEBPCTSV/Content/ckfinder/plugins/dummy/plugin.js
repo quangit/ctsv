@@ -11,12 +11,12 @@
 /**
  * See http://docs.cksource.com/ckfinder_2.x_api/symbols/CKFinder.html#.addPlugin
  */
-CKFinder.addPlugin( 'dummy', {
+CKFinder.addPlugin( "dummy", {
 
-	lang : [ 'en', 'pl' ],
+	lang : [ "en", "pl" ],
 
 	appReady : function( api ) {
-		CKFinder.dialog.add( 'dummydialog', function( api )
+		CKFinder.dialog.add( "dummydialog", function( api )
 			{
 				// CKFinder.dialog.definition
 				var dialogDefinition =
@@ -26,9 +26,9 @@ CKFinder.addPlugin( 'dummy', {
 					minHeight : 230,
 					onOk : function() {
 						// "this" is now a CKFinder.dialog object.
-						var value = this.getValueOf( 'tab1', 'textareaId' );
+						var value = this.getValueOf( "tab1", "textareaId" );
 						if ( !value ) {
-							api.openMsgDialog( '', api.lang.dummy.typeText );
+							api.openMsgDialog( "", api.lang.dummy.typeText );
 							return false;
 						}
 						else {
@@ -38,20 +38,20 @@ CKFinder.addPlugin( 'dummy', {
 					},
 					contents : [
 						{
-							id : 'tab1',
-							label : '',
-							title : '',
+							id : "tab1",
+							label : "",
+							title : "",
 							expand : true,
 							padding : 0,
 							elements :
 							[
 								{
-									type : 'html',
-									html : '<h3>' +  api.lang.dummy.typeText + '</h3>'
+									type : "html",
+									html : "<h3>" +  api.lang.dummy.typeText + "</h3>"
 								},
 								{
-									type : 'textarea',
-									id : 'textareaId',
+									type : "textarea",
+									id : "textareaId",
 									rows : 10,
 									cols : 40
 								}
@@ -66,7 +66,7 @@ CKFinder.addPlugin( 'dummy', {
 
 		api.addFileContextMenuOption( { label : api.lang.dummy.menuItem, command : "dummycommand" } , function( api, file )
 		{
-			api.openDialog('dummydialog');
+			api.openDialog("dummydialog");
 		});
 	}
 });

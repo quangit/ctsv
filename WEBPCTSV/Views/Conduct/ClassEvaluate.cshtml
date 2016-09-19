@@ -1,7 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
-@using PagedList.Mvc;
-@using WEBPCTSV.Helpers.Common;
-
+﻿@using WEBPCTSV.Models.bean
 <link rel="stylesheet" href="/assets/css/dataTables.bootstrap.min.css">
 <script type="text/javascript" src="/assets/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="/assets/js/dataTables.bootstrap.min.js"></script>
@@ -36,14 +33,18 @@
         </div>
         <div class="maincontent-main conduct-page" id="maincontent">
             <ol class="breadcrumb box-shadow">
-                <li><a href="~/DanhGiaRenLuyen">Đánh giá rèn luyện</a></li>
+                <li>
+                    <a href="~/DanhGiaRenLuyen">Đánh giá rèn luyện</a>
+                </li>
                 @if (TempData["faculty"] != null)
                 {
-                    <li><a href="~/DanhGiaRenLuyen/DanhSachLop?idFaculty=@TempData["faculty"]">@TempData["facultyName"]</a></li>
+                    <li>
+                        <a href="~/DanhGiaRenLuyen/DanhSachLop?idFaculty=@TempData["faculty"]">@TempData["facultyName"]</a>
+                    </li>
                     TempData["faculty"] = TempData["faculty"];
                     TempData["facultyName"] = TempData["facultyName"];
                 }
-                <li class="active">@(ViewBag.className != null ? ViewBag.className : "")</li>
+                <li class="active">@(ViewBag.className != null ? ViewBag.className : string.Empty)</li>
             </ol>
             <div class="listbox-content">
                 @if (ViewBag.error != null)
@@ -61,89 +62,90 @@
                         }
                         <button class="btn btn-success btn-sm" onclick="EvaluateClass(@ViewBag.classId)" type="button"><i class="fa fa-check" aria-hidden="true"></i> Duyệt tất cả sinh viên</button>
                     </div>
-                    <br />
+                    <br/>
                     <div class="conduct-schedule table-responsive">
                         <table id="myTable" class="table table-striped table-hover">
                             <thead>
-                                <tr>
-                                    <td width="30px">STT</td>
-                                    <td width="100px">MSSV</td>
-                                    <td>Họ tên</td>
-                                    <td>@previewConductSchedule.DecentralizationGroup.DecentralizationGroupName ĐG</td>
-                                    <td>@accountConductSchedule.DecentralizationGroup.DecentralizationGroupName ĐG</td>
-                                    <td width="80px" class="col-action">Thao tác</td>
-                                </tr>
+                            <tr>
+                                <td width="30px">STT</td>
+                                <td width="100px">MSSV</td>
+                                <td>Họ tên</td>
+                                <td>@previewConductSchedule.DecentralizationGroup.DecentralizationGroupName ĐG</td>
+                                <td>@accountConductSchedule.DecentralizationGroup.DecentralizationGroupName ĐG</td>
+                                <td width="80px" class="col-action">Thao tác</td>
+                            </tr>
                             </thead>
                             <tfoot>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>MSSV</th>
-                                    <th>Họ tên</th>
-                                    <th>@previewConductSchedule.DecentralizationGroup.DecentralizationGroupName ĐG</th>
-                                    <th>@accountConductSchedule.DecentralizationGroup.DecentralizationGroupName ĐG</th>
-                                    <th class="col-action">Thao tác</th>
-                                </tr>
+                            <tr>
+                                <th>STT</th>
+                                <th>MSSV</th>
+                                <th>Họ tên</th>
+                                <th>@previewConductSchedule.DecentralizationGroup.DecentralizationGroupName ĐG</th>
+                                <th>@accountConductSchedule.DecentralizationGroup.DecentralizationGroupName ĐG</th>
+                                <th class="col-action">Thao tác</th>
+                            </tr>
                             </tfoot>
                             <tbody>
-                                @foreach (Student student in listStudent)
+                            @foreach (Student student in listStudent)
+                            {
+                                ConductResult conductResultPrev = student.ConductResults.SingleOrDefault(c => c.IdConductEvent == currentEvent.IdConductEvent && c.IdConductSchedule == previewConductSchedule.IdConductSchedule);
+                                ConductResult conductResult = student.ConductResults.SingleOrDefault(c => c.IdConductEvent == currentEvent.IdConductEvent && c.IdConductSchedule == accountConductSchedule.IdConductSchedule);
+                                int total = 0;
+                                int totalPrev = 0;
+                                if (conductResultPrev != null)
                                 {
-                                    ConductResult conductResultPrev = student.ConductResults.SingleOrDefault(c => c.IdConductEvent == currentEvent.IdConductEvent && c.IdConductSchedule == previewConductSchedule.IdConductSchedule);
-                                    ConductResult conductResult = student.ConductResults.SingleOrDefault(c => c.IdConductEvent == currentEvent.IdConductEvent && c.IdConductSchedule == accountConductSchedule.IdConductSchedule);
-                                    int total = 0;
-                                    int totalPrev = 0;
-                                    if (conductResultPrev != null)
+                                    if (conductResultPrev.IsApproved)
                                     {
-                                        if (conductResultPrev.IsApproved)
-                                        {
-                                            string[] arrPairValue = conductResultPrev.PartialPoint.Split(';');
-                                            foreach (string pair in arrPairValue)
-                                            {
-                                                try
-                                                {
-                                                    totalPrev += Int32.Parse(pair.Split(':')[1]);
-                                                }
-                                                catch (Exception)
-                                                {
-
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if (conductResult != null)
-                                    {
-                                        string[] arrPairValue = conductResult.PartialPoint.Split(';');
+                                        string[] arrPairValue = conductResultPrev.PartialPoint.Split(';');
                                         foreach (string pair in arrPairValue)
                                         {
                                             try
                                             {
-                                                total += Int32.Parse(pair.Split(':')[1]);
+                                                totalPrev += int.Parse(pair.Split(':')[1]);
                                             }
                                             catch (Exception)
                                             {
-
                                             }
                                         }
-                                        if (conductResult.IsApproved && totalPrev == 0)
+                                    }
+                                }
+
+                                if (conductResult != null)
+                                {
+                                    string[] arrPairValue = conductResult.PartialPoint.Split(';');
+                                    foreach (string pair in arrPairValue)
+                                    {
+                                        try
                                         {
-                                            totalPrev = total;
+                                            total += int.Parse(pair.Split(':')[1]);
+                                        }
+                                        catch (Exception)
+                                        {
                                         }
                                     }
-                                    string isPrefect = (student.Account.IdDecentralizationGroup == 3) ? " (" + student.Account.DecentralizationGroup.DecentralizationGroupName + ")" : "";
-                                    if (student.IsReserved.Value == true || student.IsExpelled.Value == true || student.IsGraduated == true)
-                                    {
-                                        continue;
-                                    }
 
-                                    <tr class="@((totalPrev == 0) ? "color-danger" : "") SV-@student.IdStudent">
-                                        <td>@(++index)</td>
-                                        <td>@(student.StudentNumber)</td>
-                                        <td>@(student.LastNameStudent + " " + student.FirstNameStudent)@isPrefect</td>
-                                        <td>
-                                            <span class="conduct-point-prev">@totalPrev</span>
-                                        </td>
-                                        <td>
-                                            <span class="conduct-point-new">@total</span>
-                                            <span class="conduct-icon-status">
+                                    if (conductResult.IsApproved && totalPrev == 0)
+                                    {
+                                        totalPrev = total;
+                                    }
+                                }
+
+                                string isPrefect = (student.Account.IdDecentralizationGroup == 3) ? " (" + student.Account.DecentralizationGroup.DecentralizationGroupName + ")" : string.Empty;
+                                if (student.IsReserved.Value == true || student.IsExpelled.Value == true || student.IsGraduated == true)
+                                {
+                                    continue;
+                                }
+
+                                <tr class="@((totalPrev == 0) ? "color-danger" : string.Empty) SV-@student.IdStudent">
+                                    <td>@(++index)</td>
+                                    <td>@(student.StudentNumber)</td>
+                                    <td>@(student.LastNameStudent + " " + student.FirstNameStudent)@isPrefect</td>
+                                    <td>
+                                        <span class="conduct-point-prev">@totalPrev</span>
+                                    </td>
+                                    <td>
+                                        <span class="conduct-point-new">@total</span>
+                                        <span class="conduct-icon-status">
                                                 @if (conductResult != null && conductResult.IsApproved)
                                                 {
                                                     <i class="fa fa-check color-success" aria-hidden="true" title="Đã được duyệt"></i>
@@ -153,9 +155,9 @@
                                                     <i class="fa fa-floppy-o" aria-hidden="true" title="Chỉ lưu chưa được duyệt"></i>
                                                 }
                                             </span>
-                                        </td>
-                                        <td>
-                                            <span class="conduct-icon-action">
+                                    </td>
+                                    <td>
+                                        <span class="conduct-icon-action">
                                                 @if (!(conductResult != null && conductResult.IsApproved))
                                                 {
                                                     <span onclick="EvaluateStudent(@student.IdStudent)" class="label label-success label-link">Duyệt</span>
@@ -166,9 +168,9 @@
                                                     <a href="../DanhGiaRenLuyen/KetQuaDanhGia?idStudent=@(student.IdStudent)&idSemester=@(currentEvent.IdSemester)" class="label label-info label-link">Chi tiết</a>
                                                 }
                                             </span>
-                                        </td>
-                                    </tr>
-                                }
+                                    </td>
+                                </tr>
+                            }
                             </tbody>
                         </table>
                     </div>
@@ -185,33 +187,36 @@
                 idStudent: idStudent
             },
             url: '/DanhGiaRenLuyen/DuyetDiemSinhVien',
-            beforeSend: function () {
+            beforeSend: function() {
                 $('.modal-announcement-message').html("");
                 loadIconLoading($('.cssload-container-over'));
                 $('.cssload-container-over').append("Đang xử lý dữ liệu!");
                 $('#modal-announcement').modal('show');
                 $('.cssload-container-over').fadeIn();
             },
-            success: function (response) {
+            success: function(response) {
                 $('.cssload-container-over').hide();
                 unloadIconLoading($('.cssload-container-over'));
                 $('.modal-announcement-message').html(response.responseText);
                 if (response.success == true) {
                     if ($('.SV-' + idStudent + ' .conduct-point-new').text().trim() == "0") {
-                        $('.SV-' + idStudent + ' .conduct-point-new').text($('.SV-' + idStudent + ' .conduct-point-prev').text().trim());
+                        $('.SV-' + idStudent + ' .conduct-point-new')
+                            .text($('.SV-' + idStudent + ' .conduct-point-prev').text().trim());
                     }
-                    $('.SV-' + idStudent + ' .conduct-icon-status').html('<i class="fa fa-check color-success" aria-hidden="true" title="Đã được duyệt"></i>');
+                    $('.SV-' + idStudent + ' .conduct-icon-status')
+                        .html('<i class="fa fa-check color-success" aria-hidden="true" title="Đã được duyệt"></i>');
                     $('.SV-' + idStudent + ' .conduct-icon-action').remove();
                     $('.SV-' + idStudent).removeClass("color-danger");
                 }
             },
-            error: function (result) {
+            error: function(result) {
                 $('.cssload-container-over').hide();
                 unloadIconLoading($('.modal-announcement-message'));
                 $('.modal-announcement-message').html('Lỗi trong quá trình cập nhật dữ liệu!');
             }
         });
     }
+
     function SubmitEvaluateClass(idClass) {
         $.ajax({
             type: 'POST',
@@ -220,32 +225,39 @@
             },
             //url: '/DanhGiaRenLuyen/DuyetTatCaSinhVien',
             url: '/Conduct/ConductApproveClass?idClass=' + idClass,
-            beforeSend: function () {
+            beforeSend: function() {
                 $('.modal-announcement-message').html("");
                 loadIconLoading($('.cssload-container-over'));
                 $('.cssload-container-over').append("Đang xử lý dữ liệu!");
                 $('#modal-announcement').modal('show');
                 $('.cssload-container-over').fadeIn();
             },
-            success: function (response) {
+            success: function(response) {
                 $('.cssload-container-over').hide();
                 unloadIconLoading($('.cssload-container-over'));
                 $('.modal-announcement-message').html(response.responseText);
                 if (response.success == true)
-                    $('#modal-announcement .modal-dialog .modal-content .modal-footer').html('<button type="button" class="btn btn-default" onclick="window.location.reload()">Đóng</button>')
+                    $('#modal-announcement .modal-dialog .modal-content .modal-footer')
+                        .html('<button type="button" class="btn btn-default" onclick="window.location.reload()">Đóng</button>')
                 else
-                    $('#modal-announcement .modal-dialog .modal-content .modal-footer').html('<button type="button" class="btn btn-default"  data-dismiss="modal">Đóng</button>')
+                    $('#modal-announcement .modal-dialog .modal-content .modal-footer')
+                        .html('<button type="button" class="btn btn-default"  data-dismiss="modal">Đóng</button>')
             },
-            error: function (result) {
+            error: function(result) {
                 $('.cssload-container-over').hide();
                 unloadIconLoading($('.modal-announcement-message'));
                 $('.modal-announcement-message').html('Lỗi trong quá trình cập nhật dữ liệu!');
             }
         });
     }
+
     function EvaluateClass(idClass) {
-        $('.modal-announcement-message').html('Bạn có chắc muốn duyệt điểm tất cả sinh viên không? </br>Khi đã duyệt điểm sẽ không thể chỉnh sửa điểm được nữa.');
-        $('#modal-announcement .modal-dialog .modal-content .modal-footer').html('<button type="button" onclick="SubmitEvaluateClass(' + idClass + ')" class="btn btn-success">Xác nhận</button>  <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
+        $('.modal-announcement-message')
+            .html('Bạn có chắc muốn duyệt điểm tất cả sinh viên không? </br>Khi đã duyệt điểm sẽ không thể chỉnh sửa điểm được nữa.');
+        $('#modal-announcement .modal-dialog .modal-content .modal-footer')
+            .html('<button type="button" onclick="SubmitEvaluateClass(' +
+                idClass +
+                ')" class="btn btn-success">Xác nhận</button>  <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>')
         $('#modal-announcement').modal('show');
     }
 
@@ -275,27 +287,32 @@
         //});
     }
 
-    $(document).ready(function () {
-        // Setup - add a text input to each footer cell
-        $('#myTable tfoot th').each(function () {
-            var title = $(this).text();
-            $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+    $(document)
+        .ready(function() {
+            // Setup - add a text input to each footer cell
+            $('#myTable tfoot th')
+                .each(function() {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+                });
+
+            // DataTable
+            var table = $('#myTable').DataTable();
+
+            // Apply the search
+            table.columns()
+                .every(function() {
+                    var that = this;
+
+                    $('input', this.footer())
+                        .on('keyup change',
+                            function() {
+                                if (that.search() !== this.value) {
+                                    that
+                                        .search(this.value)
+                                        .draw();
+                                }
+                            });
+                });
         });
-
-        // DataTable
-        var table = $('#myTable').DataTable();
-
-        // Apply the search
-        table.columns().every(function () {
-            var that = this;
-
-            $('input', this.footer()).on('keyup change', function () {
-                if (that.search() !== this.value) {
-                    that
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-    });
 </script>

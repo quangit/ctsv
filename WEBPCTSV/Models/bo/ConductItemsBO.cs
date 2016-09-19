@@ -1,34 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using WEBPCTSV.Models.bean;
-
-namespace WEBPCTSV.Models.bo
+﻿namespace WEBPCTSV.Models.bo
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using WEBPCTSV.Models.bean;
+
     public class ConductItemsBO
     {
-        private DSAContext dsaContext;
+        private readonly DSAContext dsaContext;
+
         public ConductItemsBO(DSAContext dsaContext)
         {
             this.dsaContext = dsaContext;
         }
 
-        #region Conduct items
-        public List<ConductItem> GetListConductItems(int idConductForm)
-        {
-            return dsaContext.ConductItems.Where(c => c.IdConductForm.Equals(idConductForm)).OrderBy(c => c.ItemIndex).ToList();
-        }
-
-        #endregion
-
         public int Add(int idConductForm, string itemIndex, string itemName, int maxPoints, int idConductItemGroup)
         {
             try
             {
-                ConductItem conductItem = new ConductItem(idConductForm, itemIndex, itemName, maxPoints, idConductItemGroup);
-                dsaContext.ConductItems.Add(conductItem);
-                dsaContext.SaveChanges();
+                ConductItem conductItem = new ConductItem(
+                    idConductForm,
+                    itemIndex,
+                    itemName,
+                    maxPoints,
+                    idConductItemGroup);
+                this.dsaContext.ConductItems.Add(conductItem);
+                this.dsaContext.SaveChanges();
                 return conductItem.IdConductItems;
             }
             catch
@@ -37,19 +34,15 @@ namespace WEBPCTSV.Models.bo
             }
         }
 
-        public bool UpdateConductItem(int idConductItems, int idConductForm, string itemIndex, string itemName, int maxPoints, int idConductItemGroup)
+        public bool DeleteItem(int id)
         {
             try
             {
-                ConductItem conductItem = dsaContext.ConductItems.SingleOrDefault(c => c.IdConductItems == idConductItems);
+                ConductItem conductItem = this.dsaContext.ConductItems.SingleOrDefault(i => i.IdConductItems == id);
                 if (conductItem != null)
                 {
-                    conductItem.IdConductForm = idConductForm;
-                    conductItem.ItemIndex = itemIndex;
-                    conductItem.ItemName = itemName;
-                    conductItem.MaxPoints = maxPoints;
-                    conductItem.IdConductItemGroup = idConductItemGroup;
-                    dsaContext.SaveChanges();
+                    this.dsaContext.ConductItems.Remove(conductItem);
+                    this.dsaContext.SaveChanges();
                     return true;
                 }
                 else
@@ -63,15 +56,34 @@ namespace WEBPCTSV.Models.bo
             }
         }
 
-        public bool DeleteItem(int id)
+        public List<ConductItem> GetListConductItems(int idConductForm)
+        {
+            return
+                this.dsaContext.ConductItems.Where(c => c.IdConductForm.Equals(idConductForm))
+                    .OrderBy(c => c.ItemIndex)
+                    .ToList();
+        }
+
+        public bool UpdateConductItem(
+            int idConductItems,
+            int idConductForm,
+            string itemIndex,
+            string itemName,
+            int maxPoints,
+            int idConductItemGroup)
         {
             try
             {
-                ConductItem conductItem = dsaContext.ConductItems.SingleOrDefault(i => i.IdConductItems == id);
+                ConductItem conductItem =
+                    this.dsaContext.ConductItems.SingleOrDefault(c => c.IdConductItems == idConductItems);
                 if (conductItem != null)
                 {
-                    dsaContext.ConductItems.Remove(conductItem);
-                    dsaContext.SaveChanges();
+                    conductItem.IdConductForm = idConductForm;
+                    conductItem.ItemIndex = itemIndex;
+                    conductItem.ItemName = itemName;
+                    conductItem.MaxPoints = maxPoints;
+                    conductItem.IdConductItemGroup = idConductItemGroup;
+                    this.dsaContext.SaveChanges();
                     return true;
                 }
                 else

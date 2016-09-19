@@ -1,4 +1,4 @@
-﻿@using WEBPCTSV.Models.bean;
+﻿@using WEBPCTSV.Models.bean
 @model Paper
 @{
     Paper paper = Model;
@@ -6,14 +6,10 @@
 
 @foreach (ReasonRequest reason in paper.ReasonRequests)
 {
-    <div class="alert alert-success" style="width:80%" ng-controller="addReasonRequest">
+    <div class="alert alert-success" style="width: 80%" ng-controller="addReasonRequest">
         <a href="#" class="close" ng-click="DeleteReason('@reason.IdReasonRequest')" data-dismiss="alert" aria-label="close">&times;</a>
         <strong class="glyphicon glyphicon-tag"></strong>
         @reason.Reason
-        
+
     </div>
 }
-
-
-
-

@@ -1,241 +1,245 @@
-﻿@model List<RequestPaper>
-@using WEBPCTSV.Models.bean;
-@using WEBPCTSV.Models.Support;
+﻿@using WEBPCTSV.Models.bean
+@using WEBPCTSV.Models.Support
+@model List<RequestPaper>
 @{
     int stt = 1;
     List<RequestPaper> listRequest = Model;
 }
 
 
-
-<button class="btn btn-primary" onclick='PrintAllHtml()' style="margin-bottom:5px"><span class="glyphicon glyphicon-print" data-toggle="tooltip" title="In đơn !" onclick="PrintAllHtml('@ViewBag.idClass')"></span> In tất cả</button>
+<button class="btn btn-primary" onclick="PrintAllHtml()" style="margin-bottom: 5px"><span class="glyphicon glyphicon-print" data-toggle="tooltip" title="In đơn !" onclick="PrintAllHtml('@ViewBag.idClass')"></span> In tất cả</button>
 
 <table class="table table-hover">
-    <thead>
-        <tr>
-            <th colspan="2">STT</th>
-            <th>Tên Sinh Viên</th>
-            <th>Tên giấy yêu cầu</th>
-            <th>Lý do</th>
-            <th>NgàyNG</th>
-            <th>SL</th>
-            <th>Lệ phí</th>
-            <th>Tình trạng</th>
-            <th></th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody id="checkboxs">
+<thead>
+<tr>
+    <th colspan="2">STT</th>
+    <th>Tên Sinh Viên</th>
+    <th>Tên giấy yêu cầu</th>
+    <th>Lý do</th>
+    <th>NgàyNG</th>
+    <th>SL</th>
+    <th>Lệ phí</th>
+    <th>Tình trạng</th>
+    <th></th>
+    <th></th>
+    <th></th>
+</tr>
+</thead>
+<tbody id="checkboxs">
 
-        @foreach (RequestPaper request in listRequest)
+@foreach (RequestPaper request in listRequest)
+{
+    <tr>
+        <td>@stt</td>
+        <td>
+            <input id="@request.IdRequestPaper" type="checkbox"/>
+        </td>
+        <td data-toggle="modal" data-target="#detailRequest_@request.IdRequestPaper">
+            @if (request.AccountRequest.Students.Count > 0)
+            {
+                Student student = request.AccountRequest.Students.First();
+                @(student.LastNameStudent + " " + student.FirstNameStudent)
+            }
+        </td>
+        <td data-toggle="modal" data-target="#detailRequest_@request.IdRequestPaper">@request.Reasonrequest.Paper.PaperName</td>
+        @if (request.ContentReason != null)
         {
-            <tr>
-                <td>@stt</td>
-                <td><input id="@request.IdRequestPaper" type="checkbox"/></td>
-                <td data-toggle="modal" data-target="#detailRequest_@request.IdRequestPaper">
-                    @if (request.AccountRequest.Students.Count > 0)
-                    {
-                        Student student = request.AccountRequest.Students.First();
-                        @(student.LastNameStudent + " " + student.FirstNameStudent)
-                    }
-                </td>
-                <td data-toggle="modal" data-target="#detailRequest_@request.IdRequestPaper">@request.Reasonrequest.Paper.PaperName</td>
-                @if (request.ContentReason != null)
-                {
-                    <td data-toggle="modal" data-target="#detailRequest_@request.IdRequestPaper">@request.ContentReason</td>
-                }
-                else
-                {
-                    <td data-toggle="modal" data-target="#detailRequest_@request.IdRequestPaper">@request.Reasonrequest.Reason</td>
-                }
-                <td data-toggle="modal" data-target="#detailRequest_@request.IdRequestPaper">
-                    @if (request.TimeReceivePaper != null)
-                    { @request.TimeReceivePaper.Value.ToShortDateString() }
-                </td>
-                <td>@request.NumberPaper</td>
-                <td data-toggle="modal" data-target="#detailRequest_@request.IdRequestPaper">
-                    @if (request.isImportant)
-                    {
-                        @ConvertObject.ConvertCurrency((Convert.ToInt32(request.Reasonrequest.Paper.PriceUrgency)*request.NumberPaper).ToString())
-                    }
-                    else
-                    {
-                        @ConvertObject.ConvertCurrency((Convert.ToInt32(request.Reasonrequest.Paper.PriceNormal) * request.NumberPaper).ToString())
-                    } VNĐ
-                </td>
-                <td data-toggle="modal" data-target="#detailRequest_@request.IdRequestPaper">@request.Requeststatus.StatusName</td>
-                <td>
-                    <span class="glyphicon glyphicon-print text-success" data-toggle="tooltip" title="In đơn !" onclick="PrintHtml('@request.Reasonrequest.IdPaper','@request.IdAccountRequest',@request.NumberPaper)"></span>
-                </td>
-                <td>
-                    @if (request.IdRequestStatus == 1)
-                    {
-                        <a data-toggle="tooltip" title="Duyệt yêu cầu!" onclick="UpdateStatusProcessRequest('@request.IdRequestPaper')" style="text-decoration:none">Duyệt</a>
+            <td data-toggle="modal" data-target="#detailRequest_@request.IdRequestPaper">@request.ContentReason</td>
+        }
+        else
+        {
+            <td data-toggle="modal" data-target="#detailRequest_@request.IdRequestPaper">@request.Reasonrequest.Reason</td>
+        }
+        <td data-toggle="modal" data-target="#detailRequest_@request.IdRequestPaper">
+            @if (request.TimeReceivePaper != null)
+            {
+                @request.TimeReceivePaper.Value.ToShortDateString()
+            }
+        </td>
+        <td>@request.NumberPaper</td>
+        <td data-toggle="modal" data-target="#detailRequest_@request.IdRequestPaper">
+            @if (request.isImportant)
+            {
+                @ConvertObject.ConvertCurrency((Convert.ToInt32(request.Reasonrequest.Paper.PriceUrgency) * request.NumberPaper).ToString())
+            }
+            else
+            {
+                @ConvertObject.ConvertCurrency((Convert.ToInt32(request.Reasonrequest.Paper.PriceNormal) * request.NumberPaper).ToString())
+            } VNĐ
+        </td>
+        <td data-toggle="modal" data-target="#detailRequest_@request.IdRequestPaper">@request.Requeststatus.StatusName</td>
+        <td>
+            <span class="glyphicon glyphicon-print text-success" data-toggle="tooltip" title="In đơn !" onclick="PrintHtml('@request.Reasonrequest.IdPaper', '@request.IdAccountRequest', @request.NumberPaper)"></span>
+        </td>
+        <td>
+            @if (request.IdRequestStatus == 1)
+            {
+                <a data-toggle="tooltip" title="Duyệt yêu cầu!" onclick="UpdateStatusProcessRequest('@request.IdRequestPaper')" style="text-decoration: none">
+                    <label class="label label-primary"> Duyệt </label>
+                </a>
+            }
+            @if (request.IdRequestStatus == 2)
+            {
+                <a data-toggle="tooltip" title="Xác nhận đã đến nhận giấy yêu cầu!" onclick="UpdateStatusProcessRequest('@request.IdRequestPaper')" style="text-decoration: none">
+                    <label class="label label-success"> Đã nhận </label>
+                </a>
+            }
+        </td>
+        <td >
+            @if (request.IdRequestStatus == 1 || request.IdRequestStatus == 2)
+            {
+                <a class="glyphicon glyphicon-remove " style="color: #ff7244" onclick="UpdateStatusCancelRequest('@request.IdRequestPaper')" data-toggle="tooltip" title="Hủy yêu cầu!"></a>
+            }
+        </td>
 
-                    }
-                    @if (request.IdRequestStatus == 2)
-                    {
-                        <a data-toggle="tooltip" title="Xác nhận đã đến nhận giấy yêu cầu!" onclick="UpdateStatusProcessRequest('@request.IdRequestPaper')" style="text-decoration:none">Đã nhận</a>
-                    }
-                </td>
-                <td>
-                    @if (request.IdRequestStatus == 1 || request.IdRequestStatus == 2)
-                    {
-                        <a class="glyphicon glyphicon-remove" onclick="UpdateStatusCancelRequest('@request.IdRequestPaper')" data-toggle="tooltip" title="Hủy yêu cầu!"></a>
-                    }
-                </td>
+    </tr>
+    stt++;
 
-            </tr>
-            stt++;
+    <!-- Modal -->
+    <div id="detailRequest_@request.IdRequestPaper" class="modal fade" role="dialog">
+        <div class="modal-dialog">
 
-                    <!-- Modal -->
-            <div id="detailRequest_@request.IdRequestPaper" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Chi tiết yêu cầu</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-horizontal" role="form">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4" for="email">Người yêu cầu :</label>
-                                    <div class="col-sm-8">
-                                        <p class="form-control-static">
-                                            @if (request.AccountRequest.Students.Count > 0)
-                                            {
-                                                Student student = request.AccountRequest.Students.First();
-                                                @(student.LastNameStudent + " " + student.FirstNameStudent)
-                                            }
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4" for="email">Lớp:</label>
-                                    <div class="col-sm-8">
-                                        <p class="form-control-static">
-                                            @if (request.AccountRequest.Students.Count > 0)
-                                            {
-                                                Student student = request.AccountRequest.Students.First();
-                                                @(student.Class.ClassName+ "("+student.Class.Faculty.FacultyName+")");
-                                            }
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4" for="email">Tên giấy yêu cầu :</label>
-                                    <div class="col-sm-8">
-                                        <p class="form-control-static">@request.Reasonrequest.Paper.PaperName</p>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4" for="email">Lý do :</label>
-                                    <div class="col-sm-8">
-                                        <p class="form-control-static">@request.Reasonrequest.Reason</p>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4" for="email">Thời gian yêu cầu :</label>
-                                    <div class="col-sm-8">
-                                        <p class="form-control-static">@request.TimeRequest.Value.ToShortDateString()</p>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Số lượng:</label>
-                                    <div class="col-sm-8">
-                                        <p class="form-control-static">@request.NumberPaper</p>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4" for="email">Lệ phí :</label>
-                                    <div class="col-sm-8">
-                                        <p class="form-control-static">
-                                            @if (request.isImportant)
-                                            {
-                                                @ConvertObject.ConvertCurrency((Convert.ToInt32(request.Reasonrequest.Paper.PriceUrgency) * request.NumberPaper).ToString())
-                                            }
-                                            else
-                                            {
-                                                @ConvertObject.ConvertCurrency((Convert.ToInt32(request.Reasonrequest.Paper.PriceNormal) * request.NumberPaper).ToString())
-                                            }VNĐ
-                                        </p>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4" for="email">Thời gian chờ :</label>
-                                    <div class="col-sm-8">
-                                        <p class="form-control-static">
-                                            @if (request.isImportant)
-                                            {
-                                                @request.Reasonrequest.Paper.WaittingPeriodUrgency
-                                            }
-                                            else
-                                            {
-                                                @request.Reasonrequest.Paper.WaittingPeriodNormal
-                                            } Ngày
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4" for="email">Tình trạng :</label>
-                                    <div class="col-sm-8">
-                                        <p class="form-control-static">@request.Requeststatus.StatusName</p>
-                                    </div>
-                                </div>
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Chi tiết yêu cầu</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="email">Người yêu cầu :</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">
+                                    @if (request.AccountRequest.Students.Count > 0)
+                                    {
+                                        Student student = request.AccountRequest.Students.First();
+                                        @(student.LastNameStudent + " " + student.FirstNameStudent)
+                                    }
+                                </p>
                             </div>
-
                         </div>
-                        <div class="modal-footer">
-                            @if (request.IdRequestStatus == 1)
-                            {
-                                <button class="btn btn-primary" style="float:left" data-toggle="tooltip" title="Duyệt yêu cầu!" onclick="UpdateStatusProcessRequest('@request.IdRequestPaper')">Duyệt</button>
 
-                            }
-                            @if (request.IdRequestStatus == 2)
-                            {
-                                <button class="btn btn-primary" style="float:left" data-toggle="tooltip" title="Xác nhận đã đến nhận giấy yêu cầu!" onclick="UpdateStatusProcessRequest('@request.IdRequestPaper')">Đã nhận</button>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="email">Lớp:</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">
+                                    @if (request.AccountRequest.Students.Count > 0)
+                                    {
+                                        Student student = request.AccountRequest.Students.First();
+                                        @(student.Class.ClassName + "(" + student.Class.Faculty.FacultyName + ")")
+                                    }
+                                </p>
+                            </div>
+                        </div>
 
-                            }
-                            <label class="btn btn-success" data-toggle="tooltip" title="In đơn !" onclick="PrintHtml('@request.Reasonrequest.IdPaper','@request.IdAccountRequest',@request.NumberPaper)" style="float:left"><span class="glyphicon glyphicon-print"></span></label> 
-                            @if (request.IdRequestStatus == 1 || request.IdRequestStatus == 2)
-                            {
-                                <button class="btn btn-danger" style="float:left" onclick="UpdateStatusCancelRequest('@request.IdRequestPaper')" data-toggle="tooltip" title="Hủy yêu cầu!">Hủy</button>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="email">Tên giấy yêu cầu :</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">@request.Reasonrequest.Paper.PaperName</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="email">Lý do :</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">@request.Reasonrequest.Reason</p>
+                            </div>
+                        </div>
 
-                            }
-                            
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="email">Thời gian yêu cầu :</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">@request.TimeRequest.Value.ToShortDateString()</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Số lượng:</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">@request.NumberPaper</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="email">Lệ phí :</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">
+                                    @if (request.isImportant)
+                                    {
+                                        @ConvertObject.ConvertCurrency((Convert.ToInt32(request.Reasonrequest.Paper.PriceUrgency) * request.NumberPaper).ToString())
+                                    }
+                                    else
+                                    {
+                                        @ConvertObject.ConvertCurrency((Convert.ToInt32(request.Reasonrequest.Paper.PriceNormal) * request.NumberPaper).ToString())
+                                    }VNĐ
+                                </p>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="email">Thời gian chờ :</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">
+                                    @if (request.isImportant)
+                                    {
+                                        @request.Reasonrequest.Paper.WaittingPeriodUrgency
+                                    }
+                                    else
+                                    {
+                                        @request.Reasonrequest.Paper.WaittingPeriodNormal
+                                    } Ngày
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="email">Tình trạng :</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">@request.Requeststatus.StatusName</p>
+                            </div>
                         </div>
                     </div>
 
                 </div>
+                <div class="modal-footer">
+                    @if (request.IdRequestStatus == 1)
+                    {
+                        <button class="btn btn-primary" style="float: left" data-toggle="tooltip" title="Duyệt yêu cầu!" onclick="UpdateStatusProcessRequest('@request.IdRequestPaper')">Duyệt</button>
+                    }
+                    @if (request.IdRequestStatus == 2)
+                    {
+                        <button class="btn btn-primary" style="float: left" data-toggle="tooltip" title="Xác nhận đã đến nhận giấy yêu cầu!" onclick="UpdateStatusProcessRequest('@request.IdRequestPaper')">Đã nhận</button>
+                    }
+                    <label class="btn btn-success" data-toggle="tooltip" title="In đơn !" onclick="PrintHtml('@request.Reasonrequest.IdPaper', '@request.IdAccountRequest', @request.NumberPaper)" style="float: left">
+                        <span class="glyphicon glyphicon-print"></span></label>
+                    @if (request.IdRequestStatus == 1 || request.IdRequestStatus == 2)
+                    {
+                        <button class="btn btn-danger" style="float: left" onclick="UpdateStatusCancelRequest('@request.IdRequestPaper')" data-toggle="tooltip" title="Hủy yêu cầu!">Hủy</button>
+                    }
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                </div>
             </div>
-        }
-    </tbody>
+
+        </div>
+    </div>
+}
+</tbody>
 
 </table>
 
 
 <script>
-    function PrintHtml(idPaper, idAccountRequest,number) {
+    function PrintHtml(idPaper, idAccountRequest, number) {
         //var divContents = $("#dvContainer").html();
 
         //alert(idPaper+idAccountRequest);
         $.ajax({
             url: "/ManagePaper/DetailPrintPaper",
             type: "post",
-            data: { 'idPaper': idPaper, 'idAccountRequest': idAccountRequest,'numberPaper':number },
-            success: function (data) {
+            data: { 'idPaper': idPaper, 'idAccountRequest': idAccountRequest, 'numberPaper': number },
+            success: function(data) {
                 var originalContents = document.body.innerHTML;
                 document.body.innerHTML = data.Result;
                 window.print();
@@ -256,14 +260,15 @@
 
     function PrintAllHtml() {
         var listIdRequestselected = [];
-        $('#checkboxs input:checked').each(function () {
-            listIdRequestselected.push($(this).attr('id'));
-        });
+        $('#checkboxs input:checked')
+            .each(function() {
+                listIdRequestselected.push($(this).attr('id'));
+            });
         $.ajax({
             url: "/ManagePaper/PrintListPaper",
             type: "post",
-            data: { listIdRequest: listIdRequestselected},
-            success: function (data) {
+            data: { listIdRequest: listIdRequestselected },
+            success: function(data) {
                 var originalContents = document.body.innerHTML;
                 document.body.innerHTML = data.Result;
                 document.body.innerHTML += '<div class="divFooter">@ViewBag.inforFooter</div>';
@@ -281,7 +286,7 @@
             url: "/ManageRequest/UpdateStatusProcessRequest",
             type: "post",
             data: { 'idRequestPaper': idRequest },
-            success: function (result) {
+            success: function(result) {
                 location.reload();
             }
         });
@@ -292,7 +297,7 @@
             url: "/ManageRequest/UpdateStatusCancelRequest",
             type: "post",
             data: { 'idRequestPaper': idRequest },
-            success: function (result) {
+            success: function(result) {
                 location.reload();
             }
         });

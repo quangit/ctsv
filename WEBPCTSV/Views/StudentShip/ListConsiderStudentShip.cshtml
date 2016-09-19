@@ -1,261 +1,270 @@
-﻿@{
+﻿@using WEBPCTSV.Models.bean
+@using WEBPCTSV.Models.Support
+@{
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
     ViewBag.Title = "Danh sách học bổng ";
 }
-@using WEBPCTSV.Models.Support;
 <link rel="stylesheet" href="~/css/circle.css">
 @{
-    WEBPCTSV.Models.bean.ConditionStudentShipSchool conditionStudentShipSchool = ViewBag.ConditionStudentShip;
-    List<WEBPCTSV.Models.bean.RankingAcademic> listRankingAcademic = ViewBag.RankingAcademic;
-    WEBPCTSV.Models.bean.StudentShipSchoolFaculty studentShipSchoolFaculty = ViewBag.StudentShipSchoolFaculty;
+    ConditionStudentShipSchool conditionStudentShipSchool = ViewBag.ConditionStudentShip;
+    List<RankingAcademic> listRankingAcademic = ViewBag.RankingAcademic;
+    StudentShipSchoolFaculty studentShipSchoolFaculty = ViewBag.StudentShipSchoolFaculty;
 }
 <h3 class="header-paper">
     Danh sách học bổng @if (studentShipSchoolFaculty.IdFaculty != null)
-    { @:khoa @studentShipSchoolFaculty.Faculty.FacultyName
+                       {
+                           @:khoa @studentShipSchoolFaculty.Faculty.FacultyName
                        }
-    else if (studentShipSchoolFaculty.IdClass != null)
-    { @:khoa @studentShipSchoolFaculty.Class.ClassName
+                       else if (studentShipSchoolFaculty.IdClass != null)
+                       {
+                           @:khoa @studentShipSchoolFaculty.Class.ClassName
                        }
-    else
-    {
-        @:bổ sung;
+                       else
+                       {
+                           @:bổ sung;
                        }
 </h3>
 <div ng-controller="ListStudentShipSchoolFaculty">
 
-    <div style="margin-left:10px">
-        <!-- Trigger the modal with a button -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ConditionStudentShip">Điều kiện xét học bổng</button>
-        <!-- Modal -->
-        <div id="ConditionStudentShip" class="modal fade" role="dialog">
-            <div class="modal-dialog modal-sm">
+<div style="margin-left: 10px">
+    <!-- Trigger the modal with a button -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ConditionStudentShip">Điều kiện xét học bổng</button>
+    <!-- Modal -->
+    <div id="ConditionStudentShip" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
 
-                <!-- Modal content-->
-                <form action="/StudentShip/ChangeConditionStudentShip?idStudentShipSchoolFaculty=@studentShipSchoolFaculty.IdStudentShipSchoolFaculty" method="post" class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Điều kiện xét học bổng</h4>
-                    </div>
-                    <div class="modal-body form-horizontal" role="form">
-                        <div class="form-group">
-                            <label class="control-label col-sm-8" for="email">Số tín chỉ học lần 1:</label>
-                            <div class="col-sm-4">
-                                <input name="CreditNumber1" class="form-control" type="number" step="0.5" value="@conditionStudentShipSchool.CreditNumberStudy1" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-8" for="email">Số tín chỉ học lại :</label>
-                            <div class="col-sm-4">
-                                <input name="RelearnCreditsNumber" class="form-control" type="number" step="0.5" value="@conditionStudentShipSchool.relearnCreditsNumber" />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-sm-8" for="email">Số tín chỉ không đạt:</label>
-                            <div class="col-sm-4">
-                                <input name="CreditNumberUnQualified" class="form-control" type="number" step="0.5" value="@conditionStudentShipSchool.creditNumberUnQualified" />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-sm-8" for="email">Điểm rèn luyện lớn hơn hoặc bằng:</label>
-                            <div class="col-sm-4">
-                                <input name="PointTraining" class="form-control" type="number" value="@conditionStudentShipSchool.pointTraining" />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-sm-8" for="email">Điểm xét học bổng lớn hơn:</label>
-                            <div class="col-sm-4">
-                                <input name="PointsShipSchool" class="form-control" type="number" step="0.01" value="@conditionStudentShipSchool.pointsShipSchool" />
-                            </div>
+            <!-- Modal content-->
+            <form action="/StudentShip/ChangeConditionStudentShip?idStudentShipSchoolFaculty=@studentShipSchoolFaculty.IdStudentShipSchoolFaculty" method="post" class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Điều kiện xét học bổng</h4>
+                </div>
+                <div class="modal-body form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="control-label col-sm-8" for="email">Số tín chỉ học lần 1:</label>
+                        <div class="col-sm-4">
+                            <input name="CreditNumber1" class="form-control" type="number" step="0.5" value="@conditionStudentShipSchool.CreditNumberStudy1"/>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" style="float:left" class="btn btn-primary">Lưu điều kiện</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-
-
-        <!-- Trigger the modal with a button -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ChangeMoneyRankingAcademic">Số tiền học bổng</button>
-        <!-- Modal -->
-        <div id="ChangeMoneyRankingAcademic" class="modal fade" role="dialog">
-            <div class="modal-dialog modal-sm">
-
-                <!-- Modal content-->
-                <form action="/StudentShip/ChangeMoneyRankingAcademic?idStudentShipSchoolFaculty=@studentShipSchoolFaculty.IdStudentShipSchoolFaculty" method="post" class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Số tiền học bổng</h4>
-                    </div>
-                    <div class="modal-body form-horizontal">
-                        <div class="form-group">
-                            <label class="control-label col-sm-4" for="email">Suất sắc:</label>
-                            <div class="col-sm-8">
-                                <div class="input-group">
-                                    <input name="MoneyExcellent" id="MoneyExcellent" value="@ConvertObject.ConvertCurrency(listRankingAcademic.Single(r=>r.IdRankingAcademic.Equals("suatsac")).MoneyStudentShip)" class="form-control" onkeypress="return KeyCode()">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button"> VNĐ</button>
-                                    </span>
-                                </div>
-                            </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-8" for="email">Số tín chỉ học lại :</label>
+                        <div class="col-sm-4">
+                            <input name="RelearnCreditsNumber" class="form-control" type="number" step="0.5" value="@conditionStudentShipSchool.relearnCreditsNumber"/>
                         </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-sm-4" for="MoneyVeryGood">Giỏi:</label>
-                            <div class="col-sm-8">
-                                <div class="input-group">
-                                    <input name="MoneyVeryGood" id="MoneyVeryGood" value="@ConvertObject.ConvertCurrency(listRankingAcademic.Single(r=>r.IdRankingAcademic.Equals("gioi")).MoneyStudentShip)" class="form-control" onkeypress="return KeyCode()">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button"> VNĐ</button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-sm-4" for="MoneyGood">Khá:</label>
-                            <div class="col-sm-8">
-                                <div class="input-group">
-                                    <input name="MoneyGood" id="MoneyGood" type="number" step="1000" value="@ConvertObject.ConvertCurrency(listRankingAcademic.Single(r=>r.IdRankingAcademic.Equals("kha")).MoneyStudentShip)" class="form-control" onkeypress="return KeyCode()">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button"> VNĐ</button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-
-
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" style="float:left" class="btn btn-primary">Lưu điều kiện</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
 
-            </div>
-        </div>
-
-
-
-        <!-- Trigger the modal with a button -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ChangeMoneyStudentShipFaculty">Thông tin học bổng khoa</button>
-        <!-- Modal -->
-        <div id="ChangeMoneyStudentShipFaculty" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <form action="/StudentShip/UpdateMoneyStudentShipFaculty?idStudentShipSchoolFaculty=@studentShipSchoolFaculty.IdStudentShipSchoolFaculty" method="post" class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Thông tin học bổng</h4>
-                    </div>
-                    <div class="modal-body form-horizontal">
-                        <div class="form-group">
-                            <label class="control-label col-sm-6" for="MoneyStudentShipFaculty">Số tiền học bổng dự kiến:</label>
-                            <div class="col-sm-4">
-                                <div class="input-group">
-                                    <p class="form-control-static"><strong>@ConvertObject.ConvertCurrency(studentShipSchoolFaculty.TotalMoneyOld) VNĐ</strong></p>
-                                </div>
-                            </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-8" for="email">Số tín chỉ không đạt:</label>
+                        <div class="col-sm-4">
+                            <input name="CreditNumberUnQualified" class="form-control" type="number" step="0.5" value="@conditionStudentShipSchool.creditNumberUnQualified"/>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-6" for="MoneyStudentShipFaculty">Số tiền học bổng khoa:</label>
-                            <div class="col-sm-4">
-                                <div class="input-group">
-                                    <input name="MoneyStudentShipFaculty" id="MoneyStudentShipFaculty" ng-init="totalMoneyStudentShip='@ConvertObject.ConvertCurrency(studentShipSchoolFaculty.TotalMoney)'" ng-model="totalMoneyStudentShip" class="form-control" onkeypress="return KeyCode()">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button"> VNĐ</button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-sm-6" for="MoneyStudentShipFaculty">Số tiền dư:</label>
-                            <div class="col-sm-4">
-                                <div class="input-group">
-                                    <p class="form-control-static"><strong>@ConvertObject.ConvertCurrency(ViewBag.SURPLUSMoney) VNĐ</strong></p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-sm-6" for="MoneyStudentShipFaculty">Số sinh viên được nhận:</label>
-                            <div class="col-sm-4">
-                                <div class="input-group">
-                                    <input class="form-control" type="number" ng-init="countStudent = @ViewBag.CountStudentShip" ng-model="countStudent" ng-change="ChangeCountStudentShip('@studentShipSchoolFaculty.IdStudentShipSchoolFaculty')" />
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" style="float:left" class="btn btn-primary">Lưu chỉnh sửa</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-8" for="email">Điểm rèn luyện lớn hơn hoặc bằng:</label>
+                        <div class="col-sm-4">
+                            <input name="PointTraining" class="form-control" type="number" value="@conditionStudentShipSchool.pointTraining"/>
+                        </div>
                     </div>
-                </form>
 
-            </div>
-        </div>
-
-
-        <form action="/StudentShip/ListStudentShipSchoolFaculty?idStudentShipSchoolFaculty=@studentShipSchoolFaculty.IdStudentShipSchoolFaculty&page=1" method="post" class="input-group" style="width:400px;float:right;margin-right:20px;padding-bottom:5px">
-            <input name="search" type="text" class="form-control">
-            <input name="page" type="hidden" value="1">
-            <div class="input-group-btn">
-                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>Tìm kiếm</button>
-            </div>
-        </form>
-    </div>
-    <hr style="clear:both" />
-    <div style="float:right">
-        <a href="/StudentShip/SaveStudentShipSchoolStudent?idStudentShipSchoolFaculty=@studentShipSchoolFaculty.IdStudentShipSchoolFaculty"><label class="form-control-static" onclick="getprogress()" data-toggle="modal" data-target="#SaveStudentShipSchoolStudent" style="cursor:pointer;margin-right:20px"><span class="glyphicon glyphicon-save"></span> Lưu lại</label></a>
-        <a href="/StudentShip/ListStudentShipSchoolStudent?idStudentShipSchoolFaculty=@studentShipSchoolFaculty.IdStudentShipSchoolFaculty"><label class="form-control-static" style="cursor:pointer;margin-right:20px"><span class="glyphicon glyphicon-eye-open"></span> Xem danh sách chính thức</label></a>
-
-        <!-- Modal -->
-        <div id="SaveStudentShipSchoolStudent" class="modal fade" role="dialog">
-            <div class="modal-dialog modal-sm">
-
-                <!-- Modal content-->
-                <div class="modal-content" align="center">
-                    <div class="modal-body">
-                        <div id="loaddingProgress">
-                            <div class="animation-3">
-                                <div class="cube">
-                                    <div class="face face1"></div>
-                                    <div class="face face2"></div>
-                                    <div class="face face3"></div>
-                                    <div class="face face4"></div>
-                                    <div class="face face5"></div>
-                                    <div class="face face6"></div>
-                                </div>
-                            </div>
-                            <br />
-                            <strong id="noteProgress"> Đang xử lý! <span id="progressSaveStudentShipSchoolStudent"></span> </strong>
+                    <div class="form-group">
+                        <label class="control-label col-sm-8" for="email">Điểm xét học bổng lớn hơn:</label>
+                        <div class="col-sm-4">
+                            <input name="PointsShipSchool" class="form-control" type="number" step="0.01" value="@conditionStudentShipSchool.pointsShipSchool"/>
                         </div>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <button type="submit" style="float: left" class="btn btn-primary">Lưu điều kiện</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
 
-            </div>
         </div>
     </div>
-    <br />
-    <div class="container-layoutmanager">
-        @{
-            List<WEBPCTSV.Models.bean.LearningOutCome> listLearningOutCome = ViewBag.listLearningOutCome;
-            WEBPCTSV.Models.Support.PageNumber pageNumber = ViewBag.pageNumber;
-        }
-        @Html.Partial("_ListStudentShip", listLearningOutCome)
-        @Html.Partial("~/Views/PartialShared/_PageNumber.cshtml", pageNumber)
+
+
+    <!-- Trigger the modal with a button -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ChangeMoneyRankingAcademic">Số tiền học bổng</button>
+    <!-- Modal -->
+    <div id="ChangeMoneyRankingAcademic" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+
+            <!-- Modal content-->
+            <form action="/StudentShip/ChangeMoneyRankingAcademic?idStudentShipSchoolFaculty=@studentShipSchoolFaculty.IdStudentShipSchoolFaculty" method="post" class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Số tiền học bổng</h4>
+                </div>
+                <div class="modal-body form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="email">Suất sắc:</label>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input name="MoneyExcellent" id="MoneyExcellent" value="@ConvertObject.ConvertCurrency(listRankingAcademic.Single(r => r.IdRankingAcademic.Equals("suatsac")).MoneyStudentShip)" class="form-control" onkeypress="return KeyCode()">
+                                <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button"> VNĐ</button>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="MoneyVeryGood">Giỏi:</label>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input name="MoneyVeryGood" id="MoneyVeryGood" value="@ConvertObject.ConvertCurrency(listRankingAcademic.Single(r => r.IdRankingAcademic.Equals("gioi")).MoneyStudentShip)" class="form-control" onkeypress="return KeyCode()">
+                                <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button"> VNĐ</button>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="MoneyGood">Khá:</label>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input name="MoneyGood" id="MoneyGood" type="number" step="1000" value="@ConvertObject.ConvertCurrency(listRankingAcademic.Single(r => r.IdRankingAcademic.Equals("kha")).MoneyStudentShip)" class="form-control" onkeypress="return KeyCode()">
+                                <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button"> VNĐ</button>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" style="float: left" class="btn btn-primary">Lưu điều kiện</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+
+        </div>
     </div>
-    
+
+
+    <!-- Trigger the modal with a button -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ChangeMoneyStudentShipFaculty">Thông tin học bổng khoa</button>
+    <!-- Modal -->
+    <div id="ChangeMoneyStudentShipFaculty" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <form action="/StudentShip/UpdateMoneyStudentShipFaculty?idStudentShipSchoolFaculty=@studentShipSchoolFaculty.IdStudentShipSchoolFaculty" method="post" class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Thông tin học bổng</h4>
+                </div>
+                <div class="modal-body form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-6" for="MoneyStudentShipFaculty">Số tiền học bổng dự kiến:</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <p class="form-control-static">
+                                    <strong>@ConvertObject.ConvertCurrency(studentShipSchoolFaculty.TotalMoneyOld) VNĐ</strong>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-6" for="MoneyStudentShipFaculty">Số tiền học bổng khoa:</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input name="MoneyStudentShipFaculty" id="MoneyStudentShipFaculty" ng-init="totalMoneyStudentShip='@ConvertObject.ConvertCurrency(studentShipSchoolFaculty.TotalMoney)'" ng-model="totalMoneyStudentShip" class="form-control" onkeypress="return KeyCode()">
+                                <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button"> VNĐ</button>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-6" for="MoneyStudentShipFaculty">Số tiền dư:</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <p class="form-control-static">
+                                    <strong>@ConvertObject.ConvertCurrency(ViewBag.SURPLUSMoney) VNĐ</strong>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-6" for="MoneyStudentShipFaculty">Số sinh viên được nhận:</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control" type="number" ng-init="countStudent = @ViewBag.CountStudentShip" ng-model="countStudent" ng-change="ChangeCountStudentShip('@studentShipSchoolFaculty.IdStudentShipSchoolFaculty')"/>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" style="float: left" class="btn btn-primary">Lưu chỉnh sửa</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+
+    <form action="/StudentShip/ListStudentShipSchoolFaculty?idStudentShipSchoolFaculty=@studentShipSchoolFaculty.IdStudentShipSchoolFaculty&page=1" method="post" class="input-group" style="float: right; margin-right: 20px; padding-bottom: 5px; width: 400px;">
+        <input name="search" type="text" class="form-control">
+        <input name="page" type="hidden" value="1">
+        <div class="input-group-btn">
+            <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>Tìm kiếm</button>
+        </div>
+    </form>
+</div>
+<hr style="clear: both"/>
+<div style="float: right">
+    <a href="/StudentShip/SaveStudentShipSchoolStudent?idStudentShipSchoolFaculty=@studentShipSchoolFaculty.IdStudentShipSchoolFaculty">
+        <label class="form-control-static" onclick="getprogress()" data-toggle="modal" data-target="#SaveStudentShipSchoolStudent" style="cursor: pointer; margin-right: 20px"><span class="glyphicon glyphicon-save"></span> Lưu lại</label>
+    </a>
+    <a href="/StudentShip/ListStudentShipSchoolStudent?idStudentShipSchoolFaculty=@studentShipSchoolFaculty.IdStudentShipSchoolFaculty">
+        <label class="form-control-static" style="cursor: pointer; margin-right: 20px"><span class="glyphicon glyphicon-eye-open"></span> Xem danh sách chính thức</label>
+    </a>
+
+    <!-- Modal -->
+    <div id="SaveStudentShipSchoolStudent" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+
+            <!-- Modal content-->
+            <div class="modal-content" align="center">
+                <div class="modal-body">
+                    <div id="loaddingProgress">
+                        <div class="animation-3">
+                            <div class="cube">
+                                <div class="face face1"></div>
+                                <div class="face face2"></div>
+                                <div class="face face3"></div>
+                                <div class="face face4"></div>
+                                <div class="face face5"></div>
+                                <div class="face face6"></div>
+                            </div>
+                        </div>
+                        <br/>
+                        <strong id="noteProgress"> Đang xử lý! <span id="progressSaveStudentShipSchoolStudent"></span> </strong>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<br/>
+<div class="container-layoutmanager">
+    @{
+        List<LearningOutCome> listLearningOutCome = ViewBag.listLearningOutCome;
+        PageNumber pageNumber = ViewBag.pageNumber;
+    }
+    @Html.Partial("_ListStudentShip", listLearningOutCome)
+    @Html.Partial("~/Views/PartialShared/_PageNumber.cshtml", pageNumber)
+</div>
+
 </div>
 
 <script>
@@ -264,7 +273,7 @@
             // Trình duyệt hỗ trợ Web worker!
             // Viết tiếp các mã javascript
             var worker = new Worker("/js/SaveStudentShipSchoolStudentWebworker.js");
-            worker.onmessage = function (event) {
+            worker.onmessage = function(event) {
                 document.getElementById("progressSaveStudentShipSchoolStudent").innerHTML = event.data + "%";
             };
         } else {
@@ -280,6 +289,3 @@
         return (event.charCode >= 48 && event.charCode <= 57) || (event.charCode == 46);
     }
 </script>
-
-
-

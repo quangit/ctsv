@@ -1,40 +1,46 @@
-﻿using WEBPCTSV.Models.bean;
-using WEBPCTSV.Models.Support;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace WEBPCTSV.Models.bo
+﻿namespace WEBPCTSV.Models.bo
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using WEBPCTSV.Models.bean;
+    using WEBPCTSV.Models.Support;
+
     public class StudentSocialActivityBo
     {
-        DSAContext context = new DSAContext();
-        int rowInPage = new Configuration().rowInPage;
-        public void Delete(int idStudentSocialActivity)
-        {
-            StudentSocialActivity studentSocialActivity = context.StudentSocialActivities.Single(s => s.IdStudentSocialActivities == idStudentSocialActivity);
-            context.StudentSocialActivities.Remove(studentSocialActivity);
-            context.SaveChanges();
-        }
+        readonly DSAContext context = new DSAContext();
 
-        public List<SocialActivity> GetListSocialActivityNotStudent(int page, int idStudent)
-        {
-            List<StudentSocialActivity> listStudentSocialActivity = context.StudentSocialActivities.Where(s => s.IdStudent == idStudent).ToList();
-            List<int> listIdSocialActivity = new List<int>();
-            foreach (StudentSocialActivity s in listStudentSocialActivity) listIdSocialActivity.Add(s.IdSocialActivity);
-            return context.SocialActivities.Where(s => !listIdSocialActivity.Contains(s.IdSocialActivity)).OrderByDescending(st => st.IdSocialActivity).Skip((page - 1) * rowInPage).Take(rowInPage).ToList();
-        }
-
-        
+        readonly int rowInPage = new Configuration().rowInPage;
 
         public void Add(int idStudent, int idSocialActivity)
         {
             StudentSocialActivity studentSocialActivity = new StudentSocialActivity();
             studentSocialActivity.IdStudent = idStudent;
             studentSocialActivity.IdSocialActivity = idSocialActivity;
-            context.StudentSocialActivities.Add(studentSocialActivity);
-            context.SaveChanges();
+            this.context.StudentSocialActivities.Add(studentSocialActivity);
+            this.context.SaveChanges();
+        }
+
+        public void Delete(int idStudentSocialActivity)
+        {
+            StudentSocialActivity studentSocialActivity =
+                this.context.StudentSocialActivities.Single(s => s.IdStudentSocialActivities == idStudentSocialActivity);
+            this.context.StudentSocialActivities.Remove(studentSocialActivity);
+            this.context.SaveChanges();
+        }
+
+        public List<SocialActivity> GetListSocialActivityNotStudent(int page, int idStudent)
+        {
+            List<StudentSocialActivity> listStudentSocialActivity =
+                this.context.StudentSocialActivities.Where(s => s.IdStudent == idStudent).ToList();
+            List<int> listIdSocialActivity = new List<int>();
+            foreach (StudentSocialActivity s in listStudentSocialActivity) listIdSocialActivity.Add(s.IdSocialActivity);
+            return
+                this.context.SocialActivities.Where(s => !listIdSocialActivity.Contains(s.IdSocialActivity))
+                    .OrderByDescending(st => st.IdSocialActivity)
+                    .Skip((page - 1) * this.rowInPage)
+                    .Take(this.rowInPage)
+                    .ToList();
         }
     }
 }
