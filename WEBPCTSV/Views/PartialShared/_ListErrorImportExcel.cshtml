@@ -4,12 +4,24 @@
 {
     <div style="text-align: left">
         <div>
-            <strong style="float: left"> row : @errorImportExcel.Row</strong>
-            <span style="float: right"> Mã số sinh viên : @errorImportExcel.NumberStudent</span>
+                <strong style="float: left"> row : @errorImportExcel.Row</strong>
+            @if (errorImportExcel.NumberStudent != null)
+            {
+                <span style="float: right"> Mã số sinh viên : @errorImportExcel.NumberStudent</span>
+            }
         </div>
-        <p style="clear: both;color: #696969">
-            Lỗi:@errorImportExcel.ErrorName
-        </p>
+
+            @if (errorImportExcel.ErrorName != null)
+            {
+                <p style="clear: both; color: #696969">
+                    Lỗi: @errorImportExcel.ErrorName
+                </p>
+            }
+
+
+
+
+                
         <hr/>
     </div>  
 }

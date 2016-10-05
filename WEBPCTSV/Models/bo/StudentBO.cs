@@ -621,10 +621,11 @@
                                 try
                                 {
                                     student.DateOfIssuanceIdentityCard =
-                                        DateTime.ParseExact(
-                                            workSheet.Cells[rowIterator, 25].Value.ToString(),
-                                            "dd/MM/yyyy",
-                                            CultureInfo.InvariantCulture);
+                                        (DateTime)workSheet.Cells[rowIterator, 25].Value;
+                                    //var d = DateTime.ParseExact(
+                                    //        workSheet.Cells[rowIterator, 25].Value.ToString(),
+                                    //        "dd/MM/yyyy",
+                                    //        CultureInfo.InvariantCulture);
                                 }
                                 catch (Exception e)
                                 {
@@ -731,12 +732,16 @@
                 }
                 catch(Exception e)
                 {
-                    ListErrorImportExcels.Add(new ErrorImportExcel
+                    if (!string.IsNullOrEmpty(studentNumber))
                     {
-                        Row = rowIterator,
-                        ErrorName = e.ToString(),
-                        NumberStudent = studentNumber,
-                    });
+                        ListErrorImportExcels.Add(new ErrorImportExcel
+                        {
+                            Row = rowIterator,
+                            ErrorName = e.ToString(),
+                            NumberStudent = studentNumber,
+                        });
+                    }
+                    
                 }
             }
         }

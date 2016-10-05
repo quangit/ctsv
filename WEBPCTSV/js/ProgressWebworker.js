@@ -1,8 +1,8 @@
-﻿
+﻿alert("eeerasd");
 
 function update() {
     GetData();
-    setTimeout("update()", 500);
+    setTimeout("update()", 1000);
 }
 
 

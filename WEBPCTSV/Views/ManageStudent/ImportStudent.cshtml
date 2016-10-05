@@ -39,6 +39,11 @@
         <button id="buttonComplete" onclick="ResetPercentProgress()" style="visibility:hidden" class="btn btn-success"> Hoàn thành !</button>
 
         <br />
+        <button type="button" class="btn btn-success btn-sm"   onclick="GetProgress()">
+            Xem tiến trình
+        </button>
+
+        <br />
         <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#listErrorModal" onclick="RefreshListError()">
             Hiện thị các dòng bị lỗi <span class="badge " id="numberRowError1">0</span>
         </button>
@@ -74,7 +79,11 @@
     </div>
 </div>
 @*<div id="info-xuly"></div>*@
+
+
 <script>
+    
+    
 
     function ResetPercentProgress() {
         $.ajax({
@@ -102,6 +111,35 @@
                 $("#numberRowError2").html(result);
             }
         });
+    }
+
+    function GetProgress() {
+        try {
+            $.ajax({
+                url: "/File/GetInforProgress",
+                type: "get",
+                success: function (result) {
+                    if (result == 100) {
+                        document.getElementById("buttonComplete").style.visibility = "visible";
+                        document.getElementById("progress").style.visibility = "hidden";
+                        document.getElementById("loaddingProgress").style.visibility = "hidden";
+                    }
+                    else
+                        if (result != 0) {
+                            document.getElementById("importFile").style.visibility = "hidden";
+                            document.getElementById("progress").style.visibility = "visible";
+                            document.getElementById("loaddingProgress").style.visibility = "visible";
+                            document.getElementById("noteProgress").innerHTML = "Đang xữ lý !";
+                            document.getElementById("progressBarNumber").innerHTML = event.data + "%";
+                            document.getElementById("progressBar").classList.remove(oldclass);
+                            oldclass = "p" + event.data;
+                            document.getElementById("progressBar").classList.add(oldclass);
+                        }
+                }
+            });
+            
+        } catch (e) {
+        }
     }
 
     var oldclass = "p0";
@@ -156,8 +194,8 @@
     if (typeof (Worker) !== "undefined") {
         // Trình duyệt hỗ trợ Web worker!
         // Viết tiếp các mã javascript
-        var worker = new Worker("/js/ProgressWebworker.js");
-        worker.onmessage = function(event) {
+        var worker = new Worker('~/js/ProgressWebworker.js');
+        worker.onmessage = function (event) {
             //document.getElementById("info-xuly").innerHTML = event.data;
             if (event.data == 100) {
                 document.getElementById("buttonComplete").style.visibility = "visible";
@@ -165,16 +203,16 @@
                 document.getElementById("loaddingProgress").style.visibility = "hidden";
             }
             else
-                if (event.data != 0) {
-                    document.getElementById("importFile").style.visibility = "hidden";
-                    document.getElementById("progress").style.visibility = "visible";
-                    document.getElementById("loaddingProgress").style.visibility = "visible";
-                    document.getElementById("noteProgress").innerHTML = "Đang xữ lý !";
-                    document.getElementById("progressBarNumber").innerHTML = event.data + "%";
-                    document.getElementById("progressBar").classList.remove(oldclass);
-                    oldclass = "p" + event.data;
-                    document.getElementById("progressBar").classList.add(oldclass);
-                }
+            if (event.data != 0) {
+                document.getElementById("importFile").style.visibility = "hidden";
+                document.getElementById("progress").style.visibility = "visible";
+                document.getElementById("loaddingProgress").style.visibility = "visible";
+                document.getElementById("noteProgress").innerHTML = "Đang xữ lý !";
+                document.getElementById("progressBarNumber").innerHTML = event.data + "%";
+                document.getElementById("progressBar").classList.remove(oldclass);
+                oldclass = "p" + event.data;
+                document.getElementById("progressBar").classList.add(oldclass);
+            }
         };
     } else {
         // Rất tiếc! Trình duyệt không hỗ trợ Web Worker..
